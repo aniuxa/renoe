@@ -1,0 +1,29 @@
+Package: renoe
+Type: Package
+Title: Paquete para trabajar con la ENOE desde 2005
+Version: 0.1.0
+Authors@R: c(
+    person(
+      "Ana", "Escoto",
+      email = "ana.escoto@politicas.unam.mx",
+      role = c("aut", "cre")
+    ))
+Description: Carga, fusiona, armoniza los cuestionarios ampliado y básico, construye los paneles de cinco trimestres.
+    Incluye funciones para descargar documentación técnica.
+License: AGPL (>= 3)
+Encoding: UTF-8
+Imports:
+    arrow,
+    dplyr,
+    haven,
+    httr,
+    readr,
+    sjlabelled,
+    stats,
+    stringr,
+    tools,
+    utils
+Suggests:
+    testthat
+RoxygenNote: 7.3.2
+Roxygen: list(markdown = TRUE)
