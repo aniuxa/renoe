@@ -1,10 +1,19 @@
 exportPattern("^[[:alpha:]]+")
+
+# Funciones públicas del paquete
 export(descarga_enoe)
 export(carga_enoe)
 export(fusion_enoe)
 export(info_trimestre)
 export(descargar_cuestionarios)
+export(ipc_enoe)
+export(procesar_vars_sociodemo)
+export(procesar_vars_hogar)
+export(procesar_variables_enoe)
+export(drop_tri)
+export(crear_folios)
 
+# Paquetes y funciones importadas
 import(dplyr)
 importFrom(arrow, write_parquet)
 importFrom(haven, write_dta)

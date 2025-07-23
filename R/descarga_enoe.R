@@ -26,10 +26,7 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' # Descargar datos del primer trimestre de 2023 en formato Parquet
 #' descarga_enoe(2023, 1)
-#'
-#' # Descargar en formato Stata con 5 intentos
 #' descarga_enoe(2022, 4, formato = "dta", intentos = 5)
 #' }
 descarga_enoe <- function(anio, trimestre, formato = "parquet", intentos = 3,
@@ -38,7 +35,7 @@ descarga_enoe <- function(anio, trimestre, formato = "parquet", intentos = 3,
   if (!is.numeric(anio)) stop("El año debe ser numérico")
   if (!is.numeric(trimestre)) stop("El trimestre debe ser numérico")
   if (!trimestre %in% 1:4) stop("El trimestre debe ser un valor entre 1 y 4")
-  if (anio < 2005 || anio > 2024) stop("La ENOE cubre de 2005 en adelante y hasta ahora hasta 2024")
+  if (anio < 2005 || anio > 2025) stop("La ENOE cubre de 2005 en adelante y hasta ahora hasta 2025")
   if (anio == 2020 && trimestre == 2) stop("No existe el trimestre 2 de 2020 en la ENOE debido a la pandemia de COVID-19")
 
   # 2. Configuración inicial
@@ -64,17 +61,29 @@ descarga_enoe <- function(anio, trimestre, formato = "parquet", intentos = 3,
     stop("No se pudo extraer los archivos del ZIP descargado")
   }
 
+  # 4B. Sustitución especial para hogares 2022 T1
+  if (anio == 2022 && trimestre == 1) {
+    message("Sustituyendo archivo de hogares para 2022T1 con versión corregida...")
+    archivo_origen <- system.file("extdata", "conjunto_de_datos_hog_enoen_2022_1t.csv", package = "renoe")
+    subcarpeta <- file.path(unzip_dir, "conjunto_de_datos_hog_enoen_2022_1t", "conjunto_de_datos")
+    archivo_destino <- file.path(subcarpeta, "conjunto_de_datos_hog_enoen_2022_1t.csv")
+
+    if (!file.exists(archivo_destino) || file.size(archivo_destino) < 1000) {
+      dir.create(subcarpeta, recursive = TRUE, showWarnings = FALSE)
+      if (!file.exists(archivo_origen)) {
+        warning("No se encontró el archivo corregido para hogares 2022T1 en inst/extdata")
+      } else {
+        file.copy(archivo_origen, archivo_destino, overwrite = TRUE)
+      }
+    }
+  }
+
   # 5. Procesar y guardar cada tabla
   resultados <- sapply(tablas, function(tabla) {
     tryCatch({
-      # Leer datos
       datos <- .leer_datos_enoe(tabla, unzip_dir, url_info$prefijo, anio, trimestre)
       if (is.null(datos)) return(FALSE)
-
-      # Estandarizar IDs
       datos <- .estandarizar_ids(datos, anio, trimestre)
-
-      # Guardar en formato solicitado
       archivo_salida <- file.path("datos", paste0(tabla, anio, "_", trimestre, "t.", formato))
 
       switch(formato,

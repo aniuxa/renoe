@@ -3,22 +3,39 @@
 #' @keywords internal
 .leer_datos_enoe <- function(tabla, unzip_dir, prefijo, anio, trimestre) {
   patrones <- list(
-    viv = "conjunto_de_datos_viv.*\\.csv$",
-    hog = "conjunto_de_datos_hog.*\\.csv$",
+    viv  = "conjunto_de_datos_viv.*\\.csv$",
+    hog  = "conjunto_de_datos_hog.*\\.csv$",
     sdem = "conjunto_de_datos_sdem.*\\.csv$",
     coe1 = "conjunto_de_datos_coe1.*\\.csv$",
     coe2 = "conjunto_de_datos_coe2.*\\.csv$"
   )
 
-  archivos <- list.files(unzip_dir, pattern = patrones[[tabla]],
-                         recursive = TRUE, full.names = TRUE)
+  # Manejo especial para todas las tablas de 2022T1
+  if (anio == 2022 && trimestre == 1) {
+    nombre_archivo <- paste0("conjunto_de_datos_", tabla, "_enoen_2022_1t.csv")
+    ruta <- file.path(unzip_dir, paste0("conjunto_de_datos_", tabla, "_enoen_2022_1t"), nombre_archivo)
+    if (!file.exists(ruta)) {
+      warning("No se encontró el archivo corregido para ", tabla, " en ", ruta, ". Buscando archivo estándar...")
+      ruta <- NULL
+    }
+    archivo <- ruta
+  } else {
+    archivos <- list.files(unzip_dir, pattern = patrones[[tabla]],
+                           recursive = TRUE, full.names = TRUE)
+    if (length(archivos) == 0) {
+      warning("No se encontró archivo para la tabla ", tabla, " en ", unzip_dir)
+      return(NULL)
+    }
+    archivo <- archivos[1]
+  }
 
-  if (length(archivos) == 0) {
-    warning("No se encontró archivo para la tabla ", tabla, " en ", unzip_dir)
+  # Abortamos si no hay archivo válido
+  if (is.null(archivo) || !file.exists(archivo)) {
+    warning("Archivo no disponible para tabla ", tabla, " en ", unzip_dir)
     return(NULL)
   }
 
-  archivo <- archivos[1]
+  # Leer con el encoding correcto
   encoding <- if (anio >= 2020) "UTF-8" else "latin1"
 
   tryCatch({
@@ -36,6 +53,50 @@
     warning("Error al leer ", archivo, ": ", e$message)
     return(NULL)
   })
+}
+
+
+#' @keywords internal
+#' Sustituye los cinco archivos de datos de ENOE 2022T1 con una versión alternativa descargada desde INEGI.
+.sustituir_todo_enoe_2022t1 <- function(unzip_dir) {
+  url_zip <- "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/microdatos/enoe_n_2022_trim1_csv.zip"
+  temp_zip <- tempfile(fileext = ".zip")
+  temp_dir <- tempfile()
+
+  message("Descargando versión alternativa de ENOE 2022T1 desde INEGI...")
+  tryCatch({
+    utils::download.file(url_zip, temp_zip, mode = "wb", quiet = TRUE)
+    utils::unzip(temp_zip, exdir = temp_dir)
+  }, error = function(e) {
+    warning("No se pudo descargar o descomprimir la versión alternativa de ENOE 2022T1: ", e$message)
+    return(invisible(NULL))
+  })
+
+  archivos_a_copiar <- list(
+    viv  = "ENOEN_VIVT122.csv",
+    hog  = "ENOEN_HOGT122.csv",
+    sdem = "ENOEN_SDEMT122.csv",
+    coe1 = "ENOEN_COE1T122.csv",
+    coe2 = "ENOEN_COE2T122.csv"
+  )
+
+  for (tabla in names(archivos_a_copiar)) {
+    archivo_fuente <- file.path(temp_dir, archivos_a_copiar[[tabla]])
+    if (!file.exists(archivo_fuente)) {
+      warning("No se encontró el archivo ", archivos_a_copiar[[tabla]], " en el ZIP.")
+      next
+    }
+
+    # Crear subcarpeta de destino coherente con el flujo de lectura
+    carpeta_tabla <- file.path(unzip_dir, paste0("conjunto_de_datos_", tabla, "_enoen_2022_1t"))
+    archivo_destino <- file.path(carpeta_tabla, paste0("conjunto_de_datos_", tabla, "_enoen_2022_1t.csv"))
+    dir.create(carpeta_tabla, recursive = TRUE, showWarnings = FALSE)
+
+    file.copy(archivo_fuente, archivo_destino, overwrite = TRUE)
+    message("Archivo de ", tabla, " sustituido exitosamente.")
+  }
+
+  invisible(NULL)
 }
 #' Función interna que determina la estructura de URL apropiada según el año y trimestre
 #' @keywords internal

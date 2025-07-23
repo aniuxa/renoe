@@ -3,7 +3,7 @@
 #' Consulta la informacipib sobre qué versiones de cuestionarios (COE, SDEM, FD)
 #' corresponden a un trimestre específico de la ENOE.
 #' @encoding UTF-8
-#' @param anio Año del trimestre (2005-2024). Debe ser un valor numérico entre 2005 y 2024.
+#' @param anio Año del trimestre (2005-2024). Debe ser un valor numérico entre 2005 y 2025.
 #' @param trimestre Núemero del trimestre (1-4). Donde 1 = ENE-MAR, 2 = ABR-JUN,
 #'   3 = JUL-SEP, 4 = OCT-DIC.
 #'
@@ -30,7 +30,7 @@
 info_trimestre <- function(anio, trimestre) {
   # Validaciones
   if (!trimestre %in% 1:4) stop("Trimestre debe ser 1-4")
-  if (!anio %in% 2005:2024) stop("Au00f1o debe estar entre 2005-2024")
+  if (!anio %in% 2005:2025) stop("Año debe estar entre 2005-2024")
   if (anio == 2020 && trimestre == 2) stop("No existe 2020-T2 por COVID")
 
   # Generar cou00f3digo de trimestre
@@ -45,7 +45,7 @@ info_trimestre <- function(anio, trimestre) {
          "Debe estar en inst/extdata/")
   }
 
-  # Leer el archivo con encoding expliu00edcito
+  # Leer el archivo con encoding
   cuestionarios_data <- utils::read.csv(
     file = csv_path,
     stringsAsFactors = FALSE,

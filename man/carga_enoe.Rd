@@ -18,24 +18,59 @@ carga_enoe(
 )
 }
 \arguments{
-\item{anio}{Año del trimestre (2005-2024)}
+\item{anio}{Año del trimestre (2005–2024)}
 
-\item{trimestre}{Número del trimestre (1-4)}
+\item{trimestre}{Número del trimestre (1–4), donde:
+\itemize{
+\item 1 = Enero–Marzo
+\item 2 = Abril–Junio
+\item 3 = Julio–Septiembre
+\item 4 = Octubre–Diciembre
+}}
 
-\item{list}{Lógico. Si TRUE, devuelve lista con data frames}
+\item{list}{Lógico. Si TRUE, devuelve una lista con los data frames. Si FALSE (por defecto), los objetos se cargan al entorno global.}
 
-\item{rapida}{Lógico. Si TRUE, omite etiquetado de variables}
+\item{rapida}{Lógico. Si TRUE, omite el etiquetado de variables (más rápido).}
 
-\item{intentos}{Número de intentos de descarga (default 3)}
+\item{intentos}{Número máximo de intentos de descarga (por defecto = 3).}
 
-\item{timeout_sec}{Tiempo máximo de espera (default 300)}
+\item{timeout_sec}{Tiempo máximo de espera por intento en segundos (por defecto = 300).}
 
-\item{verificar_url}{Lógico. Si TRUE, verifica formatos de URL alternativos}
+\item{verificar_url}{Lógico. Si TRUE (por defecto), intenta formatos alternativos de URL si falla la descarga.}
 
-\item{cache}{Lógico. Si TRUE, usa archivos en caché}
+\item{cache}{Lógico. Si TRUE (por defecto), reutiliza datos descargados previamente si existen.}
 
-\item{prefijo}{Texto. Prefijo para nombres de archivos ("enoe" o "enoen")}
+\item{prefijo}{Cadena opcional para el prefijo de los archivos ("enoe" o "enoen"). Si no se indica, se detecta automáticamente.}
+}
+\value{
+Si \code{list = TRUE}, devuelve una lista con las cinco tablas. Si \code{list = FALSE}, las tablas se cargan
+al entorno global con nombres como \code{viv2023_t1}, \code{hog2023_t1}, etc.
 }
 \description{
-Cargar microdatos de la ENOE
+Descarga, extrae y carga las tablas de microdatos de la Encuesta Nacional de Ocupación y Empleo (ENOE)
+para un trimestre específico. Incluye la corrección automática del archivo defectuoso de hogares
+del primer trimestre de 2022. Las tablas disponibles son: vivienda (viv), hogar (hog), sociodemográfica (sdem)
+y los dos componentes del cuestionario ampliado (coe1 y coe2).
+}
+\details{
+Esta función combina varias operaciones comunes al trabajar con microdatos de la ENOE:
+descarga, extracción del ZIP, lectura, estandarización de identificadores y aplicación de etiquetas.
+La función maneja de forma especial el primer trimestre de 2022, sustituyendo automáticamente el archivo
+por la versión que se descarga en microdatos de INEGI y no en datos abiertos..
+}
+\examples{
+\dontrun{
+# Cargar datos al entorno global para el segundo trimestre de 2023
+carga_enoe(2023, 2)
+
+# Cargar datos como lista sin etiquetas
+datos <- carga_enoe(2022, 4, list = TRUE, rapida = TRUE)
+
+# Cargar el trimestre corregido 2022T1 desde caché o desde extdata si es necesario
+carga_enoe(2022, 1)
+}
+
+}
+\seealso{
+\code{\link{fusion_enoe}}, \code{\link{descarga_enoe}}, \code{\link{procesar_vars_sociodemo}}
 }

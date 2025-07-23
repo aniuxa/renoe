@@ -48,10 +48,7 @@ los descomprime y guarda las tablas en el formato especificado.
 }
 \examples{
 \dontrun{
-# Descargar datos del primer trimestre de 2023 en formato Parquet
 descarga_enoe(2023, 1)
-
-# Descargar en formato Stata con 5 intentos
 descarga_enoe(2022, 4, formato = "dta", intentos = 5)
 }
 }
