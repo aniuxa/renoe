@@ -12,6 +12,7 @@ fusion_enoe(
   formato = NULL,
   guardar = !is.null(formato),
   intentos = 3,
+  fusion_robusta = FALSE,
   ...
 )
 }
@@ -28,12 +29,14 @@ fusion_enoe(
 
 \item{intentos}{Número de intentos para cargar datos (por defecto 3).}
 
+\item{fusion_robusta}{Lógico. Si TRUE, utiliza claves de fusión basadas en las variables disponibles.}
+
 \item{...}{Otros parámetros para pasar a carga_enoe()}
 }
 \value{
 Un data frame con las tablas fusionadas. Si se especifica formato y guardar = TRUE,
 guarda el archivo en el subdirectorio "datos" con el nombre:
-"enoe_fusion_[AÑO]_[TRIMESTRE]t.[FORMATO]"
+"enoe_fusion_\link{AÑO}_\link{TRIMESTRE}t.\link{FORMATO}"
 }
 \description{
 Une las tablas de vivienda, hogar, sociodemográfico y componentes COE en un único data frame

@@ -8,7 +8,7 @@
 info_trimestre(anio, trimestre)
 }
 \arguments{
-\item{anio}{Año del trimestre (2005-2024). Debe ser un valor numérico entre 2005 y 2024.}
+\item{anio}{Año del trimestre (2005-2024). Debe ser un valor numérico entre 2005 y 2025.}
 
 \item{trimestre}{Núemero del trimestre (1-4). Donde 1 = ENE-MAR, 2 = ABR-JUN,
 3 = JUL-SEP, 4 = OCT-DIC.}

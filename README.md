@@ -40,6 +40,7 @@ fusion_enoe(2023, 1, formato = "parquet", guardar = TRUE)
 | `fusion_enoe()` | Fusiona viv, hog, sdem y coe1/coe2 en un solo data frame |
 | `descargar_cuestionarios()` | Descarga los cuestionarios PDF desde el sitio de INEGI |
 | `info_trimestre()` | Señala si el trimestre tiene cuestionario ampliado o básico y la versión |
+| `ipc_enoe()` | Agrega una columna llamada `ipc` al objeto fusionado de la ENOE |
 
 ## Formatos soportados
 
