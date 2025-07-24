@@ -12,7 +12,8 @@
 #' @param ... Otros parámetros para pasar a carga_enoe()
 #' @return Un data frame con las tablas fusionadas. Si se especifica formato y guardar = TRUE,
 #'   guarda el archivo en el subdirectorio "datos" con el nombre:
-#'   "enoe_fusion_[AÑO]_[TRIMESTRE]t.[FORMATO]"
+#'   "enoe_fusion_ANIO_TRIMESTREt.FORMATO"
+
 #'
 #' @export
 #'

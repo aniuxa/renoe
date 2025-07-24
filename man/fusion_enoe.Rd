@@ -36,7 +36,7 @@ fusion_enoe(
 \value{
 Un data frame con las tablas fusionadas. Si se especifica formato y guardar = TRUE,
 guarda el archivo en el subdirectorio "datos" con el nombre:
-"enoe_fusion_\link{AÑO}_\link{TRIMESTRE}t.\link{FORMATO}"
+"enoe_fusion_ANIO_TRIMESTREt.FORMATO"
 }
 \description{
 Une las tablas de vivienda, hogar, sociodemográfico y componentes COE en un único data frame

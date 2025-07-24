@@ -13,8 +13,15 @@
 #' @encoding UTF-8
 #'
 #' @examples
-#' datos <- data.frame(anio = c(2011, 2012, 2013), trimestre = c("t1", "t2", "t3"), p3coe = c(7121, 4190, 1110))
+#' datos <- data.frame(
+#'   anio = c(2011, 2012, 2013),
+#'   trim = c("t1", "t2", "t3"),
+#'   p3coe = c(7121, 4190, 1110),
+#'   pos_ocu = c(1, 2, 1),
+#'   tue2 = c(1, 2, 1)
+#' )
 #' armoniza_sinco(datos)
+#' @family procesamiento_enoe
 armoniza_sinco <- function(data, codigos = NULL) {
   stopifnot(all(c("anio", "trim") %in% names(data)))
 

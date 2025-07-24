@@ -22,6 +22,24 @@ o hasta el segundo trimestre de 2013) o directamente desde SINCO 2011 (desde el 
 utilizando una correspondencia incluida en el paquete y reglas manuales de clasificación cuando no hay equivalencia directa.
 }
 \examples{
-datos <- data.frame(anio = c(2011, 2012, 2013), trimestre = c("t1", "t2", "t3"), p3coe = c(7121, 4190, 1110))
+datos <- data.frame(
+  anio = c(2011, 2012, 2013),
+  trim = c("t1", "t2", "t3"),
+  p3coe = c(7121, 4190, 1110),
+  pos_ocu = c(1, 2, 1),
+  tue2 = c(1, 2, 1)
+)
 armoniza_sinco(datos)
 }
+\seealso{
+Other procesamiento_enoe: 
+\code{\link{crear_folios}()},
+\code{\link{imputa_ingocup}()},
+\code{\link{ipc_enoe}()},
+\code{\link{procesar_tiempo}()},
+\code{\link{procesar_variables_enoe}()},
+\code{\link{procesar_vars_hogar}()},
+\code{\link{procesar_vars_laborales}()},
+\code{\link{procesar_vars_sociodemo}()}
+}
+\concept{procesamiento_enoe}

@@ -8,7 +8,7 @@
 #' @import dplyr
 #' @import ggplot2
 #' @import mice
-#' @import sjlabelled
+#' @importFrom sjlabelled  as_label set_label set_labels get_label get_labels
 #' @importFrom arrow write_parquet read_parquet
 #' @importFrom haven write_dta read_dta
 #' @importFrom httr GET http_error write_disk

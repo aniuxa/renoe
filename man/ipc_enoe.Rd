@@ -32,6 +32,7 @@ datos <- ipc_enoe(datos, 2023, 1)
 }
 \seealso{
 Other procesamiento_enoe: 
+\code{\link{armoniza_sinco}()},
 \code{\link{crear_folios}()},
 \code{\link{imputa_ingocup}()},
 \code{\link{procesar_tiempo}()},

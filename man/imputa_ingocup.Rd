@@ -79,6 +79,7 @@ Solo se consideran aquellas variables donantes que están disponibles en el conj
 }
 \seealso{
 Other procesamiento_enoe: 
+\code{\link{armoniza_sinco}()},
 \code{\link{crear_folios}()},
 \code{\link{ipc_enoe}()},
 \code{\link{procesar_tiempo}()},
