@@ -14,7 +14,7 @@ Puedes instalar la versión en desarrollo desde GitHub con:
 
 ```r
 # install.packages("remotes")
-remotes::install_github("tu_usuario/renoe")
+remotes::install_github("aniuxa/renoe")
 ```
 
 ## Descarga y documentación (`@family descarga_documenta_enoe`)
