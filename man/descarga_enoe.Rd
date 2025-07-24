@@ -52,3 +52,11 @@ descarga_enoe(2023, 1)
 descarga_enoe(2022, 4, formato = "dta", intentos = 5)
 }
 }
+\seealso{
+Other descarga_documenta_enoe: 
+\code{\link{carga_enoe}()},
+\code{\link{descargar_cuestionarios}()},
+\code{\link{fusion_enoe}()},
+\code{\link{info_trimestre}()}
+}
+\concept{descarga_documenta_enoe}

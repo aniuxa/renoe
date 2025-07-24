@@ -11,16 +11,33 @@ procesar_vars_hogar(data)
 \item{data}{Un data frame con variables como \code{par_c}, \code{edad}, \code{sexo}, \code{folio2}, previamente procesadas por \code{procesar_vars_sociodemo()}.}
 }
 \value{
-Un data frame con variables nuevas:
+Un data frame con las siguientes variables nuevas:
 \describe{
-\item{relative}{Clasificación del parentesco con respecto al jefe}
-\item{family, familyt, tipo_hog, tipo_hog_lab}{Clasificaciones del tipo de hogar}
-\item{tam_hog, t_dep1, t_dep2, t_dep3}{Tamaño del hogar y tasas de dependencia}
+\item{relative}{Clasificación del parentesco con respecto al jefe del hogar}
+\item{family, familyt}{Codificaciones intermedias de tipo de familia}
+\item{tipo_hog, tipo_hog_lab}{Tipología sintética del hogar: unipersonal, nuclear, extensos, etc.}
+\item{tam_hog}{Tamaño del hogar (sin servicio doméstico)}
+\item{t_dep1, t_dep2, t_dep3}{Tasas de dependencia juvenil, senil y total}
+\item{h_00_05, h_06_12, h_13_18, h_18m, h_joven1, h_joven2, h_adm}{Conteo de personas por grupo etario y adultos mayores}
+\item{d_00_05, d_06_12, d_13_18, d_18m, d_joven1, d_joven2, d_adm}{Indicadores dicotómicos de presencia de cada grupo en el hogar}
 }
 }
 \description{
-Calcula el tipo de parentesco, clasificaciones de hogares (familiares, extensos, compuestos, etc.)
-y tasas de dependencia. Esta función requiere que las variables sociodemográficas ya hayan sido creadas.
+Calcula variables derivadas sobre la composición y estructura de los hogares a partir de los microdatos de la ENOE.
+Esta función requiere que previamente se hayan generado variables sociodemográficas mediante \code{procesar_vars_sociodemo()}.
+}
+\details{
+Incluye:
+\itemize{
+\item Clasificación de parentesco (\code{relative})
+\item Tipologías de hogares (familiares, extensos, compuestos, etc.)
+\item Tamaño del hogar y tasas de dependencia (juvenil, senil y total)
+\item Conteo de integrantes por grupo etario
+\item Indicadores dicotómicos de presencia de grupos clave (niñez, juventud, adultez mayor)
+}
+
+Las variables generadas permiten construir tipologías familiares, caracterizar hogares según su composición y
+analizar necesidades de cuidado o dependencia demográfica.
 }
 \examples{
 \dontrun{
@@ -30,3 +47,14 @@ datos <- procesar_vars_hogar(datos)
 table(datos$tipo_hog_lab, useNA = "always")
 }
 }
+\seealso{
+Other procesamiento_enoe: 
+\code{\link{crear_folios}()},
+\code{\link{imputa_ingocup}()},
+\code{\link{ipc_enoe}()},
+\code{\link{procesar_tiempo}()},
+\code{\link{procesar_variables_enoe}()},
+\code{\link{procesar_vars_laborales}()},
+\code{\link{procesar_vars_sociodemo}()}
+}
+\concept{procesamiento_enoe}

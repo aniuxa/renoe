@@ -1,7 +1,7 @@
 Package: renoe
 Type: Package
 Title: Paquete para trabajar con la ENOE desde 2005
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: c(
     person(
       "Ana", "Escoto",
@@ -15,8 +15,10 @@ Encoding: UTF-8
 Imports:
     arrow,
     dplyr,
+    ggplot2,
     haven,
     httr,
+    mice,
     readr,
     sjlabelled,
     stats,
@@ -24,6 +26,11 @@ Imports:
     tools,
     utils
 Suggests:
-    testthat
+    testthat,
+    knitr,
+    rmarkdown
 RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
+VignetteBuilder: knitr
+BugReports: https://github.com/aniuxa/renoe/issues
+URL: https://github.com/aniuxa/renoe

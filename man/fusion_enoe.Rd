@@ -50,3 +50,11 @@ datos2020 <- fusion_enoe(2020, 3)
 fusion_enoe(2019, 2, formato = "parquet", guardar = TRUE)
 }
 }
+\seealso{
+Other descarga_documenta_enoe: 
+\code{\link{carga_enoe}()},
+\code{\link{descarga_enoe}()},
+\code{\link{descargar_cuestionarios}()},
+\code{\link{info_trimestre}()}
+}
+\concept{descarga_documenta_enoe}

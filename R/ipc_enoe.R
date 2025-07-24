@@ -18,6 +18,8 @@
 #' datos <- fusion_enoe(2023, 1)
 #' datos <- ipc_enoe(datos, 2023, 1)
 #' }
+#' @family procesamiento_enoe
+
 ipc_enoe <- function(datos_fusionados, anio, trimestre) {
   if (!is.data.frame(datos_fusionados)) {
     stop("El objeto proporcionado debe ser un data.frame fusionado de ENOE")

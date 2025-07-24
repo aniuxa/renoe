@@ -29,6 +29,8 @@
 #' descarga_enoe(2023, 1)
 #' descarga_enoe(2022, 4, formato = "dta", intentos = 5)
 #' }
+#' @family descarga_documenta_enoe
+
 descarga_enoe <- function(anio, trimestre, formato = "parquet", intentos = 3,
                           timeout_sec = 300, verificar_url = TRUE, cache = TRUE) {
   # 1. Validaciones iniciales

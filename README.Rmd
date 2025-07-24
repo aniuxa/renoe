@@ -2,68 +2,106 @@
 ---
 output: github_document
 ---
-
-<!-- README.md es generado por R. Para actualizarlo, ejecuta rmarkdown::render("README.Rmd") -->
-
 # renoe <img src="man/figures/logo.png" align="right" height="120" />
 
-Herramientas para descargar, procesar y analizar los microdatos de la Encuesta Nacional de Ocupación y Empleo (ENOE) del INEGI, México.
+**renoe** es un paquete en desarrollo para facilitar la descarga, carga, fusión, procesamiento y análisis de los microdatos de la Encuesta Nacional de Ocupación y Empleo (ENOE) del INEGI.
 
-Este paquete permite automatizar la descarga, lectura, etiquetado y fusión de los componentes de la ENOE desde 2005 hasta 2024, en distintos formatos de salida (CSV, Parquet, DTA, RDS).
+Permite trabajar de forma reproducible y eficiente con los datos de los distintos trimestres y formatos de cuestionario (básico o ampliado), siguiendo un flujo de trabajo estructurado que abarca desde la descarga hasta el procesamiento avanzado de variables.
 
 ## Instalación
 
-Puedes instalar la versión en desarrollo directamente desde GitHub:
+Puedes instalar la versión en desarrollo desde GitHub con:
 
 ```r
 # install.packages("remotes")
-remotes::install_github("aniuxa/renoe")
+remotes::install_github("tu_usuario/renoe")
 ```
 
-## Uso básico
+## Descarga y documentación (`@family descarga_documenta_enoe`)
+
+Estas funciones permiten obtener y manejar los datos directamente desde las fuentes oficiales del INEGI:
+
+| Función                      | Descripción                                                                 |
+|-----------------------------|-----------------------------------------------------------------------------|
+| `descarga_enoe()`           | Descarga el archivo ZIP oficial del trimestre desde el sitio del INEGI.     |
+| `carga_enoe()`              | Extrae, etiqueta y carga directamente las tablas de un trimestre.           |
+| `fusion_enoe()`             | Fusiona las tablas `viv`, `hog`, `sdem`, `coe1` y `coe2` en un solo objeto. |
+| `descargar_cuestionarios()` | Descarga los cuestionarios PDF disponibles por trimestre.                   |
+| `info_trimestre()`          | Devuelve metadatos sobre el cuestionario usado (básico o ampliado).         |
+
+---
+
+## Procesamiento de microdatos (`@family procesamiento_enoe`)
+
+Una vez fusionadas las tablas, estas funciones permiten procesar paso a paso los datos de la ENOE:
+
+| Función                      | Descripción                                                                 |
+|-----------------------------|-----------------------------------------------------------------------------|
+| `procesar_variables_enoe()` | Función *wrapper* que aplica en cadena todas las funciones de procesamiento recomendadas: variables sociodemográficas, estructura del hogar, uso del tiempo, IPC, imputación de ingresos y variables laborales. Es el orden lógico sugerido para preparar los microdatos. |
+| `crear_folios()`            | Crea identificadores únicos para vivienda, hogar y persona.                |
+| `drop_tri()`                | Renombra variables terminadas en `_tri` en la ENOEN para compatibilidad.   |
+| `procesar_vars_sociodemo()` | Genera variables de edad, sexo y grupos etarios.                           |
+| `procesar_vars_hogar()`     | Clasifica hogares por tipo, tamaño y tasas de dependencia.                 |
+| `procesar_tiempo()`         | Calcula tiempo dedicado a cuidados y trabajo no remunerado (horas/minutos).|
+| `ipc_enoe()`                | Agrega el índice de precios al consumidor (IPC) correspondiente al trimestre. |
+| `imputa_ingocup()`          | Imputa ingresos ocupacionales para personas ocupadas usando `mice`.        |
+| `procesar_vars_laborales()` | Clasifica tipo de contrato, experiencia laboral y desajuste educativo.     |
+
+### Ejemplo
 
 ```r
-library(renoe)
-
-# Fusionar tablas para el primer trimestre de 2023
-datos <- fusion_enoe(2023, 1)
-
-# Guardar en formato Parquet
-fusion_enoe(2023, 1, formato = "parquet", guardar = TRUE)
+datos <- fusion_enoe(2022, 1)
+datos_proc <- procesar_variables_enoe(datos, anio = 2022, trimestre = 1)
+dplyr::glimpse(datos_proc)
+table(datos_proc$tipo_hog_lab, useNA = "always")
 ```
 
-## Funciones principales
+---
 
-| Función             | Descripción |
-|---------------------|-------------|
-| `descarga_enoe()`   | Descarga el archivo .zip correspondiente a un trimestre |
-| `carga_enoe()`      | Lee y etiqueta los archivos de un trimestre |
-| `fusion_enoe()`     | Fusiona viv, hog, sdem y coe1/coe2 en un solo data frame |
-| `descargar_cuestionarios()` | Descarga los cuestionarios PDF desde el sitio de INEGI |
-| `info_trimestre()` | Señala si el trimestre tiene cuestionario ampliado o básico y la versión |
-| `ipc_enoe()`       | Agrega una columna llamada `ipc` al objeto fusionado de la ENOE |
+## Funciones internas y auxiliares
+
+Estas funciones no están exportadas, pero son utilizadas por las funciones principales para manejar la descarga, verificación y lectura de archivos:
+
+| Función interna              | Descripción                                                                 |
+|-----------------------------|-----------------------------------------------------------------------------|
+| `.construir_url_enoe()`     | Genera la URL de descarga para un trimestre específico.                     |
+| `.descargar_zip_enoe()`     | Descarga y guarda el archivo ZIP de microdatos.                             |
+| `.extraer_zip_enoe()`       | Extrae los contenidos del ZIP en una carpeta temporal.                      |
+| `.verificar_cache()`        | Verifica si los archivos ya están descargados y extraídos.                  |
+| `.leer_datos_enoe()`        | Lee una tabla específica (`viv`, `hog`, etc.) desde el ZIP extraído.        |
+| `.procesar_etiquetas_enoe()`| Asigna etiquetas a las variables utilizando los diccionarios de INEGI.      |
+| `.cargar_desde_cache()`     | Carga directamente datos previamente extraídos del ZIP.                     |
+| `.estandarizar_ids()`       | Unifica identificadores a través de años con diferentes convenciones.       |
+
+---
 
 ## Formatos soportados
 
-- `.parquet`: Compacto y rápido para análisis en R y Python.
+- `.parquet`: Compacto, rápido y compatible con Python.
 - `.dta`: Compatible con Stata.
-- `.rds`: Eficiente para uso interno en R.
+- `.rds`: Eficiente para análisis en R.
 
-## Estructura esperada
+---
 
-Los archivos descargados se guardan en las siguientes carpetas:
+## Validación y manejo de excepciones
+
+- Se incluye validación del número de filas esperadas posterior al filtrado (`r_def == 0 & c_res != 2`).
+- Para el trimestre **2022T1** se utilizan archivos alternativos descargados del sitio de microdatos del INEGI.
+- Si se detectan anomalías (menos filas de lo esperado, duplicaciones), se emiten advertencias para revisión manual.
+
+---
+
+## Estructura esperada de carpetas
 
 ```
 renoe/
-├── zip/      # Contiene los .zip y carpetas extraídas por año-trimestre
+├── zip/      # Contiene los .zip descargados y carpetas extraídas por trimestre
 ├── datos/    # Contiene los archivos fusionados guardados por la persona usuaria
 ```
 
+---
+
 ## Créditos
 
-Este paquete fue desarrollado para facilitar el trabajo con los microdatos de la ENOE en proyectos académicos y de investigación social.
-
-Proyecto **PAPIIT IN305925 Retos de la Inserción laboral en México**
-
-
-**Nota:** Este paquete no está afiliado al INEGI. Los datos son propiedad pública y pueden ser consultados en [https://www.inegi.org.mx](https://www.inegi.org.mx).
+Este paquete ha sido desarrollado como parte del proyecto PAPIIT IN305925 _“Retos de la inserción laboral en México”_ (UNAM).  
+Para sugerencias, contribuciones o reportes de errores, puedes abrir un _issue_ en GitHub o contactar a la autora.

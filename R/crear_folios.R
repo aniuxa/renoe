@@ -6,6 +6,7 @@
 #' @param data Un data.frame o tibble con las variables base (`cd_a`, `ent`, `con`, `v_sel`).
 #' @return Un data.frame con las columnas `folio`, `folio2` y opcionalmente `folio3`.
 #' @export
+#' @family procesamiento_enoe
 crear_folios <- function(data) {
   vars_base <- c("cd_a", "ent", "con", "v_sel")
   vars_opt <- c("ca", "tipo", "mes_cal")

@@ -73,4 +73,11 @@ carga_enoe(2022, 1)
 }
 \seealso{
 \code{\link{fusion_enoe}}, \code{\link{descarga_enoe}}, \code{\link{procesar_vars_sociodemo}}
+
+Other descarga_documenta_enoe: 
+\code{\link{descarga_enoe}()},
+\code{\link{descargar_cuestionarios}()},
+\code{\link{fusion_enoe}()},
+\code{\link{info_trimestre}()}
 }
+\concept{descarga_documenta_enoe}
