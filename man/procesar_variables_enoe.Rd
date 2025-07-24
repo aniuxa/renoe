@@ -3,30 +3,55 @@
 \encoding{UTF-8}
 \name{procesar_variables_enoe}
 \alias{procesar_variables_enoe}
-\title{Procesar variables sociodemográficas y de estructura del hogar}
+\title{Procesar variables clave de la ENOE en una sola función}
 \usage{
-procesar_variables_enoe(data)
+procesar_variables_enoe(data, anio, trimestre)
 }
 \arguments{
 \item{data}{Un data frame con las tablas fusionadas de la ENOE (por ejemplo, salida de \code{fusion_enoe()}).}
+
+\item{anio}{Año del trimestre (numérico).}
+
+\item{trimestre}{Trimestre numérico (1–4).}
 }
 \value{
-Un data frame con variables sociodemográficas generales y de estructura del hogar agregadas.
+Un data frame con variables sociodemográficas, estructura del hogar, uso del tiempo, IPC y variables imputadas.
 }
 \description{
-Esta función aplica en cadena \code{procesar_vars_sociodemo()} y \code{procesar_vars_hogar()} para
-crear variables derivadas clave en el análisis de datos de la ENOE. Incluye transformación
-de edad, identificación de parentescos, clasificación de hogares y cálculo de tasas de dependencia.
+Función envolvente (\code{wrapper}) que aplica en cadena varias funciones de procesamiento sobre los microdatos de la ENOE.
+Crea variables sociodemográficas, estructura del hogar, uso del tiempo, imputación de ingresos e información del IPC.
+}
+\details{
+Aplica automáticamente las funciones:
+\itemize{
+\item \code{crear_folios()}: Genera identificadores únicos de vivienda, hogar y persona.
+\item \code{drop_tri()}: Cuando se trata de la ENOEN, renombra automáticamente variables terminadas en \verb{_tri} a su forma base (por ejemplo, \code{fac_tri} → \code{fac}).
+\item \code{procesar_vars_sociodemo()}: Crea variables de edad, sexo y grupos etarios.
+\item \code{procesar_vars_hogar()}: Clasifica hogares por tipo, tamaño y dependencia.
+\item \code{procesar_tiempo()}: Calcula minutos y horas en actividades del hogar y cuidado.
+\item \code{ipc_enoe()}: Añade una variable con el IPC nacional del trimestre correspondiente.
+\item \code{imputa_ingocup()}: Imputa el ingreso ocupacional con \code{mice} para personas ocupadas.
+}
 }
 \examples{
 \dontrun{
 datos <- fusion_enoe(2022, 1)
-datos_proc <- procesar_variables_enoe(datos)
-
+datos_proc <- procesar_variables_enoe(datos, 2022, 1)
 dplyr::glimpse(datos_proc)
 table(datos_proc$tipo_hog_lab, useNA = "always")
 }
+
 }
 \seealso{
-\code{\link[=procesar_vars_sociodemo]{procesar_vars_sociodemo()}}, \code{\link[=procesar_vars_hogar]{procesar_vars_hogar()}}
+\code{\link[=procesar_vars_sociodemo]{procesar_vars_sociodemo()}}, \code{\link[=procesar_vars_hogar]{procesar_vars_hogar()}}, \code{\link[=ipc_enoe]{ipc_enoe()}}, \code{\link[=imputa_ingocup]{imputa_ingocup()}}
+
+Other procesamiento_enoe: 
+\code{\link{crear_folios}()},
+\code{\link{imputa_ingocup}()},
+\code{\link{ipc_enoe}()},
+\code{\link{procesar_tiempo}()},
+\code{\link{procesar_vars_hogar}()},
+\code{\link{procesar_vars_laborales}()},
+\code{\link{procesar_vars_sociodemo}()}
 }
+\concept{procesamiento_enoe}

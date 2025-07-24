@@ -36,3 +36,11 @@ info_trimestre(2020, 1)
 # Consultar información para el tercer trimestre de 2015
 info_trimestre(2015, 3)
 }
+\seealso{
+Other descarga_documenta_enoe: 
+\code{\link{carga_enoe}()},
+\code{\link{descarga_enoe}()},
+\code{\link{descargar_cuestionarios}()},
+\code{\link{fusion_enoe}()}
+}
+\concept{descarga_documenta_enoe}

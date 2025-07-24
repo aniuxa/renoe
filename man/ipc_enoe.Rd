@@ -30,3 +30,14 @@ datos <- fusion_enoe(2023, 1)
 datos <- ipc_enoe(datos, 2023, 1)
 }
 }
+\seealso{
+Other procesamiento_enoe: 
+\code{\link{crear_folios}()},
+\code{\link{imputa_ingocup}()},
+\code{\link{procesar_tiempo}()},
+\code{\link{procesar_variables_enoe}()},
+\code{\link{procesar_vars_hogar}()},
+\code{\link{procesar_vars_laborales}()},
+\code{\link{procesar_vars_sociodemo}()}
+}
+\concept{procesamiento_enoe}

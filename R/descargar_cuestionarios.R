@@ -22,6 +22,7 @@
 #' descargar_cuestionarios(2019, 2, sobrescribir = TRUE)
 #' descargar_cuestionarios(2018, 3, destino = "documentacion_enoe")
 #' }
+#' @family descarga_documenta_enoe
 descargar_cuestionarios <- function(anio, trimestre,
                                     destino = "cuestionarios",
                                     sobrescribir = FALSE) {

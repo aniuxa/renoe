@@ -24,6 +24,8 @@
 #' # Fusionar y guardar como Parquet
 #' fusion_enoe(2019, 2, formato = "parquet", guardar = TRUE)
 #' }
+#' @family descarga_documenta_enoe
+
 fusion_enoe <- function(anio, trimestre, rapida = FALSE, formato = NULL,
                         guardar = !is.null(formato), intentos = 3, fusion_robusta = FALSE, ...) {
 

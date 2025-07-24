@@ -26,6 +26,7 @@
 #'
 #' # Consultar información para el tercer trimestre de 2015
 #' info_trimestre(2015, 3)
+#' @family descarga_documenta_enoe
 
 info_trimestre <- function(anio, trimestre) {
   # Validaciones

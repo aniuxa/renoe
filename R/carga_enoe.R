@@ -46,6 +46,8 @@
 #' }
 #'
 #' @export
+#' @family descarga_documenta_enoe
+
 carga_enoe <- function(anio, trimestre, list = FALSE, rapida = FALSE,
                        intentos = 3, timeout_sec = 300, verificar_url = TRUE,
                        cache = TRUE, prefijo = NULL) {

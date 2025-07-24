@@ -17,3 +17,14 @@ Un data.frame con las columnas \code{folio}, \code{folio2} y opcionalmente \code
 Esta función genera los identificadores \code{folio}, \code{folio2} y \code{folio3}
 basados en las variables clave del diseño de la ENOE.
 }
+\seealso{
+Other procesamiento_enoe: 
+\code{\link{imputa_ingocup}()},
+\code{\link{ipc_enoe}()},
+\code{\link{procesar_tiempo}()},
+\code{\link{procesar_variables_enoe}()},
+\code{\link{procesar_vars_hogar}()},
+\code{\link{procesar_vars_laborales}()},
+\code{\link{procesar_vars_sociodemo}()}
+}
+\concept{procesamiento_enoe}
