@@ -1,0 +1,22 @@
+utils::globalVariables(c(
+  ".", "adm", "anio", "anios_es", "anios_esc", "aplicar_reglas", "asiste",
+  "c_res", "clase2", "cmo", "cmo_4d", "coe_tipo", "contrato0", "contrato1",
+  "cs_p13_1", "CVE", "d_00_05", "d_06_12", "d_13_17", "d_18m", "d_adm", "d_joven1",
+  "d_joven2", "dep", "edad", "edad5", "e_con", "ent", "familyt", "folio2",
+  "h_00_05", "h_06_12", "h_13_17", "h_18m", "h_adm", "h_joven1", "h_joven2",
+  "i_00_05", "i_06_12", "i_13_17", "i_18m", "i_joven1", "i_joven2", "imp_ingocup",
+  "ing7c", "ingocup", "ingocup_imp", "log_ingocup_imp", "log_ingocup_imp_imp",
+  "may", "men", "mismatch", "mismatch2", "mismatch_raw", "miss_income4",
+  "miss_to_impute", "needs_manual_1d", "nunca_trabajo", "nondep", "p11_h1",
+  "p11_h2", "p11_h3", "p11_h4", "p11_m1", "p11_m2", "p11_m3", "p11_m4", "p2_4",
+  "p3coe", "p3i", "p3j", "p3j1", "p3k1", "p6b1", "p9_h1", "p9_h2", "p9_h3",
+  "p9_h4", "p9_m1", "p9_m2", "p9_m3", "p9_m4", "p_lab", "p_lab_ratio",
+  "par_c", "par_dic", "parentesco", "pos_ocu", "r_def", "relative", "rural",
+  "sexo", "sex", "sinco1d", "sinco3d", "sinco4d", "sinco4d_str", "skill_actual",
+  "skill_level", "status_seq", "str_cmo", "t_compras", "t_comun", "t_construir",
+  "t_cuidado", "t_dep1", "t_dep2", "t_dep3", "t_estudiar", "t_loc", "t_quehacer",
+  "t_reparar", "t_total", "t_total0", "t_total_hrs", "t_total_hrs0",
+  "t_traslado", "tam_hog", "temporal", "temporal_seq", "tipo_hog", "tipo_hog2",
+  "tipo_hog2_lab", "tipo_hog_lab", "trim", "trimestre_n", "unido", "urb_rur",
+  "zona_econ"
+))

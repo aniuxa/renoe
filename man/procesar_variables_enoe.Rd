@@ -46,6 +46,7 @@ table(datos_proc$tipo_hog_lab, useNA = "always")
 \code{\link[=procesar_vars_sociodemo]{procesar_vars_sociodemo()}}, \code{\link[=procesar_vars_hogar]{procesar_vars_hogar()}}, \code{\link[=ipc_enoe]{ipc_enoe()}}, \code{\link[=imputa_ingocup]{imputa_ingocup()}}
 
 Other procesamiento_enoe: 
+\code{\link{armoniza_sinco}()},
 \code{\link{crear_folios}()},
 \code{\link{imputa_ingocup}()},
 \code{\link{ipc_enoe}()},

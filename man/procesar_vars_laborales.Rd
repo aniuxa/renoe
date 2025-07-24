@@ -42,6 +42,7 @@ y características contractuales (\code{contrato0}, \code{contrato1}, \code{temp
 }
 \seealso{
 Other procesamiento_enoe: 
+\code{\link{armoniza_sinco}()},
 \code{\link{crear_folios}()},
 \code{\link{imputa_ingocup}()},
 \code{\link{ipc_enoe}()},

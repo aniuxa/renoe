@@ -19,6 +19,7 @@ basados en las variables clave del diseño de la ENOE.
 }
 \seealso{
 Other procesamiento_enoe: 
+\code{\link{armoniza_sinco}()},
 \code{\link{imputa_ingocup}()},
 \code{\link{ipc_enoe}()},
 \code{\link{procesar_tiempo}()},

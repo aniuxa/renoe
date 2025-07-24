@@ -30,6 +30,7 @@ datos_sdem_proc <- procesar_vars_sociodemo(sdem, anio = 2023, trimestre = 1)
 }
 \seealso{
 Other procesamiento_enoe: 
+\code{\link{armoniza_sinco}()},
 \code{\link{crear_folios}()},
 \code{\link{imputa_ingocup}()},
 \code{\link{ipc_enoe}()},
