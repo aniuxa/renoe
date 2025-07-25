@@ -14,7 +14,7 @@ Incluye utilidades para imputación de ingresos ocupacionales, procesamiento de 
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/aniuxa/renoe}
+  \item \url{https://aniuxa.github.io/renoe}
   \item Report bugs at \url{https://github.com/aniuxa/renoe/issues}
 }
 

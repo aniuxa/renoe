@@ -1,0 +1,102 @@
+---
+title: "renoe"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{renoe}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(renoe)
+```
+
+# Introducción al paquete `renoe`
+
+El paquete `renoe` permite descargar, procesar y analizar los microdatos de la Encuesta Nacional de Ocupación y Empleo (ENOE) de México. Está diseñado para facilitar tareas comunes de manejo de datos, como la descarga de microdatos, la fusión de tablas y el procesamiento de variables sociodemográficas y laborales.
+
+---
+
+## Instalación
+
+Si el paquete aún no está en CRAN, puedes instalarlo desde GitHub:
+
+```{r eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("aniuxa/renoe")
+```
+
+---
+
+## Descarga y carga rápida de microdatos
+
+Puedes descargar y cargar los datos de un trimestre específico de manera rápida (sin etiquetado):
+
+```{r eval = FALSE}
+# Descargar y cargar microdatos de forma rápida (sin etiquetas)
+descarga_enoe(2023, 4)
+datos <- carga_enoe(2023, 4, rapida = TRUE)
+```
+
+---
+
+## Fusión de tablas en un solo objeto
+
+Si prefieres trabajar con una base fusionada que incluya las tablas clave (`sdem`, `coe1`, `coe2`), puedes usar `fusion_enoe()`:
+
+```{r eval = FALSE}
+# Fusionar tablas en una sola base
+datos_fusionados <- fusion_enoe(2023, 4)
+```
+
+---
+
+## Procesamiento de variables
+
+Una vez que has cargado o fusionado tus datos, puedes aplicar funciones para generar variables sociodemográficas, del hogar, laborales, de uso del tiempo y otras:
+
+```{r eval = FALSE}
+procesados <- procesar_variables_enoe(datos_fusionados,2023, 4)
+```
+
+Esto incluye:
+
+- `procesar_vars_sociodemo()`
+- `procesar_vars_hogar()`
+- `procesar_vars_laborales()`
+- `procesar_tiempo()`
+- `imputa_ingocup()`
+
+---
+
+## Información del trimestre
+
+Para verificar qué archivos están disponibles para cierto trimestre:
+
+```{r eval = FALSE}
+info_trimestre(2023, 4)
+```
+
+---
+
+## Cuestionarios
+
+También puedes descargar los cuestionarios de la ENOE en PDF:
+
+```{r eval = FALSE}
+descargar_cuestionarios(2023, 4)
+```
+
+---
+
+## Contacto
+
+Desarrollado por Ana Escoto y el equipo del proyecto PAPIIT IN305925.  
+Repositorio oficial: [https://github.com/aniuxa/renoe](https://github.com/aniuxa/renoe)

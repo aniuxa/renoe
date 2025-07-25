@@ -33,4 +33,4 @@ RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
 BugReports: https://github.com/aniuxa/renoe/issues
-URL: https://github.com/aniuxa/renoe
+URL: https://aniuxa.github.io/renoe
