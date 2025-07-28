@@ -1,0 +1,63 @@
+---
+title: "Uso del paquete renoe"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Uso del paquete renoe}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+home:
+  title: "renoe"
+  description: "Herramientas para descargar, procesar y analizar los microdatos de la ENOE"
+
+template:
+  bootstrap: 5
+  bootswatch: flatly
+  params:
+    highlight: textmate
+
+navbar:
+  structure:
+    left: [home, reference, articles, news]
+    right: [github]
+  components:
+    github:
+      icon: fa-github
+      href: https://github.com/aniuxa/renoe
+
+reference:
+  - title: "Descarga y documentación"
+    contents:
+      - descarga_enoe
+      - fusion_enoe
+      - carga_enoe
+      - info_trimestre
+      - descargar_cuestionarios
+
+  - title: "Procesamiento de microdatos"
+    contents:
+      - procesar_variables_enoe
+      - crear_folios
+      - procesar_vars_sociodemo
+      - procesar_vars_hogar
+      - procesar_tiempo
+      - imputa_ingocup
+      - ipc_enoe
+      - procesar_vars_laborales
+
+  - title: "Funciones auxiliares"
+    contents:
+      - cmo_to_sinco
+      - cmo_to_sinco1d
+      - armoniza_sinco
+      - starts_with(".")
+
+articles:
+  - title: "Uso básico del paquete"
+    contents:
+      - renoe-vignette
+
+authors:
+  footer: "Desarrollado por Ana Escoto y equipo PAPIIT IN305925"
+
+url: https://aniuxa.github.io/renoe
