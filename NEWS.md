@@ -1,3 +1,18 @@
+# renoe 0.1.3
+
+## Nuevas funciones y mejoras
+
+- Se incorporó una clasificación de parentesco (`relative`) robusta y compatible con todas las versiones de ENOE desde 2005. Esta clasificación se ajusta dinámicamente según el año (`anio`) y trimestre (`trimestre`) de la encuesta, utilizando los archivos externos `par_c1.csv` y `par_c2.csv` incluidos en `extdata/`.
+- Se actualizó la función `procesar_vars_hogar()` para utilizar esta nueva clasificación, mejorando la identificación de hogares extensos, compuestos y otras estructuras familiares, en especial para los periodos anteriores a 2013.
+- Se asegura que todos los códigos `par_c` sean clasificados. Si un código no se encuentra en los catálogos correspondientes, se asigna automáticamente a la categoría de "otro sin parentesco" (`relative = 6`).
+
+## Cambios en el etiquetado
+
+- La función `.procesar_etiquetas_enoe()` excluye ahora la variable `par_c` del etiquetado automático de catálogos, debido a errores en los datos abiertos del INEGI que podían asignar descripciones incorrectas.
+
+Este release mejora la confiabilidad de los análisis sobre estructura familiar en los microdatos de ENOE, con mayor precisión histórica y menor dependencia de catálogos inconsistentes.
+
+
 # renoe 0.1.2 (23 de julio de 2025)
 
 ## Cambios en esta versión

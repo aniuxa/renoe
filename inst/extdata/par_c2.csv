@@ -1,0 +1,50 @@
+par_c,descripcion,relative
+101,"Jefa o jefe, vive sola o solo",1
+201,Esposa o esposo,2
+202,Concubina o concubino,2
+203,Amasia o amasio,2
+204,"Querida, querido, amante",2
+301,Hija o hijo,3
+302,Hija adoptiva o hijo adoptivo,3
+303,Hijastra o hijastro,3
+304,Hija o hijo de crianza,3
+401,Madre o padre,4
+402,Madrastra o padrastro,4
+403,Hermana o hermano,5
+404,Media hermana o medio hermano,5
+405,Hermanastra o hermanastro,5
+406,Abuela o abuelo,5
+407,Bisabuela o bisabuelo,5
+408,Tatarabuela o tatarabuelo,5
+409,Nieta o nieto,5
+410,Bisnieta o bisnieto,5
+411,Tataranieta o tataranieto,5
+412,Tía o tío,5
+413,Sobrina o sobrino,5
+414,Prima o primo,5
+415,Suegra o suegro,5
+416,Consuegra o consuegro,5
+417,Nuera o yerno,5
+418,Cuñada o cuñado,5
+419,Concuña o concuño,5
+420,Madrina o padrino,5
+421,Ahijada o ahijado,5
+422,Comadre o compadre,5
+423,Otro familiar,5
+424,Otro familiar,5
+501,Sin parentesco,6
+502,Tutora o tutor,6
+503,Tutelada o tutelado,6
+601,Trabajadora doméstica o trabajador doméstico,7
+611,Esposa(o) del trabajador doméstico,7
+612,Hija o hijo del  trabajador doméstico,7
+613,Madre o padre del trabajador doméstico,7
+614,Nieta o nieto del trabajador doméstico,7
+615,Otro pariente del trabajador doméstico,7
+701,Huésped,6
+711,Esposa del huésped o esposo del huésped,6
+712,Hija o hijo del huésped,6
+713,Madre o padre del huésped,6
+714,Nieta o nieto del huésped,6
+715,Otro pariente del huésped,6
+999,Parentesco no especificado,6

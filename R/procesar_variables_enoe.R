@@ -36,7 +36,7 @@ procesar_variables_enoe <- function(data, anio, trimestre ) {
     crear_folios() %>%
     drop_tri() %>%
     procesar_vars_sociodemo(anio=anio, trimestre=trimestre) %>%
-    procesar_vars_hogar() %>%
+    procesar_vars_hogar(anio=anio, trimestre=trimestre) %>%
     procesar_tiempo() %>%
     ipc_enoe(anio=anio, trimestre=trimestre) %>%
     imputa_ingocup() %>%

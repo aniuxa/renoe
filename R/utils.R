@@ -366,7 +366,9 @@
     cat_files <- list.files(cat_dir, pattern = "\\.csv$", full.names = TRUE)
     for (f in cat_files) {
       var <- tools::file_path_sans_ext(basename(f))
-      if (var %in% colnames(datos) && !var %in% c("loc", "mun")) {
+      if (var %in% colnames(datos) && !var %in% c("loc", "mun", "par_c")) {
+
+
         try({
           cat_data <- readr::read_csv(
             f,
@@ -378,7 +380,6 @@
           # Limpieza y coerción de valores
           if (ncol(cat_data) == 2) {
             cat_data <- dplyr::filter(cat_data, !is.na(CVE))
-            # Si CVE no es numérico pero los valores lo parecen, forzar
             if (!is.numeric(cat_data$CVE) && all(grepl("^[0-9]+$", cat_data$CVE))) {
               cat_data$CVE <- as.numeric(cat_data$CVE)
             }
