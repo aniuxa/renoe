@@ -20,7 +20,15 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Ana Escoto \email{ana.escoto@politicas.unam.mx}
+\strong{Maintainer}: Ana Escoto \email{ana.escoto@politicas.unam.mx} (\href{https://orcid.org/0000-0001-7259-0001}{ORCID})
+
+Other contributors:
+\itemize{
+  \item Ángel Corral \email{angcorral25@gmail.com} [contributor]
+  \item Óscar Uriel Valdés Bautista \email{oscar.baut2001@gmail.com} [contributor]
+  \item Zyanya Puga \email{pugazyanya@gmail.com} [contributor]
+  \item Bruno Sánchez Solís \email{brsanchez2004@gmail.com} [contributor]
+}
 
 }
 \keyword{internal}

@@ -3,13 +3,23 @@ Type: Package
 Title: Paquete para trabajar con la ENOE desde 2005
 Version: 0.1.3
 Authors@R: c(
-    person(
-      "Ana", "Escoto",
-      email = "ana.escoto@politicas.unam.mx",
-      role = c("aut", "cre")
-    ))
-Description: Carga, fusiona, armoniza los cuestionarios ampliado y básico, construye los paneles de cinco trimestres.
-    Incluye funciones para descargar documentación técnica.
+    person("Ana", "Escoto",
+           email = "ana.escoto@politicas.unam.mx",
+           role = c("aut", "cre"),
+           comment = c(ORCID = "https://orcid.org/0000-0001-7259-0001")),
+    person("Ángel", "Corral",
+           email = "angcorral25@gmail.com",
+           role = "ctb"),
+    person("Óscar Uriel", "Valdés Bautista",
+           email = "oscar.baut2001@gmail.com",
+           role = "ctb"),
+    person("Zyanya", "Puga",
+           email = "pugazyanya@gmail.com",
+           role = "ctb"),
+    person("Bruno", "Sánchez Solís",
+           email = "brsanchez2004@gmail.com",
+           role = "ctb"))
+Description: Carga, fusiona y armoniza los cuestionarios ampliado y básico de la ENOE, y construye los paneles de cinco trimestres. Incluye funciones para descargar documentación técnica.
 License: AGPL (>= 3)
 Encoding: UTF-8
 Imports:
