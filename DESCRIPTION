@@ -1,7 +1,7 @@
 Package: renoe
 Type: Package
 Title: Paquete para trabajar con la ENOE desde 2005
-Version: 0.1.2
+Version: 0.1.3
 Authors@R: c(
     person(
       "Ana", "Escoto",
