@@ -51,6 +51,20 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="0.1.3" id="renoe-013">renoe 0.1.3<a class="anchor" aria-label="anchor" href="#renoe-013"></a></h2>
+<div class="section level3">
+<h3 id="nuevas-funciones-y-mejoras-0-1-3">Nuevas funciones y mejoras<a class="anchor" aria-label="anchor" href="#nuevas-funciones-y-mejoras-0-1-3"></a></h3>
+<ul><li>Se incorporó una clasificación de parentesco (<code>relative</code>) robusta y compatible con todas las versiones de ENOE desde 2005. Esta clasificación se ajusta dinámicamente según el año (<code>anio</code>) y trimestre (<code>trimestre</code>) de la encuesta, utilizando los archivos externos <code>par_c1.csv</code> y <code>par_c2.csv</code> incluidos en <code>extdata/</code>.</li>
+<li>Se actualizó la función <code><a href="../reference/procesar_vars_hogar.html">procesar_vars_hogar()</a></code> para utilizar esta nueva clasificación, mejorando la identificación de hogares extensos, compuestos y otras estructuras familiares, en especial para los periodos anteriores a 2013.</li>
+<li>Se asegura que todos los códigos <code>par_c</code> sean clasificados. Si un código no se encuentra en los catálogos correspondientes, se asigna automáticamente a la categoría de “otro sin parentesco” (<code>relative = 6</code>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="cambios-en-el-etiquetado-0-1-3">Cambios en el etiquetado<a class="anchor" aria-label="anchor" href="#cambios-en-el-etiquetado-0-1-3"></a></h3>
+<ul><li>La función <code><a href="../reference/dot-procesar_etiquetas_enoe.html">.procesar_etiquetas_enoe()</a></code> excluye ahora la variable <code>par_c</code> del etiquetado automático de catálogos, debido a errores en los datos abiertos del INEGI que podían asignar descripciones incorrectas.</li>
+</ul><p>Este release mejora la confiabilidad de los análisis sobre estructura familiar en los microdatos de ENOE, con mayor precisión histórica y menor dependencia de catálogos inconsistentes.</p>
+</div>
+</div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="0.1.2" id="renoe-012-23-de-julio-de-2025">renoe 0.1.2 (23 de julio de 2025)<a class="anchor" aria-label="anchor" href="#renoe-012-23-de-julio-de-2025"></a></h2>
 <div class="section level3">
 <h3 id="cambios-en-esta-versión-0-1-2">Cambios en esta versión<a class="anchor" aria-label="anchor" href="#cambios-en-esta-versi%C3%B3n-0-1-2"></a></h3>

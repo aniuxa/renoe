@@ -114,3 +114,15 @@ Este paquete ha sido desarrollado como parte del proyecto PAPIIT
 IN305925 *“Retos de la inserción laboral en México”* (UNAM).  
 Para sugerencias, contribuciones o reportes de errores, puedes abrir un
 *issue* en GitHub o contactar a la autora.
+
+## Cómo citar este paquete
+
+Si utilizas el paquete `renoe` en tus investigaciones o publicaciones,
+por favor cita de la siguiente manera:
+
+> Escoto Castillo, Ana Ruth. (2025). *renoe: Herramientas para el
+> análisis de la Encuesta Nacional de Ocupación y Empleo (ENOE) en R*.
+> Versión 0.1.3. Disponible en: <https://github.com/aniuxa/renoe>
+
+También puedes usar la función `citation("renoe")` en R para obtener la
+referencia en formato BibTeX.
