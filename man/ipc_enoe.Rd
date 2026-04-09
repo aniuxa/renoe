@@ -35,6 +35,7 @@ Other procesamiento_enoe:
 \code{\link{armoniza_sinco}()},
 \code{\link{crear_folios}()},
 \code{\link{imputa_ingocup}()},
+\code{\link{procesar_contribucion_hogar}()},
 \code{\link{procesar_tiempo}()},
 \code{\link{procesar_variables_enoe}()},
 \code{\link{procesar_vars_hogar}()},

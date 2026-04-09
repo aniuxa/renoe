@@ -20,83 +20,159 @@ library(renoe)
 
 # Introducción al paquete `renoe`
 
-El paquete `renoe` permite descargar, procesar y analizar los microdatos de la Encuesta Nacional de Ocupación y Empleo (ENOE) de México. Está diseñado para facilitar tareas comunes de manejo de datos, como la descarga de microdatos, la fusión de tablas y el procesamiento de variables sociodemográficas y laborales.
-
----
+El paquete `renoe` permite descargar, cargar, fusionar, procesar y analizar los microdatos de la Encuesta Nacional de Ocupación y Empleo (ENOE) de México desde 2005. Está diseñado para facilitar tareas comunes de manejo de datos, incluyendo la descarga de microdatos, la fusión de tablas, la construcción de identificadores, el procesamiento de variables sociodemográficas, laborales y del hogar, así como la imputación de ingresos ocupacionales.
 
 ## Instalación
 
-Si el paquete aún no está en CRAN, puedes instalarlo desde GitHub:
+Si el paquete aún no está en CRAN, puede instalarse desde GitHub:
 
 ```{r eval = FALSE}
 # install.packages("devtools")
 devtools::install_github("aniuxa/renoe")
 ```
 
----
+## Descarga y carga de microdatos
 
-## Descarga y carga rápida de microdatos
-
-Puedes descargar y cargar los datos de un trimestre específico de manera rápida (sin etiquetado):
+Puede descargarse y cargarse la ENOE de un trimestre específico. La opción `rapida = TRUE` omite el etiquetado de variables y acelera la carga.
 
 ```{r eval = FALSE}
-# Descargar y cargar microdatos de forma rápida (sin etiquetas)
 descarga_enoe(2023, 4)
 datos <- carga_enoe(2023, 4, rapida = TRUE)
 ```
 
----
-
-## Fusión de tablas en un solo objeto
-
-Si prefieres trabajar con una base fusionada que incluya las tablas clave (`sdem`, `coe1`, `coe2`), puedes usar `fusion_enoe()`:
+Si se desea recuperar las tablas por separado, puede usarse `list = TRUE`:
 
 ```{r eval = FALSE}
-# Fusionar tablas en una sola base
+tablas <- carga_enoe(2023, 4, list = TRUE, rapida = TRUE)
+names(tablas)
+```
+
+## Fusión de tablas
+
+Para trabajar con una base unificada que integre vivienda, hogar, sociodemográfico y los componentes COE, puede utilizarse `fusion_enoe()`.
+
+```{r eval = FALSE}
 datos_fusionados <- fusion_enoe(2023, 4)
 ```
 
----
+La función utiliza una estrategia de fusión robusta basada en identificadores disponibles, lo que reduce problemas de duplicación o pérdida de registros cuando cambian nombres o tipos de variables entre trimestres.
+
+También es posible guardar directamente el resultado en distintos formatos:
+
+```{r eval = FALSE}
+fusion_enoe(2023, 4, formato = "parquet", guardar = TRUE)
+```
 
 ## Procesamiento de variables
 
-Una vez que has cargado o fusionado tus datos, puedes aplicar funciones para generar variables sociodemográficas, del hogar, laborales, de uso del tiempo y otras:
+Una vez cargados o fusionados los datos, pueden generarse variables derivadas para distintos niveles de análisis.
+
+### Variables sociodemográficas
 
 ```{r eval = FALSE}
-procesados <- procesar_variables_enoe(datos_fusionados,2023, 4)
+datos <- procesar_vars_sociodemo(datos_fusionados, anio = 2023, trimestre = 4)
 ```
 
-Esto incluye:
+Esta función genera, entre otras, variables de sexo, edad, grupos etarios, asistencia escolar, estado conyugal, parentesco resumido, ruralidad y zona económica regional.
 
-- `procesar_vars_sociodemo()`
-- `procesar_vars_hogar()`
-- `procesar_vars_laborales()`
-- `procesar_tiempo()`
-- `imputa_ingocup()`
+### Estructura del hogar
 
----
+```{r eval = FALSE}
+datos <- procesar_vars_hogar(datos, anio = 2023, trimestre = 4)
+```
+
+Esta función construye tipologías de hogar, tamaño del hogar sin servicio doméstico, tasas de dependencia, conteos por grupos de edad e indicadores de presencia de niñez, juventud y adultez mayor.
+
+### Variables laborales
+
+```{r eval = FALSE}
+datos <- procesar_vars_laborales(datos)
+```
+
+Esta función armoniza la codificación ocupacional, calcula niveles de habilidad, desajuste educativo, experiencia previa de trabajo y variables de temporalidad contractual.
+
+### Uso del tiempo
+
+```{r eval = FALSE}
+datos <- procesar_tiempo(datos, anio = 2023, trimestre = 4)
+```
+
+Las variables específicas de tiempo se expresan en horas. En este procesamiento, los valores faltantes de tiempo en actividades específicas se convierten en cero para facilitar la construcción de agregados y su uso en análisis descriptivos.
+
+### Contribución al hogar
+
+```{r eval = FALSE}
+datos <- procesar_contribucion_hogar(datos)
+```
+
+Esta función genera ingreso ocupacional individual deflactado, agregados del hogar, indicadores per cápita y quintiles ponderados de ingreso y trabajo no remunerado.
+
+## Flujo sugerido de procesamiento
+
+Un flujo típico de trabajo podría ser el siguiente:
+
+```{r eval = FALSE}
+datos <- fusion_enoe(2023, 4)
+
+datos <- datos |>
+  procesar_vars_sociodemo(anio = 2023, trimestre = 4) |>
+  procesar_vars_hogar(anio = 2023, trimestre = 4) |>
+  procesar_vars_laborales() |>
+  procesar_tiempo(anio = 2023, trimestre = 4) |>
+  procesar_contribucion_hogar()
+```
+
+## Imputación de ingresos ocupacionales
+
+El paquete también incluye herramientas para imputar ingresos ocupacionales faltantes:
+
+```{r eval = FALSE}
+datos <- imputa_ingocup(datos)
+```
+
+Esto resulta útil para análisis de desigualdad, condiciones laborales o contribución económica al hogar.
+
+## Procesamiento integral
+
+Si se desea aplicar varias transformaciones de forma más automatizada, puede utilizarse una función de procesamiento integral si está disponible en la instalación del paquete:
+
+```{r eval = FALSE}
+procesados <- procesar_variables_enoe(datos_fusionados, 2023, 4)
+```
+
+Dependiendo de la versión del paquete, esta función puede integrar procesamiento sociodemográfico, del hogar, laboral, de tiempo e imputación.
 
 ## Información del trimestre
 
-Para verificar qué archivos están disponibles para cierto trimestre:
+Para consultar metadatos y verificar qué archivos están disponibles para un trimestre específico:
 
 ```{r eval = FALSE}
 info_trimestre(2023, 4)
 ```
 
----
-
 ## Cuestionarios
 
-También puedes descargar los cuestionarios de la ENOE en PDF:
+También pueden descargarse los cuestionarios de la ENOE en PDF:
 
 ```{r eval = FALSE}
 descargar_cuestionarios(2023, 4)
 ```
 
----
+## Guardado y reutilización
+
+Después de procesar la base, puede guardarse en formatos reutilizables para evitar repetir todo el flujo:
+
+```{r eval = FALSE}
+saveRDS(datos, "datos/enoe_2023_4t_procesada.rds")
+```
+
+o bien desde la propia fusión:
+
+```{r eval = FALSE}
+fusion_enoe(2023, 4, formato = "rds", guardar = TRUE)
+```
 
 ## Contacto
 
 Desarrollado por Ana Escoto y el equipo del proyecto PAPIIT IN305925.  
-Repositorio oficial: [https://github.com/aniuxa/renoe](https://github.com/aniuxa/renoe)
+Repositorio oficial: `aniuxa/renoe`

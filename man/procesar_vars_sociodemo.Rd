@@ -7,21 +7,22 @@
 procesar_vars_sociodemo(data, anio, trimestre)
 }
 \arguments{
-\item{data}{Un data frame tipo sdem, con variables como 'sex', 'eda', 'cs_p17', 'e_con',
-'anios_esc', 'par_c', 't_loc' y 'ent'.}
+\item{data}{Un data frame tipo sdem, con variables como \code{sex}, \code{eda},
+\code{cs_p17}, \code{e_con}, \code{anios_esc}, \code{par_c}, \code{t_loc} y \code{ent}.}
 
-\item{anio}{Año del trimestre (numérico).}
+\item{anio}{Año del trimestre.}
 
-\item{trimestre}{Trimestre numérico (1–4).}
+\item{trimestre}{Trimestre numérico (1-4).}
 }
 \value{
-Un data frame con variables sociodemográficas procesadas y etiquetadas.
+Un data frame con variables sociodemográficas procesadas y
+etiquetadas.
 }
 \description{
-Añade sexo, edad, grupos etarios, metadatos como año, trimestre y tipo de cuestionario COE,
-así como variables extendidas de asistencia escolar, estado conyugal, escolaridad, zona rural,
-tamaño de localidad y zona económica regional. Las variables están etiquetadas para facilitar
-su análisis y visualización.
+Añade sexo, edad, grupos etarios, metadatos como año, trimestre y tipo de
+cuestionario COE, así como variables extendidas de asistencia escolar,
+estado conyugal, escolaridad, zona rural, tamaño de localidad y zona
+económica regional.
 }
 \examples{
 \dontrun{
@@ -34,6 +35,7 @@ Other procesamiento_enoe:
 \code{\link{crear_folios}()},
 \code{\link{imputa_ingocup}()},
 \code{\link{ipc_enoe}()},
+\code{\link{procesar_contribucion_hogar}()},
 \code{\link{procesar_tiempo}()},
 \code{\link{procesar_variables_enoe}()},
 \code{\link{procesar_vars_hogar}()},

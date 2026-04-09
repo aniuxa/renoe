@@ -1,13 +1,17 @@
 #' Procesar variables de análisis laboral y desajuste educativo
 #'
-#' Esta función genera variables clasificatorias relacionadas con la ocupación, nivel educativo
-#' y desajuste entre ambos, a partir de los códigos de ocupación (`p3coe`) y nivel educativo alcanzado (`cs_p13_1`).
-#' Internamente armoniza los códigos SINCO (1, 2, 3 y 4 dígitos) usando correspondencias con códigos CMO
-#' y reglas auxiliares. También clasifica el nivel de habilidad de la ocupación, el nivel educativo alcanzado
-#' y construye indicadores de sobrecalificación, ajuste o subcalificación laboral.
+#' Esta función genera variables clasificatorias relacionadas con la ocupación,
+#' el nivel educativo y el desajuste entre ambos, a partir de los códigos de
+#' ocupación (`p3coe`) y del nivel educativo alcanzado (`cs_p13_1`).
+#' Internamente armoniza los códigos SINCO (1, 2, 3 y 4 dígitos) usando
+#' correspondencias con códigos CMO y reglas auxiliares. También clasifica el
+#' nivel de habilidad de la ocupación, el nivel educativo alcanzado y construye
+#' indicadores de sobrecalificación, ajuste o subcalificación laboral.
 #'
-#' Además, genera variables relacionadas con la experiencia previa (`nunca_trabajo`), estatus laboral combinado (`status_seq`)
-#' y características contractuales (`contrato0`, `contrato1`, `temporal`, `temporal_seq`) según el tipo de cuestionario.
+#' Además, genera variables relacionadas con la experiencia previa
+#' (`nunca_trabajo`), el estatus laboral combinado (`status_seq`) y las
+#' características contractuales (`contrato0`, `contrato1`, `temporal`,
+#' `temporal_seq`) según el tipo de cuestionario.
 #'
 #' @param data Un data.frame con variables como:
 #' - `anio`, `trimestre`: año y trimestre de la entrevista
@@ -16,7 +20,7 @@
 #' - `cs_p13_1`, `anios_es`: nivel educativo alcanzado en categorías o años
 #' - `clase2`: clase de actividad económica
 #' - `pos_ocu`, `tue2`: posición en la ocupación y tipo de unidad económica
-#' - `p2_4`: experiencia laboral previa
+#' - `p2h4`: experiencia laboral previa
 #' - `p3i`, `p3j`, `p3j1`, `p3k1`: variables sobre tipo de contrato
 #'
 #' @return Un data.frame con las variables originales y nuevas columnas:
@@ -28,8 +32,17 @@
 #'
 #' @export
 #' @family procesamiento_enoe
+
 procesar_vars_laborales <- function(data) {
   data <- renoe::armoniza_sinco(data)
+
+  if ("p2h4" %in% names(data)) {
+    data$var_exp_previa <- data$p2h4
+  } else if ("p2_4" %in% names(data)) {
+    data$var_exp_previa <- data$p2_4
+  } else {
+    data$var_exp_previa <- NA_real_
+  }
 
   data <- data %>%
     dplyr::mutate(
@@ -58,7 +71,9 @@ procesar_vars_laborales <- function(data) {
       )
     ) %>%
     dplyr::group_by(anio, sinco1d) %>%
-    dplyr::mutate(esco_norm = mean(anios_es, na.rm = TRUE)) %>%
+    dplyr::mutate(
+      esco_norm = mean(anios_es, na.rm = TRUE)
+    ) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(
       mismatch2 = dplyr::case_when(
@@ -72,9 +87,9 @@ procesar_vars_laborales <- function(data) {
         TRUE ~ NA_real_
       ),
       nunca_trabajo = dplyr::case_when(
-        p2_4 == 4 ~ 1,
-        is.na(p2_4) & is.na(clase2) ~ NA_real_,
-        is.na(p2_4) & !is.na(clase2) ~ 0,
+        var_exp_previa == 4 ~ 1,
+        is.na(var_exp_previa) & is.na(clase2) ~ NA_real_,
+        is.na(var_exp_previa) & !is.na(clase2) ~ 0,
         TRUE ~ 0
       ),
       status_seq = dplyr::case_when(
@@ -89,15 +104,12 @@ procesar_vars_laborales <- function(data) {
       )
     )
 
-  # Inicializar
   data$contrato0 <- NA_real_
   data$contrato1 <- NA_real_
 
-  # Lógica condicional para contrato según tipo de cuestionario
   tiene_ampliado <- any(data$coe_tipo == "ampliado", na.rm = TRUE)
   tiene_basico   <- any(data$coe_tipo == "basico", na.rm = TRUE)
 
-  # Bloque ampliado
   if (tiene_ampliado && all(c("p3j", "p3k1") %in% names(data))) {
     data <- data %>%
       dplyr::mutate(
@@ -108,7 +120,6 @@ procesar_vars_laborales <- function(data) {
       )
   }
 
-  # Bloque básico
   if (tiene_basico && all(c("p3i", "p3j1") %in% names(data))) {
     data <- data %>%
       dplyr::mutate(
@@ -131,35 +142,78 @@ procesar_vars_laborales <- function(data) {
       temporal_seq = dplyr::case_when(
         clase2 > 1 ~ 0,
         TRUE ~ temporal
-      ),
-      skill_level = sjlabelled::set_label(skill_level, "Nivel de habilidad requerido por la ocupación"),
-      skill_level = sjlabelled::set_labels(skill_level, labels = c(
-        `1` = "Primaria", `2` = "Secundaria", `3` = "Terciaria")),
-      skill_actual = sjlabelled::set_label(skill_actual, "Nivel educativo alcanzado"),
-      skill_actual = sjlabelled::set_labels(skill_actual, labels = c(
-        `0` = "Ninguna", `1` = "Primaria", `2` = "Secundaria", `3` = "Terciaria")),
-      mismatch = sjlabelled::set_label(mismatch, "Desajuste educativo"),
-      mismatch = sjlabelled::set_labels(mismatch, labels = c(
-        `-1` = "Sobrecualificada/o", `0` = "Ajustada/o", `1` = "Infracualificada/o")),
-      mismatch2 = sjlabelled::set_label(mismatch2, "Desajuste educativo (años escolares)"),
-      mismatch2 = sjlabelled::set_labels(mismatch2, labels = c(
-        `-1` = "Sobrecualificada/o", `0` = "Ajustada/o", `1` = "Infracualificada/o")),
-      status_seq = sjlabelled::set_label(status_seq, "Condición laboral y experiencia previa"),
-      status_seq = sjlabelled::set_labels(status_seq, labels = c(
-        `1` = "Ocupado", `2` = "Desempleado con experiencia", `3` = "Disponible con experiencia",
-        `4` = "No disponible con experiencia", `5` = "Desempleado sin experiencia",
-        `6` = "Disponible sin experiencia", `7` = "No disponible sin experiencia")),
-      temporal = sjlabelled::set_label(temporal, "Clasificación ocupación temporal"),
-      temporal = sjlabelled::set_labels(temporal, labels = c(
-        `1` = "Asalariado con contrato temporal", `2` = "Asalariado con contrato indefinido",
-        `3` = "Asalariado sin contrato", `4` = "No asalariado")),
-      temporal_seq = sjlabelled::set_label(temporal_seq, "Secuencia ocupación temporal"),
-      temporal_seq = sjlabelled::set_labels(temporal_seq, labels = c(
-        `0` = "Fuera de la Población Ocupada", `1` = "Asalariado con contrato temporal",
-        `2` = "Asalariado con contrato indefinido", `3` = "Asalariado sin contrato",
-        `4` = "No asalariado"))
+      )
     ) %>%
-    dplyr::select(-mismatch_raw)
+    sjlabelled::var_labels(
+      skill_level   = "Nivel de habilidad requerido por la ocupación",
+      skill_actual  = "Nivel educativo alcanzado",
+      mismatch      = "Desajuste educativo",
+      mismatch2     = "Desajuste educativo (años escolares)",
+      nunca_trabajo = "Indicador de nunca haber trabajado antes",
+      status_seq    = "Condición laboral y experiencia previa",
+      contrato0     = "Indicador de existencia de contrato laboral",
+      contrato1     = "Indicador de contrato temporal o indefinido",
+      temporal      = "Clasificación de temporalidad laboral",
+      temporal_seq  = "Secuencia de temporalidad laboral"
+    ) %>%
+    sjlabelled::val_labels(
+      skill_level = c(
+        "Primaria" = 1,
+        "Secundaria" = 2,
+        "Terciaria" = 3
+      ),
+      skill_actual = c(
+        "Ninguna" = 0,
+        "Primaria" = 1,
+        "Secundaria" = 2,
+        "Terciaria" = 3
+      ),
+      mismatch = c(
+        "Sobrecualificada/o" = -1,
+        "Ajustada/o" = 0,
+        "Infracualificada/o" = 1
+      ),
+      mismatch2 = c(
+        "Sobrecualificada/o" = -1,
+        "Ajustada/o" = 0,
+        "Infracualificada/o" = 1
+      ),
+      nunca_trabajo = c(
+        "Ya había trabajado" = 0,
+        "Nunca había trabajado" = 1
+      ),
+      status_seq = c(
+        "Ocupado" = 1,
+        "Desempleado con experiencia" = 2,
+        "Disponible con experiencia" = 3,
+        "No disponible con experiencia" = 4,
+        "Desempleado sin experiencia" = 5,
+        "Disponible sin experiencia" = 6,
+        "No disponible sin experiencia" = 7
+      ),
+      contrato0 = c(
+        "Sin contrato" = 0,
+        "Con contrato" = 1
+      ),
+      contrato1 = c(
+        "Contrato indefinido" = 0,
+        "Contrato temporal" = 1
+      ),
+      temporal = c(
+        "Asalariado con contrato temporal" = 1,
+        "Asalariado con contrato indefinido" = 2,
+        "Asalariado sin contrato" = 3,
+        "No asalariado" = 4
+      ),
+      temporal_seq = c(
+        "Fuera de la población ocupada" = 0,
+        "Asalariado con contrato temporal" = 1,
+        "Asalariado con contrato indefinido" = 2,
+        "Asalariado sin contrato" = 3,
+        "No asalariado" = 4
+      )
+    ) %>%
+    dplyr::select(-mismatch_raw, -var_exp_previa)
 
   return(data)
 }

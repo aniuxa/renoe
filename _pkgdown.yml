@@ -6,15 +6,15 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-home:
-  title: "renoe"
-  description: "Herramientas para descargar, procesar y analizar los microdatos de la ENOE"
-
 template:
   bootstrap: 5
   bootswatch: flatly
   params:
     highlight: textmate
+
+home:
+  title: "renoe"
+  description: "Herramientas para descargar, procesar y analizar los microdatos de la ENOE"
 
 navbar:
   structure:
@@ -41,9 +41,10 @@ reference:
       - procesar_vars_sociodemo
       - procesar_vars_hogar
       - procesar_tiempo
-      - imputa_ingocup
       - ipc_enoe
+      - imputa_ingocup
       - procesar_vars_laborales
+      - procesar_contribucion_hogar
 
   - title: "Funciones auxiliares"
     contents:
@@ -58,6 +59,8 @@ articles:
       - renoe-vignette
 
 authors:
-  footer: "Desarrollado por Ana Escoto y equipo PAPIIT IN305925"
+  footer:
+    roles: [aut, cre]
+    text: "Desarrollado por Ana Escoto y el equipo del proyecto PAPIIT IN305925"
 
 url: https://aniuxa.github.io/renoe

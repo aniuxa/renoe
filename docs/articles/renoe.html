@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Uso del paquete renoe</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.4</span>
       </span>
     </div>
 
@@ -90,85 +90,173 @@
 <div class="section level2">
 <h2 id="introducción-al-paquete-renoe">Introducción al paquete <code>renoe</code><a class="anchor" aria-label="anchor" href="#introducci%C3%B3n-al-paquete-renoe"></a>
 </h2>
-<p>El paquete <code>renoe</code> permite descargar, procesar y analizar
-los microdatos de la Encuesta Nacional de Ocupación y Empleo (ENOE) de
-México. Está diseñado para facilitar tareas comunes de manejo de datos,
-como la descarga de microdatos, la fusión de tablas y el procesamiento
-de variables sociodemográficas y laborales.</p>
-<hr>
+<p>El paquete <code>renoe</code> permite descargar, cargar, fusionar,
+procesar y analizar los microdatos de la Encuesta Nacional de Ocupación
+y Empleo (ENOE) de México desde 2005. Está diseñado para facilitar
+tareas comunes de manejo de datos, incluyendo la descarga de microdatos,
+la fusión de tablas, la construcción de identificadores, el
+procesamiento de variables sociodemográficas, laborales y del hogar, así
+como la imputación de ingresos ocupacionales.</p>
 <div class="section level3">
 <h3 id="instalación">Instalación<a class="anchor" aria-label="anchor" href="#instalaci%C3%B3n"></a>
 </h3>
-<p>Si el paquete aún no está en CRAN, puedes instalarlo desde
-GitHub:</p>
+<p>Si el paquete aún no está en CRAN, puede instalarse desde GitHub:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"aniuxa/renoe"</span><span class="op">)</span></span></code></pre></div>
-<hr>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/install-deprecated.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"aniuxa/renoe"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="descarga-y-carga-rápida-de-microdatos">Descarga y carga rápida de microdatos<a class="anchor" aria-label="anchor" href="#descarga-y-carga-r%C3%A1pida-de-microdatos"></a>
+<h3 id="descarga-y-carga-de-microdatos">Descarga y carga de microdatos<a class="anchor" aria-label="anchor" href="#descarga-y-carga-de-microdatos"></a>
 </h3>
-<p>Puedes descargar y cargar los datos de un trimestre específico de
-manera rápida (sin etiquetado):</p>
+<p>Puede descargarse y cargarse la ENOE de un trimestre específico. La
+opción <code>rapida = TRUE</code> omite el etiquetado de variables y
+acelera la carga.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Descargar y cargar microdatos de forma rápida (sin etiquetas)</span></span>
-<span><span class="fu"><a href="../reference/descarga_enoe.html">descarga_enoe</a></span><span class="op">(</span><span class="fl">2023</span>, <span class="fl">4</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/descarga_enoe.html">descarga_enoe</a></span><span class="op">(</span><span class="fl">2023</span>, <span class="fl">4</span><span class="op">)</span></span>
 <span><span class="va">datos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/carga_enoe.html">carga_enoe</a></span><span class="op">(</span><span class="fl">2023</span>, <span class="fl">4</span>, rapida <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<hr>
+<p>Si se desea recuperar las tablas por separado, puede usarse
+<code>list = TRUE</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">tablas</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/carga_enoe.html">carga_enoe</a></span><span class="op">(</span><span class="fl">2023</span>, <span class="fl">4</span>, list <span class="op">=</span> <span class="cn">TRUE</span>, rapida <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">tablas</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="fusión-de-tablas-en-un-solo-objeto">Fusión de tablas en un solo objeto<a class="anchor" aria-label="anchor" href="#fusi%C3%B3n-de-tablas-en-un-solo-objeto"></a>
+<h3 id="fusión-de-tablas">Fusión de tablas<a class="anchor" aria-label="anchor" href="#fusi%C3%B3n-de-tablas"></a>
 </h3>
-<p>Si prefieres trabajar con una base fusionada que incluya las tablas
-clave (<code>sdem</code>, <code>coe1</code>, <code>coe2</code>), puedes
-usar <code><a href="../reference/fusion_enoe.html">fusion_enoe()</a></code>:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Fusionar tablas en una sola base</span></span>
-<span><span class="va">datos_fusionados</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fusion_enoe.html">fusion_enoe</a></span><span class="op">(</span><span class="fl">2023</span>, <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
-<hr>
+<p>Para trabajar con una base unificada que integre vivienda, hogar,
+sociodemográfico y los componentes COE, puede utilizarse
+<code><a href="../reference/fusion_enoe.html">fusion_enoe()</a></code>.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">datos_fusionados</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fusion_enoe.html">fusion_enoe</a></span><span class="op">(</span><span class="fl">2023</span>, <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
+<p>La función utiliza una estrategia de fusión robusta basada en
+identificadores disponibles, lo que reduce problemas de duplicación o
+pérdida de registros cuando cambian nombres o tipos de variables entre
+trimestres.</p>
+<p>También es posible guardar directamente el resultado en distintos
+formatos:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/fusion_enoe.html">fusion_enoe</a></span><span class="op">(</span><span class="fl">2023</span>, <span class="fl">4</span>, formato <span class="op">=</span> <span class="st">"parquet"</span>, guardar <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="procesamiento-de-variables">Procesamiento de variables<a class="anchor" aria-label="anchor" href="#procesamiento-de-variables"></a>
 </h3>
-<p>Una vez que has cargado o fusionado tus datos, puedes aplicar
-funciones para generar variables sociodemográficas, del hogar,
-laborales, de uso del tiempo y otras:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">procesados</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/procesar_variables_enoe.html">procesar_variables_enoe</a></span><span class="op">(</span><span class="va">datos_fusionados</span>,<span class="fl">2023</span>, <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
-<p>Esto incluye:</p>
-<ul>
-<li><code><a href="../reference/procesar_vars_sociodemo.html">procesar_vars_sociodemo()</a></code></li>
-<li><code><a href="../reference/procesar_vars_hogar.html">procesar_vars_hogar()</a></code></li>
-<li><code><a href="../reference/procesar_vars_laborales.html">procesar_vars_laborales()</a></code></li>
-<li><code><a href="../reference/procesar_tiempo.html">procesar_tiempo()</a></code></li>
-<li><code><a href="../reference/imputa_ingocup.html">imputa_ingocup()</a></code></li>
-</ul>
-<hr>
+<p>Una vez cargados o fusionados los datos, pueden generarse variables
+derivadas para distintos niveles de análisis.</p>
+<div class="section level4">
+<h4 id="variables-sociodemográficas">Variables sociodemográficas<a class="anchor" aria-label="anchor" href="#variables-sociodemogr%C3%A1ficas"></a>
+</h4>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">datos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/procesar_vars_sociodemo.html">procesar_vars_sociodemo</a></span><span class="op">(</span><span class="va">datos_fusionados</span>, anio <span class="op">=</span> <span class="fl">2023</span>, trimestre <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
+<p>Esta función genera, entre otras, variables de sexo, edad, grupos
+etarios, asistencia escolar, estado conyugal, parentesco resumido,
+ruralidad y zona económica regional.</p>
+</div>
+<div class="section level4">
+<h4 id="estructura-del-hogar">Estructura del hogar<a class="anchor" aria-label="anchor" href="#estructura-del-hogar"></a>
+</h4>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">datos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/procesar_vars_hogar.html">procesar_vars_hogar</a></span><span class="op">(</span><span class="va">datos</span>, anio <span class="op">=</span> <span class="fl">2023</span>, trimestre <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
+<p>Esta función construye tipologías de hogar, tamaño del hogar sin
+servicio doméstico, tasas de dependencia, conteos por grupos de edad e
+indicadores de presencia de niñez, juventud y adultez mayor.</p>
+</div>
+<div class="section level4">
+<h4 id="variables-laborales">Variables laborales<a class="anchor" aria-label="anchor" href="#variables-laborales"></a>
+</h4>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">datos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/procesar_vars_laborales.html">procesar_vars_laborales</a></span><span class="op">(</span><span class="va">datos</span><span class="op">)</span></span></code></pre></div>
+<p>Esta función armoniza la codificación ocupacional, calcula niveles de
+habilidad, desajuste educativo, experiencia previa de trabajo y
+variables de temporalidad contractual.</p>
+</div>
+<div class="section level4">
+<h4 id="uso-del-tiempo">Uso del tiempo<a class="anchor" aria-label="anchor" href="#uso-del-tiempo"></a>
+</h4>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">datos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/procesar_tiempo.html">procesar_tiempo</a></span><span class="op">(</span><span class="va">datos</span>, anio <span class="op">=</span> <span class="fl">2023</span>, trimestre <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
+<p>Las variables específicas de tiempo se expresan en horas. En este
+procesamiento, los valores faltantes de tiempo en actividades
+específicas se convierten en cero para facilitar la construcción de
+agregados y su uso en análisis descriptivos.</p>
+</div>
+<div class="section level4">
+<h4 id="contribución-al-hogar">Contribución al hogar<a class="anchor" aria-label="anchor" href="#contribuci%C3%B3n-al-hogar"></a>
+</h4>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">datos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/procesar_contribucion_hogar.html">procesar_contribucion_hogar</a></span><span class="op">(</span><span class="va">datos</span><span class="op">)</span></span></code></pre></div>
+<p>Esta función genera ingreso ocupacional individual deflactado,
+agregados del hogar, indicadores per cápita y quintiles ponderados de
+ingreso y trabajo no remunerado.</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="flujo-sugerido-de-procesamiento">Flujo sugerido de procesamiento<a class="anchor" aria-label="anchor" href="#flujo-sugerido-de-procesamiento"></a>
+</h3>
+<p>Un flujo típico de trabajo podría ser el siguiente:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">datos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fusion_enoe.html">fusion_enoe</a></span><span class="op">(</span><span class="fl">2023</span>, <span class="fl">4</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">datos</span> <span class="op">&lt;-</span> <span class="va">datos</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/procesar_vars_sociodemo.html">procesar_vars_sociodemo</a></span><span class="op">(</span>anio <span class="op">=</span> <span class="fl">2023</span>, trimestre <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/procesar_vars_hogar.html">procesar_vars_hogar</a></span><span class="op">(</span>anio <span class="op">=</span> <span class="fl">2023</span>, trimestre <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/procesar_vars_laborales.html">procesar_vars_laborales</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/procesar_tiempo.html">procesar_tiempo</a></span><span class="op">(</span>anio <span class="op">=</span> <span class="fl">2023</span>, trimestre <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/procesar_contribucion_hogar.html">procesar_contribucion_hogar</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="imputación-de-ingresos-ocupacionales">Imputación de ingresos ocupacionales<a class="anchor" aria-label="anchor" href="#imputaci%C3%B3n-de-ingresos-ocupacionales"></a>
+</h3>
+<p>El paquete también incluye herramientas para imputar ingresos
+ocupacionales faltantes:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">datos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/imputa_ingocup.html">imputa_ingocup</a></span><span class="op">(</span><span class="va">datos</span><span class="op">)</span></span></code></pre></div>
+<p>Esto resulta útil para análisis de desigualdad, condiciones laborales
+o contribución económica al hogar.</p>
+</div>
+<div class="section level3">
+<h3 id="procesamiento-integral">Procesamiento integral<a class="anchor" aria-label="anchor" href="#procesamiento-integral"></a>
+</h3>
+<p>Si se desea aplicar varias transformaciones de forma más
+automatizada, puede utilizarse una función de procesamiento integral si
+está disponible en la instalación del paquete:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">procesados</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/procesar_variables_enoe.html">procesar_variables_enoe</a></span><span class="op">(</span><span class="va">datos_fusionados</span>, <span class="fl">2023</span>, <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
+<p>Dependiendo de la versión del paquete, esta función puede integrar
+procesamiento sociodemográfico, del hogar, laboral, de tiempo e
+imputación.</p>
 </div>
 <div class="section level3">
 <h3 id="información-del-trimestre">Información del trimestre<a class="anchor" aria-label="anchor" href="#informaci%C3%B3n-del-trimestre"></a>
 </h3>
-<p>Para verificar qué archivos están disponibles para cierto
-trimestre:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<p>Para consultar metadatos y verificar qué archivos están disponibles
+para un trimestre específico:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/info_trimestre.html">info_trimestre</a></span><span class="op">(</span><span class="fl">2023</span>, <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
-<hr>
 </div>
 <div class="section level3">
 <h3 id="cuestionarios">Cuestionarios<a class="anchor" aria-label="anchor" href="#cuestionarios"></a>
 </h3>
-<p>También puedes descargar los cuestionarios de la ENOE en PDF:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<p>También pueden descargarse los cuestionarios de la ENOE en PDF:</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/descargar_cuestionarios.html">descargar_cuestionarios</a></span><span class="op">(</span><span class="fl">2023</span>, <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
-<hr>
+</div>
+<div class="section level3">
+<h3 id="guardado-y-reutilización">Guardado y reutilización<a class="anchor" aria-label="anchor" href="#guardado-y-reutilizaci%C3%B3n"></a>
+</h3>
+<p>Después de procesar la base, puede guardarse en formatos
+reutilizables para evitar repetir todo el flujo:</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="va">datos</span>, <span class="st">"datos/enoe_2023_4t_procesada.rds"</span><span class="op">)</span></span></code></pre></div>
+<p>o bien desde la propia fusión:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/fusion_enoe.html">fusion_enoe</a></span><span class="op">(</span><span class="fl">2023</span>, <span class="fl">4</span>, formato <span class="op">=</span> <span class="st">"rds"</span>, guardar <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="contacto">Contacto<a class="anchor" aria-label="anchor" href="#contacto"></a>
 </h3>
 <p>Desarrollado por Ana Escoto y el equipo del proyecto PAPIIT
 IN305925.<br>
-Repositorio oficial: <a href="https://github.com/aniuxa/renoe" class="external-link">https://github.com/aniuxa/renoe</a></p>
+Repositorio oficial: <code>aniuxa/renoe</code></p>
 </div>
 </div>
   </div>
@@ -188,7 +276,7 @@ Repositorio oficial: <a href="https://github.com/aniuxa/renoe" class="external-l
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>

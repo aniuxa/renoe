@@ -1,3 +1,32 @@
+# renoe 0.1.4 (8 de abril de 2026)
+
+## Nuevas funciones y mejoras
+
+- Se incorporó la función `procesar_contribucion_hogar()` para generar ingreso ocupacional individual deflactado, agregados del hogar, indicadores per cápita y quintiles ponderados de ingreso y trabajo no remunerado.
+- Se actualizaron las funciones `procesar_vars_sociodemo()`, `procesar_tiempo()`, `procesar_vars_hogar()` y `procesar_vars_laborales()` para estandarizar el uso de etiquetas mediante `sjlabelled::var_labels()` y `sjlabelled::val_labels()`.
+- Se amplió la documentación de `procesar_tiempo()` para dejar explícito que las variables específicas de uso del tiempo se convierten a horas y que los valores faltantes se recodifican a cero para facilitar agregados y análisis descriptivos.
+- Se actualizó `procesar_vars_laborales()` para reflejar cambios en la variable de experiencia previa de trabajo, usando `p2h4` en la construcción de `nunca_trabajo`.
+- Se mejoró la claridad semántica del procesamiento de aportes del hogar, renombrando y etiquetando los quintiles derivados de ingreso y trabajo no remunerado con nombres más explícitos.
+- Se actualizaron la vignette, el `README.md` y otros materiales introductorios del paquete para reflejar el flujo recomendado actual de procesamiento.
+- Se preparó la infraestructura de citación del paquete mediante archivos de citación y metadatos actualizados para la versión `0.1.4`.
+
+## Cambios en fusión y compatibilidad
+
+- Se reforzó la estrategia de fusión robusta en `fusion_enoe()` para manejar cambios recientes en nombres de variables clave entre trimestres.
+- Se incorporó la homologación de nombres de entidad federativa cuando las bases utilizan `cve_ent` en lugar de `ent`, facilitando la compatibilidad con trimestres recientes.
+- Se mejoró la detección de claves de unión y se evitó el uso de todas las columnas compartidas como variables de empalme en la fusión, reduciendo errores por incompatibilidades de tipo.
+
+## Cambios en documentación y mantenimiento interno
+
+- Se actualizó la lista de `utils::globalVariables()` para incluir las nuevas variables derivadas creadas en funciones recientes y retirar nombres obsoletos.
+- Se revisaron los imports del paquete para reflejar el uso actual de `sjlabelled::var_labels()`, `sjlabelled::val_labels()` y `dineq::ntiles.wtd()`.
+- Se actualizaron ejemplos y documentación del flujo de procesamiento para incorporar `procesar_contribucion_hogar()` y la nueva secuencia sugerida de análisis.
+
+## Notas
+
+- Esta versión fortalece la consistencia interna del paquete, especialmente en el etiquetado de variables y en la compatibilidad entre distintos periodos de la ENOE.
+- Se mantiene la compatibilidad con versiones previas del paquete y con el enfoque de análisis reproducible en R.
+
 # renoe 0.1.3
 
 ## Nuevas funciones y mejoras

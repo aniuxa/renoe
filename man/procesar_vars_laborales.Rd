@@ -15,7 +15,7 @@ procesar_vars_laborales(data)
 \item \code{cs_p13_1}, \code{anios_es}: nivel educativo alcanzado en categorías o años
 \item \code{clase2}: clase de actividad económica
 \item \code{pos_ocu}, \code{tue2}: posición en la ocupación y tipo de unidad económica
-\item \code{p2_4}: experiencia laboral previa
+\item \code{p2h4}: experiencia laboral previa
 \item \code{p3i}, \code{p3j}, \code{p3j1}, \code{p3k1}: variables sobre tipo de contrato
 }}
 }
@@ -30,15 +30,19 @@ Un data.frame con las variables originales y nuevas columnas:
 }
 }
 \description{
-Esta función genera variables clasificatorias relacionadas con la ocupación, nivel educativo
-y desajuste entre ambos, a partir de los códigos de ocupación (\code{p3coe}) y nivel educativo alcanzado (\code{cs_p13_1}).
-Internamente armoniza los códigos SINCO (1, 2, 3 y 4 dígitos) usando correspondencias con códigos CMO
-y reglas auxiliares. También clasifica el nivel de habilidad de la ocupación, el nivel educativo alcanzado
-y construye indicadores de sobrecalificación, ajuste o subcalificación laboral.
+Esta función genera variables clasificatorias relacionadas con la ocupación,
+el nivel educativo y el desajuste entre ambos, a partir de los códigos de
+ocupación (\code{p3coe}) y del nivel educativo alcanzado (\code{cs_p13_1}).
+Internamente armoniza los códigos SINCO (1, 2, 3 y 4 dígitos) usando
+correspondencias con códigos CMO y reglas auxiliares. También clasifica el
+nivel de habilidad de la ocupación, el nivel educativo alcanzado y construye
+indicadores de sobrecalificación, ajuste o subcalificación laboral.
 }
 \details{
-Además, genera variables relacionadas con la experiencia previa (\code{nunca_trabajo}), estatus laboral combinado (\code{status_seq})
-y características contractuales (\code{contrato0}, \code{contrato1}, \code{temporal}, \code{temporal_seq}) según el tipo de cuestionario.
+Además, genera variables relacionadas con la experiencia previa
+(\code{nunca_trabajo}), el estatus laboral combinado (\code{status_seq}) y las
+características contractuales (\code{contrato0}, \code{contrato1}, \code{temporal},
+\code{temporal_seq}) según el tipo de cuestionario.
 }
 \seealso{
 Other procesamiento_enoe: 
@@ -46,6 +50,7 @@ Other procesamiento_enoe:
 \code{\link{crear_folios}()},
 \code{\link{imputa_ingocup}()},
 \code{\link{ipc_enoe}()},
+\code{\link{procesar_contribucion_hogar}()},
 \code{\link{procesar_tiempo}()},
 \code{\link{procesar_variables_enoe}()},
 \code{\link{procesar_vars_hogar}()},

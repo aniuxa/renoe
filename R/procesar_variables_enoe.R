@@ -11,6 +11,7 @@
 #' - `procesar_tiempo()`: Calcula minutos y horas en actividades del hogar y cuidado.
 #' - `ipc_enoe()`: Añade una variable con el IPC nacional del trimestre correspondiente.
 #' - `imputa_ingocup()`: Imputa el ingreso ocupacional con `mice` para personas ocupadas.
+#' - ` procesar_contribucion_hogar`: IProcesar contribución económica y de trabajo no remunerado al hogar.
 #'
 #' @encoding UTF-8
 #' @param data Un data frame con las tablas fusionadas de la ENOE (por ejemplo, salida de `fusion_enoe()`).
@@ -40,7 +41,8 @@ procesar_variables_enoe <- function(data, anio, trimestre ) {
     procesar_tiempo() %>%
     ipc_enoe(anio=anio, trimestre=trimestre) %>%
     imputa_ingocup() %>%
-    procesar_vars_laborales()
+    procesar_vars_laborales() %>%
+    procesar_contribucion_hogar()
 
   return(data)
 }

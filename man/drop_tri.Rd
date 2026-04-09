@@ -3,16 +3,16 @@
 \encoding{UTF-8}
 \name{drop_tri}
 \alias{drop_tri}
-\title{Eliminar sufijo '_tri' de nombres de variables}
+\title{Eliminar sufijo '_tri' y el prefijo 'cve' de nombres de variables}
 \usage{
 drop_tri(data)
 }
 \arguments{
-\item{data}{Un data.frame o tibble con nombres de variables posiblemente terminados en '_tri'.}
+\item{data}{Un data.frame o tibble con nombres de variables posiblemente terminados en '\emph{tri' y que inicien con 'cve}',}
 }
 \value{
 Un data.frame con los nombres de variables modificados.
 }
 \description{
-Esta función renombra las variables eliminando el sufijo '_tri' si existe.
+Esta función renombra las variables eliminando el sufijo '_tri' y el prefijo cve si existe. Para compatibilidad de la serie
 }
