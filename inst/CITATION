@@ -1,0 +1,24 @@
+citHeader("Para citar renoe en publicaciones, por favor use:")
+
+citEntry(
+  entry = "Manual",
+  title = "renoe: Herramientas para trabajar con la Encuesta Nacional de Ocupación y Empleo (ENOE) desde 2005",
+  author = personList(
+    person(
+      given = "Ana",
+      family = "Escoto",
+      email = "ana.escoto@politicas.unam.mx",
+      comment = c(ORCID = "https://orcid.org/0000-0001-7259-0001")
+    )
+  ),
+  year = "2026",
+  note = "R package version 0.1.4",
+  url = "https://github.com/aniuxa/renoe",
+  textVersion =
+    paste(
+      "Escoto, A. (2026).",
+      "renoe: Herramientas para trabajar con la Encuesta Nacional de Ocupación y Empleo (ENOE) desde 2005.",
+      "R package version 0.1.4.",
+      "https://github.com/aniuxa/renoe"
+    )
+)

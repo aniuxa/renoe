@@ -7,25 +7,34 @@
 procesar_tiempo(data, anio, trimestre)
 }
 \arguments{
-\item{data}{Un data frame fusionado por \code{fusion_enoe()} o cargado directamente, que contenga variables de tiempo (\verb{p11_*} o \verb{p9_*}).}
+\item{data}{Un data frame fusionado por \code{fusion_enoe()} o cargado directamente,
+que contenga variables de tiempo (\verb{p11_*} o \verb{p9_*}).}
 
-\item{anio}{Año del trimestre (numérico).}
+\item{anio}{Año del trimestre.}
 
-\item{trimestre}{Trimestre numérico (1–4).}
+\item{trimestre}{Trimestre numérico (1-4).}
 }
 \value{
-Un data frame con variables de tiempo en minutos y horas, y etiquetas descriptivas.
+Un data frame con variables de tiempo procesadas y etiquetadas.
+Las variables \code{t_estudiar}, \code{t_cuidado}, \code{t_construir}, \code{t_reparar},
+\code{t_quehacer}, \code{t_comun}, \code{t_compras} y \code{t_traslado} se expresan en horas.
+Las variables \code{t_total} y \code{t_total0} se expresan en minutos, mientras que
+\code{t_total_hrs} y \code{t_total_hrs0} se expresan en horas.
 }
 \description{
-Calcula el tiempo (en minutos y horas) dedicado a diversas actividades como estudiar, cuidar, quehaceres, construcción, reparación, comunidad, compras y traslados.
-Soporta tanto el cuestionario ampliado como el básico, ajustando el mapeo de variables por año. Si no existen las variables sociodemográficas requeridas (\code{anio}, \code{coe_tipo}), las crea con \code{procesar_vars_sociodemo()}.
+Calcula el tiempo dedicado a diversas actividades del hogar y cuidado,
+expresado en horas, a partir de las preguntas de uso del tiempo de la ENOE.
+Soporta tanto el cuestionario ampliado como el básico, ajustando el mapeo
+de variables según el año. Si no existen las variables sociodemográficas
+requeridas (\code{anio}, \code{coe_tipo}), las crea con \code{procesar_vars_sociodemo()}.
 }
-\examples{
-\dontrun{
-datos <- fusion_enoe(2022, 1)
-datos <- procesar_tiempo(datos, anio = 2022, trimestre = 1)
-summary(datos$t_cuidado)
-}
+\details{
+Las variables específicas de tiempo (\code{t_estudiar}, \code{t_cuidado},
+\code{t_construir}, \code{t_reparar}, \code{t_quehacer}, \code{t_comun}, \code{t_compras},
+\code{t_traslado}) se calculan inicialmente en minutos y posteriormente se
+convierten a horas. En esta conversión, los valores faltantes se sustituyen
+por \code{0}, con el fin de facilitar la construcción de agregados y su uso en
+análisis descriptivos.
 }
 \seealso{
 Other procesamiento_enoe: 
@@ -33,6 +42,7 @@ Other procesamiento_enoe:
 \code{\link{crear_folios}()},
 \code{\link{imputa_ingocup}()},
 \code{\link{ipc_enoe}()},
+\code{\link{procesar_contribucion_hogar}()},
 \code{\link{procesar_variables_enoe}()},
 \code{\link{procesar_vars_hogar}()},
 \code{\link{procesar_vars_laborales}()},

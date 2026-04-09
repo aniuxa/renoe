@@ -176,6 +176,19 @@
 .estandarizar_ids <- function(df, anio, trimestre) {
   if (is.null(df) || ncol(df) == 0) return(df)
 
+  # A partir de 2025 t3, algunas tablas usan cve_ent en lugar de ent
+  if (anio > 2025 || (anio == 2025 && trimestre >= 3)) {
+    if ("cve_ent" %in% names(df) && !("ent" %in% names(df))) {
+      df <- dplyr::rename(df, ent = cve_ent)
+    } else if ("cve_ent" %in% names(df) && "ent" %in% names(df)) {
+      df <- dplyr::mutate(
+        df,
+        ent = dplyr::coalesce(ent, cve_ent)
+      ) %>%
+        dplyr::select(-cve_ent)
+    }
+  }
+
   id_vars <- .obtener_id_vars(anio, trimestre)
   vars_a_convertir <- intersect(names(df), id_vars)
 
@@ -198,7 +211,6 @@
     )
   }
 
-  # Manejo especial para 2011 T1
   if (anio == 2011 && trimestre == 1) {
     if ("est_d" %in% names(df)) df$est_d <- as.numeric(df$est_d)
     if ("t_loc" %in% names(df)) df$t_loc <- as.numeric(df$t_loc)

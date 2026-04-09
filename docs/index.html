@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paquete para trabajar con la ENOE desde 2005 • Uso del paquete renoe</title>
+<title>Herramientas para trabajar con la ENOE desde 2005 • Uso del paquete renoe</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
 <link rel="icon" type="”image/svg+xml”" href="favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -16,8 +16,8 @@
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Paquete para trabajar con la ENOE desde 2005">
-<meta property="og:description" content="Carga, fusiona y armoniza los cuestionarios ampliado y básico de la ENOE, y construye los paneles de cinco trimestres. Incluye funciones para descargar documentación técnica.">
+<script src="pkgdown.js"></script><meta property="og:title" content="Herramientas para trabajar con la ENOE desde 2005">
+<meta property="og:description" content="Descarga, carga, fusiona y procesa los microdatos de la Encuesta Nacional de Ocupacion y Empleo (ENOE) de Mexico desde 2005. Incluye funciones para armonizar cuestionarios basico y ampliado, construir identificadores y paneles, procesar variables sociodemograficas, laborales, de uso del tiempo y estructura del hogar, imputar ingresos ocupacionales, y generar indicadores de contribucion economica y trabajo no remunerado en el hogar.">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">Uso del paquete renoe</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.4</span>
       </span>
     </div>
 
@@ -77,8 +77,8 @@
 <div class="section level1">
 <div class="page-header"><h1 id="renoe-">renoe <img src="reference/figures/logo.png" align="right" height="120"><a class="anchor" aria-label="anchor" href="#renoe-"></a>
 </h1></div>
-<p><strong>renoe</strong> es un paquete en desarrollo para facilitar la descarga, carga, fusión, procesamiento y análisis de los microdatos de la Encuesta Nacional de Ocupación y Empleo (ENOE) del INEGI.</p>
-<p>Permite trabajar de forma reproducible y eficiente con los datos de los distintos trimestres y formatos de cuestionario (básico o ampliado), siguiendo un flujo de trabajo estructurado que abarca desde la descarga hasta el procesamiento avanzado de variables.</p>
+<p><strong>renoe</strong> es un paquete en desarrollo para facilitar la descarga, carga, fusión, procesamiento y análisis de los microdatos de la Encuesta Nacional de Ocupación y Empleo (ENOE) del INEGI desde 2005.</p>
+<p>Permite trabajar de forma reproducible y eficiente con los datos de los distintos trimestres y formatos de cuestionario (básico o ampliado), siguiendo un flujo de trabajo estructurado que abarca desde la descarga hasta el procesamiento avanzado de variables sociodemográficas, laborales, de uso del tiempo, estructura del hogar e ingresos.</p>
 <div class="section level2">
 <h2 id="instalación">Instalación<a class="anchor" aria-label="anchor" href="#instalaci%C3%B3n"></a>
 </h2>
@@ -111,7 +111,7 @@
 </tr>
 <tr>
 <td><code><a href="reference/fusion_enoe.html">fusion_enoe()</a></code></td>
-<td>Fusiona las tablas <code>viv</code>, <code>hog</code>, <code>sdem</code>, <code>coe1</code> y <code>coe2</code> en un solo objeto.</td>
+<td>Fusiona las tablas <code>viv</code>, <code>hog</code>, <code>sdem</code>, <code>coe1</code> y <code>coe2</code> en un solo objeto, usando una estrategia robusta basada en identificadores disponibles.</td>
 </tr>
 <tr>
 <td><code><a href="reference/descargar_cuestionarios.html">descargar_cuestionarios()</a></code></td>
@@ -141,7 +141,7 @@
 <tbody>
 <tr>
 <td><code><a href="reference/procesar_variables_enoe.html">procesar_variables_enoe()</a></code></td>
-<td>Función <em>wrapper</em> que aplica en cadena todas las funciones de procesamiento recomendadas: variables sociodemográficas, estructura del hogar, uso del tiempo, IPC, imputación de ingresos y variables laborales. Es el orden lógico sugerido para preparar los microdatos.</td>
+<td>Función <em>wrapper</em> que aplica en cadena las funciones recomendadas de procesamiento. Dependiendo de la versión del paquete, puede incluir variables sociodemográficas, estructura del hogar, tiempo, IPC, imputación de ingresos y variables laborales.</td>
 </tr>
 <tr>
 <td><code><a href="reference/crear_folios.html">crear_folios()</a></code></td>
@@ -153,15 +153,15 @@
 </tr>
 <tr>
 <td><code><a href="reference/procesar_vars_sociodemo.html">procesar_vars_sociodemo()</a></code></td>
-<td>Genera variables de edad, sexo y grupos etarios.</td>
+<td>Genera variables de sexo, edad, grupos etarios, asistencia escolar, estado conyugal, parentesco resumido, ruralidad y zona económica regional.</td>
 </tr>
 <tr>
 <td><code><a href="reference/procesar_vars_hogar.html">procesar_vars_hogar()</a></code></td>
-<td>Clasifica hogares por tipo, tamaño y tasas de dependencia.</td>
+<td>Clasifica hogares por estructura, composición, tamaño del hogar sin servicio doméstico y tasas de dependencia.</td>
 </tr>
 <tr>
 <td><code><a href="reference/procesar_tiempo.html">procesar_tiempo()</a></code></td>
-<td>Calcula tiempo dedicado a cuidados y trabajo no remunerado (horas/minutos).</td>
+<td>Calcula tiempo dedicado a estudio, cuidado, quehaceres, construcción, reparación, compras, traslados y comunidad. Las variables específicas se expresan en horas.</td>
 </tr>
 <tr>
 <td><code><a href="reference/ipc_enoe.html">ipc_enoe()</a></code></td>
@@ -173,25 +173,42 @@
 </tr>
 <tr>
 <td><code><a href="reference/procesar_vars_laborales.html">procesar_vars_laborales()</a></code></td>
-<td>Clasifica tipo de contrato, experiencia laboral y desajuste educativo.</td>
+<td>Clasifica tipo de contrato, experiencia laboral previa, temporalidad y desajuste educativo.</td>
+</tr>
+<tr>
+<td><code><a href="reference/procesar_contribucion_hogar.html">procesar_contribucion_hogar()</a></code></td>
+<td>Genera ingreso ocupacional individual deflactado, agregados del hogar, indicadores per cápita y quintiles ponderados de ingreso y trabajo no remunerado.</td>
 </tr>
 </tbody>
 </table>
 <div class="section level3">
-<h3 id="ejemplo">Ejemplo<a class="anchor" aria-label="anchor" href="#ejemplo"></a>
+<h3 id="ejemplo-de-flujo-recomendado">Ejemplo de flujo recomendado<a class="anchor" aria-label="anchor" href="#ejemplo-de-flujo-recomendado"></a>
 </h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">datos</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fusion_enoe.html">fusion_enoe</a></span><span class="op">(</span><span class="fl">2022</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">datos_proc</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/procesar_variables_enoe.html">procesar_variables_enoe</a></span><span class="op">(</span><span class="va">datos</span>, anio <span class="op">=</span> <span class="fl">2022</span>, trimestre <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">datos_proc</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">datos_proc</span><span class="op">$</span><span class="va">tipo_hog_lab</span>, useNA <span class="op">=</span> <span class="st">"always"</span><span class="op">)</span></span></code></pre></div>
+<span></span>
+<span><span class="va">datos_proc</span> <span class="op">&lt;-</span> <span class="va">datos</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/drop_tri.html">drop_tri</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/crear_folios.html">crear_folios</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/procesar_vars_sociodemo.html">procesar_vars_sociodemo</a></span><span class="op">(</span>anio <span class="op">=</span> <span class="fl">2022</span>, trimestre <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/procesar_vars_hogar.html">procesar_vars_hogar</a></span><span class="op">(</span>anio <span class="op">=</span> <span class="fl">2022</span>, trimestre <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/procesar_vars_laborales.html">procesar_vars_laborales</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/procesar_tiempo.html">procesar_tiempo</a></span><span class="op">(</span>anio <span class="op">=</span> <span class="fl">2022</span>, trimestre <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/ipc_enoe.html">ipc_enoe</a></span><span class="op">(</span>anio <span class="op">=</span> <span class="fl">2022</span>, trimestre <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/imputa_ingocup.html">imputa_ingocup</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/procesar_contribucion_hogar.html">procesar_contribucion_hogar</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">datos_proc</span><span class="op">)</span></span></code></pre></div>
+<p>En caso de que haya algun problema de codificación, se pide que se utilice la opción <code>fusion_robusta</code></p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">datos</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fusion_enoe.html">fusion_enoe</a></span><span class="op">(</span><span class="fl">2025</span>, <span class="fl">4</span>, fusion_robusta <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
 <hr>
 </div>
 </div>
 <div class="section level2">
 <h2 id="funciones-internas-y-auxiliares">Funciones internas y auxiliares<a class="anchor" aria-label="anchor" href="#funciones-internas-y-auxiliares"></a>
 </h2>
-<p>Estas funciones no están exportadas, pero son utilizadas por las funciones principales para manejar la descarga, verificación y lectura de archivos:</p>
+<p>Estas funciones no están exportadas, pero son utilizadas por las funciones principales para manejar la descarga, verificación, lectura y estandarización de archivos:</p>
 <table class="table">
 <colgroup>
 <col width="50%">
@@ -212,7 +229,7 @@
 </tr>
 <tr>
 <td><code><a href="reference/dot-extraer_zip_enoe.html">.extraer_zip_enoe()</a></code></td>
-<td>Extrae los contenidos del ZIP en una carpeta temporal.</td>
+<td>Extrae los contenidos del ZIP en una carpeta temporal o de trabajo.</td>
 </tr>
 <tr>
 <td><code>.verificar_cache()</code></td>
@@ -224,7 +241,7 @@
 </tr>
 <tr>
 <td><code><a href="reference/dot-procesar_etiquetas_enoe.html">.procesar_etiquetas_enoe()</a></code></td>
-<td>Asigna etiquetas a las variables utilizando los diccionarios de INEGI.</td>
+<td>Asigna etiquetas a las variables utilizando los diccionarios del INEGI.</td>
 </tr>
 <tr>
 <td><code>.cargar_desde_cache()</code></td>
@@ -232,7 +249,11 @@
 </tr>
 <tr>
 <td><code><a href="reference/dot-estandarizar_ids.html">.estandarizar_ids()</a></code></td>
-<td>Unifica identificadores a través de años con diferentes convenciones.</td>
+<td>Unifica identificadores y nombres clave a través de años con diferentes convenciones.</td>
+</tr>
+<tr>
+<td><code>.homologar_tipos_join()</code></td>
+<td>Homologa tipos de variables usadas en fusiones robustas.</td>
 </tr>
 </tbody>
 </table>
@@ -243,11 +264,11 @@
 </h2>
 <ul>
 <li>
-<code>.parquet</code>: Compacto, rápido y compatible con Python.</li>
+<code>.parquet</code>: compacto, rápido y compatible con Python.</li>
 <li>
-<code>.dta</code>: Compatible con Stata.</li>
+<code>.dta</code>: compatible con Stata.</li>
 <li>
-<code>.rds</code>: Eficiente para análisis en R.</li>
+<code>.rds</code>: eficiente para análisis en R.</li>
 </ul>
 <hr>
 </div>
@@ -257,30 +278,32 @@
 <ul>
 <li>Se incluye validación del número de filas esperadas posterior al filtrado (<code>r_def == 0 &amp; c_res != 2</code>).</li>
 <li>Para el trimestre <strong>2022T1</strong> se utilizan archivos alternativos descargados del sitio de microdatos del INEGI.</li>
-<li>Si se detectan anomalías (menos filas de lo esperado, duplicaciones), se emiten advertencias para revisión manual.</li>
+<li>La fusión robusta utiliza identificadores disponibles y armonización de nombres para reducir problemas por cambios recientes en las bases.</li>
+<li>Si se detectan anomalías como menos filas de lo esperado o posibles duplicaciones, se emiten advertencias para revisión manual.</li>
+<li>En las variables específicas de uso del tiempo, los valores faltantes se convierten en cero al expresarse en horas, para facilitar la construcción de agregados y su uso en análisis descriptivos.</li>
 </ul>
 <hr>
 </div>
 <div class="section level2">
 <h2 id="estructura-esperada-de-carpetas">Estructura esperada de carpetas<a class="anchor" aria-label="anchor" href="#estructura-esperada-de-carpetas"></a>
 </h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>renoe<span class="sc">/</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>├── zip<span class="sc">/</span>      <span class="co"># Contiene los .zip descargados y carpetas extraídas por trimestre</span></span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>├── datos<span class="sc">/</span>    <span class="co"># Contiene los archivos fusionados guardados por la persona usuaria</span></span></code></pre></div>
+<pre class="text"><code>renoe/
+├── zip/      # Contiene los .zip descargados y carpetas extraídas por trimestre
+├── datos/    # Contiene los archivos fusionados guardados por la persona usuaria</code></pre>
 <hr>
 </div>
 <div class="section level2">
 <h2 id="créditos">Créditos<a class="anchor" aria-label="anchor" href="#cr%C3%A9ditos"></a>
 </h2>
-<p>Este paquete ha sido desarrollado como parte del proyecto PAPIIT IN305925 <em>“Retos de la inserción laboral en México”</em> (UNAM).<br>
-Para sugerencias, contribuciones o reportes de errores, puedes abrir un <em>issue</em> en GitHub o contactar a la autora.</p>
+<p>Este paquete ha sido desarrollado como parte del proyecto PAPIIT IN305925 <em>Retos de la inserción laboral en México</em> (UNAM).</p>
+<p>Para sugerencias, contribuciones o reportes de errores, puedes abrir un <em>issue</em> en GitHub o contactar a la autora.</p>
 </div>
 <div class="section level2">
 <h2 id="cómo-citar-este-paquete">Cómo citar este paquete<a class="anchor" aria-label="anchor" href="#c%C3%B3mo-citar-este-paquete"></a>
 </h2>
 <p>Si utilizas el paquete <code>renoe</code> en tus investigaciones o publicaciones, por favor cita de la siguiente manera:</p>
 <blockquote>
-<p>Escoto Castillo, Ana Ruth. (2025). <em>renoe: Herramientas para el análisis de la Encuesta Nacional de Ocupación y Empleo (ENOE) en R</em>. Versión 0.1.3. Disponible en: <a href="https://github.com/aniuxa/renoe" class="external-link uri">https://github.com/aniuxa/renoe</a></p>
+<p>Escoto Castillo, Ana Ruth. (2025). <em>renoe: Herramientas para el análisis de la Encuesta Nacional de Ocupación y Empleo (ENOE) en R</em>. Versión 0.1.4. Disponible en: <a href="https://github.com/aniuxa/renoe" class="external-link uri">https://github.com/aniuxa/renoe</a></p>
 </blockquote>
 <p>También puedes usar la función <code>citation("renoe")</code> en R para obtener la referencia en formato BibTeX.</p>
 </div>
@@ -316,7 +339,6 @@ Para sugerencias, contribuciones o reportes de errores, puedes abrir un <em>issu
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Ana Escoto <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/https://orcid.org/0000-0001-7259-0001" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
-<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 
@@ -333,7 +355,7 @@ Para sugerencias, contribuciones o reportes de errores, puedes abrir un <em>issu
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>

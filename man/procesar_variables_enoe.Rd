@@ -31,6 +31,7 @@ Aplica automáticamente las funciones:
 \item \code{procesar_tiempo()}: Calcula minutos y horas en actividades del hogar y cuidado.
 \item \code{ipc_enoe()}: Añade una variable con el IPC nacional del trimestre correspondiente.
 \item \code{imputa_ingocup()}: Imputa el ingreso ocupacional con \code{mice} para personas ocupadas.
+\item \code{ procesar_contribucion_hogar}: IProcesar contribución económica y de trabajo no remunerado al hogar.
 }
 }
 \examples{
@@ -50,6 +51,7 @@ Other procesamiento_enoe:
 \code{\link{crear_folios}()},
 \code{\link{imputa_ingocup}()},
 \code{\link{ipc_enoe}()},
+\code{\link{procesar_contribucion_hogar}()},
 \code{\link{procesar_tiempo}()},
 \code{\link{procesar_vars_hogar}()},
 \code{\link{procesar_vars_laborales}()},

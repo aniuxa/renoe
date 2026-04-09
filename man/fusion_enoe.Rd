@@ -12,34 +12,35 @@ fusion_enoe(
   formato = NULL,
   guardar = !is.null(formato),
   intentos = 3,
-  fusion_robusta = FALSE,
+  fusion_robusta = TRUE,
   ...
 )
 }
 \arguments{
-\item{anio}{Año del trimestre (2005-2024).}
+\item{anio}{Año del trimestre (2005-2025).}
 
 \item{trimestre}{Número del trimestre (1-4).}
 
-\item{rapida}{Lógico. Si TRUE, omite el etiquetado de variables.}
+\item{rapida}{Lógico. Si \code{TRUE}, omite el etiquetado de variables.}
 
 \item{formato}{Formato de salida ("parquet", "rds" o "dta"). Opcional.}
 
-\item{guardar}{Lógico. Si TRUE y se especifica formato, guarda el archivo fusionado.}
+\item{guardar}{Lógico. Si \code{TRUE} y se especifica formato, guarda el archivo fusionado.}
 
 \item{intentos}{Número de intentos para cargar datos (por defecto 3).}
 
-\item{fusion_robusta}{Lógico. Si TRUE, utiliza claves de fusión basadas en las variables disponibles.}
+\item{fusion_robusta}{Lógico. Si \code{TRUE}, utiliza claves de fusión basadas en las variables disponibles.}
 
-\item{...}{Otros parámetros para pasar a carga_enoe()}
+\item{...}{Otros parámetros para pasar a \code{carga_enoe()}.}
 }
 \value{
-Un data frame con las tablas fusionadas. Si se especifica formato y guardar = TRUE,
-guarda el archivo en el subdirectorio "datos" con el nombre:
-"enoe_fusion_ANIO_TRIMESTREt.FORMATO"
+Un data frame con las tablas fusionadas. Si se especifica formato y
+\code{guardar = TRUE}, guarda el archivo en el subdirectorio \code{"datos"} con el nombre
+\code{"enoe_fusion_ANIO_TRIMESTREt.FORMATO"}.
 }
 \description{
-Une las tablas de vivienda, hogar, sociodemográfico y componentes COE en un único data frame
+Une las tablas de vivienda, hogar, sociodemográfico y componentes COE
+en un único data frame.
 }
 \examples{
 \dontrun{

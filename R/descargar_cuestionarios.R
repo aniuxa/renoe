@@ -53,7 +53,8 @@ descargar_cuestionarios <- function(anio, trimestre,
       v1 = "fd_c_bas_amp_15ymas.pdf",
       v2 = "enoe_n_fd_c_bas_amp.pdf",
       v3 = "enoe_n_321_fd_c_bas_amp.pdf",
-      v4 = "enoe_123_fd_c_bas_amp.pdf"
+      v4 = "enoe_123_fd_c_bas_amp.pdf",
+      v5 = "enoe_325_fd_c_bas_amp.pdf"
     )
   )
 

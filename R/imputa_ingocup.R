@@ -120,7 +120,7 @@ imputa_ingocup <- function(data,
         imp <- mice::mice(df, m = 1, method = method, maxit = 10, seed = seed, printFlag = FALSE)
         mice::complete(imp, 1)
       }, error = function(e) {
-        message("⚠️  Error al imputar grupo sex = ", unique(df$sex),
+        message("Error al imputar grupo sex = ", unique(df$sex),
                 ", ent = ", unique(df$ent), ": ", conditionMessage(e))
         df  # Devuelve el grupo sin imputar
       })
