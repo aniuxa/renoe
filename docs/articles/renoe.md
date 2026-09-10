@@ -1,0 +1,325 @@
+# renoe
+
+``` r
+library(renoe)
+```
+
+## Introducción al paquete `renoe`
+
+El paquete `renoe` permite descargar, cargar, fusionar, procesar y
+analizar los microdatos de la Encuesta Nacional de Ocupación y Empleo
+(ENOE) de México desde 2005. Está diseñado para facilitar tareas comunes
+de manejo de datos, incluyendo la descarga de microdatos, la fusión de
+tablas, la construcción de identificadores, el procesamiento de
+variables sociodemográficas, laborales y del hogar, así como la
+imputación de ingresos ocupacionales.
+
+### Instalación
+
+Si el paquete aún no está en CRAN, se recomienda instalarlo desde GitHub
+con `pak`:
+
+``` r
+# install.packages("pak")
+pak::pkg_install("aniuxa/renoe")
+```
+
+También puede instalarse con `remotes` o `devtools`:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("aniuxa/renoe")
+
+# install.packages("devtools")
+devtools::install_github("aniuxa/renoe")
+```
+
+### Descarga y carga de microdatos
+
+Puede descargarse y cargarse la ENOE de un trimestre específico. La
+opción `rapida = TRUE` omite el etiquetado de variables y acelera la
+carga.
+
+``` r
+descarga_enoe(2023, 4)
+datos <- carga_enoe(2023, 4, rapida = TRUE)
+```
+
+Si se desea recuperar las tablas por separado, puede usarse
+`list = TRUE`:
+
+``` r
+tablas <- carga_enoe(2023, 4, list = TRUE, rapida = TRUE)
+names(tablas)
+```
+
+### Fusión de tablas
+
+Para trabajar con una base unificada que integre vivienda, hogar,
+sociodemográfico y los componentes COE, puede utilizarse
+[`fusion_enoe()`](https://aniuxa.github.io/renoe/reference/fusion_enoe.md).
+
+``` r
+datos_fusionados <- fusion_enoe(2023, 4)
+```
+
+La función utiliza una estrategia de fusión robusta basada en
+identificadores disponibles, lo que reduce problemas de duplicación o
+pérdida de registros cuando cambian nombres o tipos de variables entre
+trimestres.
+
+También es posible guardar directamente el resultado en distintos
+formatos:
+
+``` r
+fusion_enoe(2023, 4, formato = "parquet", guardar = TRUE)
+```
+
+### Procesamiento de variables
+
+Una vez cargados o fusionados los datos, pueden generarse variables
+derivadas para distintos niveles de análisis.
+
+#### Variables sociodemográficas
+
+``` r
+datos <- procesar_vars_sociodemo(datos_fusionados, anio = 2023, trimestre = 4)
+```
+
+Esta función genera, entre otras, variables de sexo, edad, grupos
+etarios, asistencia escolar, estado conyugal, parentesco resumido,
+ruralidad y zona económica regional.
+
+#### Estructura del hogar
+
+``` r
+datos <- procesar_vars_hogar(datos, anio = 2023, trimestre = 4)
+```
+
+Esta función construye tipologías de hogar, tamaño del hogar sin
+servicio doméstico, tasas de dependencia, conteos por grupos de edad e
+indicadores de presencia de niñez, juventud y adultez mayor.
+
+#### Variables laborales
+
+``` r
+datos <- procesar_vars_laborales(datos)
+datos <- calcular_desajuste_estadistico(
+  datos,
+  periodo_referencia = "trimestre"
+)
+```
+
+La primera función armoniza la codificación ocupacional y calcula el
+nivel agregado de competencia, el proxy basado en escolaridad, su
+desajuste, la experiencia previa y la temporalidad contractual. La
+segunda calcula una referencia estadística observada de escolaridad. Su
+valor predeterminado es transversal trimestral: compara cada observación
+ocupada con su grupo SINCO en el mismo trimestre. Para usar una
+referencia anual como análisis de sensibilidad, primero se deben unir
+los cuatro trimestres disponibles y después llamar a
+`calcular_desajuste_estadistico(periodo_referencia = "anio")`. Un
+ponderador anual ajustado puede suministrarse con `variable_ponderador`;
+la función no impone `fac / 4` porque el año puede estar incompleto. La
+unidad sigue siendo persona-trimestre y la función no deduplica
+personas.
+
+#### Uso del tiempo
+
+``` r
+datos <- procesar_tiempo(datos, anio = 2023, trimestre = 4)
+```
+
+Las variables específicas de tiempo se expresan en horas. Los códigos
+00–97 son duraciones; 98 identifica una actividad realizada con duración
+desconocida y 99 una realización desconocida. Una actividad no
+seleccionada dentro de una batería respondida vale cero, mientras que
+una batería no medible conserva `NA`. Los totales completos quedan en
+`NA` si falta una duración y los totales parciales se conservan con una
+bandera de incompletitud. Las columnas `*_legacy` reproducen la
+recodificación histórica a cero.
+
+#### Contribución al hogar
+
+``` r
+datos <- procesar_contribucion_hogar(datos)
+```
+
+Esta función genera ingreso ocupacional individual deflactado, agregados
+del hogar, indicadores per cápita y quintiles ponderados de ingreso y
+trabajo no remunerado.
+
+### Flujo sugerido de procesamiento
+
+Un flujo típico de trabajo podría ser el siguiente:
+
+``` r
+datos <- fusion_enoe(2023, 4)
+
+datos <- datos |>
+  drop_tri() |>
+  crear_folios() |>
+  procesar_vars_sociodemo(anio = 2023, trimestre = 4) |>
+  procesar_vars_hogar(anio = 2023, trimestre = 4) |>
+  procesar_vars_laborales() |>
+  calcular_desajuste_estadistico(periodo_referencia = "trimestre") |>
+  procesar_tiempo(anio = 2023, trimestre = 4) |>
+  ipc_enoe(anio = 2023, trimestre = 4) |>
+  imputa_ingocup() |>
+  procesar_contribucion_hogar()
+```
+
+#### Extensiones específicas del proyecto
+
+Algunos indicadores responden a preguntas particulares del proyecto del
+libro y del estudio del trabajo de cuidado. Por esa razón no se
+incorporan automáticamente a
+[`procesar_variables_enoe()`](https://aniuxa.github.io/renoe/reference/procesar_variables_enoe.md):
+
+- [`procesar_cuidado_extra()`](https://aniuxa.github.io/renoe/reference/procesar_cuidado_extra.md)
+  resume composición, jornadas laborales y capacidad del hogar para
+  absorber necesidades de cuidado.
+- [`procesar_estudio_trabajo()`](https://aniuxa.github.io/renoe/reference/procesar_estudio_trabajo.md)
+  clasifica la combinación de estudio y trabajo y distingue búsqueda,
+  cuidados y disponibilidad. Los indicadores pueden superponerse;
+  `tipo_neet` ofrece una tipología exclusiva.
+- [`procesar_libro1()`](https://aniuxa.github.io/renoe/reference/procesar_libro1.md)
+  construye indicadores de origen migratorio, no ocupación por cuidados,
+  prestaciones, antigüedad y afiliación sindical.
+- [`class_cuidado_rem()`](https://aniuxa.github.io/renoe/reference/class_cuidado_rem.md)
+  clasifica ocupaciones e industrias vinculadas con el cuidado de
+  mercado; esta pertenencia no implica remuneración positiva.
+- [`cmo_to_sinco11_care()`](https://aniuxa.github.io/renoe/reference/cmo_to_sinco11_care.md)
+  es un puente analítico CMO–SINCO 2011 para el estudio de cuidados y no
+  una correspondencia general uno a uno.
+
+Estas extensiones deben ejecutarse después del procesamiento general:
+
+``` r
+datos_proyecto <- datos |>
+  procesar_cuidado_extra() |>
+  procesar_estudio_trabajo() |>
+  procesar_libro1() |>
+  class_cuidado_rem()
+```
+
+Para observaciones entre 2005-I y 2012-II,
+[`class_cuidado_rem()`](https://aniuxa.github.io/renoe/reference/class_cuidado_rem.md)
+aplica internamente el puente CMO–SINCO de cuidados utilizando `anio` y
+`trim`. Desde 2012-III utiliza la clasificación SINCO observada y
+armonizada.
+
+### Imputación de ingresos ocupacionales
+
+El paquete también incluye herramientas para imputar ingresos
+ocupacionales faltantes:
+
+``` r
+datos <- imputa_ingocup(datos)
+```
+
+Esto resulta útil para análisis de desigualdad, condiciones laborales o
+contribución económica al hogar.
+
+### Procesamiento integral
+
+Si se desea aplicar varias transformaciones de forma más automatizada,
+puede utilizarse una función de procesamiento integral si está
+disponible en la instalación del paquete:
+
+``` r
+procesados <- procesar_variables_enoe(datos_fusionados, 2023, 4)
+```
+
+Dependiendo de la versión del paquete, esta función puede integrar
+procesamiento sociodemográfico, del hogar, laboral, de tiempo e
+imputación.
+
+### Información del trimestre
+
+Para consultar metadatos y verificar qué archivos están disponibles para
+un trimestre específico:
+
+``` r
+info_trimestre(2023, 4)
+```
+
+### Cuestionarios
+
+También pueden descargarse los cuestionarios de la ENOE en PDF:
+
+``` r
+descargar_cuestionarios(2023, 4)
+```
+
+### Guardado y reutilización
+
+Después de procesar la base, puede guardarse en formatos reutilizables
+para evitar repetir todo el flujo:
+
+``` r
+saveRDS(datos, "datos/enoe_2023_4t_procesada.rds")
+```
+
+o bien desde la propia fusión:
+
+``` r
+fusion_enoe(2023, 4, formato = "rds", guardar = TRUE)
+```
+
+### Diccionario de variables
+
+`renoe` incluye un diccionario de las variables derivadas, su
+descripción y la función que las construye:
+
+``` r
+diccionario <- readr::read_csv(
+  system.file("extdata", "diccionario_variables.csv", package = "renoe"),
+  show_col_types = FALSE
+)
+
+dplyr::glimpse(diccionario)
+```
+
+El archivo contiene las columnas `variable_nombre`, `descripcion` y
+`funcion`. Se regenera a partir del código para mantenerlo sincronizado
+con el paquete.
+
+### Organización sugerida del directorio de trabajo
+
+La ubicación de los archivos procesados es una decisión del proyecto y
+no está fijada por `renoe`. Una estructura reproducible posible es:
+
+``` text
+proyecto/
+├── zip/       # Archivos descargados y extraídos
+├── datos/     # Bases fusionadas por trimestre
+└── procesa/   # Bases procesadas y listas para análisis
+```
+
+Las funciones generales devuelven objetos en memoria. La lectura desde
+`datos/` y la escritura en `procesa/` deben controlarse mediante el
+script de producción o una futura función envolvente para procesar
+trimestres.
+
+### Contacto
+
+Desarrollado por Ana Escoto y el equipo del proyecto PAPIIT IN305925.
+Repositorio oficial: `aniuxa/renoe`
+
+### Declaración sobre el uso de inteligencia artificial
+
+El paquete constituye un primer esfuerzo por sistematizar, documentar y
+traducir a R procedimientos derivados de la experiencia acumulada por
+Ana Escoto y de los conocimientos y trayectorias compartidos por
+integrantes del proyecto en el estudio de la ENOE. Incluye materiales
+vinculados con el libro sobre el uso de R con la encuesta y programas
+originalmente escritos en Stata.
+
+Durante el desarrollo se utilizaron ChatGPT y, desde el 12 de agosto de
+2026, Codex como apoyo para revisar y explicar código, proponer
+funciones, mejorar la documentación, detectar errores y construir y
+ejecutar pruebas. Las decisiones conceptuales y metodológicas y la
+validación de los resultados corresponden a la autora y al equipo del
+proyecto. Todas las modificaciones asistidas por inteligencia artificial
+fueron revisadas por las personas responsables del paquete.
