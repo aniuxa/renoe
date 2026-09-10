@@ -1,0 +1,4 @@
+#!/bin/sh
+set -eu
+root="$(git rev-parse --show-toplevel)"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$root/tools/limpiar_residuos.ps1" -RutaRepositorio "$root" -SoloGit
