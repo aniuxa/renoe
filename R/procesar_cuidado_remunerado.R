@@ -1,0 +1,181 @@
+#' Procesar el módulo de cuidado de mercado
+#'
+#' Interfaz del modulo desarrollado para el articulo sobre brechas de ingreso
+#' mediante regresiones cuantílicas. Clasifica en memoria; no descarga, escribe
+#' ni reconstruye microdatos. Los modelos pertenecen al proyecto del articulo.
+#'
+#' Usa CMO hasta 2012-II, SINCO 2011 desde 2012-III y SINCO 2019 desde
+#' 2021-III, conforme a las reglas existentes del paquete. Prefiere el codigo
+#' observado de cuatro digitos (`p3coe`) para evitar confundir un `sinco3d`
+#' previamente armonizado a 2011 con SINCO 2019. Si falta `p3coe`, acepta una
+#' columna de tres digitos en el clasificador observado del periodo. Rechaza
+#' el respaldo cuando detecta metadatos de armonizacion general en 2019.
+#'
+#' Conserva las columnas originales, incluido `sinco3d`. Agrega las salidas de
+#' `class_cuidado_rem()` y trazabilidad especifica. `codigo_ocupacion_armonizado`
+#' tiene tres digitos: es un puente analitico en CMO y un codigo observado
+#' en SINCO; no representa una homologacion universal a SINCO 2011.
+#' `codigo_ocupacion_original_cuidado` conserva el insumo sin recodificar.
+#' Las correspondencias multiples siguen la primera regla del material de
+#' Damian y quedan identificadas en `calidad_armonizacion_cuidado`.
+#'
+#' `trabajo_cuidado_mercado` es el nombre principal de la tipología. La columna
+#' `trabajo_cuidado_rem` se conserva como alias deprecado. La función separa la
+#' posición remunerada, la posición explícita sin pago y la evidencia de ingreso
+#' observado o imputado. Un ingreso imputado positivo nunca se presenta como
+#' remuneración observada.
+#'
+#' @param data Data frame de personas; puede contener varios trimestres.
+#' @param anio,trimestre Periodo opcional, escalar o vector de longitud
+#'   `nrow(data)`. Si se omite, usa `anio` y `trim` en data. Rechaza conflictos.
+#' @param variable_codigo Codigo ocupacional observado de cuatro digitos.
+#' @param variable_ocupacion Respaldo SINCO observado de tres digitos.
+#' @param variable_actividad Variable SCIAN-Hogares.
+#' @param variable_ocupado Variable de condicion de ocupacion.
+#' @param valor_ocupado Valor que identifica personas ocupadas.
+#' @return El data frame con clasificacion y trazabilidad del cuidado. Recalcula
+#'   las salidas propias del modulo si existen; preserva los insumos.
+#' @export
+#' @family cuidado_remunerado
+#' @examples
+#' x <- data.frame(p3coe = c(2331, 4111), p4a = c(6111, 6111), clase2 = 1)
+#' procesar_cuidado_remunerado(x, anio = 2022, trimestre = 1)
+procesar_cuidado_remunerado <- function(
+    data, anio = NULL, trimestre = NULL,
+    variable_codigo = "p3coe", variable_ocupacion = "sinco3d",
+    variable_actividad = "p4a", variable_ocupado = "clase2",
+    valor_ocupado = 1) {
+  if (!is.data.frame(data)) stop("`data` debe ser un data frame.")
+  n <- nrow(data)
+  periodo <- function(valor, nombre, trimestre = FALSE) {
+    existente <- if (nombre %in% names(data)) data[[nombre]] else NULL
+    parsear <- function(x) {
+      y <- as.character(x)
+      if (trimestre) y <- sub("^t", "", tolower(y))
+      suppressWarnings(as.numeric(y))
+    }
+    if (is.null(valor)) valor <- existente
+    if (is.null(valor)) stop("Falta el periodo: ", nombre)
+    if (!length(valor) %in% unique(c(1L, n))) stop("Longitud invalida: ", nombre)
+    valor <- rep_len(parsear(valor), n)
+    if (anyNA(valor) || any(!is.finite(valor)) ||
+        any(valor != floor(valor)) ||
+        (trimestre && any(!valor %in% 1:4)) ||
+        (!trimestre && any(valor < 2005 | valor > 9999))) {
+      stop("Periodo invalido: ", nombre)
+    }
+    if (!is.null(existente) && !identical(parsear(existente), valor)) {
+      stop("Conflicto entre argumento y columna: ", nombre)
+    }
+    valor
+  }
+  a <- periodo(anio, "anio")
+  t <- periodo(trimestre, "trim", TRUE)
+  p <- a * 10 + t
+  cmo <- p <= 20122
+  vars <- c(variable_actividad, variable_ocupado)
+  faltantes <- setdiff(vars, names(data))
+  if (length(faltantes)) stop("Faltan variables: ", paste(faltantes, collapse=", "))
+  if (length(valor_ocupado) != 1L || is.na(valor_ocupado)) {
+    stop("`valor_ocupado` debe tener un valor no faltante.")
+  }
+  raw <- variable_codigo %in% names(data)
+  if (!raw && any(cmo)) stop("Falta la variable CMO: ", variable_codigo)
+  if (!raw && !variable_ocupacion %in% names(data)) {
+    stop("Falta ocupacion: ", variable_codigo, " o ", variable_ocupacion)
+  }
+  if (!raw && any(p >= 20213) &&
+      any(c("sinco4d_base2011", "calidad_puente_sinco") %in% names(data))) {
+    stop("SINCO previamente armonizado: proporcione el codigo observado en `variable_codigo`.")
+  }
+  original <- if (raw) data[[variable_codigo]] else data[[variable_ocupacion]]
+  codigo <- .cuidado_codigo(original, if (raw) 4L else 3L)
+  ocu <- if (raw) codigo %/% 10L else codigo
+  # Aislar insumos evita sobrescribir la armonizacion general y metadatos previos.
+  trabajo <- data.frame(anio=a, trim=t, p3coe=codigo, sinco3d=ocu,
+                        p4a=data[[variable_actividad]], clase2=data[[variable_ocupado]])
+  salida <- class_cuidado_rem(trabajo, valor_ocupado=valor_ocupado)
+  nuevas <- setdiff(names(salida), c(names(trabajo), "cmo_original", "sinco11",
+                                    "sinco11_n_destinos", "sinco11_calidad"))
+  for (v in nuevas) data[[v]] <- salida[[v]]
+  data$clasificador_ocupacion <- ifelse(cmo, "CMO",
+                                       ifelse(p >= 20213, "SINCO 2019", "SINCO 2011"))
+  data$version_scian <- salida$scian_version_cuidado
+  data$codigo_ocupacion_original_cuidado <- original
+  data$codigo_ocupacion_armonizado <- .cuidado_codigo(salida$sinco3d, 3L)
+  data$metodo_armonizacion_cuidado <- ifelse(cmo, "Puente analitico CMO: primera regla de Damian",
+                                          if (raw) "SINCO observado: primeros tres digitos" else "SINCO observado a tres digitos")
+  calidad <- ifelse(is.na(data$codigo_ocupacion_armonizado), "Codigo faltante o no clasificable",
+                    "SINCO observado")
+  if (any(cmo)) calidad[cmo] <- salida$sinco11_calidad[cmo]
+  data$calidad_armonizacion_cuidado <- calidad
+  mercado <- suppressWarnings(as.numeric(as.character(salida$cuida_total)))
+  data$trabajo_cuidado_mercado <- mercado
+  data$trabajo_cuidado_rem <- mercado
+
+  opcional_num <- function(nombre) {
+    if (!nombre %in% names(data)) return(rep(NA_real_, n))
+    suppressWarnings(as.numeric(as.character(data[[nombre]])))
+  }
+  posicion <- opcional_num("pos_ocu")
+  ingreso_observado <- opcional_num("ingocup")
+  ingreso_imputado <- opcional_num("ingocup_imp")
+  fue_imputado <- opcional_num("imp_ingocup")
+  sin_ingreso <- opcional_num("sin_pago")
+  cuidado <- !is.na(mercado) & mercado == 1
+  no_cuidado <- !is.na(mercado) & mercado == 0
+
+  data$cuidado_posicion_remunerada <- dplyr::case_when(
+    no_cuidado ~ 0,
+    cuidado & posicion %in% 1:3 ~ 1,
+    cuidado & posicion == 4 ~ 0,
+    TRUE ~ NA_real_
+  )
+  data$cuidado_sin_pago <- dplyr::case_when(
+    no_cuidado ~ 0,
+    cuidado & posicion == 4 ~ 1,
+    cuidado & posicion %in% 1:3 ~ 0,
+    TRUE ~ NA_real_
+  )
+
+  observado_positivo <- cuidado & is.finite(ingreso_observado) &
+    ingreso_observado > 0 & (is.na(fue_imputado) | fue_imputado != 1)
+  imputado_positivo <- cuidado & fue_imputado == 1 &
+    is.finite(ingreso_imputado) & ingreso_imputado > 0
+  ingreso_cero <- cuidado & (
+    posicion == 4 | sin_ingreso == 1 |
+      (is.finite(ingreso_observado) & ingreso_observado == 0 &
+         (is.na(fue_imputado) | fue_imputado != 1))
+  )
+  data$estado_ingreso_cuidado <- dplyr::case_when(
+    observado_positivo ~ "observado_positivo",
+    imputado_positivo ~ "imputado_positivo",
+    ingreso_cero ~ "sin_ingreso_identificado",
+    cuidado ~ "no_determinado",
+    TRUE ~ NA_character_
+  )
+
+  data |>
+    sjlabelled::var_labels(
+      trabajo_cuidado_mercado = "Trabajadora/or de cuidado de mercado",
+      trabajo_cuidado_rem = "Alias deprecado de trabajo_cuidado_mercado",
+      cuidado_posicion_remunerada = "Cuidado de mercado en posición ocupacional remunerada",
+      cuidado_sin_pago = "Cuidado de mercado en posición ocupacional sin pago",
+      estado_ingreso_cuidado = "Estado de observación o imputación del ingreso en el cuidado de mercado"
+    ) |>
+    sjlabelled::val_labels(
+      trabajo_cuidado_mercado = c("No" = 0, "Sí" = 1),
+      trabajo_cuidado_rem = c("No" = 0, "Sí" = 1),
+      cuidado_posicion_remunerada = c("No" = 0, "Sí" = 1),
+      cuidado_sin_pago = c("No" = 0, "Sí" = 1)
+    )
+}
+
+# Validacion de formato; no pretende sustituir un catalogo exhaustivo.
+.cuidado_codigo <- function(x, digitos) {
+  y <- suppressWarnings(as.numeric(as.character(x)))
+  valido <- is.finite(y) & y == floor(y) &
+    y >= 10^(digitos - 1L) & y < 10^digitos - 1L
+  y[!valido] <- NA_real_
+  as.integer(y)
+}

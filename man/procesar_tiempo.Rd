@@ -4,48 +4,69 @@
 \alias{procesar_tiempo}
 \title{Procesar variables de tiempo en actividades del hogar y cuidado}
 \usage{
-procesar_tiempo(data, anio, trimestre)
+procesar_tiempo(
+  data,
+  anio,
+  trimestre,
+  tratamiento_faltantes = c("distinguir", "historico_cero")
+)
 }
 \arguments{
-\item{data}{Un data frame fusionado por \code{fusion_enoe()} o cargado directamente,
-que contenga variables de tiempo (\verb{p11_*} o \verb{p9_*}).}
+\item{data}{Data frame fusionado por \code{fusion_enoe()} o cargado directamente.}
 
-\item{anio}{Año del trimestre.}
+\item{anio}{Año del trimestre, usado si falta \code{anio} en \code{data}.}
 
-\item{trimestre}{Trimestre numérico (1-4).}
+\item{trimestre}{Trimestre 1–4, usado si faltan metadatos en \code{data}.}
+
+\item{tratamiento_faltantes}{Contrato de las variables principales:
+\code{"distinguir"} conserva los estados y \code{NA}; \code{"historico_cero"} reproduce
+la conversión histórica a cero. En ambos casos se crean columnas legacy.}
 }
 \value{
-Un data frame con variables de tiempo procesadas y etiquetadas.
-Las variables \code{t_estudiar}, \code{t_cuidado}, \code{t_construir}, \code{t_reparar},
-\code{t_quehacer}, \code{t_comun}, \code{t_compras} y \code{t_traslado} se expresan en horas.
-Las variables \code{t_total} y \code{t_total0} se expresan en minutos, mientras que
-\code{t_total_hrs} y \code{t_total_hrs0} se expresan en horas.
+El mismo data frame, en el mismo orden, con duraciones, estados de
+medición, totales completos y parciales, y resultados históricos.
 }
 \description{
-Calcula el tiempo dedicado a diversas actividades del hogar y cuidado,
-expresado en horas, a partir de las preguntas de uso del tiempo de la ENOE.
-Soporta tanto el cuestionario ampliado como el básico, ajustando el mapeo
-de variables según el año. Si no existen las variables sociodemográficas
-requeridas (\code{anio}, \code{coe_tipo}), las crea con \code{procesar_vars_sociodemo()}.
+Calcula duraciones semanales a partir de las baterías \verb{p11_*} y \verb{p9_*} de
+ENOE. Conserva sin cambios los campos fuente y distingue duración observada,
+actividad realizada con duración desconocida (98), realización desconocida
+(99), reactivo no seleccionado y batería no medible.
 }
 \details{
-Las variables específicas de tiempo (\code{t_estudiar}, \code{t_cuidado},
-\code{t_construir}, \code{t_reparar}, \code{t_quehacer}, \code{t_comun}, \code{t_compras},
-\code{t_traslado}) se calculan inicialmente en minutos y posteriormente se
-convierten a horas. En esta conversión, los valores faltantes se sustituyen
-por \code{0}, con el fin de facilitar la construcción de agregados y su uso en
-análisis descriptivos.
+El orden de las actividades cambió en 2011. Hasta 2010, los reactivos 3 a 6
+corresponden a construcción, reparación, quehaceres y servicios a la
+comunidad. Desde 2011, los reactivos 3 y 4 corresponden a compras y traslados,
+y las cuatro actividades anteriores pasan a los reactivos 5 a 8.
+
+Las variables específicas \verb{t_*} se expresan en horas. \code{t_total}, \code{t_total0}
+y sus versiones parciales se expresan en minutos; los sufijos \verb{_hrs} son sus
+equivalentes en horas. Un total completo es \code{NA} cuando contiene una
+actividad con duración desconocida, realización desconocida, información
+incompleta o inválida. El total parcial suma sólo las duraciones observadas y
+los ceros de reactivos no seleccionados.
+
+Las columnas \verb{*_legacy} reproducen el contrato histórico, que convertía a
+cero los códigos 98, 99 y todos los faltantes. El argumento
+\code{tratamiento_faltantes = "historico_cero"} permite mantener temporalmente
+ese resultado en los nombres principales.
 }
 \seealso{
-Other procesamiento_enoe: 
-\code{\link{armoniza_sinco}()},
-\code{\link{crear_folios}()},
-\code{\link{imputa_ingocup}()},
-\code{\link{ipc_enoe}()},
-\code{\link{procesar_contribucion_hogar}()},
-\code{\link{procesar_variables_enoe}()},
-\code{\link{procesar_vars_hogar}()},
-\code{\link{procesar_vars_laborales}()},
-\code{\link{procesar_vars_sociodemo}()}
+Other procesamiento_enoe:
+\code{\link[=armoniza_sinco]{armoniza_sinco()}},
+\code{\link[=armonizar_carreras_enoe]{armonizar_carreras_enoe()}},
+\code{\link[=calcular_desajuste_estadistico]{calcular_desajuste_estadistico()}},
+\code{\link[=crear_folios]{crear_folios()}},
+\code{\link[=imputa_ingocup]{imputa_ingocup()}},
+\code{\link[=ipc_enoe]{ipc_enoe()}},
+\code{\link[=procesar_clases_damian]{procesar_clases_damian()}},
+\code{\link[=procesar_contribucion_hogar]{procesar_contribucion_hogar()}},
+\code{\link[=procesar_cuidado_extra]{procesar_cuidado_extra()}},
+\code{\link[=procesar_estudio_trabajo]{procesar_estudio_trabajo()}},
+\code{\link[=procesar_libro1]{procesar_libro1()}},
+\code{\link[=procesar_variables_enoe]{procesar_variables_enoe()}},
+\code{\link[=procesar_vars_hogar]{procesar_vars_hogar()}},
+\code{\link[=procesar_vars_laborales]{procesar_vars_laborales()}},
+\code{\link[=procesar_vars_sociodemo]{procesar_vars_sociodemo()}},
+\code{\link[=sinco2019_to_sinco2011]{sinco2019_to_sinco2011()}}
 }
 \concept{procesamiento_enoe}
