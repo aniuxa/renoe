@@ -109,16 +109,16 @@ armonizar_carreras_enoe(datos)
 #> 1          5          07         Arquitectura Exacta por clave detallada
 #> 2          3          04                 <NA>      Exacta a nivel amplio
 #> 3          3          04                 <NA>      Exacta a nivel amplio
-#>                               campo_arm8_desc
-#> 1      Ingeniería, manufactura y construcción
-#> 2 Ciencias sociales, administración y derecho
-#> 3 Ciencias sociales, administración y derecho
-#>                         campo_arm10_desc elegible_carrera tiene_codigo_carrera
-#> 1 Ingeniería, manufactura y construcción             TRUE                 TRUE
-#> 2              Administración y negocios             TRUE                 TRUE
-#> 3              Administración y negocios             TRUE                 TRUE
-#>   cobertura_arm8
-#> 1           TRUE
-#> 2           TRUE
-#> 3           TRUE
+#>                                        campo_arm8_desc
+#> 1 Ingenier<U+00ED>a, manufactura y construcci<U+00F3>n
+#> 2   Ciencias sociales, administraci<U+00F3>n y derecho
+#> 3   Ciencias sociales, administraci<U+00F3>n y derecho
+#>                                       campo_arm10_desc elegible_carrera
+#> 1 Ingenier<U+00ED>a, manufactura y construcci<U+00F3>n             TRUE
+#> 2                     Administraci<U+00F3>n y negocios             TRUE
+#> 3                     Administraci<U+00F3>n y negocios             TRUE
+#>   tiene_codigo_carrera cobertura_arm8
+#> 1                 TRUE           TRUE
+#> 2                 TRUE           TRUE
+#> 3                 TRUE           TRUE
 ```

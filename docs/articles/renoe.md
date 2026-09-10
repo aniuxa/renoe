@@ -1,6 +1,7 @@
 # renoe
 
 ``` r
+
 library(renoe)
 ```
 
@@ -20,6 +21,7 @@ Si el paquete aún no está en CRAN, se recomienda instalarlo desde GitHub
 con `pak`:
 
 ``` r
+
 # install.packages("pak")
 pak::pkg_install("aniuxa/renoe")
 ```
@@ -27,6 +29,7 @@ pak::pkg_install("aniuxa/renoe")
 También puede instalarse con `remotes` o `devtools`:
 
 ``` r
+
 # install.packages("remotes")
 remotes::install_github("aniuxa/renoe")
 
@@ -41,6 +44,7 @@ opción `rapida = TRUE` omite el etiquetado de variables y acelera la
 carga.
 
 ``` r
+
 descarga_enoe(2023, 4)
 datos <- carga_enoe(2023, 4, rapida = TRUE)
 ```
@@ -49,6 +53,7 @@ Si se desea recuperar las tablas por separado, puede usarse
 `list = TRUE`:
 
 ``` r
+
 tablas <- carga_enoe(2023, 4, list = TRUE, rapida = TRUE)
 names(tablas)
 ```
@@ -60,6 +65,7 @@ sociodemográfico y los componentes COE, puede utilizarse
 [`fusion_enoe()`](https://aniuxa.github.io/renoe/reference/fusion_enoe.md).
 
 ``` r
+
 datos_fusionados <- fusion_enoe(2023, 4)
 ```
 
@@ -72,6 +78,7 @@ También es posible guardar directamente el resultado en distintos
 formatos:
 
 ``` r
+
 fusion_enoe(2023, 4, formato = "parquet", guardar = TRUE)
 ```
 
@@ -83,6 +90,7 @@ derivadas para distintos niveles de análisis.
 #### Variables sociodemográficas
 
 ``` r
+
 datos <- procesar_vars_sociodemo(datos_fusionados, anio = 2023, trimestre = 4)
 ```
 
@@ -93,6 +101,7 @@ ruralidad y zona económica regional.
 #### Estructura del hogar
 
 ``` r
+
 datos <- procesar_vars_hogar(datos, anio = 2023, trimestre = 4)
 ```
 
@@ -103,6 +112,7 @@ indicadores de presencia de niñez, juventud y adultez mayor.
 #### Variables laborales
 
 ``` r
+
 datos <- procesar_vars_laborales(datos)
 datos <- calcular_desajuste_estadistico(
   datos,
@@ -127,6 +137,7 @@ personas.
 #### Uso del tiempo
 
 ``` r
+
 datos <- procesar_tiempo(datos, anio = 2023, trimestre = 4)
 ```
 
@@ -142,6 +153,7 @@ recodificación histórica a cero.
 #### Contribución al hogar
 
 ``` r
+
 datos <- procesar_contribucion_hogar(datos)
 ```
 
@@ -154,6 +166,7 @@ trabajo no remunerado.
 Un flujo típico de trabajo podría ser el siguiente:
 
 ``` r
+
 datos <- fusion_enoe(2023, 4)
 
 datos <- datos |>
@@ -196,6 +209,7 @@ incorporan automáticamente a
 Estas extensiones deben ejecutarse después del procesamiento general:
 
 ``` r
+
 datos_proyecto <- datos |>
   procesar_cuidado_extra() |>
   procesar_estudio_trabajo() |>
@@ -215,6 +229,7 @@ El paquete también incluye herramientas para imputar ingresos
 ocupacionales faltantes:
 
 ``` r
+
 datos <- imputa_ingocup(datos)
 ```
 
@@ -228,6 +243,7 @@ puede utilizarse una función de procesamiento integral si está
 disponible en la instalación del paquete:
 
 ``` r
+
 procesados <- procesar_variables_enoe(datos_fusionados, 2023, 4)
 ```
 
@@ -241,6 +257,7 @@ Para consultar metadatos y verificar qué archivos están disponibles para
 un trimestre específico:
 
 ``` r
+
 info_trimestre(2023, 4)
 ```
 
@@ -249,6 +266,7 @@ info_trimestre(2023, 4)
 También pueden descargarse los cuestionarios de la ENOE en PDF:
 
 ``` r
+
 descargar_cuestionarios(2023, 4)
 ```
 
@@ -258,12 +276,14 @@ Después de procesar la base, puede guardarse en formatos reutilizables
 para evitar repetir todo el flujo:
 
 ``` r
+
 saveRDS(datos, "datos/enoe_2023_4t_procesada.rds")
 ```
 
 o bien desde la propia fusión:
 
 ``` r
+
 fusion_enoe(2023, 4, formato = "rds", guardar = TRUE)
 ```
 
@@ -273,6 +293,7 @@ fusion_enoe(2023, 4, formato = "rds", guardar = TRUE)
 descripción y la función que las construye:
 
 ``` r
+
 diccionario <- readr::read_csv(
   system.file("extdata", "diccionario_variables.csv", package = "renoe"),
   show_col_types = FALSE
@@ -304,7 +325,7 @@ trimestres.
 
 ### Contacto
 
-Desarrollado por Ana Escoto y el equipo del proyecto PAPIIT IN305925.
+Desarrollado por Ana Escoto y el equipo del proyecto PAPIIT IN305925.  
 Repositorio oficial: `aniuxa/renoe`
 
 ### Declaración sobre el uso de inteligencia artificial
