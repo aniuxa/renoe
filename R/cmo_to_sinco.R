@@ -8,6 +8,9 @@
 #' @param codigos Opcional: data.frame de equivalencias. Si se omite, se usa una tabla interna del paquete.
 #' @param var_origen Nombre de la variable que contiene el código CMO (por defecto `cmo_4d`).
 #' @param keep_labels Lógico. Si TRUE, mantiene las etiquetas si existen.
+#'   Las columnas `sinco3d` y `sinco4d` preexistentes se reemplazan de manera
+#'   explícita para que la función pueda ejecutarse nuevamente sin crear
+#'   sufijos `.x` y `.y`.
 #'
 #' @return El `data.frame` original con columnas adicionales: `cmo_4d`, `sinco4d` y `sinco3d`.
 #' @export
@@ -28,6 +31,14 @@ cmo_to_sinco <- function(data, codigos = NULL, var_origen = "cmo_4d", keep_label
   }
 
   # Cargar tabla de correspondencias si no se proporcionó
+  data <- data %>%
+    dplyr::mutate(
+      cmo_4d = sjlabelled::set_label(
+        cmo_4d,
+        "Codigo CMO original estandarizado a cuatro digitos"
+      )
+    )
+
   if (is.null(codigos)) {
     codigos <- readr::read_csv(
       system.file("extdata", "cmo_sinco_total.csv", package = "renoe"),
@@ -41,6 +52,9 @@ cmo_to_sinco <- function(data, codigos = NULL, var_origen = "cmo_4d", keep_label
     dplyr::distinct()
 
   data <- data %>%
+    dplyr::select(
+      -dplyr::matches("^sinco(3d|4d)(\\.[xy])?$")
+    ) %>%
     dplyr::left_join(codigos, by = setNames("cmo_4d", var_origen))
 
   return(data)

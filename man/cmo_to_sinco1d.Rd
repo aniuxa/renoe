@@ -14,6 +14,6 @@ cmo_to_sinco1d(data)
 El data frame original con la variable \code{sinco1d} agregada.
 }
 \description{
-Aplica mapeo manual para años anteriores a 2013 o hasta el segundo trimestre de 2013,
+Aplica mapeo manual desde 2005-I hasta el segundo trimestre de 2012,
 con base en \code{p3_coe}, usando reglas por \code{cmo2d}, \code{cmo3d} y códigos completos.
 }

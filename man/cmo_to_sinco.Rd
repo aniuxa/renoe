@@ -13,7 +13,10 @@ cmo_to_sinco(data, codigos = NULL, var_origen = "cmo_4d", keep_labels = FALSE)
 
 \item{var_origen}{Nombre de la variable que contiene el código CMO (por defecto \code{cmo_4d}).}
 
-\item{keep_labels}{Lógico. Si TRUE, mantiene las etiquetas si existen.}
+\item{keep_labels}{Lógico. Si TRUE, mantiene las etiquetas si existen.
+Las columnas \code{sinco3d} y \code{sinco4d} preexistentes se reemplazan de manera
+explícita para que la función pueda ejecutarse nuevamente sin crear
+sufijos \code{.x} y \code{.y}.}
 }
 \value{
 El \code{data.frame} original con columnas adicionales: \code{cmo_4d}, \code{sinco4d} y \code{sinco3d}.

@@ -3,44 +3,64 @@
 \encoding{UTF-8}
 \name{armoniza_sinco}
 \alias{armoniza_sinco}
-\title{Armonizar códigos SINCO desde CMO o SINCO 2011}
+\title{Armonizar ocupaciones CMO, SINCO 2011 y SINCO 2019}
 \usage{
-armoniza_sinco(data, codigos = NULL)
+armoniza_sinco(data, codigos = NULL, correspondencia_2019 = NULL)
 }
 \arguments{
-\item{data}{Un data.frame con al menos \code{anio}, \code{trimestre} (como "t1", "t2", etc.) y \code{p3coe}.
-También puede contener \code{sinco4d}, \code{pos_ocu}, \code{tue2}.}
+\item{data}{Data frame con \code{anio}, \code{trim} y \code{p3coe}.}
 
-\item{codigos}{(Opcional) data.frame de correspondencia CMO–SINCO. Si se omite, se usa la tabla interna del paquete.}
+\item{codigos}{Tabla opcional de correspondencia CMO-SINCO usada antes de
+2012-III.}
+
+\item{correspondencia_2019}{Tabla opcional, en formato largo, del puente
+SINCO 2019-SINCO 2011.}
 }
 \value{
-Un data.frame con variables armonizadas: \code{cmo_4d}, \code{sinco4d}, \code{sinco3d}, \code{sinco2d}, \code{sinco1d}.
+El data frame con \code{sinco4d}, \code{sinco3d}, \code{sinco2d} y \code{sinco1d}
+armonizados, además de variables de procedencia y calidad.
 }
 \description{
-Esta función construye variables \code{sinco1d}, \code{sinco2d}, \code{sinco3d} y \code{sinco4d} a partir de códigos CMO (anteriores a 2013,
-o hasta el segundo trimestre de 2013) o directamente desde SINCO 2011 (desde el tercer trimestre de 2013 en adelante),
-utilizando una correspondencia incluida en el paquete y reglas manuales de clasificación cuando no hay equivalencia directa.
+Construye códigos comparables en SINCO 2011 a partir de CMO entre 2005-I y
+2012-II, SINCO 2011 observado entre 2012-III y 2021-II, y SINCO 2019 desde
+2021-III. Para el último periodo utiliza la tabla de equivalencia oficial
+SINCO 2011-2019 y conserva sin resolver las correspondencias múltiples.
 }
 \examples{
 datos <- data.frame(
-  anio = c(2011, 2012, 2013),
-  trim = c("t1", "t2", "t3"),
-  p3coe = c(7121, 4190, 1110),
-  pos_ocu = c(1, 2, 1),
-  tue2 = c(1, 2, 1)
+  anio = c(2012, 2021, 2021),
+  trim = c(3, 2, 3),
+  p3coe = c(2436, 2423, 2433),
+  pos_ocu = 1,
+  tue2 = 1
 )
 armoniza_sinco(datos)
 }
+\references{
+INEGI (2020). \emph{Sistema Nacional de Clasificación de Ocupaciones 2019}.
+Anexo: Tabla de equivalencia SINCO 2011-2019.
+
+Escoto Castillo, A. y Sánchez Peña, L. (2024). \emph{El riesgo de automatización
+en México: diferencias temporales y generacionales entre las distintas
+ocupaciones}. CEPAL. \url{https://hdl.handle.net/11362/69015}
+}
 \seealso{
-Other procesamiento_enoe: 
-\code{\link{crear_folios}()},
-\code{\link{imputa_ingocup}()},
-\code{\link{ipc_enoe}()},
-\code{\link{procesar_contribucion_hogar}()},
-\code{\link{procesar_tiempo}()},
-\code{\link{procesar_variables_enoe}()},
-\code{\link{procesar_vars_hogar}()},
-\code{\link{procesar_vars_laborales}()},
-\code{\link{procesar_vars_sociodemo}()}
+Other procesamiento_enoe:
+\code{\link[=armonizar_carreras_enoe]{armonizar_carreras_enoe()}},
+\code{\link[=calcular_desajuste_estadistico]{calcular_desajuste_estadistico()}},
+\code{\link[=crear_folios]{crear_folios()}},
+\code{\link[=imputa_ingocup]{imputa_ingocup()}},
+\code{\link[=ipc_enoe]{ipc_enoe()}},
+\code{\link[=procesar_clases_damian]{procesar_clases_damian()}},
+\code{\link[=procesar_contribucion_hogar]{procesar_contribucion_hogar()}},
+\code{\link[=procesar_cuidado_extra]{procesar_cuidado_extra()}},
+\code{\link[=procesar_estudio_trabajo]{procesar_estudio_trabajo()}},
+\code{\link[=procesar_libro1]{procesar_libro1()}},
+\code{\link[=procesar_tiempo]{procesar_tiempo()}},
+\code{\link[=procesar_variables_enoe]{procesar_variables_enoe()}},
+\code{\link[=procesar_vars_hogar]{procesar_vars_hogar()}},
+\code{\link[=procesar_vars_laborales]{procesar_vars_laborales()}},
+\code{\link[=procesar_vars_sociodemo]{procesar_vars_sociodemo()}},
+\code{\link[=sinco2019_to_sinco2011]{sinco2019_to_sinco2011()}}
 }
 \concept{procesamiento_enoe}
