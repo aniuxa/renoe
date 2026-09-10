@@ -1,14 +1,7 @@
----
 title: "Uso del paquete renoe"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Uso del paquete renoe}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
+
 template:
   bootstrap: 5
-  bootswatch: flatly
   params:
     highlight: textmate
 
@@ -23,6 +16,7 @@ navbar:
   components:
     github:
       icon: fa-github
+      aria-label: "Repositorio de renoe en GitHub"
       href: https://github.com/aniuxa/renoe
 
 reference:
@@ -44,7 +38,20 @@ reference:
       - ipc_enoe
       - imputa_ingocup
       - procesar_vars_laborales
+      - calcular_desajuste_estadistico
       - procesar_contribucion_hogar
+
+  - title: "Extensiones del proyecto y cuidados"
+    contents:
+      - procesar_cuidado_extra
+      - procesar_estudio_trabajo
+      - procesar_libro1
+
+  - title: "Cuidado de mercado"
+    contents:
+      - procesar_cuidado_remunerado
+      - class_cuidado_rem
+      - cmo_to_sinco11_care
 
   - title: "Funciones auxiliares"
     contents:
@@ -56,11 +63,13 @@ reference:
 articles:
   - title: "Uso básico del paquete"
     contents:
-      - renoe-vignette
+      - renoe
+      - cuidado-remunerado
+      - migracion-0.2.0
 
 authors:
   footer:
-    roles: [aut, cre]
-    text: "Desarrollado por Ana Escoto y el equipo del proyecto PAPIIT IN305925"
+    roles: [aut, cre, ctb]
+    text: "Desarrollado por Ana Escoto, con contribuciones de código de Gerardo Damián Hernández y Gabriela Cervantes, en el proyecto PAPIIT IN305925"
 
 url: https://aniuxa.github.io/renoe

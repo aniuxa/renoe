@@ -27,5 +27,16 @@ Useful links:
 \author{
 \strong{Maintainer}: Ana Escoto \email{ana.escoto@politicas.unam.mx} (\href{https://orcid.org/0000-0001-7259-0001}{ORCID})
 
+Authors:
+\itemize{
+  \item Ana Escoto \email{ana.escoto@politicas.unam.mx} (\href{https://orcid.org/0000-0001-7259-0001}{ORCID})
+}
+
+Other contributors:
+\itemize{
+  \item Gerardo DamiC!n HernC!ndez (\href{https://orcid.org/0009-0002-7604-3886}{ORCID}) [contributor]
+  \item Gabriela Cervantes [contributor]
+}
+
 }
 \keyword{internal}

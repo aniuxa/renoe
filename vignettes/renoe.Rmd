@@ -24,9 +24,20 @@ El paquete `renoe` permite descargar, cargar, fusionar, procesar y analizar los 
 
 ## Instalación
 
-Si el paquete aún no está en CRAN, puede instalarse desde GitHub:
+Si el paquete aún no está en CRAN, se recomienda instalarlo desde GitHub con
+`pak`:
 
 ```{r eval = FALSE}
+# install.packages("pak")
+pak::pkg_install("aniuxa/renoe")
+```
+
+También puede instalarse con `remotes` o `devtools`:
+
+```{r eval = FALSE}
+# install.packages("remotes")
+remotes::install_github("aniuxa/renoe")
+
 # install.packages("devtools")
 devtools::install_github("aniuxa/renoe")
 ```
@@ -87,9 +98,23 @@ Esta función construye tipologías de hogar, tamaño del hogar sin servicio dom
 
 ```{r eval = FALSE}
 datos <- procesar_vars_laborales(datos)
+datos <- calcular_desajuste_estadistico(
+  datos,
+  periodo_referencia = "trimestre"
+)
 ```
 
-Esta función armoniza la codificación ocupacional, calcula niveles de habilidad, desajuste educativo, experiencia previa de trabajo y variables de temporalidad contractual.
+La primera función armoniza la codificación ocupacional y calcula el nivel
+agregado de competencia, el proxy basado en escolaridad, su desajuste, la
+experiencia previa y la temporalidad contractual. La segunda calcula una
+referencia estadística observada de escolaridad. Su valor predeterminado es
+transversal trimestral: compara cada observación ocupada con su grupo SINCO en
+el mismo trimestre. Para usar una referencia anual como análisis de sensibilidad,
+primero se deben unir los cuatro trimestres disponibles y después llamar a
+`calcular_desajuste_estadistico(periodo_referencia = "anio")`. Un ponderador
+anual ajustado puede suministrarse con `variable_ponderador`; la función no
+impone `fac / 4` porque el año puede estar incompleto. La unidad sigue siendo
+persona-trimestre y la función no deduplica personas.
 
 ### Uso del tiempo
 
@@ -97,7 +122,13 @@ Esta función armoniza la codificación ocupacional, calcula niveles de habilida
 datos <- procesar_tiempo(datos, anio = 2023, trimestre = 4)
 ```
 
-Las variables específicas de tiempo se expresan en horas. En este procesamiento, los valores faltantes de tiempo en actividades específicas se convierten en cero para facilitar la construcción de agregados y su uso en análisis descriptivos.
+Las variables específicas de tiempo se expresan en horas. Los códigos 00--97
+son duraciones; 98 identifica una actividad realizada con duración desconocida
+y 99 una realización desconocida. Una actividad no seleccionada dentro de una
+batería respondida vale cero, mientras que una batería no medible conserva
+`NA`. Los totales completos quedan en `NA` si falta una duración y los totales
+parciales se conservan con una bandera de incompletitud. Las columnas
+`*_legacy` reproducen la recodificación histórica a cero.
 
 ### Contribución al hogar
 
@@ -115,12 +146,49 @@ Un flujo típico de trabajo podría ser el siguiente:
 datos <- fusion_enoe(2023, 4)
 
 datos <- datos |>
+  drop_tri() |>
+  crear_folios() |>
   procesar_vars_sociodemo(anio = 2023, trimestre = 4) |>
   procesar_vars_hogar(anio = 2023, trimestre = 4) |>
   procesar_vars_laborales() |>
+  calcular_desajuste_estadistico(periodo_referencia = "trimestre") |>
   procesar_tiempo(anio = 2023, trimestre = 4) |>
+  ipc_enoe(anio = 2023, trimestre = 4) |>
+  imputa_ingocup() |>
   procesar_contribucion_hogar()
 ```
+
+### Extensiones específicas del proyecto
+
+Algunos indicadores responden a preguntas particulares del proyecto del libro
+y del estudio del trabajo de cuidado. Por esa razón no se incorporan
+automáticamente a `procesar_variables_enoe()`:
+
+- `procesar_cuidado_extra()` resume composición, jornadas laborales y capacidad
+  del hogar para absorber necesidades de cuidado.
+- `procesar_estudio_trabajo()` clasifica la combinación de estudio y trabajo y
+  distingue búsqueda, cuidados y disponibilidad. Los indicadores pueden
+  superponerse; `tipo_neet` ofrece una tipología exclusiva.
+- `procesar_libro1()` construye indicadores de origen migratorio, no ocupación
+  por cuidados, prestaciones, antigüedad y afiliación sindical.
+- `class_cuidado_rem()` clasifica ocupaciones e industrias vinculadas con el
+  cuidado de mercado; esta pertenencia no implica remuneración positiva.
+- `cmo_to_sinco11_care()` es un puente analítico CMO–SINCO 2011 para el estudio
+  de cuidados y no una correspondencia general uno a uno.
+
+Estas extensiones deben ejecutarse después del procesamiento general:
+
+```{r eval = FALSE}
+datos_proyecto <- datos |>
+  procesar_cuidado_extra() |>
+  procesar_estudio_trabajo() |>
+  procesar_libro1() |>
+  class_cuidado_rem()
+```
+
+Para observaciones entre 2005-I y 2012-II, `class_cuidado_rem()` aplica
+internamente el puente CMO–SINCO de cuidados utilizando `anio` y `trim`. Desde
+2012-III utiliza la clasificación SINCO observada y armonizada.
 
 ## Imputación de ingresos ocupacionales
 
@@ -172,7 +240,56 @@ o bien desde la propia fusión:
 fusion_enoe(2023, 4, formato = "rds", guardar = TRUE)
 ```
 
+## Diccionario de variables
+
+`renoe` incluye un diccionario de las variables derivadas, su descripción y la
+función que las construye:
+
+```{r eval = FALSE}
+diccionario <- readr::read_csv(
+  system.file("extdata", "diccionario_variables.csv", package = "renoe"),
+  show_col_types = FALSE
+)
+
+dplyr::glimpse(diccionario)
+```
+
+El archivo contiene las columnas `variable_nombre`, `descripcion` y `funcion`.
+Se regenera a partir del código para mantenerlo sincronizado con el paquete.
+
+## Organización sugerida del directorio de trabajo
+
+La ubicación de los archivos procesados es una decisión del proyecto y no está
+fijada por `renoe`. Una estructura reproducible posible es:
+
+```text
+proyecto/
+├── zip/       # Archivos descargados y extraídos
+├── datos/     # Bases fusionadas por trimestre
+└── procesa/   # Bases procesadas y listas para análisis
+```
+
+Las funciones generales devuelven objetos en memoria. La lectura desde `datos/`
+y la escritura en `procesa/` deben controlarse mediante el script de producción
+o una futura función envolvente para procesar trimestres.
+
 ## Contacto
 
 Desarrollado por Ana Escoto y el equipo del proyecto PAPIIT IN305925.  
 Repositorio oficial: `aniuxa/renoe`
+
+## Declaración sobre el uso de inteligencia artificial
+
+El paquete constituye un primer esfuerzo por sistematizar, documentar y
+traducir a R procedimientos derivados de la experiencia acumulada por Ana
+Escoto y de los conocimientos y trayectorias compartidos por integrantes del
+proyecto en el estudio de la ENOE. Incluye materiales vinculados con el libro
+sobre el uso de R con la encuesta y programas originalmente escritos en Stata.
+
+Durante el desarrollo se utilizaron ChatGPT y, desde el 12 de agosto de 2026,
+Codex como apoyo para revisar y explicar código, proponer funciones, mejorar la
+documentación, detectar errores y construir y ejecutar pruebas. Las decisiones
+conceptuales y metodológicas y la validación de los resultados corresponden a
+la autora y al equipo del proyecto. Todas las modificaciones asistidas por
+inteligencia artificial fueron revisadas por las personas responsables del
+paquete.

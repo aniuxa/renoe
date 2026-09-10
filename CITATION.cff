@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "Si usas este paquete, por favor cítalo como se indica a continuación."
 title: "renoe: Herramientas para trabajar con la Encuesta Nacional de Ocupación y Empleo (ENOE) desde 2005"
-version: "0.1.4"
+version: "0.2.0"
 type: software
 authors:
   - family-names: "Escoto"
@@ -9,8 +9,8 @@ authors:
     email: "ana.escoto@politicas.unam.mx"
     orcid: "https://orcid.org/0000-0001-7259-0001"
 repository-code: "https://github.com/aniuxa/renoe"
-url: "https://github.com/aniuxa/renoe"
-abstract: "Paquete de R para descargar, cargar, fusionar, procesar y analizar los microdatos de la Encuesta Nacional de Ocupación y Empleo (ENOE) de México desde 2005. Incluye funciones para armonizar cuestionarios básico y ampliado, construir identificadores y paneles, procesar variables sociodemográficas, laborales, de uso del tiempo y estructura del hogar, imputar ingresos ocupacionales y generar indicadores de contribución económica y trabajo no remunerado en el hogar."
+url: "https://aniuxa.github.io/renoe"
+abstract: "Paquete de R para descargar, cargar, fusionar, procesar y analizar los microdatos de la Encuesta Nacional de Ocupación y Empleo (ENOE) de México. La versión 0.2.0 cubre los trimestres habilitados desde 2005-T1 hasta 2026-T2, incluidos 2026-T1 y 2026-T2. Incluye funciones para armonizar cuestionarios básico y ampliado, construir identificadores y paneles, procesar variables sociodemográficas, laborales, de uso del tiempo y estructura del hogar, imputar ingresos ocupacionales y generar indicadores de contribución económica y trabajo no remunerado en el hogar."
 keywords:
   - "R"
   - "ENOE"
@@ -20,7 +20,6 @@ keywords:
   - "microdatos"
   - "encuestas"
 license: "AGPL-3.0-or-later"
-date-released: 2026-04-08
 preferred-citation:
   type: software
   authors:
@@ -29,7 +28,6 @@ preferred-citation:
       email: "ana.escoto@politicas.unam.mx"
       orcid: "https://orcid.org/0000-0001-7259-0001"
   title: "renoe: Herramientas para trabajar con la Encuesta Nacional de Ocupación y Empleo (ENOE) desde 2005"
-  version: "0.1.4"
-  date-released: 2026-04-08
+  version: "0.2.0"
   repository-code: "https://github.com/aniuxa/renoe"
-  url: "https://github.com/aniuxa/renoe"
+  url: "https://aniuxa.github.io/renoe"

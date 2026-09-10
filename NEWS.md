@@ -1,10 +1,31 @@
+# renoe 0.2.0
+
+- Se formalizó a Ana Escoto como única autora y mantenedora (`aut`, `cre`) y a
+  Gerardo Damián Hernández y Gabriela Cervantes como colaboradores de código
+  (`ctb`), sin incorporarlos a la cita bibliográfica del paquete.
+- Nuevo modulo de cuidado de mercado con wrapper, trazabilidad y pruebas sinteticas; `trabajo_cuidado_rem` queda como alias transitorio.
+- Concordancia analitica CMO extraida a extdata, conservando las 447 reglas anteriores.
+- El wrapper utiliza ocupacion observada para no confundir SINCO 2019 con la armonizacion general a 2011.
+- La clasificacion de cuidado conserva NA para no ocupados, condicion desconocida y codigos no aplicables; respeta la columna ocupacional personalizada en CMO.
+- `procesar_vars_laborales()` normaliza de forma controlada `cs_p13_1` y `cs_p15`, corrige la agrupación SINCO y usa las categorías sobreeducación, ajuste y subeducación.
+- `calcular_desajuste_estadistico()` usa una referencia transversal trimestral por defecto. La referencia anual exige trimestres acumulados, mantiene la unidad persona-trimestre y conserva la definición histórica en `mismatch2_legacy` cuando corresponde.
+- Los diccionarios CSV son la fuente portable de etiquetas; los atributos de `sjlabelled` se conservan para el trabajo en R y la exportación a Stata.
+- Se corrigió la fusión de 2022-T1 para conservar la población rural: `ur` ya no actúa como llave implícita y se toma de SDEM. La función obliga a usar la vía robusta en ese trimestre y detiene el guardado si no conserva las filas esperadas.
+- `procesar_tiempo()` usa el corte documental de 2011 y distingue 98, 99, no selección y batería no medible. Expone totales parciales, banderas de incompletitud y columnas `*_legacy` para la transición.
+- `ipc_enoe()` valida argumentos, esquema, dominio y unicidad del recurso, y falla de forma explícita cuando falta un trimestre.
+- Se habilitaron los metadatos de 2026-T1 y 2026-T2 después de comparar esquemas y verificar llaves de los ZIP oficiales. La estandarización incorpora `cve_ent`, `cve_mun`, `cve_loc` y `cve_ageb` y conserva `cvegeo`.
+
 # renoe 0.1.4 (8 de abril de 2026)
 
 ## Nuevas funciones y mejoras
 
+- Se incorporó `aplicar_etiquetas_enoe()` para restaurar, antes de exportar a RDS o Stata, etiquetas de variables y valores cuya portabilidad no está garantizada entre distintos lectores de Parquet. La función usa catálogos explícitos, mantiene los códigos numéricos y evita convertir las variables analíticas en factores.
+- Se incorporó `sinco2019_to_sinco2011()` y la tabla de equivalencia oficial de INEGI para armonizar el cambio de clasificador aplicado por la ENOE desde 2021-III. `armoniza_sinco()` ahora distingue CMO, SINCO 2011 y SINCO 2019, conserva el código original y no selecciona arbitrariamente las correspondencias uno-a-varios.
+- Se incorporó `armonizar_carreras_enoe()` para identificar el clasificador de carreras vigente, conservar los códigos originales y canónicos, y producir campos armonizados ARM8 y ARM10 a lo largo de la serie. La función documenta explícitamente las correspondencias detalladas ambiguas del clasificador de 2005.
+- Se corrigió `mujer_universitaria` en `procesar_libro1()`: ahora identifica exclusivamente a mujeres con licenciatura o profesional, maestría o doctorado (`cs_p13_1` entre 7 y 9), excluyendo estudios normales y técnicos. También se generan `nivel_educativo_codigo` y `educacion_universitaria` para hacer transparente la regla.
 - Se incorporó la función `procesar_contribucion_hogar()` para generar ingreso ocupacional individual deflactado, agregados del hogar, indicadores per cápita y quintiles ponderados de ingreso y trabajo no remunerado.
 - Se actualizaron las funciones `procesar_vars_sociodemo()`, `procesar_tiempo()`, `procesar_vars_hogar()` y `procesar_vars_laborales()` para estandarizar el uso de etiquetas mediante `sjlabelled::var_labels()` y `sjlabelled::val_labels()`.
-- Se amplió la documentación de `procesar_tiempo()` para dejar explícito que las variables específicas de uso del tiempo se convierten a horas y que los valores faltantes se recodifican a cero para facilitar agregados y análisis descriptivos.
+- En esa versión, `procesar_tiempo()` recodificaba faltantes a cero; la versión 0.2.0 conserva este comportamiento sólo en las columnas `*_legacy` y mediante `tratamiento_faltantes = "historico_cero"`.
 - Se actualizó `procesar_vars_laborales()` para reflejar cambios en la variable de experiencia previa de trabajo, usando `p2h4` en la construcción de `nunca_trabajo`.
 - Se mejoró la claridad semántica del procesamiento de aportes del hogar, renombrando y etiquetando los quintiles derivados de ingreso y trabajo no remunerado con nombres más explícitos.
 - Se actualizaron la vignette, el `README.md` y otros materiales introductorios del paquete para reflejar el flujo recomendado actual de procesamiento.

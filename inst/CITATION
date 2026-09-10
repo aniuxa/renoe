@@ -12,13 +12,13 @@ citEntry(
     )
   ),
   year = "2026",
-  note = "R package version 0.1.4",
-  url = "https://github.com/aniuxa/renoe",
+  note = "R package version 0.2.0",
+  url = "https://aniuxa.github.io/renoe",
   textVersion =
     paste(
       "Escoto, A. (2026).",
       "renoe: Herramientas para trabajar con la Encuesta Nacional de Ocupación y Empleo (ENOE) desde 2005.",
-      "R package version 0.1.4.",
-      "https://github.com/aniuxa/renoe"
+      "R package version 0.2.0.",
+      "https://aniuxa.github.io/renoe"
     )
 )

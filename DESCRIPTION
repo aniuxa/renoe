@@ -1,16 +1,31 @@
 Package: renoe
 Type: Package
 Title: Herramientas para trabajar con la ENOE desde 2005
-Version: 0.1.4
+Version: 0.2.0
 Authors@R: 
-    person(
-        "Ana", "Escoto",
-        email = "ana.escoto@politicas.unam.mx",
-        role = c("aut", "cre"),
-        comment = c(ORCID = "https://orcid.org/0000-0001-7259-0001")
+    c(
+        person(
+            "Ana", "Escoto",
+            email = "ana.escoto@politicas.unam.mx",
+            role = c("aut", "cre"),
+            comment = c(ORCID = "https://orcid.org/0000-0001-7259-0001")
+        ),
+        person(
+            given = "Gerardo",
+            family = "Damián Hernández",
+            role = "ctb",
+            comment = c(ORCID = "https://orcid.org/0009-0002-7604-3886")
+        ),
+        person(
+            given = "Gabriela",
+            family = "Cervantes",
+            role = "ctb"
+        )
     )
 Description: Descarga, carga, fusiona y procesa los microdatos de la
     Encuesta Nacional de Ocupacion y Empleo (ENOE) de Mexico desde 2005.
+    La version 0.2.0 cubre los trimestres habilitados entre 2005-T1 y
+    2026-T2, incluidos 2026-T1 y 2026-T2.
     Incluye funciones para armonizar cuestionarios basico y ampliado,
     construir identificadores y paneles, procesar variables
     sociodemograficas, laborales, de uso del tiempo y estructura del
@@ -38,9 +53,10 @@ Suggests:
     ggplot2,
     knitr,
     rmarkdown,
-    testthat
-RoxygenNote: 7.3.3
+    testthat (>= 3.0.0)
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
 BugReports: https://github.com/aniuxa/renoe/issues
 URL: https://aniuxa.github.io/renoe, https://github.com/aniuxa/renoe
+Config/roxygen2/version: 8.1.0
+Config/testthat/edition: 3

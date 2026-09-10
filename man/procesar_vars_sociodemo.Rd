@@ -30,15 +30,22 @@ datos_sdem_proc <- procesar_vars_sociodemo(sdem, anio = 2023, trimestre = 1)
 }
 }
 \seealso{
-Other procesamiento_enoe: 
-\code{\link{armoniza_sinco}()},
-\code{\link{crear_folios}()},
-\code{\link{imputa_ingocup}()},
-\code{\link{ipc_enoe}()},
-\code{\link{procesar_contribucion_hogar}()},
-\code{\link{procesar_tiempo}()},
-\code{\link{procesar_variables_enoe}()},
-\code{\link{procesar_vars_hogar}()},
-\code{\link{procesar_vars_laborales}()}
+Other procesamiento_enoe:
+\code{\link[=armoniza_sinco]{armoniza_sinco()}},
+\code{\link[=armonizar_carreras_enoe]{armonizar_carreras_enoe()}},
+\code{\link[=calcular_desajuste_estadistico]{calcular_desajuste_estadistico()}},
+\code{\link[=crear_folios]{crear_folios()}},
+\code{\link[=imputa_ingocup]{imputa_ingocup()}},
+\code{\link[=ipc_enoe]{ipc_enoe()}},
+\code{\link[=procesar_clases_damian]{procesar_clases_damian()}},
+\code{\link[=procesar_contribucion_hogar]{procesar_contribucion_hogar()}},
+\code{\link[=procesar_cuidado_extra]{procesar_cuidado_extra()}},
+\code{\link[=procesar_estudio_trabajo]{procesar_estudio_trabajo()}},
+\code{\link[=procesar_libro1]{procesar_libro1()}},
+\code{\link[=procesar_tiempo]{procesar_tiempo()}},
+\code{\link[=procesar_variables_enoe]{procesar_variables_enoe()}},
+\code{\link[=procesar_vars_hogar]{procesar_vars_hogar()}},
+\code{\link[=procesar_vars_laborales]{procesar_vars_laborales()}},
+\code{\link[=sinco2019_to_sinco2011]{sinco2019_to_sinco2011()}}
 }
 \concept{procesamiento_enoe}

@@ -12,7 +12,7 @@
 #' @import dplyr
 #' @import mice
 #' @importFrom magrittr %>% %<>%
-#' @importFrom sjlabelled as_label set_label set_labels get_label get_labels var_labels val_labels
+#' @importFrom sjlabelled set_label set_labels get_label get_labels var_labels val_labels
 #' @importFrom arrow write_parquet read_parquet
 #' @importFrom haven write_dta read_dta
 #' @importFrom httr GET http_error write_disk
