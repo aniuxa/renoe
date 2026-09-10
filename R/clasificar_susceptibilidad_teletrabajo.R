@@ -1,30 +1,30 @@
 #' Clasificar ocupaciones susceptibles de teletrabajo
 #'
 #' Identifica ocupaciones cuyo contenido permite potencialmente realizar
-#' teletrabajo. No mide si la persona teletrabajó efectivamente. La función usa
-#' la clasificación de Gabriela Cervantes para SINCO 2011 entre 2012-III y
-#' 2021-II, y su actualización a SINCO 2019 desde 2021-III.
+#' teletrabajo. No mide si la persona teletrabajo efectivamente. La funcion usa
+#' la clasificacion de Gabriela Cervantes para SINCO 2011 entre 2012-III y
+#' 2021-II, y su actualizacion a SINCO 2019 desde 2021-III.
 #'
-#' La actualización conserva la equivalencia sustantiva de Nutriólogos:
-#' SINCO 2011 `2423` pasa a SINCO 2019 `2433`. El código `2423` de SINCO 2019
-#' corresponde a Ginecólogos y obstetras y no se clasifica como susceptible.
+#' La actualizacion conserva la equivalencia sustantiva de Nutriologos:
+#' SINCO 2011 `2423` pasa a SINCO 2019 `2433`. El codigo `2423` de SINCO 2019
+#' corresponde a Ginecologos y obstetras y no se clasifica como susceptible.
 #'
-#' @param data Data frame con el código SINCO, año y trimestre.
-#' @param variable_sinco Nombre de la variable SINCO a cuatro dígitos.
-#' @param variable_anio Nombre de la variable de año.
+#' @param data Data frame con el codigo SINCO, ano y trimestre.
+#' @param variable_sinco Nombre de la variable SINCO a cuatro digitos.
+#' @param variable_anio Nombre de la variable de ano.
 #' @param variable_trim Nombre de la variable de trimestre.
 #' @param nombre_salida Nombre del indicador binario creado.
 #' @param sobrescribir Si es `TRUE`, permite reemplazar variables existentes.
 #'
 #' @return El mismo data frame con `nombre_salida` y
 #'   `version_sinco_teletrabajo`. El indicador vale 1 para ocupaciones
-#'   susceptibles, 0 para códigos observados no susceptibles y `NA` cuando
-#'   falta el código o el periodo queda fuera de la ventana comparable.
+#'   susceptibles, 0 para codigos observados no susceptibles y `NA` cuando
+#'   falta el codigo o el periodo queda fuera de la ventana comparable.
 #'
 #' @details
 #' Periodo comparable: desde 2012-III. El corte entre clasificadores se fija en
-#' 2021-III. Para estudiar población ocupada, filtre `clase2 == 1` antes o
-#' después de ejecutar la función.
+#' 2021-III. Para estudiar poblacion ocupada, filtre `clase2 == 1` antes o
+#' despues de ejecutar la funcion.
 #'
 #' @examples
 #' datos <- data.frame(

@@ -1,9 +1,9 @@
 #' Armonizar ocupaciones CMO, SINCO 2011 y SINCO 2019
 #'
-#' Construye códigos comparables en SINCO 2011 a partir de CMO entre 2005-I y
+#' Construye codigos comparables en SINCO 2011 a partir de CMO entre 2005-I y
 #' 2012-II, SINCO 2011 observado entre 2012-III y 2021-II, y SINCO 2019 desde
-#' 2021-III. Para el último periodo utiliza la tabla de equivalencia oficial
-#' SINCO 2011-2019 y conserva sin resolver las correspondencias múltiples.
+#' 2021-III. Para el ultimo periodo utiliza la tabla de equivalencia oficial
+#' SINCO 2011-2019 y conserva sin resolver las correspondencias multiples.
 #'
 #' @param data Data frame con `anio`, `trim` y `p3coe`.
 #' @param codigos Tabla opcional de correspondencia CMO-SINCO usada antes de
@@ -12,16 +12,16 @@
 #'   SINCO 2019-SINCO 2011.
 #'
 #' @return El data frame con `sinco4d`, `sinco3d`, `sinco2d` y `sinco1d`
-#'   armonizados, además de variables de procedencia y calidad.
+#'   armonizados, ademas de variables de procedencia y calidad.
 #' @export
 #' @encoding UTF-8
 #' @family procesamiento_enoe
 #' @references
-#' INEGI (2020). *Sistema Nacional de Clasificación de Ocupaciones 2019*.
+#' INEGI (2020). *Sistema Nacional de Clasificacion de Ocupaciones 2019*.
 #' Anexo: Tabla de equivalencia SINCO 2011-2019.
 #'
-#' Escoto Castillo, A. y Sánchez Peña, L. (2024). *El riesgo de automatización
-#' en México: diferencias temporales y generacionales entre las distintas
+#' Escoto Castillo, A. y Sanchez Pena, L. (2024). *El riesgo de automatizacion
+#' en Mexico: diferencias temporales y generacionales entre las distintas
 #' ocupaciones*. CEPAL. \url{https://hdl.handle.net/11362/69015}
 #'
 #' @examples
@@ -58,15 +58,15 @@ armoniza_sinco <- function(
     (data$anio == 2021L & trimestre_n >= 3L)
   codigo_original <- suppressWarnings(as.integer(as.character(data$p3coe)))
 
-  # El puente CMO-SINCO conserva las reglas históricas ya documentadas.
+  # El puente CMO-SINCO conserva las reglas historicas ya documentadas.
   data <- renoe::cmo_to_sinco(data, codigos = codigos)
   sinco_base2011 <- suppressWarnings(as.integer(as.character(data$sinco4d)))
 
   # SINCO 2011 observado se conserva directamente.
   sinco_base2011[periodo_sinco2011] <- codigo_original[periodo_sinco2011]
 
-  # SINCO 2019 se cruza con la tabla oficial. Los casos múltiples no se
-  # resuelven mediante una selección arbitraria.
+  # SINCO 2019 se cruza con la tabla oficial. Los casos multiples no se
+  # resuelven mediante una seleccion arbitraria.
   puente_2019 <- renoe::sinco2019_to_sinco2011(
     data.frame(codigo = codigo_original),
     variable_sinco = "codigo",
@@ -92,8 +92,8 @@ armoniza_sinco <- function(
     TRUE ~ NA_integer_
   )
   data$calidad_puente_sinco <- dplyr::case_when(
-    periodo_cmo & !is.na(sinco_base2011) ~ "Puente analítico CMO-SINCO 2011",
-    periodo_cmo ~ "CMO sin equivalencia de cuatro dígitos",
+    periodo_cmo & !is.na(sinco_base2011) ~ "Puente anal\u00EDtico CMO-SINCO 2011",
+    periodo_cmo ~ "CMO sin equivalencia de cuatro d\u00EDgitos",
     periodo_sinco2011 & !is.na(codigo_original) ~ "SINCO 2011 observado",
     periodo_sinco2011 ~ "SINCO 2011 faltante",
     periodo_sinco2019 ~ puente_2019$sinco2011_calidad,
@@ -126,14 +126,14 @@ armoniza_sinco <- function(
   data |>
     dplyr::select(-needs_manual_1d) |>
     sjlabelled::var_labels(
-      codigo_ocupacion_original = "Código ocupacional original del trimestre",
+      codigo_ocupacion_original = "C\u00F3digo ocupacional original del trimestre",
       version_sinco_origen = "Clasificador ocupacional de origen",
-      sinco4d_base2011 = "Código ocupacional armonizado a SINCO 2011, cuatro dígitos",
-      sinco4d = "Código ocupacional armonizado a SINCO 2011, cuatro dígitos",
-      sinco3d = "Código ocupacional armonizado a SINCO 2011, tres dígitos",
-      sinco2d = "Código ocupacional armonizado a SINCO 2011, dos dígitos",
-      sinco1d = "Código ocupacional armonizado a SINCO 2011, un dígito",
-      n_destinos_sinco = "Número de destinos en el puente hacia SINCO 2011",
-      calidad_puente_sinco = "Procedencia y calidad de la armonización ocupacional"
+      sinco4d_base2011 = "C\u00F3digo ocupacional armonizado a SINCO 2011, cuatro d\u00EDgitos",
+      sinco4d = "C\u00F3digo ocupacional armonizado a SINCO 2011, cuatro d\u00EDgitos",
+      sinco3d = "C\u00F3digo ocupacional armonizado a SINCO 2011, tres d\u00EDgitos",
+      sinco2d = "C\u00F3digo ocupacional armonizado a SINCO 2011, dos d\u00EDgitos",
+      sinco1d = "C\u00F3digo ocupacional armonizado a SINCO 2011, un d\u00EDgito",
+      n_destinos_sinco = "N\u00FAmero de destinos en el puente hacia SINCO 2011",
+      calidad_puente_sinco = "Procedencia y calidad de la armonizaci\u00F3n ocupacional"
     )
 }

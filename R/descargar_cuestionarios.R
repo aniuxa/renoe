@@ -1,15 +1,15 @@
-#' Descargar cuestionarios técnicos de la ENOE
+#' Descargar cuestionarios tecnicos de la ENOE
 #'
-#' Descarga automáticamente los cuestionarios en PDF y los descriptores de archivos (FD) correspondientes
-#' a un trimestre específico de la ENOE, basándose en la información de versiones. Los archivos se almacenan
-#' en una carpeta única con nombre `docs_{anio}_{trim}` dentro del directorio especificado.
+#' Descarga automaticamente los cuestionarios en PDF y los descriptores de archivos (FD) correspondientes
+#' a un trimestre especifico de la ENOE, basandose en la informacion de versiones. Los archivos se almacenan
+#' en una carpeta unica con nombre `docs_{anio}_{trim}` dentro del directorio especificado.
 #'
 #' @encoding UTF-8
-#' @param anio Año del trimestre (2005-2024). Debe ser un valor numérico entre 2005 y 2024.
-#' @param trimestre Número del trimestre (1-4). Donde 1 = ENE-MAR, 2 = ABR-JUN,
+#' @param anio Ano del trimestre (2005-2024). Debe ser un valor numerico entre 2005 y 2024.
+#' @param trimestre Numero del trimestre (1-4). Donde 1 = ENE-MAR, 2 = ABR-JUN,
 #'   3 = JUL-SEP, 4 = OCT-DIC.
-#' @param destino Directorio base donde se guardarán los archivos. Por defecto, "cuestionarios".
-#' @param sobrescribir Lógico. ¿Deben sobrescribirse los archivos existentes?
+#' @param destino Directorio base donde se guardaran los archivos. Por defecto, "cuestionarios".
+#' @param sobrescribir Logico. ?Deben sobrescribirse los archivos existentes?
 #'   (FALSE por defecto).
 #'
 #' @return Vector invisible con las rutas de los archivos descargados.
@@ -33,7 +33,7 @@ descargar_cuestionarios <- function(anio, trimestre,
   meta <- info_trimestre(anio, trimestre)
   if (is.null(meta)) stop("Trimestre no disponible")
 
-  # Directorio único para el trimestre
+  # Directorio unico para el trimestre
   carpeta_destino <- file.path(destino, paste0("docs_", anio, "_", trimestre))
   dir.create(carpeta_destino, recursive = TRUE, showWarnings = FALSE)
 
@@ -58,7 +58,7 @@ descargar_cuestionarios <- function(anio, trimestre,
     )
   )
 
-  # Función interna de descarga
+  # Funcion interna de descarga
   descargar <- function(url, dest) {
     if (file.exists(dest)) {
       if (sobrescribir) file.remove(dest)

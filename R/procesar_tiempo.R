@@ -1,36 +1,36 @@
 #' Procesar variables de tiempo en actividades del hogar y cuidado
 #'
-#' Calcula duraciones semanales a partir de las baterías `p11_*` y `p9_*` de
-#' ENOE. Conserva sin cambios los campos fuente y distingue duración observada,
-#' actividad realizada con duración desconocida (98), realización desconocida
-#' (99), reactivo no seleccionado y batería no medible.
+#' Calcula duraciones semanales a partir de las baterias `p11_*` y `p9_*` de
+#' ENOE. Conserva sin cambios los campos fuente y distingue duracion observada,
+#' actividad realizada con duracion desconocida (98), realizacion desconocida
+#' (99), reactivo no seleccionado y bateria no medible.
 #'
-#' El orden de las actividades cambió en 2011. Hasta 2010, los reactivos 3 a 6
-#' corresponden a construcción, reparación, quehaceres y servicios a la
+#' El orden de las actividades cambio en 2011. Hasta 2010, los reactivos 3 a 6
+#' corresponden a construccion, reparacion, quehaceres y servicios a la
 #' comunidad. Desde 2011, los reactivos 3 y 4 corresponden a compras y traslados,
 #' y las cuatro actividades anteriores pasan a los reactivos 5 a 8.
 #'
-#' Las variables específicas `t_*` se expresan en horas. `t_total`, `t_total0`
+#' Las variables especificas `t_*` se expresan en horas. `t_total`, `t_total0`
 #' y sus versiones parciales se expresan en minutos; los sufijos `_hrs` son sus
 #' equivalentes en horas. Un total completo es `NA` cuando contiene una
-#' actividad con duración desconocida, realización desconocida, información
-#' incompleta o inválida. El total parcial suma sólo las duraciones observadas y
+#' actividad con duracion desconocida, realizacion desconocida, informacion
+#' incompleta o invalida. El total parcial suma solo las duraciones observadas y
 #' los ceros de reactivos no seleccionados.
 #'
-#' Las columnas `*_legacy` reproducen el contrato histórico, que convertía a
-#' cero los códigos 98, 99 y todos los faltantes. El argumento
+#' Las columnas `*_legacy` reproducen el contrato historico, que convertia a
+#' cero los codigos 98, 99 y todos los faltantes. El argumento
 #' `tratamiento_faltantes = "historico_cero"` permite mantener temporalmente
 #' ese resultado en los nombres principales.
 #'
 #' @param data Data frame fusionado por `fusion_enoe()` o cargado directamente.
-#' @param anio Año del trimestre, usado si falta `anio` en `data`.
-#' @param trimestre Trimestre 1–4, usado si faltan metadatos en `data`.
+#' @param anio Ano del trimestre, usado si falta `anio` en `data`.
+#' @param trimestre Trimestre 1-4, usado si faltan metadatos en `data`.
 #' @param tratamiento_faltantes Contrato de las variables principales:
 #'   `"distinguir"` conserva los estados y `NA`; `"historico_cero"` reproduce
-#'   la conversión histórica a cero. En ambos casos se crean columnas legacy.
+#'   la conversion historica a cero. En ambos casos se crean columnas legacy.
 #'
 #' @return El mismo data frame, en el mismo orden, con duraciones, estados de
-#'   medición, totales completos y parciales, y resultados históricos.
+#'   medicion, totales completos y parciales, y resultados historicos.
 #' @export
 #' @family procesamiento_enoe
 procesar_tiempo <- function(
@@ -140,7 +140,7 @@ procesar_tiempo <- function(
     asignar("comun", prefijo, 8, post)
   }
 
-  # Actividades ausentes en una versión del instrumento conservan cero para
+  # Actividades ausentes en una version del instrumento conservan cero para
   # compatibilidad y quedan identificadas por su estado.
   for (actividad in actividades) {
     no_aplica <- !preguntada[[actividad]]
@@ -226,18 +226,18 @@ procesar_tiempo <- function(
       t_reparar = "Tiempo dedicado a reparar bienes del hogar (horas)",
       t_quehacer = "Tiempo dedicado a quehaceres del hogar (horas)",
       t_comun = "Tiempo dedicado a servicios gratuitos a la comunidad (horas)",
-      t_compras = "Tiempo dedicado a compras, trámites y seguridad del hogar (horas)",
+      t_compras = "Tiempo dedicado a compras, tr\u00E1mites y seguridad del hogar (horas)",
       t_traslado = "Tiempo dedicado a traslados de integrantes del hogar (horas)",
-      tiempo_medible = "Batería de uso del tiempo con alguna respuesta observada",
-      t_total_incompleto = "Total de tiempo afectado por duración o realización desconocida",
-      t_total0_incompleto = "Total sin traslados ni compras afectado por duración o realización desconocida",
-      t_total_parcial = "Suma parcial de actividades con duración observada (minutos)",
+      tiempo_medible = "Bater\u00EDa de uso del tiempo con alguna respuesta observada",
+      t_total_incompleto = "Total de tiempo afectado por duraci\u00F3n o realizaci\u00F3n desconocida",
+      t_total0_incompleto = "Total sin traslados ni compras afectado por duraci\u00F3n o realizaci\u00F3n desconocida",
+      t_total_parcial = "Suma parcial de actividades con duraci\u00F3n observada (minutos)",
       t_total0_parcial = "Suma parcial sin traslados ni compras (minutos)",
       t_total = "Suma completa de actividades del hogar y cuidado (minutos)",
       t_total0 = "Suma completa sin traslados ni compras (minutos)",
       t_total_hrs = "Suma completa de actividades del hogar y cuidado (horas)",
       t_total_hrs0 = "Suma completa sin traslados ni compras (horas)",
-      t_total_legacy = "Suma histórica que convierte faltantes y códigos especiales a cero (minutos)",
-      t_total0_legacy = "Suma histórica sin compras ni traslados (minutos)"
+      t_total_legacy = "Suma hist\u00F3rica que convierte faltantes y c\u00F3digos especiales a cero (minutos)",
+      t_total0_legacy = "Suma hist\u00F3rica sin compras ni traslados (minutos)"
     )
 }

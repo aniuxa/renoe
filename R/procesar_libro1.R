@@ -74,7 +74,7 @@ procesar_libro1 <- function(data) {
 
   # La clave de Estados Unidos se identifica por trimestre. En el clasificador
   # moderno 201 es Anguila y 221 es Estados Unidos; 201 solo se interpreta como
-  # Estados Unidos en los periodos históricos donde 221 no está presente.
+  # Estados Unidos en los periodos historicos donde 221 no esta presente.
   data$origen_codigo <- suppressWarnings(as.numeric(data$l_nac_c))
   data <- data |>
     dplyr::mutate(

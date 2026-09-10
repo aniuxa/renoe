@@ -1,24 +1,24 @@
-#' Procesar variables clave de la ENOE en una sola función
+#' Procesar variables clave de la ENOE en una sola funcion
 #'
-#' Función envolvente (`wrapper`) que aplica en cadena varias funciones de procesamiento sobre los microdatos de la ENOE.
-#' Crea variables sociodemográficas, estructura del hogar, uso del tiempo, imputación de ingresos e información del IPC.
+#' Funcion envolvente (`wrapper`) que aplica en cadena varias funciones de procesamiento sobre los microdatos de la ENOE.
+#' Crea variables sociodemograficas, estructura del hogar, uso del tiempo, imputacion de ingresos e informacion del IPC.
 #'
-#' Aplica automáticamente las funciones:
-#' - `crear_folios()`: Genera identificadores únicos de vivienda, hogar y persona.
-#' - `drop_tri()`: Cuando se trata de la ENOEN, renombra automáticamente variables terminadas en `_tri` a su forma base (por ejemplo, `fac_tri` → `fac`).
+#' Aplica automaticamente las funciones:
+#' - `crear_folios()`: Genera identificadores unicos de vivienda, hogar y persona.
+#' - `drop_tri()`: Cuando se trata de la ENOEN, renombra automaticamente variables terminadas en `_tri` a su forma base (por ejemplo, `fac_tri` ? `fac`).
 #' - `procesar_vars_sociodemo()`: Crea variables de edad, sexo y grupos etarios.
-#' - `procesar_vars_hogar()`: Clasifica hogares por tipo, tamaño y dependencia.
+#' - `procesar_vars_hogar()`: Clasifica hogares por tipo, tamano y dependencia.
 #' - `procesar_tiempo()`: Calcula minutos y horas en actividades del hogar y cuidado.
-#' - `ipc_enoe()`: Añade una variable con el IPC nacional del trimestre correspondiente.
+#' - `ipc_enoe()`: Anade una variable con el IPC nacional del trimestre correspondiente.
 #' - `imputa_ingocup()`: Imputa el ingreso ocupacional con `mice` para personas ocupadas.
-#' - ` procesar_contribucion_hogar`: IProcesar contribución económica y de trabajo no remunerado al hogar.
+#' - ` procesar_contribucion_hogar`: IProcesar contribucion economica y de trabajo no remunerado al hogar.
 #'
 #' @encoding UTF-8
 #' @param data Un data frame con las tablas fusionadas de la ENOE (por ejemplo, salida de `fusion_enoe()`).
-#' @param anio Año del trimestre (numérico).
-#' @param trimestre Trimestre numérico (1–4).
+#' @param anio Ano del trimestre (numerico).
+#' @param trimestre Trimestre numerico (1-4).
 #'
-#' @return Un data frame con variables sociodemográficas, estructura del hogar, uso del tiempo, IPC y variables imputadas.
+#' @return Un data frame con variables sociodemograficas, estructura del hogar, uso del tiempo, IPC y variables imputadas.
 #' @export
 #'
 #' @seealso [procesar_vars_sociodemo()], [procesar_vars_hogar()], [ipc_enoe()], [imputa_ingocup()]

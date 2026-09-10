@@ -1,14 +1,14 @@
-#' Procesar contribución económica y de trabajo no remunerado al hogar
+#' Procesar contribucion economica y de trabajo no remunerado al hogar
 #'
 #' A partir de variables laborales previamente construidas, genera el ingreso
-#' ocupacional individual deflactado, agregados del hogar, indicadores per cápita
+#' ocupacional individual deflactado, agregados del hogar, indicadores per capita
 #' y quintiles ponderados de ingreso y trabajo no remunerado.
 #'
 #' @param data Un data frame que contenga, al menos, las variables `ingocup_imp`,
 #'   `ipc`, `hrsocup`, `t_total_hrs0`, `t_total_hrs`, `folio2`, `tam_hog` y
 #'   `fac`.
 #'
-#' @return Un data frame con variables derivadas sobre contribución económica y
+#' @return Un data frame con variables derivadas sobre contribucion economica y
 #'   trabajo no remunerado en el hogar, junto con quintiles ponderados etiquetados.
 #' @export
 #'
@@ -36,7 +36,7 @@ procesar_contribucion_hogar <- function(data) {
     )
   }
 
-  # En bases apiladas, folio2 solo no identifica de manera única al hogar.
+  # En bases apiladas, folio2 solo no identifica de manera unica al hogar.
   # Conservamos compatibilidad con bases de un trimestre sin anio/trim.
   claves_periodo <- intersect(c("anio", "trim"), names(data))
   claves_hogar <- c(claves_periodo, "folio2")
@@ -67,7 +67,7 @@ procesar_contribucion_hogar <- function(data) {
       ing_hog_pc_sego = dplyr::if_else(!is.na(tam_hog) & tam_hog > 0, (ing_hog - ing_mensual_ipc) / tam_hog, NA_real_)
     )
 
-  # Los quintiles deben representar la distribución de cada trimestre.
+  # Los quintiles deben representar la distribucion de cada trimestre.
   if (length(claves_periodo) > 0) {
     data <- data %>%
       dplyr::group_by(dplyr::across(dplyr::all_of(claves_periodo)))
@@ -87,42 +87,42 @@ procesar_contribucion_hogar <- function(data) {
       ing_hog                 = "Ingreso total del hogar deflactado",
       norem_hog0              = "Horas totales de trabajo no remunerado del hogar",
       norem_hog               = "Horas totales de trabajo no remunerado del hogar",
-      ing_hog_pc              = "Ingreso per cápita del hogar deflactado",
-      norem_pc                = "Horas no remuneradas per cápita del hogar",
-      ing_hog_pc_sego         = "Ingreso per cápita del hogar sin la persona ego",
+      ing_hog_pc              = "Ingreso per c\u00E1pita del hogar deflactado",
+      norem_pc                = "Horas no remuneradas per c\u00E1pita del hogar",
+      ing_hog_pc_sego         = "Ingreso per c\u00E1pita del hogar sin la persona ego",
       quintil_ing_ind         = "Quintil ponderado de ingreso ocupacional individual deflactado",
-      quintil_ing_hog_pc      = "Quintil ponderado de ingreso per cápita del hogar",
-      quintil_norem_pc        = "Quintil ponderado de trabajo no remunerado per cápita",
-      quintil_ing_hog_pc_sego = "Quintil ponderado de ingreso per cápita del hogar sin ego"
+      quintil_ing_hog_pc      = "Quintil ponderado de ingreso per c\u00E1pita del hogar",
+      quintil_norem_pc        = "Quintil ponderado de trabajo no remunerado per c\u00E1pita",
+      quintil_ing_hog_pc_sego = "Quintil ponderado de ingreso per c\u00E1pita del hogar sin ego"
     ) %>%
     sjlabelled::val_labels(
       quintil_ing_ind = c(
-        "Quintil 1 (más bajo)" = 1,
+        "Quintil 1 (m\u00E1s bajo)" = 1,
         "Quintil 2" = 2,
         "Quintil 3" = 3,
         "Quintil 4" = 4,
-        "Quintil 5 (más alto)" = 5
+        "Quintil 5 (m\u00E1s alto)" = 5
       ),
       quintil_ing_hog_pc = c(
-        "Quintil 1 (más bajo)" = 1,
+        "Quintil 1 (m\u00E1s bajo)" = 1,
         "Quintil 2" = 2,
         "Quintil 3" = 3,
         "Quintil 4" = 4,
-        "Quintil 5 (más alto)" = 5
+        "Quintil 5 (m\u00E1s alto)" = 5
       ),
       quintil_norem_pc = c(
-        "Quintil 1 (más bajo)" = 1,
+        "Quintil 1 (m\u00E1s bajo)" = 1,
         "Quintil 2" = 2,
         "Quintil 3" = 3,
         "Quintil 4" = 4,
-        "Quintil 5 (más alto)" = 5
+        "Quintil 5 (m\u00E1s alto)" = 5
       ),
       quintil_ing_hog_pc_sego = c(
-        "Quintil 1 (más bajo)" = 1,
+        "Quintil 1 (m\u00E1s bajo)" = 1,
         "Quintil 2" = 2,
         "Quintil 3" = 3,
         "Quintil 4" = 4,
-        "Quintil 5 (más alto)" = 5
+        "Quintil 5 (m\u00E1s alto)" = 5
       )
     )
 

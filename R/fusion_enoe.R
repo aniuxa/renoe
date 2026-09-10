@@ -1,19 +1,19 @@
 #' Fusionar tablas de la ENOE
 #'
-#' Une las tablas de vivienda, hogar, sociodemográfico y componentes COE
-#' en un único data frame.
+#' Une las tablas de vivienda, hogar, sociodemografico y componentes COE
+#' en un unico data frame.
 #'
 #' @encoding UTF-8
-#' @param anio Año del trimestre (2005-2026).
-#' @param trimestre Número del trimestre (1-4).
-#' @param rapida Lógico. Si `TRUE`, omite el etiquetado de variables.
+#' @param anio Ano del trimestre (2005-2026).
+#' @param trimestre Numero del trimestre (1-4).
+#' @param rapida Logico. Si `TRUE`, omite el etiquetado de variables.
 #' @param formato Formato de salida ("parquet", "rds" o "dta"). Opcional.
-#' @param guardar Lógico. Si `TRUE` y se especifica formato, guarda el archivo fusionado.
-#' @param intentos Número de intentos para cargar datos (por defecto 3).
-#' @param fusion_robusta Lógico. Si `TRUE`, utiliza claves de identificación
-#'   explícitas. En 2022-T1 la vía robusta es obligatoria porque `ur` difiere
+#' @param guardar Logico. Si `TRUE` y se especifica formato, guarda el archivo fusionado.
+#' @param intentos Numero de intentos para cargar datos (por defecto 3).
+#' @param fusion_robusta Logico. Si `TRUE`, utiliza claves de identificacion
+#'   explicitas. En 2022-T1 la via robusta es obligatoria porque `ur` difiere
 #'   entre HOG y SDEM y no debe formar parte de la llave.
-#' @param ... Otros parámetros para pasar a `carga_enoe()`.
+#' @param ... Otros parametros para pasar a `carga_enoe()`.
 #'
 #' @return Un data frame con las tablas fusionadas. Si se especifica formato y
 #'   `guardar = TRUE`, guarda el archivo en el subdirectorio `"datos"` con el nombre
@@ -42,7 +42,7 @@ fusion_enoe <- function(anio, trimestre, rapida = FALSE, formato = NULL,
 
   if (anio == 2022 && trimestre == 1 && !fusion_robusta) {
     warning(
-      "2022-T1 requiere fusión robusta para conservar la población rural; se usará `fusion_robusta = TRUE`.",
+      "2022-T1 requiere fusi\u00F3n robusta para conservar la poblaci\u00F3n rural; se usar\u00E1 `fusion_robusta = TRUE`.",
       call. = FALSE
     )
     fusion_robusta <- TRUE
@@ -113,13 +113,13 @@ fusion_enoe <- function(anio, trimestre, rapida = FALSE, formato = NULL,
     idsdem <- Reduce(intersect, list(posibles_idsdem, names(datos$sdem), names(datos$coe1), names(datos$coe2)))
 
     if (length(idviv) == 0) {
-      stop("No se encontraron variables de unión entre viv y hog.")
+      stop("No se encontraron variables de uni\u00F3n entre viv y hog.")
     }
     if (length(idhog) == 0) {
-      stop("No se encontraron variables de unión entre hog y sdem.")
+      stop("No se encontraron variables de uni\u00F3n entre hog y sdem.")
     }
     if (length(idsdem) == 0) {
-      stop("No se encontraron variables de unión entre sdem y coe.")
+      stop("No se encontraron variables de uni\u00F3n entre sdem y coe.")
     }
 
     coe_fusionado <- datos$coe1 %>%
@@ -168,16 +168,16 @@ fusion_enoe <- function(anio, trimestre, rapida = FALSE, formato = NULL,
 
   if (fusion_robusta && n_fusion != n_sdem) {
     stop(
-      "La fusión robusta no conservó el número esperado de filas de SDEM: ",
-      n_fusion, " frente a ", n_sdem, ". No se guardará el resultado.",
+      "La fusi\u00F3n robusta no conserv\u00F3 el n\u00FAmero esperado de filas de SDEM: ",
+      n_fusion, " frente a ", n_sdem, ". No se guardar\u00E1 el resultado.",
       call. = FALSE
     )
   } else if (n_fusion == 0) {
-    warning("La tabla fusionada está vacía. Verificar posibles errores.")
+    warning("La tabla fusionada est\u00E1 vac\u00EDa. Verificar posibles errores.")
   } else if (n_fusion > n_sdem) {
-    warning("La tabla fusionada tiene MÁS filas que las esperadas después del filtro. Verificar duplicaciones.")
+    warning("La tabla fusionada tiene M\u00C1S filas que las esperadas despu\u00E9s del filtro. Verificar duplicaciones.")
   } else if (n_fusion < n_sdem) {
-    warning("La tabla fusionada tiene MENOS filas que las esperadas después del filtro. Posible pérdida en joins.")
+    warning("La tabla fusionada tiene MENOS filas que las esperadas despu\u00E9s del filtro. Posible p\u00E9rdida en joins.")
   }
 
   if (!is.null(formato) && guardar) {

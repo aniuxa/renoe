@@ -1,16 +1,16 @@
-#' Procesar variables sociodemográficas básicas y extendidas
+#' Procesar variables sociodemograficas basicas y extendidas
 #'
-#' Añade sexo, edad, grupos etarios, metadatos como año, trimestre y tipo de
-#' cuestionario COE, así como variables extendidas de asistencia escolar,
-#' estado conyugal, escolaridad, zona rural, tamaño de localidad y zona
-#' económica regional.
+#' Anade sexo, edad, grupos etarios, metadatos como ano, trimestre y tipo de
+#' cuestionario COE, asi como variables extendidas de asistencia escolar,
+#' estado conyugal, escolaridad, zona rural, tamano de localidad y zona
+#' economica regional.
 #'
 #' @param data Un data frame tipo sdem, con variables como `sex`, `eda`,
 #'   `cs_p17`, `e_con`, `anios_esc`, `par_c`, `t_loc` y `ent`.
-#' @param anio Año del trimestre.
-#' @param trimestre Trimestre numérico (1-4).
+#' @param anio Ano del trimestre.
+#' @param trimestre Trimestre numerico (1-4).
 #'
-#' @return Un data frame con variables sociodemográficas procesadas y
+#' @return Un data frame con variables sociodemograficas procesadas y
 #'   etiquetadas.
 #' @export
 #'
@@ -74,27 +74,27 @@ procesar_vars_sociodemo <- function(data, anio, trimestre) {
     ) %>%
     sjlabelled::var_labels(
       sexo       = "Sexo",
-      edad       = "Edad en años",
+      edad       = "Edad en a\u00F1os",
       edad5      = "Edad en grupos quinquenales",
-      adm        = "Adulto mayor (65 años o más)",
-      i_00_05    = "Persona de 0 a 5 años",
-      i_06_12    = "Persona de 6 a 12 años",
-      i_13_17    = "Persona de 13 a 17 años",
-      i_18m      = "Persona de 18 años o más",
-      i_joven1   = "Persona de 15 a 24 años",
-      i_joven2   = "Persona de 15 a 29 años",
-      anio       = "Año del trimestre",
-      trim       = "Número de trimestre (t1-t4)",
-      coe_tipo   = "Tipo de cuestionario COE (básico o ampliado)",
+      adm        = "Adulto mayor (65 a\u00F1os o m\u00E1s)",
+      i_00_05    = "Persona de 0 a 5 a\u00F1os",
+      i_06_12    = "Persona de 6 a 12 a\u00F1os",
+      i_13_17    = "Persona de 13 a 17 a\u00F1os",
+      i_18m      = "Persona de 18 a\u00F1os o m\u00E1s",
+      i_joven1   = "Persona de 15 a 24 a\u00F1os",
+      i_joven2   = "Persona de 15 a 29 a\u00F1os",
+      anio       = "A\u00F1o del trimestre",
+      trim       = "N\u00FAmero de trimestre (t1-t4)",
+      coe_tipo   = "Tipo de cuestionario COE (b\u00E1sico o ampliado)",
       asiste     = "Asistencia escolar",
-      unido      = "Estado conyugal: vive en unión",
-      anios_es   = "Años de escolaridad",
+      unido      = "Estado conyugal: vive en uni\u00F3n",
+      anios_es   = "A\u00F1os de escolaridad",
       parentesco = "Parentesco resumido con la jefatura",
       par_dic    = "Indicador de jefatura del hogar",
-      t_loc      = "Tamaño de localidad",
-      urb_rur    = "Área urbana o rural",
-      rural      = "Indicador dicotómico de ruralidad",
-      zona_econ  = "Zona económica regional"
+      t_loc      = "Tama\u00F1o de localidad",
+      urb_rur    = "\u00C1rea urbana o rural",
+      rural      = "Indicador dicot\u00F3mico de ruralidad",
+      zona_econ  = "Zona econ\u00F3mica regional"
     ) %>%
     sjlabelled::val_labels(
       asiste = c(
@@ -102,17 +102,17 @@ procesar_vars_sociodemo <- function(data, anio, trimestre) {
         "Asiste a la escuela" = 1
       ),
       unido = c(
-        "No vive en unión" = 0,
-        "Vive en unión" = 1
+        "No vive en uni\u00F3n" = 0,
+        "Vive en uni\u00F3n" = 1
       ),
       parentesco = c(
         "Jefa/e" = 1,
-        "Cónyuge o pareja" = 2,
+        "C\u00F3nyuge o pareja" = 2,
         "Hija/o" = 3,
         "Otro parentesco" = 4
       ),
       t_loc = c(
-        "100 000 o más habitantes" = 1,
+        "100 000 o m\u00E1s habitantes" = 1,
         "15 000 a 99 999 habitantes" = 2,
         "2 500 a 14 999 habitantes" = 3,
         "Menos de 2 500 habitantes" = 4

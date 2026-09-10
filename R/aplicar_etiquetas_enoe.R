@@ -2,27 +2,27 @@
 #'
 #' Restaura metadatos que pueden perderse al guardar y volver a leer archivos
 #' Parquet. Las descripciones de variables se toman de
-#' `diccionario_variables.csv` y las etiquetas de códigos de
-#' `diccionario_etiquetas_valores.csv`. La función conserva los códigos
-#' numéricos y usa la clase `haven_labelled`, por lo que el resultado puede
+#' `diccionario_variables.csv` y las etiquetas de codigos de
+#' `diccionario_etiquetas_valores.csv`. La funcion conserva los codigos
+#' numericos y usa la clase `haven_labelled`, por lo que el resultado puede
 #' guardarse como RDS o exportarse a Stata sin convertir las variables en
 #' factores.
 #'
-#' Esta función está pensada para la etapa de distribución o exportación. No
-#' es necesario aplicarla antes de cada transformación analítica.
+#' Esta funcion esta pensada para la etapa de distribucion o exportacion. No
+#' es necesario aplicarla antes de cada transformacion analitica.
 #'
 #' @param data Data frame o tibble con variables ENOE procesadas.
 #' @param diccionario_variables Ruta a un CSV o data frame con las columnas
 #'   `variable_nombre` y `descripcion`. Si es `NULL`, usa el diccionario
 #'   incluido en `renoe`.
 #' @param diccionario_valores Ruta a un CSV o data frame con las columnas
-#'   `variable_nombre`, `codigo` y `etiqueta`. Si es `NULL`, usa el catálogo
+#'   `variable_nombre`, `codigo` y `etiqueta`. Si es `NULL`, usa el catalogo
 #'   incluido en `renoe`.
 #' @param sobrescribir Si es `TRUE`, sustituye etiquetas existentes. Por
-#'   defecto sólo completa etiquetas ausentes.
-#' @param informar Si es `TRUE`, informa cuántas etiquetas fueron aplicadas.
+#'   defecto solo completa etiquetas ausentes.
+#' @param informar Si es `TRUE`, informa cuantas etiquetas fueron aplicadas.
 #'
-#' @return El mismo objeto con atributos `label` y, para variables numéricas
+#' @return El mismo objeto con atributos `label` y, para variables numericas
 #'   catalogadas, clase `haven_labelled` y etiquetas de valores.
 #' @export
 #'
@@ -43,7 +43,7 @@ aplicar_etiquetas_enoe <- function(
     if (is.data.frame(x)) return(x)
     ruta <- if (is.null(x)) system.file("extdata", archivo, package = "renoe") else x
     if (!nzchar(ruta) || !file.exists(ruta)) {
-      stop("No se encontró el diccionario `", archivo, "`.", call. = FALSE)
+      stop("No se encontr\u00F3 el diccionario `", archivo, "`.", call. = FALSE)
     }
     readr::read_csv(ruta, show_col_types = FALSE)
   }
@@ -105,7 +105,7 @@ aplicar_etiquetas_enoe <- function(
   if (isTRUE(informar)) {
     message(
       "Etiquetas restauradas: ", n_variables,
-      " variables y ", n_valores, " catálogos de valores."
+      " variables y ", n_valores, " cat\u00E1logos de valores."
     )
   }
   data

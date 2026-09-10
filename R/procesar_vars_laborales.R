@@ -1,33 +1,33 @@
-#' Procesar variables de análisis laboral y desajuste educativo
+#' Procesar variables de analisis laboral y desajuste educativo
 #'
-#' Esta función genera variables clasificatorias relacionadas con la ocupación,
-#' el nivel educativo y el desajuste entre ambos, a partir de los códigos de
-#' ocupación (`p3coe`) y del nivel educativo alcanzado (`cs_p13_1`).
-#' Internamente armoniza los códigos SINCO (1, 2, 3 y 4 dígitos) usando
-#' correspondencias con códigos CMO y reglas auxiliares. También clasifica el
-#' nivel agregado de competencia de la ocupación, un proxy basado en escolaridad
-#' y el desajuste entre ambos. La agrupación de competencia requerida es una
-#' aproximación a un dígito de SINCO y puede ocultar excepciones dentro de cada
-#' división.
+#' Esta funcion genera variables clasificatorias relacionadas con la ocupacion,
+#' el nivel educativo y el desajuste entre ambos, a partir de los codigos de
+#' ocupacion (`p3coe`) y del nivel educativo alcanzado (`cs_p13_1`).
+#' Internamente armoniza los codigos SINCO (1, 2, 3 y 4 digitos) usando
+#' correspondencias con codigos CMO y reglas auxiliares. Tambien clasifica el
+#' nivel agregado de competencia de la ocupacion, un proxy basado en escolaridad
+#' y el desajuste entre ambos. La agrupacion de competencia requerida es una
+#' aproximacion a un digito de SINCO y puede ocultar excepciones dentro de cada
+#' division.
 #'
-#' La referencia estadística en años de escolaridad se calcula por separado con
-#' [calcular_desajuste_estadistico()]. Esta separación evita construir una
+#' La referencia estadistica en anos de escolaridad se calcula por separado con
+#' [calcular_desajuste_estadistico()]. Esta separacion evita construir una
 #' referencia aparentemente anual cuando la entrada contiene un solo trimestre.
 #' Por compatibilidad, si la entrada ya contiene `esco_norm` o `mismatch2`, esas
-#' columnas históricas se conservan sin recalcularlas.
+#' columnas historicas se conservan sin recalcularlas.
 #'
-#' Además, genera variables relacionadas con la experiencia previa
+#' Ademas, genera variables relacionadas con la experiencia previa
 #' (`nunca_trabajo`), el estatus laboral combinado (`status_seq`) y las
-#' características contractuales (`contrato0`, `contrato1`, `temporal`,
-#' `temporal_seq`) según el tipo de cuestionario.
+#' caracteristicas contractuales (`contrato0`, `contrato1`, `temporal`,
+#' `temporal_seq`) segun el tipo de cuestionario.
 #'
 #' @param data Un data.frame con variables como:
-#' - `anio`, `trimestre`: año y trimestre de la entrevista
+#' - `anio`, `trimestre`: ano y trimestre de la entrevista
 #' - `coe_tipo`: tipo de cuestionario (`"ampliado"` o `"basico"`)
-#' - `p3coe`: código ocupacional
+#' - `p3coe`: codigo ocupacional
 #' - `cs_p13_1`, `cs_p15`: nivel educativo y antecedente escolar
-#' - `clase2`: clase de actividad económica
-#' - `pos_ocu`, `tue2`: posición en la ocupación y tipo de unidad económica
+#' - `clase2`: clase de actividad economica
+#' - `pos_ocu`, `tue2`: posicion en la ocupacion y tipo de unidad economica
 #' - `p2h4`: experiencia laboral previa
 #' - `p3i`, `p3j`, `p3j1`, `p3k1`: variables sobre tipo de contrato
 #'
@@ -154,19 +154,19 @@ procesar_vars_laborales <- function(data) {
       )
     ) %>%
     sjlabelled::var_labels(
-      skill_level   = "Nivel agregado de competencia requerido por la ocupación",
+      skill_level   = "Nivel agregado de competencia requerido por la ocupaci\u00F3n",
       skill_actual  = "Proxy de competencia basado en escolaridad",
       mismatch      = "Desajuste educativo",
       nunca_trabajo = "Indicador de nunca haber trabajado antes",
-      status_seq    = "Condición laboral y experiencia previa",
+      status_seq    = "Condici\u00F3n laboral y experiencia previa",
       contrato0     = "Indicador de existencia de contrato laboral",
       contrato1     = "Indicador de contrato temporal o indefinido",
-      temporal      = "Clasificación de temporalidad laboral",
+      temporal      = "Clasificaci\u00F3n de temporalidad laboral",
       temporal_seq  = "Secuencia de temporalidad laboral"
     ) %>%
     sjlabelled::val_labels(
       skill_level = c(
-        "Competencia básica" = 1,
+        "Competencia b\u00E1sica" = 1,
         "Competencia media" = 2,
         "Competencia alta" = 3
       ),
@@ -177,13 +177,13 @@ procesar_vars_laborales <- function(data) {
         "Terciaria" = 3
       ),
       mismatch = c(
-        "Sobreeducación" = -1,
+        "Sobreeducaci\u00F3n" = -1,
         "Ajuste" = 0,
-        "Subeducación" = 1
+        "Subeducaci\u00F3n" = 1
       ),
       nunca_trabajo = c(
-        "Ya había trabajado" = 0,
-        "Nunca había trabajado" = 1
+        "Ya hab\u00EDa trabajado" = 0,
+        "Nunca hab\u00EDa trabajado" = 1
       ),
       status_seq = c(
         "Ocupado" = 1,
@@ -209,7 +209,7 @@ procesar_vars_laborales <- function(data) {
         "No asalariado" = 4
       ),
       temporal_seq = c(
-        "Fuera de la población ocupada" = 0,
+        "Fuera de la poblaci\u00F3n ocupada" = 0,
         "Asalariado con contrato temporal" = 1,
         "Asalariado con contrato indefinido" = 2,
         "Asalariado sin contrato" = 3,

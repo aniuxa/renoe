@@ -24,7 +24,7 @@
 #'
 #' @return El mismo data frame con `class_ocu`, `isco_care`, `care_industry`,
 #'   `care_w`, `cuida_total`, `trabajo_cuidado_mercado`, el alias deprecado
-#'   `trabajo_cuidado_rem`, `cuida_1d` y banderas de medición.
+#'   `trabajo_cuidado_rem`, `cuida_1d` y banderas de medicion.
 #' @export
 #' @family cuidado_remunerado
 #'
@@ -52,7 +52,7 @@ class_cuidado_rem <- function(
   }
 
   # `procesar_vars_sociodemo()` conserva el trimestre como "t1"-"t4".
-  # También se aceptan valores numéricos para bases creadas fuera del flujo.
+  # Tambien se aceptan valores numericos para bases creadas fuera del flujo.
   anio_obs <- suppressWarnings(
     as.integer(as.character(data$anio))
   )
@@ -63,14 +63,14 @@ class_cuidado_rem <- function(
     trim_obs < 1L | trim_obs > 4L
   if (any(periodo_invalido)) {
     stop(
-      "`anio` debe ser numérico y `trim` debe ser 1-4 o t1-t4."
+      "`anio` debe ser num\u00E9rico y `trim` debe ser 1-4 o t1-t4."
     )
   }
   periodo_obs <- anio_obs * 10L + trim_obs
   periodo_cmo <- !is.na(periodo_obs) & periodo_obs <= 20122L
 
-  # Estas banderas permiten comprobar despuÃ©s de la ejecuciÃ³n si el puente
-  # realmente se intentÃ³ y si produjo una correspondencia.
+  # Estas banderas permiten comprobar despues de la ejecucion si el puente
+  # realmente se intento y si produjo una correspondencia.
   data$puente_cmo_requerido <- periodo_cmo
   data$puente_cmo_aplicado <- rep(FALSE, nrow(data))
 
@@ -82,7 +82,7 @@ class_cuidado_rem <- function(
       )
     }
     # Para ahorrar memoria no se copia el data frame completo: el puente recibe
-    # Ãºnicamente el vector CMO de las filas histÃ³ricas.
+    # unicamente el vector CMO de las filas historicas.
     indice_cmo <- which(periodo_cmo)
     datos_cmo <- data.frame(
       .cmo = data[[variable_cmo]][indice_cmo]
@@ -105,7 +105,7 @@ class_cuidado_rem <- function(
 
     message(
       "Puente CMO-SINCO cuidado aplicado: ", n_convertidos, " de ",
-      n_cmo_no_faltante, " cÃ³digos CMO no faltantes convertidos (",
+      n_cmo_no_faltante, " c\u00F3digos CMO no faltantes convertidos (",
       n_cmo, " observaciones del periodo CMO; ",
       n_sin_correspondencia, " sin correspondencia)."
     )
@@ -163,8 +163,8 @@ class_cuidado_rem <- function(
 
   # Las claves de cuidado se conservan entre SCIAN-Hogares 2007 y 2018,
   # aunque algunas descripciones cambian. La ruptura documentada de ENOE-N
-  # ocurre en 2021-III. La reconstrucción oficial identifica SCIAN-Hogares 2007
-  # desde 2005-I hasta 2021-II, aunque varios ZIP contengan catálogos
+  # ocurre en 2021-III. La reconstruccion oficial identifica SCIAN-Hogares 2007
+  # desde 2005-I hasta 2021-II, aunque varios ZIP contengan catalogos
   # retrospectivos o sin encabezado.
   # CMO 8200 tiene tres destinos SINCO vinculados al trabajo domestico
   # (cocina, trabajo domestico y lavado). La primera regla de la concordancia
@@ -288,7 +288,7 @@ class_cuidado_rem <- function(
       puente_cmo_aplicado = "Puente CMO-SINCO de cuidado ejecutado para la observacion",
       clasificador_ocupacion_cuidado = "Ruta utilizada para clasificar la ocupacion de cuidado",
       sinco_version_cuidado = "Version ocupacional usada para clasificar cuidados",
-      scian_version_cuidado = "Versión SCIAN-Hogares documentada",
+      scian_version_cuidado = "Versi\u00F3n SCIAN-Hogares documentada",
       scian_catalogo_alerta = "Catalogo P4A empaquetado inconsistente con el periodo documentado",
       class_ocu = "Tipo de ocupacion vinculada al cuidado",
       isco_care = "Gran grupo ISCO de la ocupacion de cuidado",
@@ -320,9 +320,9 @@ class_cuidado_rem <- function(
         "Trabajadores de cuidado en otros sectores" = 3,
         "Otros trabajadores del sector de cuidado" = 4
       ),
-      cuida_total = c("No" = 0, "Sí" = 1),
-      trabajo_cuidado_mercado = c("No" = 0, "Sí" = 1),
-      trabajo_cuidado_rem = c("No" = 0, "Sí" = 1),
+      cuida_total = c("No" = 0, "S\u00ED" = 1),
+      trabajo_cuidado_mercado = c("No" = 0, "S\u00ED" = 1),
+      trabajo_cuidado_rem = c("No" = 0, "S\u00ED" = 1),
       cuida_1d = c(
         "No cuidado" = 0,
         "Cuidado directo" = 1,

@@ -3,8 +3,8 @@
 #' Descarga los archivos comprimidos de microdatos de la ENOE desde el sitio del INEGI,
 #' los descomprime y guarda las tablas en el formato especificado.
 #' @encoding UTF-8
-#' @param anio Año del trimestre (2005-2026). Debe ser un valor numérico.
-#' @param trimestre Número del trimestre (1-4). Donde:
+#' @param anio Ano del trimestre (2005-2026). Debe ser un valor numerico.
+#' @param trimestre Numero del trimestre (1-4). Donde:
 #'   \itemize{
 #'     \item 1 = Enero-Marzo
 #'     \item 2 = Abril-Junio
@@ -17,11 +17,11 @@
 #'     \item "rds" (formato nativo de R)
 #'     \item "dta" (compatible con Stata)
 #'   }
-#' @param intentos Número máximo de intentos de descarga si falla la conexión (por defecto 3).
-#' @param timeout_sec Tiempo máximo de espera para la descarga en segundos (por defecto 300).
-#' @param verificar_url Lógico. Si TRUE (por defecto), verifica múltiples formatos de URL
-#'   para encontrar la correcta. Útil cuando INEGI cambia la estructura de archivos.
-#' @param cache Lógico. Si TRUE (por defecto), usa archivos en caché si existen.
+#' @param intentos Numero maximo de intentos de descarga si falla la conexion (por defecto 3).
+#' @param timeout_sec Tiempo maximo de espera para la descarga en segundos (por defecto 300).
+#' @param verificar_url Logico. Si TRUE (por defecto), verifica multiples formatos de URL
+#'   para encontrar la correcta. Util cuando INEGI cambia la estructura de archivos.
+#' @param cache Logico. Si TRUE (por defecto), usa archivos en cache si existen.
 #'
 #' @export
 #' @examples
@@ -34,13 +34,13 @@
 descarga_enoe <- function(anio, trimestre, formato = "parquet", intentos = 3,
                           timeout_sec = 300, verificar_url = TRUE, cache = TRUE) {
   # 1. Validaciones iniciales
-  if (!is.numeric(anio)) stop("El año debe ser numérico")
-  if (!is.numeric(trimestre)) stop("El trimestre debe ser numérico")
+  if (!is.numeric(anio)) stop("El a\u00F1o debe ser num\u00E9rico")
+  if (!is.numeric(trimestre)) stop("El trimestre debe ser num\u00E9rico")
   if (!trimestre %in% 1:4) stop("El trimestre debe ser un valor entre 1 y 4")
   if (anio < 2005 || anio > 2026) stop("La ENOE cubre de 2005 en adelante y hasta ahora hasta 2026")
   if (anio == 2020 && trimestre == 2) stop("No existe el trimestre 2 de 2020 en la ENOE debido a la pandemia de COVID-19")
 
-  # 2. Configuración inicial
+  # 2. Configuracion inicial
   tablas <- c("viv", "hog", "sdem", "coe1", "coe2")
   url_info <- .construir_url_enoe(anio, trimestre)
   unzip_dir <- paste0("zip/enoe_", anio, "_", trimestre, "t")
@@ -50,22 +50,22 @@ descarga_enoe <- function(anio, trimestre, formato = "parquet", intentos = 3,
   # 3. Verificar si ya existen los archivos en el formato solicitado
   archivos_salida <- file.path("datos", paste0(tablas, anio, "_", trimestre, "t.", formato))
   if (cache && all(file.exists(archivos_salida))) {
-    message("Los archivos ya existen en el directorio 'datos'. Usando caché.")
+    message("Los archivos ya existen en el directorio 'datos'. Usando cach\u00E9.")
     return(invisible(TRUE))
   }
 
   # 4. Descargar y extraer datos
   if (!.descargar_zip_enoe(url_info$url, url_info$zip_file, intentos, timeout_sec)) {
-    stop("No se pudo descargar el archivo ZIP después de ", intentos, " intentos")
+    stop("No se pudo descargar el archivo ZIP despu\u00E9s de ", intentos, " intentos")
   }
 
   if (!.extraer_zip_enoe(url_info$zip_file, unzip_dir)) {
     stop("No se pudo extraer los archivos del ZIP descargado")
   }
 
-  # 4B. Sustitución especial para hogares 2022 T1
+  # 4B. Sustitucion especial para hogares 2022 T1
   if (anio == 2022 && trimestre == 1) {
-    message("Sustituyendo archivo de hogares para 2022T1 con versión corregida...")
+    message("Sustituyendo archivo de hogares para 2022T1 con versi\u00F3n corregida...")
     archivo_origen <- system.file("extdata", "conjunto_de_datos_hog_enoen_2022_1t.csv", package = "renoe")
     subcarpeta <- file.path(unzip_dir, "conjunto_de_datos_hog_enoen_2022_1t", "conjunto_de_datos")
     archivo_destino <- file.path(subcarpeta, "conjunto_de_datos_hog_enoen_2022_1t.csv")
@@ -73,7 +73,7 @@ descarga_enoe <- function(anio, trimestre, formato = "parquet", intentos = 3,
     if (!file.exists(archivo_destino) || file.size(archivo_destino) < 1000) {
       dir.create(subcarpeta, recursive = TRUE, showWarnings = FALSE)
       if (!file.exists(archivo_origen)) {
-        warning("No se encontró el archivo corregido para hogares 2022T1 en inst/extdata")
+        warning("No se encontr\u00F3 el archivo corregido para hogares 2022T1 en inst/extdata")
       } else {
         file.copy(archivo_origen, archivo_destino, overwrite = TRUE)
       }

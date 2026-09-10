@@ -1,24 +1,24 @@
 .leer_ipc_enoe <- function() {
   ipc_path <- system.file("extdata", "ipc.rds", package = "renoe")
   if (length(ipc_path) != 1L || !nzchar(ipc_path)) {
-    stop("No se encontró el archivo ipc.rds en inst/extdata/.", call. = FALSE)
+    stop("No se encontr\u00F3 el archivo ipc.rds en inst/extdata/.", call. = FALSE)
   }
   readRDS(ipc_path)
 }
 
-#' Añadir IPC al conjunto fusionado de ENOE
+#' Anadir IPC al conjunto fusionado de ENOE
 #'
-#' Esta función agrega una columna llamada `ipc` al objeto fusionado de la ENOE,
-#' correspondiente al promedio trimestral del Índice de Precios al Consumidor (IPC).
+#' Esta funcion agrega una columna llamada `ipc` al objeto fusionado de la ENOE,
+#' correspondiente al promedio trimestral del Indice de Precios al Consumidor (IPC).
 #'
 #' El archivo `ipc.rds` debe estar ubicado en `inst/extdata/` y contener
-#' las columnas numéricas `anio`, `trim` e `ipc`, una fila por trimestre. La
-#' función se detiene si el recurso tiene claves duplicadas, valores inválidos o
-#' no contiene el periodo solicitado; así se evita propagar ingresos
+#' las columnas numericas `anio`, `trim` e `ipc`, una fila por trimestre. La
+#' funcion se detiene si el recurso tiene claves duplicadas, valores invalidos o
+#' no contiene el periodo solicitado; asi se evita propagar ingresos
 #' deflactados ausentes sin advertencia suficiente.
 #'
 #' @param datos_fusionados Un data.frame ya fusionado con `fusion_enoe()`.
-#' @param anio Año del trimestre (numérico).
+#' @param anio Ano del trimestre (numerico).
 #' @param trimestre Trimestre (1 a 4).
 #'
 #' @return El mismo `data.frame` con una nueva columna `ipc`.
@@ -38,12 +38,12 @@ ipc_enoe <- function(datos_fusionados, anio, trimestre) {
   }
   if (length(anio) != 1L || !is.numeric(anio) || is.na(anio) ||
       !is.finite(anio) || anio != floor(anio)) {
-    stop("`anio` debe ser un número escalar, finito e íntegro.", call. = FALSE)
+    stop("`anio` debe ser un n\u00FAmero escalar, finito e \u00EDntegro.", call. = FALSE)
   }
   if (length(trimestre) != 1L || !is.numeric(trimestre) || is.na(trimestre) ||
       !is.finite(trimestre) || trimestre != floor(trimestre) ||
       !trimestre %in% 1:4) {
-    stop("`trimestre` debe ser un número escalar e íntegro entre 1 y 4.",
+    stop("`trimestre` debe ser un n\u00FAmero escalar e \u00EDntegro entre 1 y 4.",
          call. = FALSE)
   }
 
@@ -61,7 +61,7 @@ ipc_enoe <- function(datos_fusionados, anio, trimestre) {
       any(!is.finite(ipc_tabla$ipc)) ||
       any(ipc_tabla$ipc <= 0)) {
     stop(
-      "ipc.rds debe contener anio, trim e ipc numéricos, íntegros donde ",
+      "ipc.rds debe contener anio, trim e ipc num\u00E9ricos, \u00EDntegros donde ",
       "corresponde, sin faltantes y con IPC positivo.",
       call. = FALSE
     )
@@ -73,7 +73,7 @@ ipc_enoe <- function(datos_fusionados, anio, trimestre) {
   coincide <- ipc_tabla$anio == anio & ipc_tabla$trim == trimestre
   if (!any(coincide)) {
     stop(
-      "No se encontró un valor de IPC para ", anio, "-T", trimestre, ".",
+      "No se encontr\u00F3 un valor de IPC para ", anio, "-T", trimestre, ".",
       call. = FALSE
     )
   }

@@ -1,34 +1,34 @@
 #' Procesar variables de estructura del hogar en la ENOE
 #'
-#' Calcula variables derivadas sobre la composición y estructura de los hogares
-#' a partir de los microdatos de la ENOE. Esta función requiere que previamente
-#' se hayan generado variables sociodemográficas mediante
+#' Calcula variables derivadas sobre la composicion y estructura de los hogares
+#' a partir de los microdatos de la ENOE. Esta funcion requiere que previamente
+#' se hayan generado variables sociodemograficas mediante
 #' `procesar_vars_sociodemo()`.
 #'
 #' Incluye:
-#' - Clasificación de parentesco (`relative`), ajustada al catálogo correspondiente
-#'   según el periodo
-#' - Tipologías de hogares (familiares, extensos, compuestos, etc.)
-#' - Tamaño del hogar y tasas de dependencia (menores, mayores y total)
+#' - Clasificacion de parentesco (`relative`), ajustada al catalogo correspondiente
+#'   segun el periodo
+#' - Tipologias de hogares (familiares, extensos, compuestos, etc.)
+#' - Tamano del hogar y tasas de dependencia (menores, mayores y total)
 #' - Conteo de integrantes por grupo etario
-#' - Indicadores dicotómicos de presencia de grupos clave (niñez, juventud,
+#' - Indicadores dicotomicos de presencia de grupos clave (ninez, juventud,
 #'   adultez mayor)
 #'
-#' Las variables generadas permiten construir tipologías familiares,
-#' caracterizar hogares según su composición y analizar necesidades de cuidado
-#' o dependencia demográfica.
+#' Las variables generadas permiten construir tipologias familiares,
+#' caracterizar hogares segun su composicion y analizar necesidades de cuidado
+#' o dependencia demografica.
 #'
-#' La variable `tam_hog` se calcula excluyendo al servicio doméstico y a sus
-#' familiares, identificados en el catálogo de `par_c` mediante `relative == 7`.
+#' La variable `tam_hog` se calcula excluyendo al servicio domestico y a sus
+#' familiares, identificados en el catalogo de `par_c` mediante `relative == 7`.
 #'
 #' @encoding UTF-8
 #' @param data Un data frame con variables como `par_c`, `edad`, `sexo`,
 #'   `folio2`, previamente procesadas por `procesar_vars_sociodemo()`.
-#' @param anio Año de referencia de los datos.
-#' @param trimestre Trimestre de referencia de los datos (número del 1 al 4).
+#' @param anio Ano de referencia de los datos.
+#' @param trimestre Trimestre de referencia de los datos (numero del 1 al 4).
 #'
 #' @return Un data frame con variables derivadas de estructura del hogar y
-#'   composición demográfica, etiquetadas.
+#'   composicion demografica, etiquetadas.
 #' @export
 #'
 #' @examples
@@ -48,10 +48,10 @@ procesar_vars_hogar <- function(data, anio, trimestre) {
   }
 
   if (!"par_c" %in% names(data)) {
-    stop("La variable 'par_c' no está presente en el objeto de entrada.")
+    stop("La variable 'par_c' no est\u00E1 presente en el objeto de entrada.")
   }
 
-  # En bases apiladas, separar hogares también por periodo. Si anio o trim no
+  # En bases apiladas, separar hogares tambien por periodo. Si anio o trim no
   # existen, se conserva el comportamiento previo para un solo trimestre.
   claves_hogar <- c(intersect(c("anio", "trim"), names(data)), "folio2")
 
@@ -178,54 +178,54 @@ procesar_vars_hogar <- function(data, anio, trimestre) {
     ) %>%
     dplyr::ungroup() %>%
     sjlabelled::var_labels(
-      relative      = "Clasificación del parentesco respecto a la jefatura del hogar",
-      rela1         = "Número de jefas o jefes en el hogar",
-      rela2         = "Número de cónyuges o parejas en el hogar",
-      rela3         = "Número de hijas o hijos en el hogar",
-      rela4         = "Número de madres o padres de la jefatura en el hogar",
-      rela5         = "Número de otros parientes en el hogar",
-      rela6         = "Número de personas no parientes u otras en el hogar",
-      family        = "Tipología detallada del hogar",
-      familyt       = "Tipología resumida del hogar",
-      familyt_lab   = "Tipología resumida del hogar",
-      tipo_hog      = "Tipología sintética del hogar",
-      tipo_hog_lab  = "Tipología sintética del hogar",
-      tipo_hog2     = "Tipología agregada del hogar",
-      tipo_hog2_lab = "Tipología agregada del hogar",
-      tam_hog       = "Tamaño del hogar (sin servicio doméstico)",
-      men           = "Número de integrantes menores de 15 años",
-      may           = "Número de integrantes de 65 años o más",
-      nondep        = "Número de integrantes de 15 a 64 años",
-      dep           = "Número de integrantes dependientes: menores de 15 y personas de 65 años o más",
+      relative      = "Clasificaci\u00F3n del parentesco respecto a la jefatura del hogar",
+      rela1         = "N\u00FAmero de jefas o jefes en el hogar",
+      rela2         = "N\u00FAmero de c\u00F3nyuges o parejas en el hogar",
+      rela3         = "N\u00FAmero de hijas o hijos en el hogar",
+      rela4         = "N\u00FAmero de madres o padres de la jefatura en el hogar",
+      rela5         = "N\u00FAmero de otros parientes en el hogar",
+      rela6         = "N\u00FAmero de personas no parientes u otras en el hogar",
+      family        = "Tipolog\u00EDa detallada del hogar",
+      familyt       = "Tipolog\u00EDa resumida del hogar",
+      familyt_lab   = "Tipolog\u00EDa resumida del hogar",
+      tipo_hog      = "Tipolog\u00EDa sint\u00E9tica del hogar",
+      tipo_hog_lab  = "Tipolog\u00EDa sint\u00E9tica del hogar",
+      tipo_hog2     = "Tipolog\u00EDa agregada del hogar",
+      tipo_hog2_lab = "Tipolog\u00EDa agregada del hogar",
+      tam_hog       = "Tama\u00F1o del hogar (sin servicio dom\u00E9stico)",
+      men           = "N\u00FAmero de integrantes menores de 15 a\u00F1os",
+      may           = "N\u00FAmero de integrantes de 65 a\u00F1os o m\u00E1s",
+      nondep        = "N\u00FAmero de integrantes de 15 a 64 a\u00F1os",
+      dep           = "N\u00FAmero de integrantes dependientes: menores de 15 y personas de 65 a\u00F1os o m\u00E1s",
       t_dep1        = "Tasa de dependencia juvenil",
       t_dep2        = "Tasa de dependencia senil",
       t_dep3        = "Tasa de dependencia total",
-      h_00_05       = "Número de integrantes de 0 a 5 años",
-      h_06_12       = "Número de integrantes de 6 a 12 años",
-      h_13_17       = "Número de integrantes de 13 a 17 años",
-      h_18m         = "Número de integrantes de 18 años o más",
-      h_joven1      = "Número de integrantes de 15 a 24 años",
-      h_joven2      = "Número de integrantes de 15 a 29 años",
-      h_adm         = "Número de integrantes de 65 años o más",
-      d_00_05       = "Hogar con al menos una persona de 0 a 5 años",
-      d_06_12       = "Hogar con al menos una persona de 6 a 12 años",
-      d_13_17       = "Hogar con al menos una persona de 13 a 17 años",
-      d_18m         = "Hogar con al menos una persona de 18 años o más",
-      d_joven1      = "Hogar con al menos una persona de 15 a 24 años",
-      d_joven2      = "Hogar con al menos una persona de 15 a 29 años",
-      d_adm         = "Hogar con al menos una persona de 65 años o más",
+      h_00_05       = "N\u00FAmero de integrantes de 0 a 5 a\u00F1os",
+      h_06_12       = "N\u00FAmero de integrantes de 6 a 12 a\u00F1os",
+      h_13_17       = "N\u00FAmero de integrantes de 13 a 17 a\u00F1os",
+      h_18m         = "N\u00FAmero de integrantes de 18 a\u00F1os o m\u00E1s",
+      h_joven1      = "N\u00FAmero de integrantes de 15 a 24 a\u00F1os",
+      h_joven2      = "N\u00FAmero de integrantes de 15 a 29 a\u00F1os",
+      h_adm         = "N\u00FAmero de integrantes de 65 a\u00F1os o m\u00E1s",
+      d_00_05       = "Hogar con al menos una persona de 0 a 5 a\u00F1os",
+      d_06_12       = "Hogar con al menos una persona de 6 a 12 a\u00F1os",
+      d_13_17       = "Hogar con al menos una persona de 13 a 17 a\u00F1os",
+      d_18m         = "Hogar con al menos una persona de 18 a\u00F1os o m\u00E1s",
+      d_joven1      = "Hogar con al menos una persona de 15 a 24 a\u00F1os",
+      d_joven2      = "Hogar con al menos una persona de 15 a 29 a\u00F1os",
+      d_adm         = "Hogar con al menos una persona de 65 a\u00F1os o m\u00E1s",
       p_lab         = "Personas ocupadas en el hogar (clase2 == 1)",
-      p_lab_ratio   = "Proporción de personas ocupadas respecto al tamaño del hogar"
+      p_lab_ratio   = "Proporci\u00F3n de personas ocupadas respecto al tama\u00F1o del hogar"
     ) %>%
     sjlabelled::val_labels(
       relative = c(
         "Jefa/e" = 1,
-        "Cónyuge o pareja" = 2,
+        "C\u00F3nyuge o pareja" = 2,
         "Hija/o" = 3,
         "Madre o padre" = 4,
         "Otros parientes" = 5,
         "No parientes u otros" = 6,
-        "Servicio doméstico y familiares" = 7
+        "Servicio dom\u00E9stico y familiares" = 7
       ),
       familyt = c(
         "Unipersonal" = 1,
@@ -248,13 +248,13 @@ procesar_vars_hogar <- function(data, anio, trimestre) {
         "Nuclear" = 3,
         "Extensos" = 6
       ),
-      d_00_05 = c("No" = 0, "Sí" = 1),
-      d_06_12 = c("No" = 0, "Sí" = 1),
-      d_13_17 = c("No" = 0, "Sí" = 1),
-      d_18m = c("No" = 0, "Sí" = 1),
-      d_joven1 = c("No" = 0, "Sí" = 1),
-      d_joven2 = c("No" = 0, "Sí" = 1),
-      d_adm = c("No" = 0, "Sí" = 1)
+      d_00_05 = c("No" = 0, "S\u00ED" = 1),
+      d_06_12 = c("No" = 0, "S\u00ED" = 1),
+      d_13_17 = c("No" = 0, "S\u00ED" = 1),
+      d_18m = c("No" = 0, "S\u00ED" = 1),
+      d_joven1 = c("No" = 0, "S\u00ED" = 1),
+      d_joven2 = c("No" = 0, "S\u00ED" = 1),
+      d_adm = c("No" = 0, "S\u00ED" = 1)
     )
 
   return(data)

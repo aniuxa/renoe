@@ -1,7 +1,7 @@
-#' Procesar el módulo de cuidado de mercado
+#' Procesar el modulo de cuidado de mercado
 #'
 #' Interfaz del modulo desarrollado para el articulo sobre brechas de ingreso
-#' mediante regresiones cuantílicas. Clasifica en memoria; no descarga, escribe
+#' mediante regresiones cuantilicas. Clasifica en memoria; no descarga, escribe
 #' ni reconstruye microdatos. Los modelos pertenecen al proyecto del articulo.
 #'
 #' Usa CMO hasta 2012-II, SINCO 2011 desde 2012-III y SINCO 2019 desde
@@ -19,11 +19,11 @@
 #' Las correspondencias multiples siguen la primera regla del material de
 #' Damian y quedan identificadas en `calidad_armonizacion_cuidado`.
 #'
-#' `trabajo_cuidado_mercado` es el nombre principal de la tipología. La columna
-#' `trabajo_cuidado_rem` se conserva como alias deprecado. La función separa la
-#' posición remunerada, la posición explícita sin pago y la evidencia de ingreso
+#' `trabajo_cuidado_mercado` es el nombre principal de la tipologia. La columna
+#' `trabajo_cuidado_rem` se conserva como alias deprecado. La funcion separa la
+#' posicion remunerada, la posicion explicita sin pago y la evidencia de ingreso
 #' observado o imputado. Un ingreso imputado positivo nunca se presenta como
-#' remuneración observada.
+#' remuneracion observada.
 #'
 #' @param data Data frame de personas; puede contener varios trimestres.
 #' @param anio,trimestre Periodo opcional, escalar o vector de longitud
@@ -159,15 +159,15 @@ procesar_cuidado_remunerado <- function(
     sjlabelled::var_labels(
       trabajo_cuidado_mercado = "Trabajadora/or de cuidado de mercado",
       trabajo_cuidado_rem = "Alias deprecado de trabajo_cuidado_mercado",
-      cuidado_posicion_remunerada = "Cuidado de mercado en posición ocupacional remunerada",
-      cuidado_sin_pago = "Cuidado de mercado en posición ocupacional sin pago",
-      estado_ingreso_cuidado = "Estado de observación o imputación del ingreso en el cuidado de mercado"
+      cuidado_posicion_remunerada = "Cuidado de mercado en posici\u00F3n ocupacional remunerada",
+      cuidado_sin_pago = "Cuidado de mercado en posici\u00F3n ocupacional sin pago",
+      estado_ingreso_cuidado = "Estado de observaci\u00F3n o imputaci\u00F3n del ingreso en el cuidado de mercado"
     ) |>
     sjlabelled::val_labels(
-      trabajo_cuidado_mercado = c("No" = 0, "Sí" = 1),
-      trabajo_cuidado_rem = c("No" = 0, "Sí" = 1),
-      cuidado_posicion_remunerada = c("No" = 0, "Sí" = 1),
-      cuidado_sin_pago = c("No" = 0, "Sí" = 1)
+      trabajo_cuidado_mercado = c("No" = 0, "S\u00ED" = 1),
+      trabajo_cuidado_rem = c("No" = 0, "S\u00ED" = 1),
+      cuidado_posicion_remunerada = c("No" = 0, "S\u00ED" = 1),
+      cuidado_sin_pago = c("No" = 0, "S\u00ED" = 1)
     )
 }
 

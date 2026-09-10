@@ -1,4 +1,4 @@
-#' Clasificar ocupaciones para el capitulo de Gerardo Damián Hernández
+#' Clasificar ocupaciones para el capitulo de Gerardo Damian Hernandez
 #'
 #' Traduce el codigo ocupacional armonizado a SINCO 2011 hacia ISCO-88 y
 #' construye la tipologia de cuatro clases utilizada en la propuesta
@@ -6,7 +6,7 @@
 #' no manual no calificado, manual calificado y manual no calificado.
 #'
 #' La correspondencia SINCO 2011-ISCO-88 reproduce, en orden de prioridad, el
-#' do-file de Gerardo Damián Hernández `sinco-isco88.do`. Las variables
+#' do-file de Gerardo Damian Hernandez `sinco-isco88.do`. Las variables
 #' auxiliares permiten auditar la cobertura y distinguir asignaciones directas
 #' de recuperaciones realizadas con el gran grupo SINCO.
 #'
@@ -30,7 +30,7 @@
 #' @encoding UTF-8
 #'
 #' @references
-#' Damián Hernández, G. (2026). *Quince anos de trabajo femenino en Mexico:
+#' Damian Hernandez, G. (2026). *Quince anos de trabajo femenino en Mexico:
 #' tipo de hogar y clase ocupacional, 2005-2020*. Propuesta de capitulo para
 #' el proyecto PAPIIT IN305925.
 #'
@@ -396,10 +396,10 @@ procesar_clases_damian <- function(
       )
     ) |>
     sjlabelled::var_labels(
-      isco88_damian = "Codigo ISCO-88 derivado de SINCO 2011 (correspondencia de Gerardo Damián Hernández)",
-      sinco4d_damian = "Codigo SINCO 2011 especifico para el modulo de Gerardo Damián Hernández",
-      calidad_cmo_damian = "Calidad del puente CMO-SINCO usado por el modulo de Gerardo Damián Hernández",
-      n_destinos_cmo_damian = "Numero de destinos SINCO posibles desde CMO en el modulo de Gerardo Damián Hernández",
+      isco88_damian = "Codigo ISCO-88 derivado de SINCO 2011 (correspondencia de Gerardo Dami\u00E1n Hern\u00E1ndez)",
+      sinco4d_damian = "Codigo SINCO 2011 especifico para el modulo de Gerardo Dami\u00E1n Hern\u00E1ndez",
+      calidad_cmo_damian = "Calidad del puente CMO-SINCO usado por el modulo de Gerardo Dami\u00E1n Hern\u00E1ndez",
+      n_destinos_cmo_damian = "Numero de destinos SINCO posibles desde CMO en el modulo de Gerardo Dami\u00E1n Hern\u00E1ndez",
       grupo_ocu9_damian = "Gran grupo ocupacional SINCO en nueve categorias",
       clase_ocu_damian = "Clase ocupacional manual/no manual y calificada/no calificada",
       metodo_clase_damian = "Metodo de asignacion de la clase ocupacional",

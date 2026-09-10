@@ -1,58 +1,58 @@
 #' Imputar ingresos ocupacionales con MICE
 #'
-#' Esta función aplica imputación de ingresos mensuales (`ingocup`) para personas ocupadas en la ENOE
-#' utilizando modelos de imputación múltiple con el paquete `mice`. Se utiliza el logaritmo del ingreso
-#' como variable objetivo y se imputan los valores faltantes en función de variables donantes como edad,
-#' escolaridad, ocupación, horas trabajadas, entre otras.
+#' Esta funcion aplica imputacion de ingresos mensuales (`ingocup`) para personas ocupadas en la ENOE
+#' utilizando modelos de imputacion multiple con el paquete `mice`. Se utiliza el logaritmo del ingreso
+#' como variable objetivo y se imputan los valores faltantes en funcion de variables donantes como edad,
+#' escolaridad, ocupacion, horas trabajadas, entre otras.
 #'
-#' La imputación se realiza primero por bloques de sexo y entidad federativa. Los casos que no pueden
+#' La imputacion se realiza primero por bloques de sexo y entidad federativa. Los casos que no pueden
 #' imputarse dentro de esos bloques pasan a un modelo conjunto de respaldo, en el cual el sexo y la
 #' entidad se incorporan como covariables. Si no existen las variables `folio3`, `anio` o `trim`, se
-#' generan automáticamente con funciones auxiliares (`crear_folios()` y `procesar_vars_sociodemo()`).
+#' generan automaticamente con funciones auxiliares (`crear_folios()` y `procesar_vars_sociodemo()`).
 #'
 #' @encoding UTF-8
 #' @param data Un data frame con personas ocupadas (`clase2 == 1`) y variables de ingreso (`ingocup`),
-#'        variables donantes y metadatos de identificación.
-#' @param vars_donantes Vector con nombres de variables que se utilizarán como predictores para la imputación.
+#'        variables donantes y metadatos de identificacion.
+#' @param vars_donantes Vector con nombres de variables que se utilizaran como predictores para la imputacion.
 #' @param id_vars Vector con nombres de variables identificadoras (por defecto: `folio3`, `trim`, `anio`).
-#' @param method Método de imputación utilizado por `mice` (por defecto: `"pmm"`).
+#' @param method Metodo de imputacion utilizado por `mice` (por defecto: `"pmm"`).
 #' @param seed Semilla aleatoria para reproducibilidad.
-#' @param plot Lógico. Si `TRUE`, se muestra un gráfico comparando la distribución del ingreso original vs imputado.
-#' @param anio Año del trimestre, si `data` no contiene esta variable.
-#' @param trimestre Trimestre del año (1–4), si `data` no contiene esta variable.
+#' @param plot Logico. Si `TRUE`, se muestra un grafico comparando la distribucion del ingreso original vs imputado.
+#' @param anio Ano del trimestre, si `data` no contiene esta variable.
+#' @param trimestre Trimestre del ano (1-4), si `data` no contiene esta variable.
 #'
 #' @return Un data frame con las variables:
 #' \describe{
 #'   \item{ingocup_imp}{Ingreso mensual imputado}
 #'   \item{log_ingocup_imp}{Logaritmo del ingreso imputado}
-#'   \item{imp_ingocup}{Indicador binario de si el ingreso fue imputado (1 = sí)}
+#'   \item{imp_ingocup}{Indicador binario de si el ingreso fue imputado (1 = si)}
 #' }
 #'
 #' @details
-#' La imputación de ingresos se realiza únicamente para personas ocupadas (`clase2 == 1`)
-#' con datos válidos de edad, y en caso de estar disponible, también de años de escolaridad (`anios_es`).
+#' La imputacion de ingresos se realiza unicamente para personas ocupadas (`clase2 == 1`)
+#' con datos validos de edad, y en caso de estar disponible, tambien de anos de escolaridad (`anios_es`).
 #'
-#' La variable a imputar es el logaritmo natural del ingreso mensual (`log_ingocup_imp`), y la imputación
-#' se realiza utilizando el método especificado (por defecto `"pmm"`, predictive mean matching) a través del paquete `mice`.
+#' La variable a imputar es el logaritmo natural del ingreso mensual (`log_ingocup_imp`), y la imputacion
+#' se realiza utilizando el metodo especificado (por defecto `"pmm"`, predictive mean matching) a traves del paquete `mice`.
 #'
 #' Las imputaciones se hacen primero de forma separada por bloques definidos por el sexo (`sex`) y la
 #' entidad federativa (`ent`), para capturar mejor las heterogeneidades contextuales. Cuando un bloque
-#' no contiene donantes o variación suficiente, sus casos pendientes se imputan conjuntamente usando
-#' `sex`, `ent` y las demás variables donantes disponibles como predictores. Las variables identificadoras
+#' no contiene donantes o variacion suficiente, sus casos pendientes se imputan conjuntamente usando
+#' `sex`, `ent` y las demas variables donantes disponibles como predictores. Las variables identificadoras
 #' nunca se usan como predictores.
 #'
-#' Las variables utilizadas como predictoras ("donantes") incluyen, si están presentes:
-#' - `edad`: Edad en años.
-#' - `anios_es`: Años aprobados de escolaridad.
+#' Las variables utilizadas como predictoras ("donantes") incluyen, si estan presentes:
+#' - `edad`: Edad en anos.
+#' - `anios_es`: Anos aprobados de escolaridad.
 #' - `c_ocu11c`: 11 grandes grupos ocupacionales.
-#' - `pos_ocu`: Posición en la ocupación.
+#' - `pos_ocu`: Posicion en la ocupacion.
 #' - `rama_est2`: Rama de actividad.
-#' - `ing7c`: Indicador de percepción de ingresos.
+#' - `ing7c`: Indicador de percepcion de ingresos.
 #' - `ent`: Clave de entidad federativa.
 #' - `hrsocup`: Horas trabajadas a la semana.
-#' - `t_loc`: Tamaño de localidad.
+#' - `t_loc`: Tamano de localidad.
 #'
-#' Solo se consideran aquellas variables donantes que están disponibles en el conjunto de datos.
+#' Solo se consideran aquellas variables donantes que estan disponibles en el conjunto de datos.
 #'
 #' @export
 #' @family procesamiento_enoe
@@ -124,7 +124,7 @@ imputa_ingocup <- function(data,
   n_total_clase2  <- sum(data$clase2 == 1, na.rm = TRUE)
   n_imputar <- sum(is.na(imputar_df$log_ingocup_imp))
 
-  message(etiqueta_periodo, "Total ocupados con datos válidos: ", n_total_validos)
+  message(etiqueta_periodo, "Total ocupados con datos v\u00E1lidos: ", n_total_validos)
   message(etiqueta_periodo, "Casos a imputar (NA en log_ingocup_imp): ", n_imputar)
 
   imputar_vector <- function(df, predictores) {
@@ -139,7 +139,7 @@ imputa_ingocup <- function(data,
     )]
 
     if (sum(!is.na(df[[objetivo]])) < 2L || length(predictores) == 0L) {
-      stop("No hay suficientes donantes o predictores con variación.")
+      stop("No hay suficientes donantes o predictores con variaci\u00F3n.")
     }
 
     modelo <- as.data.frame(df[c(objetivo, predictores)])
@@ -205,7 +205,7 @@ imputa_ingocup <- function(data,
       error = function(e) {
         message(
           etiqueta_periodo,
-          "No fue posible ejecutar la imputación de respaldo: ",
+          "No fue posible ejecutar la imputaci\u00F3n de respaldo: ",
           conditionMessage(e)
         )
         imputar_df$log_ingocup_imp
@@ -255,15 +255,15 @@ imputa_ingocup <- function(data,
   pct_clase2    <- round(100 * n_imputados_final / n_total_clase2, 2)
 
   message(etiqueta_periodo, "Casos efectivamente imputados: ", n_imputados_final)
-  message(etiqueta_periodo, "Porcentaje entre los que tenían NA: ", pct_imputados, "%")
-  message(etiqueta_periodo, "Porcentaje sobre válidos (edad + anios_es): ", pct_validos, "%")
+  message(etiqueta_periodo, "Porcentaje entre los que ten\u00EDan NA: ", pct_imputados, "%")
+  message(etiqueta_periodo, "Porcentaje sobre v\u00E1lidos (edad + anios_es): ", pct_validos, "%")
   message(etiqueta_periodo, "Porcentaje sobre total de ocupados (clase2 == 1): ", pct_clase2, "%")
 
   data <- data %>%
     sjlabelled::var_labels(
       miss_income4 = "Ingreso no declarado identificado mediante P6B1",
       sin_pago = "Persona ocupada sin ingreso laboral",
-      miss_to_impute = "Ingreso laboral faltante seleccionado para imputación"
+      miss_to_impute = "Ingreso laboral faltante seleccionado para imputaci\u00F3n"
     )
 
   if (plot) {
@@ -273,7 +273,7 @@ imputa_ingocup <- function(data,
       ggplot2::geom_density(ggplot2::aes(x = ingocup), color = "blue", na.rm = TRUE) +
       ggplot2::geom_density(ggplot2::aes(x = ingocup_imp), color = "red", na.rm = TRUE) +
       ggplot2::labs(
-        title = "Distribución del ingreso mensual",
+        title = "Distribuci\u00F3n del ingreso mensual",
         x = "Ingreso mensual",
         y = "Densidad",
         caption = "Azul: original / Rojo: imputado"
@@ -286,7 +286,7 @@ imputa_ingocup <- function(data,
     dplyr::mutate(
       ingocup_imp     = sjlabelled::set_label(ingocup_imp,     "Ingreso mensual imputado"),
       log_ingocup_imp = sjlabelled::set_label(log_ingocup_imp, "Logaritmo del ingreso mensual imputado"),
-      imp_ingocup     = sjlabelled::set_label(imp_ingocup,     "Indicador de imputación de ingreso (1 = imputado)")
+      imp_ingocup     = sjlabelled::set_label(imp_ingocup,     "Indicador de imputaci\u00F3n de ingreso (1 = imputado)")
     )
 
   return(data)

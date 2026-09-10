@@ -16,7 +16,7 @@
     nombre_archivo <- paste0("conjunto_de_datos_", tabla, "_enoen_2022_1t.csv")
     ruta <- file.path(unzip_dir, paste0("conjunto_de_datos_", tabla, "_enoen_2022_1t"), nombre_archivo)
     if (!file.exists(ruta)) {
-      warning("No se encontró el archivo corregido para ", tabla, " en ", ruta, ". Buscando archivo estándar...")
+      warning("No se encontr\u00F3 el archivo corregido para ", tabla, " en ", ruta, ". Buscando archivo est\u00E1ndar...")
       ruta <- NULL
     }
     archivo <- ruta
@@ -24,13 +24,13 @@
     archivos <- list.files(unzip_dir, pattern = patrones[[tabla]],
                            recursive = TRUE, full.names = TRUE)
     if (length(archivos) == 0) {
-      warning("No se encontró archivo para la tabla ", tabla, " en ", unzip_dir)
+      warning("No se encontr\u00F3 archivo para la tabla ", tabla, " en ", unzip_dir)
       return(NULL)
     }
     archivo <- archivos[1]
   }
 
-  # Abortamos si no hay archivo válido
+  # Abortamos si no hay archivo valido
   if (is.null(archivo) || !file.exists(archivo)) {
     warning("Archivo no disponible para tabla ", tabla, " en ", unzip_dir)
     return(NULL)
@@ -57,7 +57,7 @@
 }
 
 
-#' Sustituye los cinco archivos de datos de ENOE 2022T1 con una versión alternativa descargada desde INEGI.
+#' Sustituye los cinco archivos de datos de ENOE 2022T1 con una version alternativa descargada desde INEGI.
 #'
 #' @keywords internal
 .sustituir_todo_enoe_2022t1 <- function(unzip_dir) {
@@ -65,12 +65,12 @@
   temp_zip <- tempfile(fileext = ".zip")
   temp_dir <- tempfile()
 
-  message("Descargando versión alternativa de ENOE 2022T1 desde INEGI...")
+  message("Descargando versi\u00F3n alternativa de ENOE 2022T1 desde INEGI...")
   tryCatch({
     utils::download.file(url_zip, temp_zip, mode = "wb", quiet = TRUE)
     utils::unzip(temp_zip, exdir = temp_dir)
   }, error = function(e) {
-    warning("No se pudo descargar o descomprimir la versión alternativa de ENOE 2022T1: ", e$message)
+    warning("No se pudo descargar o descomprimir la versi\u00F3n alternativa de ENOE 2022T1: ", e$message)
     return(invisible(NULL))
   })
 
@@ -85,7 +85,7 @@
   for (tabla in names(archivos_a_copiar)) {
     archivo_fuente <- file.path(temp_dir, archivos_a_copiar[[tabla]])
     if (!file.exists(archivo_fuente)) {
-      warning("No se encontró el archivo ", archivos_a_copiar[[tabla]], " en el ZIP.")
+      warning("No se encontr\u00F3 el archivo ", archivos_a_copiar[[tabla]], " en el ZIP.")
       next
     }
 
@@ -100,25 +100,25 @@
 
   invisible(NULL)
 }
-#' Función interna que determina la estructura de URL apropiada según el año y trimestre
+#' Funcion interna que determina la estructura de URL apropiada segun el ano y trimestre
 #' @keywords internal
 .construir_url_enoe <- function(anio, trimestre) {
   base_url <- "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/datosabiertos/"
 
   # Validaciones
   if (!is.numeric(anio) || !is.numeric(trimestre)) {
-    stop("Año y trimestre deben ser numéricos")
+    stop("A\u00F1o y trimestre deben ser num\u00E9ricos")
   }
   if (length(anio) != 1L || length(trimestre) != 1L ||
       is.na(anio) || is.na(trimestre) ||
       anio != as.integer(anio) || !trimestre %in% 1:4) {
-    stop("Año y trimestre deben ser valores escalares íntegros y el trimestre debe estar entre 1 y 4")
+    stop("A\u00F1o y trimestre deben ser valores escalares \u00EDntegros y el trimestre debe estar entre 1 y 4")
   }
   if (anio == 2020 && trimestre == 2) {
-    stop("No existe 2020-T2 por la suspensión del levantamiento regular de la ENOE")
+    stop("No existe 2020-T2 por la suspensi\u00F3n del levantamiento regular de la ENOE")
   }
   if (anio == 2026 && trimestre > 2) {
-    stop("Sólo están publicados y habilitados 2026-T1 y 2026-T2")
+    stop("S\u00F3lo est\u00E1n publicados y habilitados 2026-T1 y 2026-T2")
   }
 
   # Caso especial para 2017 y 2018 T1
@@ -155,7 +155,7 @@
   }
 }
 
-#' Lista completa de variables de identificación ENOE/ENOEN
+#' Lista completa de variables de identificacion ENOE/ENOEN
 #' @keywords internal
 .obtener_id_vars <- function(anio, trimestre) {
   # Variables base
@@ -164,7 +164,7 @@
                  "r_def", "n_inf", "ur", "mun")
 
   # Validaciones
-  if (!is.numeric(anio)) stop("El año debe ser numérico")
+  if (!is.numeric(anio)) stop("El a\u00F1o debe ser num\u00E9rico")
   if (!trimestre %in% 1:4) stop("El trimestre debe ser entre 1 y 4")
 
   # Caso ENOEN (2020T3-2022T4)
@@ -184,13 +184,13 @@
   return(c(base_vars, "fac", "t_loc", "est_d"))
 }
 
-#' Estandariza variables de identificación
+#' Estandariza variables de identificacion
 #' @keywords internal
 .estandarizar_ids <- function(df, anio, trimestre) {
   if (is.null(df) || ncol(df) == 0) return(df)
 
-  # A partir de 2025-T3, INEGI sustituyó varios nombres geográficos por cve_*.
-  # Se recuperan los nombres históricos antes de convertir las llaves para que
+  # A partir de 2025-T3, INEGI sustituyo varios nombres geograficos por cve_*.
+  # Se recuperan los nombres historicos antes de convertir las llaves para que
   # el resto del paquete y los paneles reciban un esquema estable.
   if (anio > 2025 || (anio == 2025 && trimestre >= 3)) {
     equivalencias <- c(
@@ -245,7 +245,7 @@
 #' Descarga robusta de archivos ZIP
 #' @keywords internal
 .descargar_zip_enoe <- function(url, destfile, intentos = 3, timeout = 300) {
-  # Validación inicial silenciosa
+  # Validacion inicial silenciosa
   if (missing(url) || is.null(url) || url == "") {
     return(FALSE)
   }
@@ -253,7 +253,7 @@
   for (i in 1:intentos) {
     tryCatch({
       options(timeout = timeout)
-      quiet <- ifelse(i == 1, TRUE, FALSE) # Solo mostrar mensajes después del primer intento
+      quiet <- ifelse(i == 1, TRUE, FALSE) # Solo mostrar mensajes despues del primer intento
 
       status <- suppressWarnings(
         if (i > 1 && grepl("2018.*2t", url)) {
@@ -273,7 +273,7 @@
     }, error = function(e) {
       if (file.exists(destfile)) unlink(destfile)
       if (i == intentos) {
-        warning("Fallo en la descarga (último intento)", call. = FALSE)
+        warning("Fallo en la descarga (\u00FAltimo intento)", call. = FALSE)
       }
       return(FALSE)
     })
@@ -281,7 +281,7 @@
   }
   return(FALSE)
 }
-#' Descomprensión de archivos
+#' Descomprension de archivos
 #' @keywords internal
 .extraer_zip_enoe <- function(zipfile, exdir) {
   if (!file.exists(zipfile)) return(FALSE)
@@ -303,7 +303,7 @@
         FALSE
       }
     }, error = function(e) {
-      warning("Error crítico al extraer ZIP: ", e$message)
+      warning("Error cr\u00EDtico al extraer ZIP: ", e$message)
       FALSE
     })
   })
@@ -389,7 +389,7 @@
     }
   }
 
-  # === Catálogos: etiquetas de valores ===
+  # === Catalogos: etiquetas de valores ===
   cat_dir <- file.path(
     unzip_dir,
     paste0("conjunto_de_datos_", tabla, "_", prefijo, "_", anio, "_", trimestre, "t"),
@@ -411,7 +411,7 @@
             locale = readr::locale(encoding = if (anio >= 2013 & anio <= 2019) "latin1" else "UTF-8"),
             show_col_types = FALSE
           )
-          # Limpieza y coerción de valores
+          # Limpieza y coercion de valores
           if (ncol(cat_data) == 2) {
             cat_data <- dplyr::filter(cat_data, !is.na(CVE))
             if (!is.numeric(cat_data$CVE) && all(grepl("^[0-9]+$", cat_data$CVE))) {

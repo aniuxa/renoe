@@ -1,15 +1,15 @@
-#' Convertir códigos CMO a clasificación SINCO 1d (nivel agregado)
+#' Convertir codigos CMO a clasificacion SINCO 1d (nivel agregado)
 #'
 #' Aplica mapeo manual desde 2005-I hasta el segundo trimestre de 2012,
-#' con base en `p3_coe`, usando reglas por `cmo2d`, `cmo3d` y códigos completos.
+#' con base en `p3_coe`, usando reglas por `cmo2d`, `cmo3d` y codigos completos.
 #'
 #' @param data Un data frame con variables `p3_coe`, `anio`, `trim` y preferentemente `pos_ocu`, `tue2`.
 #' @return El data frame original con la variable `sinco1d` agregada.
 #' @export
 #' @encoding UTF-8
 cmo_to_sinco1d <- function(data) {
-  # Si la función recibe una clasificación SINCO ya calculada, las reglas CMO
-  # sólo completan los casos históricos y no deben sobrescribirla.
+  # Si la funcion recibe una clasificacion SINCO ya calculada, las reglas CMO
+  # solo completan los casos historicos y no deben sobrescribirla.
   if (!"sinco1d" %in% names(data)) data$sinco1d <- NA_real_
 
   data <- data %>%
@@ -58,11 +58,11 @@ cmo_to_sinco1d <- function(data) {
         aplicar_reglas & cmo2d == 52 & pos_ocu == 4 ~ 9,
         TRUE ~ sinco1d
       ),
-      # Los códigos SINCO son categóricos enteros. Esta conversión explícita
+      # Los codigos SINCO son categoricos enteros. Esta conversion explicita
       # evita que los trimestres CMO queden como double y entren en conflicto
       # con los trimestres SINCO al construir paneles longitudinales.
       sinco1d = as.integer(sinco1d),
-      sinco1d = sjlabelled::set_label(sinco1d, "Clasificación SINCO 1d (ocupación agregada)")
+      sinco1d = sjlabelled::set_label(sinco1d, "Clasificaci\u00F3n SINCO 1d (ocupaci\u00F3n agregada)")
     )
 
   # Estas columnas solo sirven para aplicar las reglas de correspondencia.

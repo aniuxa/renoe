@@ -1,7 +1,7 @@
-#' Crear identificadores únicos para vivienda, hogar y persona
+#' Crear identificadores unicos para vivienda, hogar y persona
 #'
-#' Esta función genera los identificadores `folio`, `folio2` y `folio3`
-#' basados en las variables clave del diseño de la ENOE.
+#' Esta funcion genera los identificadores `folio`, `folio2` y `folio3`
+#' basados en las variables clave del diseno de la ENOE.
 #' @encoding UTF-8
 #' @param data Un data.frame o tibble con las variables base (`cd_a`, `ent`, `con`, `v_sel`).
 #' @return Un data.frame con las columnas `folio`, `folio2` y opcionalmente `folio3`.
@@ -44,7 +44,7 @@ crear_folios <- function(data) {
         )
       )
   } else {
-    warning("No se encontró la variable 'n_ren'. No se generó 'folio3'.")
+    warning("No se encontr\u00F3 la variable 'n_ren'. No se gener\u00F3 'folio3'.")
   }
   return(data)
 }

@@ -1,30 +1,30 @@
-#' Calcular una referencia estadística de escolaridad y su desajuste
+#' Calcular una referencia estadistica de escolaridad y su desajuste
 #'
-#' Calcula la escolaridad media observada por división SINCO y periodo entre la
-#' población ocupada. `esco_ref` es una referencia estadística interna, no una
+#' Calcula la escolaridad media observada por division SINCO y periodo entre la
+#' poblacion ocupada. `esco_ref` es una referencia estadistica interna, no una
 #' norma ocupacional externa. La referencia predeterminada es trimestral.
 #'
-#' La referencia anual se calcula únicamente sobre datos ya acumulados y su
-#' unidad es persona-trimestre. La función no deduplica personas: la rotación de
+#' La referencia anual se calcula unicamente sobre datos ya acumulados y su
+#' unidad es persona-trimestre. La funcion no deduplica personas: la rotacion de
 #' ENOE forma parte de los cortes transversales acumulados. Para publicar una
-#' referencia anual se requieren cuatro trimestres por año; el tratamiento de
-#' años incompletos puede cambiarse explícitamente con `anio_incompleto`.
+#' referencia anual se requieren cuatro trimestres por ano; el tratamiento de
+#' anos incompletos puede cambiarse explicitamente con `anio_incompleto`.
 #'
 #' El ponderador se elige con `variable_ponderador`. Dividir por una constante
-#' común, como cuatro en un año completo, no cambia la media, aunque sí importa
-#' para estimar totales anuales. Si la entrada contiene un `mismatch2` histórico,
-#' se conserva en `mismatch2_legacy` durante la transición.
+#' comun, como cuatro en un ano completo, no cambia la media, aunque si importa
+#' para estimar totales anuales. Si la entrada contiene un `mismatch2` historico,
+#' se conserva en `mismatch2_legacy` durante la transicion.
 #'
 #' @param data Data frame con `anio`, `trim`, `clase2`, `sinco1d` y `anios_es`.
 #' @param periodo_referencia `"trimestre"` o `"anio"`.
-#' @param umbral_anios Umbral simétrico en años; por defecto 1.
+#' @param umbral_anios Umbral simetrico en anos; por defecto 1.
 #' @param ponderado Si es `TRUE`, usa el ponderador indicado.
 #' @param variable_ponderador Nombre del ponderador; por defecto `fac`.
-#' @param anio_incompleto Tratamiento de años con menos de cuatro trimestres:
+#' @param anio_incompleto Tratamiento de anos con menos de cuatro trimestres:
 #'   `"error"`, `"advertir"` o `"permitir"`.
 #'
 #' @return El mismo data frame, en el mismo orden, con `esco_ref`, `mismatch2`
-#'   y metadatos explícitos del periodo, ponderador, número de trimestres y
+#'   y metadatos explicitos del periodo, ponderador, numero de trimestres y
 #'   unidad persona-trimestre.
 #' @export
 #' @family procesamiento_enoe
@@ -55,7 +55,7 @@ calcular_desajuste_estadistico <- function(
   }
   if (length(umbral_anios) != 1L || !is.numeric(umbral_anios) ||
       is.na(umbral_anios) || !is.finite(umbral_anios) || umbral_anios < 0) {
-    stop("`umbral_anios` debe ser un número finito mayor o igual que cero.", call. = FALSE)
+    stop("`umbral_anios` debe ser un n\u00FAmero finito mayor o igual que cero.", call. = FALSE)
   }
   if (length(ponderado) != 1L || !is.logical(ponderado) || is.na(ponderado)) {
     stop("`ponderado` debe ser TRUE o FALSE.", call. = FALSE)
@@ -67,7 +67,7 @@ calcular_desajuste_estadistico <- function(
   if (ponderado && !variable_ponderador %in% names(data)) {
     stop(
       "Falta el ponderador `", variable_ponderador,
-      "`. Agréguelo o use `ponderado = FALSE`.",
+      "`. Agr\u00E9guelo o use `ponderado = FALSE`.",
       call. = FALSE
     )
   }
@@ -103,7 +103,7 @@ calcular_desajuste_estadistico <- function(
     if (length(incompletos)) {
       detalle <- paste0(names(incompletos), " (", as.integer(incompletos), ")")
       mensaje <- paste0(
-        "La referencia anual requiere cuatro trimestres por año; año incompleto: ",
+        "La referencia anual requiere cuatro trimestres por a\u00F1o; a\u00F1o incompleto: ",
         paste(detalle, collapse = ", "), "."
       )
       if (anio_incompleto == "error") stop(mensaje, call. = FALSE)
@@ -166,25 +166,25 @@ calcular_desajuste_estadistico <- function(
 
   data <- data |>
     sjlabelled::var_labels(
-      esco_ref = "Referencia estadística observada de años de escolaridad",
-      mismatch2 = "Desajuste educativo respecto a la referencia estadística observada",
-      periodo_referencia_mismatch2 = "Periodo usado para la referencia estadística de escolaridad",
-      ponderador_mismatch2 = "Ponderador usado para la referencia estadística de escolaridad",
-      trimestres_referencia_mismatch2 = "Número de trimestres acumulados en la referencia",
-      unidad_referencia_mismatch2 = "Unidad analítica de la referencia estadística"
+      esco_ref = "Referencia estad\u00EDstica observada de a\u00F1os de escolaridad",
+      mismatch2 = "Desajuste educativo respecto a la referencia estad\u00EDstica observada",
+      periodo_referencia_mismatch2 = "Periodo usado para la referencia estad\u00EDstica de escolaridad",
+      ponderador_mismatch2 = "Ponderador usado para la referencia estad\u00EDstica de escolaridad",
+      trimestres_referencia_mismatch2 = "N\u00FAmero de trimestres acumulados en la referencia",
+      unidad_referencia_mismatch2 = "Unidad anal\u00EDtica de la referencia estad\u00EDstica"
     ) |>
     sjlabelled::val_labels(
       mismatch2 = c(
-        "Sobreeducación" = -1,
+        "Sobreeducaci\u00F3n" = -1,
         "Ajuste" = 0,
-        "Subeducación" = 1
+        "Subeducaci\u00F3n" = 1
       )
     )
 
   if ("mismatch2_legacy" %in% names(data)) {
     data$mismatch2_legacy <- sjlabelled::set_label(
       data$mismatch2_legacy,
-      "Desajuste educativo con la definición histórica; conservar sólo para trazabilidad"
+      "Desajuste educativo con la definici\u00F3n hist\u00F3rica; conservar s\u00F3lo para trazabilidad"
     )
   }
 

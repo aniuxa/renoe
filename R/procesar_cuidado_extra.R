@@ -39,14 +39,14 @@
 #' @param umbral_jornada_alta Horas semanales que definen jornada mayor a 40.
 #' @param umbral_jornada_muy_alta Horas semanales que definen jornada mayor a 48.
 #'
-#' @return El mismo data frame individual con variables del hogar aÃ±adidas.
+#' @return El mismo data frame individual con variables del hogar anadidas.
 #' @export
 #' @family procesamiento_enoe
 #' @references
 #' Escoto, Ana (2026, 4 de junio). *Transversalidad del derecho al cuidado:
-#' tensiones y desafíos* (ponencia). Mesa 1 del conversatorio *¿Una cancha
-#' pareja? Escuela, cuidado y fragmentación de derechos*, El Colegio de México.
-#' Transmisión oficial: \url{https://www.youtube.com/watch?v=fdpzAe6IYBc}
+#' tensiones y desafios* (ponencia). Mesa 1 del conversatorio *?Una cancha
+#' pareja? Escuela, cuidado y fragmentacion de derechos*, El Colegio de Mexico.
+#' Transmision oficial: \url{https://www.youtube.com/watch?v=fdpzAe6IYBc}
 #'
 #' @examples
 #' \dontrun{
@@ -206,38 +206,38 @@ procesar_cuidado_extra <- function(
       n_adultos = "Numero de personas adultas en el hogar",
       n_adultos_ocupados = "Numero de personas adultas ocupadas",
       n_adultos_no_ocupados = "Numero de personas adultas no ocupadas",
-      n_mujeres_adultas = "Número de mujeres adultas en el hogar",
-      n_hombres_adultos = "Número de hombres adultos en el hogar",
-      n_mujeres_adultas_ocupadas = "Número de mujeres adultas ocupadas en el hogar",
-      n_hombres_adultos_ocupados = "Número de hombres adultos ocupados en el hogar",
+      n_mujeres_adultas = "N\u00FAmero de mujeres adultas en el hogar",
+      n_hombres_adultos = "N\u00FAmero de hombres adultos en el hogar",
+      n_mujeres_adultas_ocupadas = "N\u00FAmero de mujeres adultas ocupadas en el hogar",
+      n_hombres_adultos_ocupados = "N\u00FAmero de hombres adultos ocupados en el hogar",
       horas_laborales_hogar = "Horas semanales de trabajo remunerado de adultos del hogar",
       horas_mujeres_adultas = "Horas semanales de trabajo remunerado de mujeres adultas ocupadas",
       horas_hombres_adultos = "Horas semanales de trabajo remunerado de hombres adultos ocupados",
-      algun_adulto_mas_40 = "Hogar con al menos una persona adulta ocupada que trabaja más de 40 horas semanales",
-      algun_adulto_mas_48 = "Hogar con al menos una persona adulta ocupada que trabaja más de 48 horas semanales",
-      alguna_mujer_mas_40 = "Hogar con al menos una mujer adulta ocupada que trabaja más de 40 horas semanales",
-      alguna_mujer_mas_48 = "Hogar con al menos una mujer adulta ocupada que trabaja más de 48 horas semanales",
-      algun_hombre_mas_40 = "Hogar con al menos un hombre adulto ocupado que trabaja más de 40 horas semanales",
-      algun_hombre_mas_48 = "Hogar con al menos un hombre adulto ocupado que trabaja más de 48 horas semanales",
-      n_adolescentes = "Número de adolescentes de 13 a 17 años en el hogar",
-      n_adolescentes_cuidan = "Número de adolescentes de 13 a 17 años que realizan trabajo no remunerado",
+      algun_adulto_mas_40 = "Hogar con al menos una persona adulta ocupada que trabaja m\u00E1s de 40 horas semanales",
+      algun_adulto_mas_48 = "Hogar con al menos una persona adulta ocupada que trabaja m\u00E1s de 48 horas semanales",
+      alguna_mujer_mas_40 = "Hogar con al menos una mujer adulta ocupada que trabaja m\u00E1s de 40 horas semanales",
+      alguna_mujer_mas_48 = "Hogar con al menos una mujer adulta ocupada que trabaja m\u00E1s de 48 horas semanales",
+      algun_hombre_mas_40 = "Hogar con al menos un hombre adulto ocupado que trabaja m\u00E1s de 40 horas semanales",
+      algun_hombre_mas_48 = "Hogar con al menos un hombre adulto ocupado que trabaja m\u00E1s de 48 horas semanales",
+      n_adolescentes = "N\u00FAmero de adolescentes de 13 a 17 a\u00F1os en el hogar",
+      n_adolescentes_cuidan = "N\u00FAmero de adolescentes de 13 a 17 a\u00F1os que realizan trabajo no remunerado",
       hay_adolescente_que_cuida = "Hogar con al menos una persona adolescente que realiza trabajo no remunerado",
       horas_cuidado_adolescentes = "Horas de trabajo no remunerado realizadas por adolescentes",
-      h_00_05 = "Número de integrantes de 0 a 5 años en el hogar",
-      h_06_12 = "Número de integrantes de 6 a 12 años en el hogar",
-      h_13_17 = "Número de integrantes de 13 a 17 años en el hogar",
-      d_00_05 = "Hogar con al menos una persona de 0 a 5 años",
-      d_06_12 = "Hogar con al menos una persona de 6 a 12 años",
-      d_13_17 = "Hogar con al menos una persona de 13 a 17 años",
-      h_escolar = "Número de integrantes de 6 a 17 años en el hogar",
-      d_escolar = "Hogar con población de 6 a 17 años",
-      todos_adultos_ocupados = "Todas las personas adultas del hogar están ocupadas",
+      h_00_05 = "N\u00FAmero de integrantes de 0 a 5 a\u00F1os en el hogar",
+      h_06_12 = "N\u00FAmero de integrantes de 6 a 12 a\u00F1os en el hogar",
+      h_13_17 = "N\u00FAmero de integrantes de 13 a 17 a\u00F1os en el hogar",
+      d_00_05 = "Hogar con al menos una persona de 0 a 5 a\u00F1os",
+      d_06_12 = "Hogar con al menos una persona de 6 a 12 a\u00F1os",
+      d_13_17 = "Hogar con al menos una persona de 13 a 17 a\u00F1os",
+      h_escolar = "N\u00FAmero de integrantes de 6 a 17 a\u00F1os en el hogar",
+      d_escolar = "Hogar con poblaci\u00F3n de 6 a 17 a\u00F1os",
+      todos_adultos_ocupados = "Todas las personas adultas del hogar est\u00E1n ocupadas",
       algun_adulto_no_ocupado = "Hogar con al menos una persona adulta no ocupada",
       hogar_un_adulto = "Hogar integrado por una sola persona adulta",
       hogar_un_adulto_ocupado = "Hogar con una sola persona adulta y esta se encuentra ocupada",
-      tipo_presencia_menores = "Combinación de grupos de edad de 0 a 17 años presentes en el hogar",
-      baja_capacidad_absorcion = "Hogar con población de 6 a 17 años, todas las personas adultas ocupadas y al menos una con jornada mayor de 40 horas semanales (Escoto, 2026)",
-      muy_baja_capacidad_absorcion = "Hogar con población de 6 a 17 años, todas las personas adultas ocupadas y al menos una con jornada mayor de 48 horas semanales (Escoto, 2026)",
+      tipo_presencia_menores = "Combinaci\u00F3n de grupos de edad de 0 a 17 a\u00F1os presentes en el hogar",
+      baja_capacidad_absorcion = "Hogar con poblaci\u00F3n de 6 a 17 a\u00F1os, todas las personas adultas ocupadas y al menos una con jornada mayor de 40 horas semanales (Escoto, 2026)",
+      muy_baja_capacidad_absorcion = "Hogar con poblaci\u00F3n de 6 a 17 a\u00F1os, todas las personas adultas ocupadas y al menos una con jornada mayor de 48 horas semanales (Escoto, 2026)",
       presion_alta_un_adulto = "Presion de cuidado en hogar con un solo adulto ocupado",
       jefa_mujer = "Hogar con jefatura femenina",
       jefe_hombre = "Hogar con jefatura masculina",
