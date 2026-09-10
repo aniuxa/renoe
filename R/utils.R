@@ -1,6 +1,7 @@
-#' @encoding UTF-8
 #' Leer archivos de datos de la ENOE desde directorio descomprimido
+#'
 #' @keywords internal
+#' @encoding UTF-8
 .leer_datos_enoe <- function(tabla, unzip_dir, prefijo, anio, trimestre) {
   patrones <- list(
     viv  = "conjunto_de_datos_viv.*\\.csv$",
@@ -56,8 +57,9 @@
 }
 
 
-#' @keywords internal
 #' Sustituye los cinco archivos de datos de ENOE 2022T1 con una versión alternativa descargada desde INEGI.
+#'
+#' @keywords internal
 .sustituir_todo_enoe_2022t1 <- function(unzip_dir) {
   url_zip <- "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/microdatos/enoe_n_2022_trim1_csv.zip"
   temp_zip <- tempfile(fileext = ".zip")
@@ -106,6 +108,17 @@
   # Validaciones
   if (!is.numeric(anio) || !is.numeric(trimestre)) {
     stop("Año y trimestre deben ser numéricos")
+  }
+  if (length(anio) != 1L || length(trimestre) != 1L ||
+      is.na(anio) || is.na(trimestre) ||
+      anio != as.integer(anio) || !trimestre %in% 1:4) {
+    stop("Año y trimestre deben ser valores escalares íntegros y el trimestre debe estar entre 1 y 4")
+  }
+  if (anio == 2020 && trimestre == 2) {
+    stop("No existe 2020-T2 por la suspensión del levantamiento regular de la ENOE")
+  }
+  if (anio == 2026 && trimestre > 2) {
+    stop("Sólo están publicados y habilitados 2026-T1 y 2026-T2")
   }
 
   # Caso especial para 2017 y 2018 T1
@@ -176,16 +189,25 @@
 .estandarizar_ids <- function(df, anio, trimestre) {
   if (is.null(df) || ncol(df) == 0) return(df)
 
-  # A partir de 2025 t3, algunas tablas usan cve_ent en lugar de ent
+  # A partir de 2025-T3, INEGI sustituyó varios nombres geográficos por cve_*.
+  # Se recuperan los nombres históricos antes de convertir las llaves para que
+  # el resto del paquete y los paneles reciban un esquema estable.
   if (anio > 2025 || (anio == 2025 && trimestre >= 3)) {
-    if ("cve_ent" %in% names(df) && !("ent" %in% names(df))) {
-      df <- dplyr::rename(df, ent = cve_ent)
-    } else if ("cve_ent" %in% names(df) && "ent" %in% names(df)) {
-      df <- dplyr::mutate(
-        df,
-        ent = dplyr::coalesce(ent, cve_ent)
-      ) %>%
-        dplyr::select(-cve_ent)
+    equivalencias <- c(
+      cve_ent = "ent", cve_mun = "mun", cve_loc = "loc", cve_ageb = "ageb"
+    )
+    for (nuevo in names(equivalencias)) {
+      anterior <- unname(equivalencias[[nuevo]])
+      if (nuevo %in% names(df) && !anterior %in% names(df)) {
+        names(df)[names(df) == nuevo] <- anterior
+      } else if (nuevo %in% names(df) && anterior %in% names(df)) {
+        previo <- trimws(as.character(df[[anterior]]))
+        reemplazo <- as.character(df[[nuevo]])
+        usar_nuevo <- is.na(previo) | previo == ""
+        previo[usar_nuevo] <- reemplazo[usar_nuevo]
+        df[[anterior]] <- previo
+        df[[nuevo]] <- NULL
+      }
     }
   }
 

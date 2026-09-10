@@ -1,10 +1,10 @@
 #' Obtener metadatos de versiones de cuestionarios ENOE por trimestre
 #'
-#' Consulta la informacipib sobre qué versiones de cuestionarios (COE, SDEM, FD)
+#' Consulta la información sobre qué versiones de cuestionarios (COE, SDEM, FD)
 #' corresponden a un trimestre específico de la ENOE.
 #' @encoding UTF-8
-#' @param anio Año del trimestre (2005-2024). Debe ser un valor numérico entre 2005 y 2025.
-#' @param trimestre Núemero del trimestre (1-4). Donde 1 = ENE-MAR, 2 = ABR-JUN,
+#' @param anio Año del trimestre (2005-2026). Debe ser un valor numérico entre 2005 y 2026.
+#' @param trimestre Número del trimestre (1-4). Donde 1 = ENE-MAR, 2 = ABR-JUN,
 #'   3 = JUL-SEP, 4 = OCT-DIC.
 #'
 #' @return Un data.frame con 6 columnas:
@@ -31,10 +31,10 @@
 info_trimestre <- function(anio, trimestre) {
   # Validaciones
   if (!trimestre %in% 1:4) stop("Trimestre debe ser 1-4")
-  if (!anio %in% 2005:2025) stop("Año debe estar entre 2005-2024")
+  if (!anio %in% 2005:2026) stop("Año debe estar entre 2005-2026")
   if (anio == 2020 && trimestre == 2) stop("No existe 2020-T2 por COVID")
 
-  # Generar cou00f3digo de trimestre
+  # Generar código de trimestre
   trim_code <- sprintf("t%d%02d", trimestre, anio %% 100)
 
   # Obtener ruta al archivo interno

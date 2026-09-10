@@ -8,9 +8,9 @@
 info_trimestre(anio, trimestre)
 }
 \arguments{
-\item{anio}{Año del trimestre (2005-2024). Debe ser un valor numérico entre 2005 y 2025.}
+\item{anio}{Año del trimestre (2005-2026). Debe ser un valor numérico entre 2005 y 2026.}
 
-\item{trimestre}{Núemero del trimestre (1-4). Donde 1 = ENE-MAR, 2 = ABR-JUN,
+\item{trimestre}{Número del trimestre (1-4). Donde 1 = ENE-MAR, 2 = ABR-JUN,
 3 = JUL-SEP, 4 = OCT-DIC.}
 }
 \value{
@@ -26,7 +26,7 @@ Un data.frame con 6 columnas:
 Retorna NULL si no se encuentra información para el trimestre especificado.
 }
 \description{
-Consulta la informacipib sobre qué versiones de cuestionarios (COE, SDEM, FD)
+Consulta la información sobre qué versiones de cuestionarios (COE, SDEM, FD)
 corresponden a un trimestre específico de la ENOE.
 }
 \examples{
@@ -37,10 +37,10 @@ info_trimestre(2020, 1)
 info_trimestre(2015, 3)
 }
 \seealso{
-Other descarga_documenta_enoe: 
-\code{\link{carga_enoe}()},
-\code{\link{descarga_enoe}()},
-\code{\link{descargar_cuestionarios}()},
-\code{\link{fusion_enoe}()}
+Other descarga_documenta_enoe:
+\code{\link[=carga_enoe]{carga_enoe()}},
+\code{\link[=descarga_enoe]{descarga_enoe()}},
+\code{\link[=descargar_cuestionarios]{descargar_cuestionarios()}},
+\code{\link[=fusion_enoe]{fusion_enoe()}}
 }
 \concept{descarga_documenta_enoe}

@@ -3,7 +3,7 @@
 #' Descarga los archivos comprimidos de microdatos de la ENOE desde el sitio del INEGI,
 #' los descomprime y guarda las tablas en el formato especificado.
 #' @encoding UTF-8
-#' @param anio Año del trimestre (2005-2024). Debe ser un valor numérico.
+#' @param anio Año del trimestre (2005-2026). Debe ser un valor numérico.
 #' @param trimestre Número del trimestre (1-4). Donde:
 #'   \itemize{
 #'     \item 1 = Enero-Marzo
@@ -37,7 +37,7 @@ descarga_enoe <- function(anio, trimestre, formato = "parquet", intentos = 3,
   if (!is.numeric(anio)) stop("El año debe ser numérico")
   if (!is.numeric(trimestre)) stop("El trimestre debe ser numérico")
   if (!trimestre %in% 1:4) stop("El trimestre debe ser un valor entre 1 y 4")
-  if (anio < 2005 || anio > 2025) stop("La ENOE cubre de 2005 en adelante y hasta ahora hasta 2025")
+  if (anio < 2005 || anio > 2026) stop("La ENOE cubre de 2005 en adelante y hasta ahora hasta 2026")
   if (anio == 2020 && trimestre == 2) stop("No existe el trimestre 2 de 2020 en la ENOE debido a la pandemia de COVID-19")
 
   # 2. Configuración inicial

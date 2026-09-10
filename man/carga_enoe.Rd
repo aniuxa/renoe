@@ -18,7 +18,7 @@ carga_enoe(
 )
 }
 \arguments{
-\item{anio}{Año del trimestre (2005–2024)}
+\item{anio}{Año del trimestre (2005–2026)}
 
 \item{trimestre}{Número del trimestre (1–4), donde:
 \itemize{
@@ -74,10 +74,10 @@ carga_enoe(2022, 1)
 \seealso{
 \code{\link{fusion_enoe}}, \code{\link{descarga_enoe}}, \code{\link{procesar_vars_sociodemo}}
 
-Other descarga_documenta_enoe: 
-\code{\link{descarga_enoe}()},
-\code{\link{descargar_cuestionarios}()},
-\code{\link{fusion_enoe}()},
-\code{\link{info_trimestre}()}
+Other descarga_documenta_enoe:
+\code{\link[=descarga_enoe]{descarga_enoe()}},
+\code{\link[=descargar_cuestionarios]{descargar_cuestionarios()}},
+\code{\link[=fusion_enoe]{fusion_enoe()}},
+\code{\link[=info_trimestre]{info_trimestre()}}
 }
 \concept{descarga_documenta_enoe}

@@ -1,4 +1,7 @@
 test_that("Sustitución de archivos 2022T1 funciona correctamente", {
+  skip_on_cran()
+  skip_if_offline()
+
   tablas <- c("hog", "viv", "sdem", "coe1", "coe2")
 
   # Crear directorio temporal simulado

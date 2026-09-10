@@ -18,12 +18,31 @@ crear_folios <- function(data) {
 
   data <- data %>%
     mutate(
-      folio = apply(select(., all_of(vars_base)), 1, paste, collapse = "_"),
-      folio2 = apply(select(., all_of(c(vars_base, vars_opt_incluidas, vars_hogar_incluidas))), 1, paste, collapse = "_")
+      folio = sjlabelled::set_label(
+        apply(select(., all_of(vars_base)), 1, paste, collapse = "_"),
+        "Identificador de vivienda"
+      ),
+      folio2 = sjlabelled::set_label(
+        apply(
+          select(., all_of(c(
+            vars_base, vars_opt_incluidas, vars_hogar_incluidas
+          ))),
+          1,
+          paste,
+          collapse = "_"
+        ),
+        "Identificador de hogar"
+      )
     )
 
   if (var_persona %in% names(data)) {
-    data <- data %>% mutate(folio3 = paste(folio2, .data[[var_persona]], sep = "_"))
+    data <- data %>%
+      mutate(
+        folio3 = sjlabelled::set_label(
+          paste(folio2, .data[[var_persona]], sep = "_"),
+          "Identificador de individuo"
+        )
+      )
   } else {
     warning("No se encontró la variable 'n_ren'. No se generó 'folio3'.")
   }

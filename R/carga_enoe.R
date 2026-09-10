@@ -6,7 +6,7 @@
 #' y los dos componentes del cuestionario ampliado (coe1 y coe2).
 #'
 #' @encoding UTF-8
-#' @param anio Año del trimestre (2005–2024)
+#' @param anio Año del trimestre (2005–2026)
 #' @param trimestre Número del trimestre (1–4), donde:
 #'   \itemize{
 #'     \item 1 = Enero–Marzo
@@ -53,8 +53,8 @@ carga_enoe <- function(anio, trimestre, list = FALSE, rapida = FALSE,
                        cache = TRUE, prefijo = NULL) {
 
   # 1. Validaciones
-  if (!is.numeric(anio) || anio < 2005 || anio > 2025)
-    stop("El año debe estar entre 2005 y 2025.")
+  if (!is.numeric(anio) || anio < 2005 || anio > 2026)
+    stop("El año debe estar entre 2005 y 2026.")
   if (!is.numeric(trimestre) || !trimestre %in% 1:4)
     stop("El trimestre debe ser 1, 2, 3 o 4.")
 

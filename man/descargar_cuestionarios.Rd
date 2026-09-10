@@ -39,10 +39,10 @@ descargar_cuestionarios(2018, 3, destino = "documentacion_enoe")
 }
 }
 \seealso{
-Other descarga_documenta_enoe: 
-\code{\link{carga_enoe}()},
-\code{\link{descarga_enoe}()},
-\code{\link{fusion_enoe}()},
-\code{\link{info_trimestre}()}
+Other descarga_documenta_enoe:
+\code{\link[=carga_enoe]{carga_enoe()}},
+\code{\link[=descarga_enoe]{descarga_enoe()}},
+\code{\link[=fusion_enoe]{fusion_enoe()}},
+\code{\link[=info_trimestre]{info_trimestre()}}
 }
 \concept{descarga_documenta_enoe}

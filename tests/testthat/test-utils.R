@@ -1,5 +1,3 @@
-context("Pruebas para funciones auxiliares")
-
 test_that(".construir_url_enoe genera URLs correctas", {
   # Caso especial 2017
   url_2017 <- .construir_url_enoe(2017, 1)
@@ -51,6 +49,38 @@ test_that(".estandarizar_ids convierte variables correctamente", {
   expect_true(is.numeric(df_std$ent))
   expect_true(is.numeric(df_std$fac))
   expect_true(is.character(df_std$texto)) # No debería cambiar
+})
+
+test_that(".estandarizar_ids normaliza identificadores cve de 2025-T3 en adelante", {
+  df_test <- data.frame(
+    cve_ent = c("01", "02"), cve_mun = c("003", "004"),
+    cve_loc = c("0005", "0006"), cve_ageb = c("00007", "00008"),
+    cvegeo = c("01003", "02004"), stringsAsFactors = FALSE
+  )
+  df_std <- .estandarizar_ids(df_test, 2026, 1)
+
+  expect_true(all(c("ent", "mun", "loc", "ageb", "cvegeo") %in% names(df_std)))
+  expect_false(any(c("cve_ent", "cve_mun", "cve_loc", "cve_ageb") %in% names(df_std)))
+  expect_equal(df_std$ent, c(1, 2))
+  expect_equal(df_std$mun, c(3, 4))
+  expect_identical(df_std$loc, c("0005", "0006"))
+  expect_identical(df_std$ageb, c("00007", "00008"))
+  expect_identical(df_std$cvegeo, c("01003", "02004"))
+})
+
+test_that("la URL normal de 2026 coincide con los ZIP publicados", {
+  t1 <- .construir_url_enoe(2026, 1)
+  t2 <- .construir_url_enoe(2026, 2)
+  expect_match(t1$url, "conjunto_de_datos_enoe_2026_1t_csv[.]zip$")
+  expect_match(t2$url, "conjunto_de_datos_enoe_2026_2t_csv[.]zip$")
+  expect_identical(t1$prefijo, "enoe")
+  expect_identical(t2$prefijo, "enoe")
+})
+
+test_that("las funciones internas no inventan periodos 2026 aún no publicados", {
+  expect_error(.construir_url_enoe(2026, 3), "2026-T1 y 2026-T2")
+  expect_error(.construir_url_enoe(2026, 4), "2026-T1 y 2026-T2")
+  expect_error(.construir_url_enoe(2020, 2), "No existe 2020-T2")
 })
 
 test_that(".descargar_zip_enoe maneja errores correctamente", {

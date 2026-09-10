@@ -4,13 +4,15 @@
 #' en un único data frame.
 #'
 #' @encoding UTF-8
-#' @param anio Año del trimestre (2005-2025).
+#' @param anio Año del trimestre (2005-2026).
 #' @param trimestre Número del trimestre (1-4).
 #' @param rapida Lógico. Si `TRUE`, omite el etiquetado de variables.
 #' @param formato Formato de salida ("parquet", "rds" o "dta"). Opcional.
 #' @param guardar Lógico. Si `TRUE` y se especifica formato, guarda el archivo fusionado.
 #' @param intentos Número de intentos para cargar datos (por defecto 3).
-#' @param fusion_robusta Lógico. Si `TRUE`, utiliza claves de fusión basadas en las variables disponibles.
+#' @param fusion_robusta Lógico. Si `TRUE`, utiliza claves de identificación
+#'   explícitas. En 2022-T1 la vía robusta es obligatoria porque `ur` difiere
+#'   entre HOG y SDEM y no debe formar parte de la llave.
 #' @param ... Otros parámetros para pasar a `carga_enoe()`.
 #'
 #' @return Un data frame con las tablas fusionadas. Si se especifica formato y
@@ -38,7 +40,22 @@ fusion_enoe <- function(anio, trimestre, rapida = FALSE, formato = NULL,
   unzip_dir <- paste0("zip/enoe_", anio, "_", trimestre, "t")
   prefijo <- url_info$prefijo
 
-  limpiar_sufijos_join <- function(df) {
+  if (anio == 2022 && trimestre == 1 && !fusion_robusta) {
+    warning(
+      "2022-T1 requiere fusión robusta para conservar la población rural; se usará `fusion_robusta = TRUE`.",
+      call. = FALSE
+    )
+    fusion_robusta <- TRUE
+  }
+
+  limpiar_sufijos_join <- function(df, preferir_y = character()) {
+    for (variable in preferir_y) {
+      izquierda <- paste0(variable, ".x")
+      derecha <- paste0(variable, ".y")
+      if (all(c(izquierda, derecha) %in% names(df))) {
+        df[[izquierda]] <- dplyr::coalesce(df[[derecha]], df[[izquierda]])
+      }
+    }
     df %>%
       dplyr::select(-dplyr::ends_with(".y")) %>%
       dplyr::rename_with(
@@ -117,7 +134,7 @@ fusion_enoe <- function(anio, trimestre, rapida = FALSE, formato = NULL,
       dplyr::inner_join(datos$hog, by = idviv) %>%
       limpiar_sufijos_join() %>%
       dplyr::inner_join(datos$sdem, by = idhog) %>%
-      limpiar_sufijos_join() %>%
+      limpiar_sufijos_join(preferir_y = "ur") %>%
       dplyr::filter(r_def == 0, c_res != 2) %>%
       dplyr::left_join(coe_fusionado, by = idsdem) %>%
       limpiar_sufijos_join()
@@ -137,7 +154,7 @@ fusion_enoe <- function(anio, trimestre, rapida = FALSE, formato = NULL,
       dplyr::left_join(datos$hog, by = intersect(names(datos$viv), names(datos$hog))) %>%
       limpiar_sufijos_join() %>%
       dplyr::left_join(datos$sdem, by = intersect(names(datos$hog), names(datos$sdem))) %>%
-      limpiar_sufijos_join() %>%
+      limpiar_sufijos_join(preferir_y = "ur") %>%
       dplyr::filter(r_def == 0, c_res != 2) %>%
       dplyr::left_join(coe_fusionado, by = intersect(names(datos$sdem), names(coe_fusionado))) %>%
       limpiar_sufijos_join()
@@ -149,7 +166,13 @@ fusion_enoe <- function(anio, trimestre, rapida = FALSE, formato = NULL,
   message("Filas esperadas tras el filtro (sdem): ", n_sdem)
   message("Filas en la tabla fusionada final: ", n_fusion)
 
-  if (n_fusion == 0) {
+  if (fusion_robusta && n_fusion != n_sdem) {
+    stop(
+      "La fusión robusta no conservó el número esperado de filas de SDEM: ",
+      n_fusion, " frente a ", n_sdem, ". No se guardará el resultado.",
+      call. = FALSE
+    )
+  } else if (n_fusion == 0) {
     warning("La tabla fusionada está vacía. Verificar posibles errores.")
   } else if (n_fusion > n_sdem) {
     warning("La tabla fusionada tiene MÁS filas que las esperadas después del filtro. Verificar duplicaciones.")

@@ -17,7 +17,7 @@ fusion_enoe(
 )
 }
 \arguments{
-\item{anio}{Año del trimestre (2005-2025).}
+\item{anio}{Año del trimestre (2005-2026).}
 
 \item{trimestre}{Número del trimestre (1-4).}
 
@@ -29,7 +29,9 @@ fusion_enoe(
 
 \item{intentos}{Número de intentos para cargar datos (por defecto 3).}
 
-\item{fusion_robusta}{Lógico. Si \code{TRUE}, utiliza claves de fusión basadas en las variables disponibles.}
+\item{fusion_robusta}{Lógico. Si \code{TRUE}, utiliza claves de identificación
+explícitas. En 2022-T1 la vía robusta es obligatoria porque \code{ur} difiere
+entre HOG y SDEM y no debe formar parte de la llave.}
 
 \item{...}{Otros parámetros para pasar a \code{carga_enoe()}.}
 }
@@ -52,10 +54,10 @@ fusion_enoe(2019, 2, formato = "parquet", guardar = TRUE)
 }
 }
 \seealso{
-Other descarga_documenta_enoe: 
-\code{\link{carga_enoe}()},
-\code{\link{descarga_enoe}()},
-\code{\link{descargar_cuestionarios}()},
-\code{\link{info_trimestre}()}
+Other descarga_documenta_enoe:
+\code{\link[=carga_enoe]{carga_enoe()}},
+\code{\link[=descarga_enoe]{descarga_enoe()}},
+\code{\link[=descargar_cuestionarios]{descargar_cuestionarios()}},
+\code{\link[=info_trimestre]{info_trimestre()}}
 }
 \concept{descarga_documenta_enoe}

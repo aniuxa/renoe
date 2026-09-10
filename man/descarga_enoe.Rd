@@ -16,7 +16,7 @@ descarga_enoe(
 )
 }
 \arguments{
-\item{anio}{Año del trimestre (2005-2024). Debe ser un valor numérico.}
+\item{anio}{Año del trimestre (2005-2026). Debe ser un valor numérico.}
 
 \item{trimestre}{Número del trimestre (1-4). Donde:
 \itemize{
@@ -53,10 +53,10 @@ descarga_enoe(2022, 4, formato = "dta", intentos = 5)
 }
 }
 \seealso{
-Other descarga_documenta_enoe: 
-\code{\link{carga_enoe}()},
-\code{\link{descargar_cuestionarios}()},
-\code{\link{fusion_enoe}()},
-\code{\link{info_trimestre}()}
+Other descarga_documenta_enoe:
+\code{\link[=carga_enoe]{carga_enoe()}},
+\code{\link[=descargar_cuestionarios]{descargar_cuestionarios()}},
+\code{\link[=fusion_enoe]{fusion_enoe()}},
+\code{\link[=info_trimestre]{info_trimestre()}}
 }
 \concept{descarga_documenta_enoe}
