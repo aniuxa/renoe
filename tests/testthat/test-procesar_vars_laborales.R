@@ -19,17 +19,18 @@ test_that("procesar_vars_laborales agrega y etiqueta variables correctamente", {
 
   procesado <- procesar_vars_laborales(datos)
 
-  # Verifica que se crean variables esperadas
+  # El desajuste estadístico se calcula ahora en una función separada.
   expect_true(all(c("skill_level", "skill_actual", "mismatch",
-                    "mismatch2", "status_seq", "temporal", "temporal_seq") %in% names(procesado)))
+                    "status_seq", "temporal", "temporal_seq") %in% names(procesado)))
+  expect_false(any(c("esco_ref", "mismatch2") %in% names(procesado)))
 
   # Verifica que las variables tengan etiquetas (get_label)
-  expect_equal(sjlabelled::get_label(procesado$skill_level), "Nivel de habilidad requerido por la ocupación")
+  expect_equal(sjlabelled::get_label(procesado$skill_level), "Nivel agregado de competencia requerido por la ocupación")
   expect_equal(sjlabelled::get_label(procesado$mismatch), "Desajuste educativo")
 
   # Verifica contenido de etiquetas (get_labels)
   lbls <- sjlabelled::get_labels(procesado$skill_level, values = "as.name")
-  expect_equal(unname(lbls["3"]), "Terciaria")
+  expect_equal(unname(lbls["3"]), "Competencia alta")
 
   # Verifica condiciones de contrato y temporalidad
   expect_equal(procesado$contrato0[1], 1)

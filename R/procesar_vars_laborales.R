@@ -5,8 +5,16 @@
 #' ocupación (`p3coe`) y del nivel educativo alcanzado (`cs_p13_1`).
 #' Internamente armoniza los códigos SINCO (1, 2, 3 y 4 dígitos) usando
 #' correspondencias con códigos CMO y reglas auxiliares. También clasifica el
-#' nivel de habilidad de la ocupación, el nivel educativo alcanzado y construye
-#' indicadores de sobrecalificación, ajuste o subcalificación laboral.
+#' nivel agregado de competencia de la ocupación, un proxy basado en escolaridad
+#' y el desajuste entre ambos. La agrupación de competencia requerida es una
+#' aproximación a un dígito de SINCO y puede ocultar excepciones dentro de cada
+#' división.
+#'
+#' La referencia estadística en años de escolaridad se calcula por separado con
+#' [calcular_desajuste_estadistico()]. Esta separación evita construir una
+#' referencia aparentemente anual cuando la entrada contiene un solo trimestre.
+#' Por compatibilidad, si la entrada ya contiene `esco_norm` o `mismatch2`, esas
+#' columnas históricas se conservan sin recalcularlas.
 #'
 #' Además, genera variables relacionadas con la experiencia previa
 #' (`nunca_trabajo`), el estatus laboral combinado (`status_seq`) y las
@@ -17,7 +25,7 @@
 #' - `anio`, `trimestre`: año y trimestre de la entrevista
 #' - `coe_tipo`: tipo de cuestionario (`"ampliado"` o `"basico"`)
 #' - `p3coe`: código ocupacional
-#' - `cs_p13_1`, `anios_es`: nivel educativo alcanzado en categorías o años
+#' - `cs_p13_1`, `cs_p15`: nivel educativo y antecedente escolar
 #' - `clase2`: clase de actividad económica
 #' - `pos_ocu`, `tue2`: posición en la ocupación y tipo de unidad económica
 #' - `p2h4`: experiencia laboral previa
@@ -26,7 +34,7 @@
 #' @return Un data.frame con las variables originales y nuevas columnas:
 #' - `sinco1d`, `sinco2d`, `sinco3d`, `sinco4d`
 #' - `skill_level`, `skill_actual`
-#' - `mismatch`, `mismatch2`
+#' - `mismatch`
 #' - `nunca_trabajo`, `status_seq`
 #' - `contrato0`, `contrato1`, `temporal`, `temporal_seq`
 #'
@@ -35,6 +43,20 @@
 
 procesar_vars_laborales <- function(data) {
   data <- renoe::armoniza_sinco(data)
+
+  if (!"cs_p13_1" %in% names(data)) {
+    stop("Falta la variable `cs_p13_1`.", call. = FALSE)
+  }
+  if (!"clase2" %in% names(data)) {
+    stop("Falta la variable `clase2`.", call. = FALSE)
+  }
+
+  cs_p13_codigo <- .normalizar_codigo_educativo(data$cs_p13_1, 0:9)
+  cs_p15_codigo <- if ("cs_p15" %in% names(data)) {
+    .normalizar_codigo_educativo(data$cs_p15, 1:3)
+  } else {
+    rep(NA_integer_, nrow(data))
+  }
 
   if ("p2h4" %in% names(data)) {
     data$var_exp_previa <- data$p2h4
@@ -47,16 +69,18 @@ procesar_vars_laborales <- function(data) {
   data <- data %>%
     dplyr::mutate(
       skill_level = dplyr::case_when(
-        sinco1d %in% 1:3 ~ 3,
-        sinco1d %in% 4:7 ~ 2,
-        sinco1d %in% 8:9 ~ 1,
+        sinco1d %in% 1:2 ~ 3,
+        sinco1d %in% 3:8 ~ 2,
+        sinco1d == 9 ~ 1,
         TRUE ~ NA_real_
       ),
       skill_actual = dplyr::case_when(
-        cs_p13_1 %in% 0:1 ~ 0,
-        cs_p13_1 == 2 ~ 1,
-        cs_p13_1 %in% 3:5 ~ 2,
-        cs_p13_1 %in% 6:9 ~ 3,
+        cs_p13_codigo %in% 0:1 ~ 0,
+        cs_p13_codigo == 2 ~ 1,
+        cs_p13_codigo %in% 3:4 ~ 2,
+        cs_p13_codigo %in% 5:6 & cs_p15_codigo %in% 1:2 ~ 2,
+        cs_p13_codigo %in% 5:6 & cs_p15_codigo == 3 ~ 3,
+        cs_p13_codigo %in% 7:9 ~ 3,
         TRUE ~ NA_real_
       ),
       mismatch_raw = dplyr::case_when(
@@ -70,22 +94,7 @@ procesar_vars_laborales <- function(data) {
         TRUE ~ NA_real_
       )
     ) %>%
-    dplyr::group_by(anio, sinco1d) %>%
     dplyr::mutate(
-      esco_norm = mean(anios_es, na.rm = TRUE)
-    ) %>%
-    dplyr::ungroup() %>%
-    dplyr::mutate(
-      mismatch2 = dplyr::case_when(
-        !is.na(anios_es) & !is.na(esco_norm) & clase2 == 1 ~ anios_es - esco_norm,
-        TRUE ~ NA_real_
-      ),
-      mismatch2 = dplyr::case_when(
-        mismatch2 < -1 ~ -1,
-        mismatch2 > 1 ~ 1,
-        dplyr::between(mismatch2, -1, 1) ~ 0,
-        TRUE ~ NA_real_
-      ),
       nunca_trabajo = dplyr::case_when(
         var_exp_previa == 4 ~ 1,
         is.na(var_exp_previa) & is.na(clase2) ~ NA_real_,
@@ -104,8 +113,8 @@ procesar_vars_laborales <- function(data) {
       )
     )
 
-  data$contrato0 <- NA_real_
-  data$contrato1 <- NA_real_
+  data$contrato0 <- rep(NA_real_, nrow(data))
+  data$contrato1 <- rep(NA_real_, nrow(data))
 
   tiene_ampliado <- any(data$coe_tipo == "ampliado", na.rm = TRUE)
   tiene_basico   <- any(data$coe_tipo == "basico", na.rm = TRUE)
@@ -145,10 +154,9 @@ procesar_vars_laborales <- function(data) {
       )
     ) %>%
     sjlabelled::var_labels(
-      skill_level   = "Nivel de habilidad requerido por la ocupación",
-      skill_actual  = "Nivel educativo alcanzado",
+      skill_level   = "Nivel agregado de competencia requerido por la ocupación",
+      skill_actual  = "Proxy de competencia basado en escolaridad",
       mismatch      = "Desajuste educativo",
-      mismatch2     = "Desajuste educativo (años escolares)",
       nunca_trabajo = "Indicador de nunca haber trabajado antes",
       status_seq    = "Condición laboral y experiencia previa",
       contrato0     = "Indicador de existencia de contrato laboral",
@@ -158,9 +166,9 @@ procesar_vars_laborales <- function(data) {
     ) %>%
     sjlabelled::val_labels(
       skill_level = c(
-        "Primaria" = 1,
-        "Secundaria" = 2,
-        "Terciaria" = 3
+        "Competencia básica" = 1,
+        "Competencia media" = 2,
+        "Competencia alta" = 3
       ),
       skill_actual = c(
         "Ninguna" = 0,
@@ -169,14 +177,9 @@ procesar_vars_laborales <- function(data) {
         "Terciaria" = 3
       ),
       mismatch = c(
-        "Sobrecualificada/o" = -1,
-        "Ajustada/o" = 0,
-        "Infracualificada/o" = 1
-      ),
-      mismatch2 = c(
-        "Sobrecualificada/o" = -1,
-        "Ajustada/o" = 0,
-        "Infracualificada/o" = 1
+        "Sobreeducación" = -1,
+        "Ajuste" = 0,
+        "Subeducación" = 1
       ),
       nunca_trabajo = c(
         "Ya había trabajado" = 0,
@@ -216,4 +219,22 @@ procesar_vars_laborales <- function(data) {
     dplyr::select(-mismatch_raw, -var_exp_previa)
 
   return(data)
+}
+
+.normalizar_codigo_educativo <- function(x, validos) {
+  salida <- rep(NA_integer_, length(x))
+
+  if (is.numeric(x)) {
+    numero <- suppressWarnings(as.numeric(x))
+    candidato <- is.finite(numero) & numero == floor(numero)
+  } else {
+    texto <- trimws(as.character(x))
+    candidato <- !is.na(texto) & grepl("^[0-9]+$", texto)
+    numero <- rep(NA_real_, length(texto))
+    numero[candidato] <- suppressWarnings(as.numeric(texto[candidato]))
+  }
+
+  reconocido <- candidato & numero %in% validos
+  salida[reconocido] <- as.integer(numero[reconocido])
+  salida
 }

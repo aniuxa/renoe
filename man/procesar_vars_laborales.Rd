@@ -12,7 +12,7 @@ procesar_vars_laborales(data)
 \item \code{anio}, \code{trimestre}: año y trimestre de la entrevista
 \item \code{coe_tipo}: tipo de cuestionario (\code{"ampliado"} o \code{"basico"})
 \item \code{p3coe}: código ocupacional
-\item \code{cs_p13_1}, \code{anios_es}: nivel educativo alcanzado en categorías o años
+\item \code{cs_p13_1}, \code{cs_p15}: nivel educativo y antecedente escolar
 \item \code{clase2}: clase de actividad económica
 \item \code{pos_ocu}, \code{tue2}: posición en la ocupación y tipo de unidad económica
 \item \code{p2h4}: experiencia laboral previa
@@ -24,7 +24,7 @@ Un data.frame con las variables originales y nuevas columnas:
 \itemize{
 \item \code{sinco1d}, \code{sinco2d}, \code{sinco3d}, \code{sinco4d}
 \item \code{skill_level}, \code{skill_actual}
-\item \code{mismatch}, \code{mismatch2}
+\item \code{mismatch}
 \item \code{nunca_trabajo}, \code{status_seq}
 \item \code{contrato0}, \code{contrato1}, \code{temporal}, \code{temporal_seq}
 }
@@ -35,25 +35,40 @@ el nivel educativo y el desajuste entre ambos, a partir de los códigos de
 ocupación (\code{p3coe}) y del nivel educativo alcanzado (\code{cs_p13_1}).
 Internamente armoniza los códigos SINCO (1, 2, 3 y 4 dígitos) usando
 correspondencias con códigos CMO y reglas auxiliares. También clasifica el
-nivel de habilidad de la ocupación, el nivel educativo alcanzado y construye
-indicadores de sobrecalificación, ajuste o subcalificación laboral.
+nivel agregado de competencia de la ocupación, un proxy basado en escolaridad
+y el desajuste entre ambos. La agrupación de competencia requerida es una
+aproximación a un dígito de SINCO y puede ocultar excepciones dentro de cada
+división.
 }
 \details{
+La referencia estadística en años de escolaridad se calcula por separado con
+\code{\link[=calcular_desajuste_estadistico]{calcular_desajuste_estadistico()}}. Esta separación evita construir una
+referencia aparentemente anual cuando la entrada contiene un solo trimestre.
+Por compatibilidad, si la entrada ya contiene \code{esco_norm} o \code{mismatch2}, esas
+columnas históricas se conservan sin recalcularlas.
+
 Además, genera variables relacionadas con la experiencia previa
 (\code{nunca_trabajo}), el estatus laboral combinado (\code{status_seq}) y las
 características contractuales (\code{contrato0}, \code{contrato1}, \code{temporal},
 \code{temporal_seq}) según el tipo de cuestionario.
 }
 \seealso{
-Other procesamiento_enoe: 
-\code{\link{armoniza_sinco}()},
-\code{\link{crear_folios}()},
-\code{\link{imputa_ingocup}()},
-\code{\link{ipc_enoe}()},
-\code{\link{procesar_contribucion_hogar}()},
-\code{\link{procesar_tiempo}()},
-\code{\link{procesar_variables_enoe}()},
-\code{\link{procesar_vars_hogar}()},
-\code{\link{procesar_vars_sociodemo}()}
+Other procesamiento_enoe:
+\code{\link[=armoniza_sinco]{armoniza_sinco()}},
+\code{\link[=armonizar_carreras_enoe]{armonizar_carreras_enoe()}},
+\code{\link[=calcular_desajuste_estadistico]{calcular_desajuste_estadistico()}},
+\code{\link[=crear_folios]{crear_folios()}},
+\code{\link[=imputa_ingocup]{imputa_ingocup()}},
+\code{\link[=ipc_enoe]{ipc_enoe()}},
+\code{\link[=procesar_clases_damian]{procesar_clases_damian()}},
+\code{\link[=procesar_contribucion_hogar]{procesar_contribucion_hogar()}},
+\code{\link[=procesar_cuidado_extra]{procesar_cuidado_extra()}},
+\code{\link[=procesar_estudio_trabajo]{procesar_estudio_trabajo()}},
+\code{\link[=procesar_libro1]{procesar_libro1()}},
+\code{\link[=procesar_tiempo]{procesar_tiempo()}},
+\code{\link[=procesar_variables_enoe]{procesar_variables_enoe()}},
+\code{\link[=procesar_vars_hogar]{procesar_vars_hogar()}},
+\code{\link[=procesar_vars_sociodemo]{procesar_vars_sociodemo()}},
+\code{\link[=sinco2019_to_sinco2011]{sinco2019_to_sinco2011()}}
 }
 \concept{procesamiento_enoe}
