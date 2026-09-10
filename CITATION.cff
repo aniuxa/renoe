@@ -2,6 +2,7 @@ cff-version: 1.2.0
 message: "Si usas este paquete, por favor cítalo como se indica a continuación."
 title: "renoe: Herramientas para trabajar con la Encuesta Nacional de Ocupación y Empleo (ENOE) desde 2005"
 version: "0.2.0"
+date-released: 2026-09-10
 type: software
 authors:
   - family-names: "Escoto"

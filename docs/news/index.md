@@ -1,6 +1,6 @@
 # Changelog
 
-## renoe 0.2.0
+## renoe 0.2.0 (10 de septiembre de 2026)
 
 - Se formalizó a Ana Escoto como única autora y mantenedora (`aut`,
   `cre`) y a Gerardo Damián Hernández y Gabriela Cervantes como
