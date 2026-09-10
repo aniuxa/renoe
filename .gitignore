@@ -6,5 +6,11 @@ inst/doc
 /doc/
 /Meta/
 .DS_Store
+desktop.ini
 *.Rproj
-.DS_Store
+
+# Artefactos locales de staging y de R CMD build/check
+/staging/
+/library/
+/*.Rcheck/
+/*.tar.gz
