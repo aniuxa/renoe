@@ -1,0 +1,99 @@
+---
+title: "Modulo de cuidado de mercado"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Modulo de cuidado de mercado}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Este modulo prepara variables para el articulo sobre brechas de ingreso mediante
+regresiones cuantílicas del proyecto IN305925. Las estimaciones, ponderaciones,
+seleccion analitica, tablas y graficas pertenecen al articulo.
+
+## Entrada principal
+
+```{r}
+library(renoe)
+x <- data.frame(
+  anio = c(2012, 2012, 2021), trim = c(2, 3, 3),
+  p3coe = c(8200, 2331, 2433), p4a = c(8140, 6111, 6211), clase2 = 1
+)
+y <- procesar_cuidado_remunerado(x)
+y[c("clasificador_ocupacion", "codigo_ocupacion_armonizado",
+    "class_ocu", "care_industry", "trabajo_cuidado_mercado",
+    "cuidado_posicion_remunerada", "cuidado_sin_pago",
+    "estado_ingreso_cuidado")]
+```
+
+Se admiten periodos mezclados o argumentos `anio` y `trimestre` escalares o por
+fila. Los argumentos deben coincidir con las columnas existentes. Se aceptan
+trimestres numericos y textos `t1` a `t4`. El procesamiento ocurre en memoria y
+no escribe archivos ENOE ni llama a descarga, fusion o imputacion.
+
+## Responsabilidades
+
+| Funcion | Responsabilidad |
+|---|---|
+| `cmo_to_sinco11_care()` | Puente analitico CMO: conserva primera regla y numero de destinos; mantiene el alias anterior `cmo_to_sinco11()` con advertencia. |
+| `class_cuidado_rem()` | Tipologia heredada por ocupacion y actividad, con tratamiento explicito de CMO 8200. |
+| `procesar_cuidado_remunerado()` | Valida periodos, selecciona insumos observados, llama al clasificador y agrega trazabilidad sin sustituir la armonizacion general. |
+
+El wrapper prefiere `p3coe` (cuatro digitos). Hasta 2012-II usa CMO; desde
+2012-III SINCO 2011; desde 2021-III SINCO 2019. Estos cortes proceden de las
+reglas documentadas previamente en el paquete. No se revalidaron aqui con los
+catalogos originales. Para periodos SINCO sin `p3coe`, acepta `sinco3d` solo
+como codigo del clasificador observado. Si detecta metadatos de armonizacion
+general a 2011 en observaciones de 2019, exige el codigo observado.
+
+`armoniza_sinco()` genera `sinco3d` en base 2011. Por eso el wrapper utiliza el
+insumo original aunque exista esa columna, y conserva su contenido. La llamada
+directa a `class_cuidado_rem()` sigue disponible; quien la use debe proporcionar
+el clasificador apropiado y asume sus sobrescrituras historicas en CMO.
+
+## Variables y decisiones
+
+| Salida | Significado |
+|---|---|
+| `clasificador_ocupacion` | CMO, SINCO 2011 o SINCO 2019 de origen. |
+| `codigo_ocupacion_original_cuidado` | Insumo conservado con su tipo original; no reemplaza `codigo_ocupacion_original` del procesamiento general. |
+| `codigo_ocupacion_armonizado` | Tres digitos usados por cuidado; puente en CMO, observado en SINCO. No es una base universal 2011. |
+| `metodo_armonizacion_cuidado` | Puente analitico o lectura del codigo observado. |
+| `calidad_armonizacion_cuidado` | Correspondencia unica, multiple, ausente o codigo observado. |
+| `version_scian` | Version o estado de verificacion heredado de `scian_version_cuidado`. |
+| `class_ocu` | 0 no cuidado; 11 directo; 12 directo ampliado; 13 indirecto. |
+| `care_industry` | 0 otras ramas; 1 industria de cuidado; 2 hogares empleadores; 3 veterinaria. |
+| `care_industry_detalle` | Desglose de la rama. |
+| `care_w`, `cuida_1d`, `isco_care` | Tipologias heredadas; se conservan etiquetas y codigos. |
+| `trabajo_cuidado_mercado` | Indicador principal de insercion ocupacional en el cuidado de mercado; equivale a `cuida_total`. |
+| `trabajo_cuidado_rem` | Alias deprecado de `trabajo_cuidado_mercado`, conservado para la transicion. |
+| `cuidado_posicion_remunerada` | Posicion en el trabajo que presupone remuneracion; no acredita ingreso positivo observado. |
+| `cuidado_sin_pago` | Posicion en el trabajo declarada sin pago. |
+| `estado_ingreso_cuidado` | Distingue ingreso positivo observado, positivo imputado, ausencia de ingreso identificada y estado no determinado. |
+
+Se preservan las banderas de medicion y del puente CMO. Las salidas propias del
+modulo se recalculan en una segunda ejecucion. Los insumos generales, filas y
+orden se conservan. Los valores faltantes, 0, 999/9999 y formatos invalidos no
+se interpretan como ausencia de cuidado. La validacion de formato no sustituye
+una validacion exhaustiva contra catalogos ocupacionales y de actividad.
+
+El universo heredado es `clase2 == 1`. `trabajo_cuidado_mercado` identifica la
+insercion ocupacional o sectorial en el cuidado, sin afirmar que exista ingreso
+positivo. Un ingreso positivo imputado tampoco se presenta como observado. Para
+estimar brechas de ingreso, el articulo debe declarar cuales estados de posicion
+e ingreso incluye.
+
+## Concordancia y limites
+
+La tabla `inst/extdata/concordancia_cmo_sinco_cuidado.csv` contiene 447 filas
+extraidas de la implementacion existente, atribuida al do-file de Damian (2026).
+Tiene `cmo`, `sinco11` (primera regla) y `n_destinos`. No contiene todos los
+destinos alternativos ni constituye una equivalencia oficial completa.
+
+CMO 8200 mantiene tres destinos y la regla explicita de cuidado indirecto
+domestico. Las otras correspondencias multiples mantienen su advertencia de
+calidad: la integracion no resuelve automaticamente su ambiguedad sustantiva.
+La version SCIAN previa a ENOE-N conserva el estado documental por verificar.
+
+La concordancia, su trazabilidad y los casos ambiguos se documentan en esta
+vignette y se verifican mediante las pruebas automatizadas del paquete.
