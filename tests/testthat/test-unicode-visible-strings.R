@@ -73,4 +73,6 @@ test_that("los metadatos conservan nombres y roles confirmados", {
   expect_setequal(autores[[1L]]$role, c("aut", "cre"))
   expect_identical(autores[[2L]]$role, "ctb")
   expect_identical(autores[[3L]]$role, "ctb")
+  expect_identical(unname(autores[[1L]]$comment[["ORCID"]]), "0000-0001-7259-0001")
+  expect_identical(unname(autores[[2L]]$comment[["ORCID"]]), "0009-0002-7604-3886")
 })
