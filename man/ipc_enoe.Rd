@@ -22,7 +22,10 @@ correspondiente al promedio trimestral del Índice de Precios al Consumidor (IPC
 }
 \details{
 El archivo \code{ipc.rds} debe estar ubicado en \verb{inst/extdata/} y contener
-las columnas \code{anio}, \code{trim} e \code{ipc}.
+las columnas numéricas \code{anio}, \code{trim} e \code{ipc}, una fila por trimestre. La
+función se detiene si el recurso tiene claves duplicadas, valores inválidos o
+no contiene el periodo solicitado; así se evita propagar ingresos
+deflactados ausentes sin advertencia suficiente.
 }
 \examples{
 \dontrun{
@@ -31,15 +34,22 @@ datos <- ipc_enoe(datos, 2023, 1)
 }
 }
 \seealso{
-Other procesamiento_enoe: 
-\code{\link{armoniza_sinco}()},
-\code{\link{crear_folios}()},
-\code{\link{imputa_ingocup}()},
-\code{\link{procesar_contribucion_hogar}()},
-\code{\link{procesar_tiempo}()},
-\code{\link{procesar_variables_enoe}()},
-\code{\link{procesar_vars_hogar}()},
-\code{\link{procesar_vars_laborales}()},
-\code{\link{procesar_vars_sociodemo}()}
+Other procesamiento_enoe:
+\code{\link[=armoniza_sinco]{armoniza_sinco()}},
+\code{\link[=armonizar_carreras_enoe]{armonizar_carreras_enoe()}},
+\code{\link[=calcular_desajuste_estadistico]{calcular_desajuste_estadistico()}},
+\code{\link[=crear_folios]{crear_folios()}},
+\code{\link[=imputa_ingocup]{imputa_ingocup()}},
+\code{\link[=procesar_clases_damian]{procesar_clases_damian()}},
+\code{\link[=procesar_contribucion_hogar]{procesar_contribucion_hogar()}},
+\code{\link[=procesar_cuidado_extra]{procesar_cuidado_extra()}},
+\code{\link[=procesar_estudio_trabajo]{procesar_estudio_trabajo()}},
+\code{\link[=procesar_libro1]{procesar_libro1()}},
+\code{\link[=procesar_tiempo]{procesar_tiempo()}},
+\code{\link[=procesar_variables_enoe]{procesar_variables_enoe()}},
+\code{\link[=procesar_vars_hogar]{procesar_vars_hogar()}},
+\code{\link[=procesar_vars_laborales]{procesar_vars_laborales()}},
+\code{\link[=procesar_vars_sociodemo]{procesar_vars_sociodemo()}},
+\code{\link[=sinco2019_to_sinco2011]{sinco2019_to_sinco2011()}}
 }
 \concept{procesamiento_enoe}

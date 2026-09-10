@@ -50,8 +50,10 @@ como variable objetivo y se imputan los valores faltantes en función de variabl
 escolaridad, ocupación, horas trabajadas, entre otras.
 }
 \details{
-La imputación se realiza por bloques según sexo y entidad federativa. Si no existen las variables \code{folio3},
-\code{anio} o \code{trim}, se generan automáticamente con funciones auxiliares (\code{crear_folios()} y \code{procesar_vars_sociodemo()}).
+La imputación se realiza primero por bloques de sexo y entidad federativa. Los casos que no pueden
+imputarse dentro de esos bloques pasan a un modelo conjunto de respaldo, en el cual el sexo y la
+entidad se incorporan como covariables. Si no existen las variables \code{folio3}, \code{anio} o \code{trim}, se
+generan automáticamente con funciones auxiliares (\code{crear_folios()} y \code{procesar_vars_sociodemo()}).
 
 La imputación de ingresos se realiza únicamente para personas ocupadas (\code{clase2 == 1})
 con datos válidos de edad, y en caso de estar disponible, también de años de escolaridad (\code{anios_es}).
@@ -59,8 +61,11 @@ con datos válidos de edad, y en caso de estar disponible, también de años de 
 La variable a imputar es el logaritmo natural del ingreso mensual (\code{log_ingocup_imp}), y la imputación
 se realiza utilizando el método especificado (por defecto \code{"pmm"}, predictive mean matching) a través del paquete \code{mice}.
 
-Las imputaciones se hacen de forma separada por bloques definidos por el sexo (\code{sex}) y la entidad federativa (\code{ent}),
-para capturar mejor las heterogeneidades contextuales.
+Las imputaciones se hacen primero de forma separada por bloques definidos por el sexo (\code{sex}) y la
+entidad federativa (\code{ent}), para capturar mejor las heterogeneidades contextuales. Cuando un bloque
+no contiene donantes o variación suficiente, sus casos pendientes se imputan conjuntamente usando
+\code{sex}, \code{ent} y las demás variables donantes disponibles como predictores. Las variables identificadoras
+nunca se usan como predictores.
 
 Las variables utilizadas como predictoras ("donantes") incluyen, si están presentes:
 \itemize{
@@ -78,15 +83,22 @@ Las variables utilizadas como predictoras ("donantes") incluyen, si están prese
 Solo se consideran aquellas variables donantes que están disponibles en el conjunto de datos.
 }
 \seealso{
-Other procesamiento_enoe: 
-\code{\link{armoniza_sinco}()},
-\code{\link{crear_folios}()},
-\code{\link{ipc_enoe}()},
-\code{\link{procesar_contribucion_hogar}()},
-\code{\link{procesar_tiempo}()},
-\code{\link{procesar_variables_enoe}()},
-\code{\link{procesar_vars_hogar}()},
-\code{\link{procesar_vars_laborales}()},
-\code{\link{procesar_vars_sociodemo}()}
+Other procesamiento_enoe:
+\code{\link[=armoniza_sinco]{armoniza_sinco()}},
+\code{\link[=armonizar_carreras_enoe]{armonizar_carreras_enoe()}},
+\code{\link[=calcular_desajuste_estadistico]{calcular_desajuste_estadistico()}},
+\code{\link[=crear_folios]{crear_folios()}},
+\code{\link[=ipc_enoe]{ipc_enoe()}},
+\code{\link[=procesar_clases_damian]{procesar_clases_damian()}},
+\code{\link[=procesar_contribucion_hogar]{procesar_contribucion_hogar()}},
+\code{\link[=procesar_cuidado_extra]{procesar_cuidado_extra()}},
+\code{\link[=procesar_estudio_trabajo]{procesar_estudio_trabajo()}},
+\code{\link[=procesar_libro1]{procesar_libro1()}},
+\code{\link[=procesar_tiempo]{procesar_tiempo()}},
+\code{\link[=procesar_variables_enoe]{procesar_variables_enoe()}},
+\code{\link[=procesar_vars_hogar]{procesar_vars_hogar()}},
+\code{\link[=procesar_vars_laborales]{procesar_vars_laborales()}},
+\code{\link[=procesar_vars_sociodemo]{procesar_vars_sociodemo()}},
+\code{\link[=sinco2019_to_sinco2011]{sinco2019_to_sinco2011()}}
 }
 \concept{procesamiento_enoe}

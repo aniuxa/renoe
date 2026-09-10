@@ -5,8 +5,10 @@
 #' como variable objetivo y se imputan los valores faltantes en función de variables donantes como edad,
 #' escolaridad, ocupación, horas trabajadas, entre otras.
 #'
-#' La imputación se realiza por bloques según sexo y entidad federativa. Si no existen las variables `folio3`,
-#' `anio` o `trim`, se generan automáticamente con funciones auxiliares (`crear_folios()` y `procesar_vars_sociodemo()`).
+#' La imputación se realiza primero por bloques de sexo y entidad federativa. Los casos que no pueden
+#' imputarse dentro de esos bloques pasan a un modelo conjunto de respaldo, en el cual el sexo y la
+#' entidad se incorporan como covariables. Si no existen las variables `folio3`, `anio` o `trim`, se
+#' generan automáticamente con funciones auxiliares (`crear_folios()` y `procesar_vars_sociodemo()`).
 #'
 #' @encoding UTF-8
 #' @param data Un data frame con personas ocupadas (`clase2 == 1`) y variables de ingreso (`ingocup`),
@@ -33,8 +35,11 @@
 #' La variable a imputar es el logaritmo natural del ingreso mensual (`log_ingocup_imp`), y la imputación
 #' se realiza utilizando el método especificado (por defecto `"pmm"`, predictive mean matching) a través del paquete `mice`.
 #'
-#' Las imputaciones se hacen de forma separada por bloques definidos por el sexo (`sex`) y la entidad federativa (`ent`),
-#' para capturar mejor las heterogeneidades contextuales.
+#' Las imputaciones se hacen primero de forma separada por bloques definidos por el sexo (`sex`) y la
+#' entidad federativa (`ent`), para capturar mejor las heterogeneidades contextuales. Cuando un bloque
+#' no contiene donantes o variación suficiente, sus casos pendientes se imputan conjuntamente usando
+#' `sex`, `ent` y las demás variables donantes disponibles como predictores. Las variables identificadoras
+#' nunca se usan como predictores.
 #'
 #' Las variables utilizadas como predictoras ("donantes") incluyen, si están presentes:
 #' - `edad`: Edad en años.
@@ -81,6 +86,7 @@ imputa_ingocup <- function(data,
 
   data <- data %>%
     dplyr::mutate(
+      .renoe_fila_imputacion = dplyr::row_number(),
       ingocup_imp     = ingocup,
       miss_income4    = p6b1 > 6,
       ingocup_imp     = dplyr::if_else(miss_income4 & ingocup_imp == 0, NA_real_, ingocup_imp),
@@ -102,14 +108,66 @@ imputa_ingocup <- function(data,
     dplyr::filter(filtro_imputar) %>%
     dplyr::select(log_ingocup_imp, sex, ent,
                   dplyr::all_of(donantes_disponibles),
-                  dplyr::all_of(id_vars))
+                  dplyr::all_of(id_vars), .renoe_fila_imputacion)
+
+  periodos <- data %>%
+    dplyr::distinct(anio, trim) %>%
+    dplyr::mutate(periodo = paste0(anio, " ", trim)) %>%
+    dplyr::pull(periodo)
+  etiqueta_periodo <- if (length(periodos) == 1L) {
+    paste0("[", periodos, "] ")
+  } else {
+    paste0("[", length(periodos), " periodos] ")
+  }
 
   n_total_validos <- sum(filtro_imputar)
   n_total_clase2  <- sum(data$clase2 == 1, na.rm = TRUE)
   n_imputar <- sum(is.na(imputar_df$log_ingocup_imp))
 
-  message("Total ocupados con datos válidos: ", n_total_validos)
-  message("Casos a imputar (NA en log_ingocup_imp): ", n_imputar)
+  message(etiqueta_periodo, "Total ocupados con datos válidos: ", n_total_validos)
+  message(etiqueta_periodo, "Casos a imputar (NA en log_ingocup_imp): ", n_imputar)
+
+  imputar_vector <- function(df, predictores) {
+    objetivo <- "log_ingocup_imp"
+    predictores <- intersect(unique(predictores), names(df))
+    predictores <- setdiff(predictores, c(objetivo, id_vars, ".renoe_fila_imputacion"))
+
+    predictores <- predictores[vapply(
+      df[predictores],
+      function(x) dplyr::n_distinct(x[!is.na(x)]) > 1L,
+      logical(1)
+    )]
+
+    if (sum(!is.na(df[[objetivo]])) < 2L || length(predictores) == 0L) {
+      stop("No hay suficientes donantes o predictores con variación.")
+    }
+
+    modelo <- as.data.frame(df[c(objetivo, predictores)])
+    metodos <- rep("", ncol(modelo))
+    names(metodos) <- names(modelo)
+    metodos[objetivo] <- method
+
+    matriz <- matrix(
+      0,
+      nrow = ncol(modelo),
+      ncol = ncol(modelo),
+      dimnames = list(names(modelo), names(modelo))
+    )
+    matriz[objetivo, predictores] <- 1
+
+    imp <- suppressWarnings(
+      mice::mice(
+        modelo,
+        m = 1,
+        method = metodos,
+        predictorMatrix = matriz,
+        maxit = 10,
+        seed = seed,
+        printFlag = FALSE
+      )
+    )
+    mice::complete(imp, 1)[[objetivo]]
+  }
 
   imputados_list <- imputar_df %>%
     dplyr::group_split(sex, ent, .keep = TRUE) %>%
@@ -117,21 +175,65 @@ imputa_ingocup <- function(data,
       if (sum(is.na(df$log_ingocup_imp)) == 0) return(df)
 
       tryCatch({
-        imp <- mice::mice(df, m = 1, method = method, maxit = 10, seed = seed, printFlag = FALSE)
-        mice::complete(imp, 1)
+        df$log_ingocup_imp <- imputar_vector(
+          df,
+          setdiff(donantes_disponibles, c("sex", "ent"))
+        )
+        df
       }, error = function(e) {
-        message("Error al imputar grupo sex = ", unique(df$sex),
-                ", ent = ", unique(df$ent), ": ", conditionMessage(e))
-        df  # Devuelve el grupo sin imputar
+        df
       })
     })
   imputados_total <- dplyr::bind_rows(imputados_list)
 
+  pendientes_respaldo <- imputados_total %>%
+    dplyr::filter(is.na(log_ingocup_imp)) %>%
+    dplyr::pull(.renoe_fila_imputacion)
+
+  if (length(pendientes_respaldo) > 0L) {
+    message(
+      etiqueta_periodo,
+      "Respaldo conjunto para ", length(pendientes_respaldo),
+      " casos; `sex` se usa como covariable."
+    )
+
+    respaldo <- tryCatch(
+      imputar_vector(
+        imputar_df,
+        unique(c("sex", "ent", donantes_disponibles))
+      ),
+      error = function(e) {
+        message(
+          etiqueta_periodo,
+          "No fue posible ejecutar la imputación de respaldo: ",
+          conditionMessage(e)
+        )
+        imputar_df$log_ingocup_imp
+      }
+    )
+
+    valores_respaldo <- data.frame(
+      .renoe_fila_imputacion = imputar_df$.renoe_fila_imputacion,
+      log_ingocup_respaldo = respaldo
+    )
+
+    imputados_total <- imputados_total %>%
+      dplyr::left_join(valores_respaldo, by = ".renoe_fila_imputacion") %>%
+      dplyr::mutate(
+        log_ingocup_imp = dplyr::if_else(
+          .renoe_fila_imputacion %in% pendientes_respaldo,
+          log_ingocup_respaldo,
+          log_ingocup_imp
+        )
+      ) %>%
+      dplyr::select(-log_ingocup_respaldo)
+  }
+
   data <- data %>%
     dplyr::left_join(
       imputados_total %>%
-        dplyr::select(dplyr::all_of(id_vars), log_ingocup_imp_imp = log_ingocup_imp),
-      by = id_vars
+        dplyr::select(.renoe_fila_imputacion, log_ingocup_imp_imp = log_ingocup_imp),
+      by = ".renoe_fila_imputacion"
     ) %>%
     dplyr::mutate(
       log_ingocup_imp = dplyr::if_else(
@@ -141,7 +243,7 @@ imputa_ingocup <- function(data,
       ingocup_imp = exp(log_ingocup_imp) - 1,
       imp_ingocup = dplyr::if_else(miss_to_impute & !is.na(log_ingocup_imp), 1, 0, missing = 0)
     ) %>%
-    dplyr::select(-log_ingocup_imp_imp)
+    dplyr::select(-log_ingocup_imp_imp, -.renoe_fila_imputacion)
 
   n_imputados_final <- data %>%
     dplyr::filter(filtro_imputar) %>%
@@ -152,10 +254,17 @@ imputa_ingocup <- function(data,
   pct_validos   <- round(100 * n_imputados_final / n_total_validos, 2)
   pct_clase2    <- round(100 * n_imputados_final / n_total_clase2, 2)
 
-  message("Casos efectivamente imputados: ", n_imputados_final)
-  message("Porcentaje entre los que tenían NA: ", pct_imputados, "%")
-  message("Porcentaje sobre válidos (edad + anios_es): ", pct_validos, "%")
-  message("Porcentaje sobre total de ocupados (clase2 == 1): ", pct_clase2, "%")
+  message(etiqueta_periodo, "Casos efectivamente imputados: ", n_imputados_final)
+  message(etiqueta_periodo, "Porcentaje entre los que tenían NA: ", pct_imputados, "%")
+  message(etiqueta_periodo, "Porcentaje sobre válidos (edad + anios_es): ", pct_validos, "%")
+  message(etiqueta_periodo, "Porcentaje sobre total de ocupados (clase2 == 1): ", pct_clase2, "%")
+
+  data <- data %>%
+    sjlabelled::var_labels(
+      miss_income4 = "Ingreso no declarado identificado mediante P6B1",
+      sin_pago = "Persona ocupada sin ingreso laboral",
+      miss_to_impute = "Ingreso laboral faltante seleccionado para imputación"
+    )
 
   if (plot) {
     g <- data %>%

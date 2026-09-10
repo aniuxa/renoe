@@ -51,6 +51,10 @@ procesar_vars_hogar <- function(data, anio, trimestre) {
     stop("La variable 'par_c' no está presente en el objeto de entrada.")
   }
 
+  # En bases apiladas, separar hogares también por periodo. Si anio o trim no
+  # existen, se conserva el comportamiento previo para un solo trimestre.
+  claves_hogar <- c(intersect(c("anio", "trim"), names(data)), "folio2")
+
   version_parc <- ifelse(anio < 2012 | (anio == 2012 & trimestre <= 2), "par_c1", "par_c2")
   archivo_parc <- system.file(paste0("extdata/", version_parc, ".csv"), package = "renoe")
   cat_parc <- readr::read_csv(archivo_parc, show_col_types = FALSE)
@@ -60,7 +64,7 @@ procesar_vars_hogar <- function(data, anio, trimestre) {
     dplyr::mutate(
       relative = dplyr::if_else(is.na(relative), 6L, relative)
     ) %>%
-    dplyr::group_by(folio2) %>%
+    dplyr::group_by(dplyr::across(dplyr::all_of(claves_hogar))) %>%
     dplyr::mutate(
       rela1 = sum(relative == 1, na.rm = TRUE),
       rela2 = sum(relative == 2, na.rm = TRUE),
@@ -145,7 +149,7 @@ procesar_vars_hogar <- function(data, anio, trimestre) {
         labels = c("No familiar", "Nuclear", "Extensos")
       )
     ) %>%
-    dplyr::group_by(folio2) %>%
+    dplyr::group_by(dplyr::across(dplyr::all_of(claves_hogar))) %>%
     dplyr::mutate(
       tam_hog = sum(relative != 7, na.rm = TRUE),
       men = sum(edad < 15 & relative != 7, na.rm = TRUE),
@@ -175,6 +179,12 @@ procesar_vars_hogar <- function(data, anio, trimestre) {
     dplyr::ungroup() %>%
     sjlabelled::var_labels(
       relative      = "Clasificación del parentesco respecto a la jefatura del hogar",
+      rela1         = "Número de jefas o jefes en el hogar",
+      rela2         = "Número de cónyuges o parejas en el hogar",
+      rela3         = "Número de hijas o hijos en el hogar",
+      rela4         = "Número de madres o padres de la jefatura en el hogar",
+      rela5         = "Número de otros parientes en el hogar",
+      rela6         = "Número de personas no parientes u otras en el hogar",
       family        = "Tipología detallada del hogar",
       familyt       = "Tipología resumida del hogar",
       familyt_lab   = "Tipología resumida del hogar",
@@ -183,6 +193,10 @@ procesar_vars_hogar <- function(data, anio, trimestre) {
       tipo_hog2     = "Tipología agregada del hogar",
       tipo_hog2_lab = "Tipología agregada del hogar",
       tam_hog       = "Tamaño del hogar (sin servicio doméstico)",
+      men           = "Número de integrantes menores de 15 años",
+      may           = "Número de integrantes de 65 años o más",
+      nondep        = "Número de integrantes de 15 a 64 años",
+      dep           = "Número de integrantes dependientes: menores de 15 y personas de 65 años o más",
       t_dep1        = "Tasa de dependencia juvenil",
       t_dep2        = "Tasa de dependencia senil",
       t_dep3        = "Tasa de dependencia total",

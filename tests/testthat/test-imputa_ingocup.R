@@ -32,3 +32,37 @@ test_that("imputa_ingocup agrega variables esperadas, imputa correctamente y eti
   expect_gt(nrow(imputados_con_valor), 0)
   expect_true(all(imputados_con_valor$imp_ingocup == 1))
 })
+
+test_that("imputa_ingocup usa respaldo conjunto cuando los bloques son insuficientes", {
+  skip_on_cran()
+  skip_if_not_installed("mice")
+
+  n <- 40L
+  datos <- data.frame(
+    sex = rep(1:2, each = n / 2),
+    edad = 21:60,
+    anios_es = rep(6:15, length.out = n),
+    ent = rep(1:20, times = 2),
+    c_ocu11c = rep(1:10, length.out = n),
+    pos_ocu = 1L,
+    rama_est2 = rep(1:11, length.out = n),
+    ing7c = 1L,
+    hrsocup = rep(c(35, 40, 45, 48), length.out = n),
+    t_loc = rep(1:4, length.out = n),
+    clase2 = 1L,
+    ingocup = c(seq(4000, 9800, length.out = 30), rep(NA_real_, 10)),
+    p6b1 = 1L,
+    folio3 = seq_len(n),
+    anio = 2024L,
+    trim = 4L
+  )
+
+  mensajes <- testthat::capture_messages(
+    resultado <- imputa_ingocup(datos, seed = 2024)
+  )
+
+  expect_equal(sum(resultado$imp_ingocup), 10L)
+  expect_false(anyNA(resultado$ingocup_imp))
+  expect_true(any(grepl("\\[2024 4\\] Respaldo conjunto", mensajes)))
+  expect_false(".renoe_fila_imputacion" %in% names(resultado))
+})

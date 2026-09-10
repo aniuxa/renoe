@@ -5,7 +5,8 @@
 #' y quintiles ponderados de ingreso y trabajo no remunerado.
 #'
 #' @param data Un data frame que contenga, al menos, las variables `ingocup_imp`,
-#'   `ipc`, `t_total_hrs0`, `t_total_hrs`, `folio2`, `tam_hog` y `fac`.
+#'   `ipc`, `hrsocup`, `t_total_hrs0`, `t_total_hrs`, `folio2`, `tam_hog` y
+#'   `fac`.
 #'
 #' @return Un data frame con variables derivadas sobre contribución económica y
 #'   trabajo no remunerado en el hogar, junto con quintiles ponderados etiquetados.
@@ -22,7 +23,7 @@
 procesar_contribucion_hogar <- function(data) {
 
   vars_requeridas <- c(
-    "ingocup_imp", "ipc", "t_total_hrs0", "t_total_hrs",
+    "ingocup_imp", "ipc", "hrsocup", "t_total_hrs0", "t_total_hrs",
     "folio2", "tam_hog", "fac"
   )
 
@@ -35,33 +36,54 @@ procesar_contribucion_hogar <- function(data) {
     )
   }
 
+  # En bases apiladas, folio2 solo no identifica de manera única al hogar.
+  # Conservamos compatibilidad con bases de un trimestre sin anio/trim.
+  claves_periodo <- intersect(c("anio", "trim"), names(data))
+  claves_hogar <- c(claves_periodo, "folio2")
+
   data <- data %>%
     dplyr::mutate(
       ing_ipc = dplyr::if_else(
+        !is.na(ipc) & ipc > 0 & !is.na(hrsocup) & hrsocup > 0,
+        (ingocup_imp / ipc * 100) / (hrsocup * 4.33),
+        NA_real_
+      ),
+      ing_mensual_ipc = dplyr::if_else(
         !is.na(ipc) & ipc != 0,
-        ingocup_imp / ipc,
+        ingocup_imp / ipc * 100,
         NA_real_
       )
     ) %>%
+    dplyr::group_by(dplyr::across(dplyr::all_of(claves_hogar))) %>%
     dplyr::mutate(
-      ing_hog    = sum(ing_ipc, na.rm = TRUE),
+      ing_hog    = sum(ing_mensual_ipc, na.rm = TRUE),
       norem_hog0 = sum(t_total_hrs0, na.rm = TRUE),
-      norem_hog  = sum(t_total_hrs, na.rm = TRUE),
-      .by = folio2
+      norem_hog  = sum(t_total_hrs, na.rm = TRUE)
     ) %>%
+    dplyr::ungroup() %>%
     dplyr::mutate(
       ing_hog_pc      = dplyr::if_else(!is.na(tam_hog) & tam_hog > 0, ing_hog / tam_hog, NA_real_),
       norem_pc        = dplyr::if_else(!is.na(tam_hog) & tam_hog > 0, norem_hog0 / tam_hog, NA_real_),
-      ing_hog_pc_sego = dplyr::if_else(!is.na(tam_hog) & tam_hog > 0, (ing_hog - ing_ipc) / tam_hog, NA_real_)
-    ) %>%
+      ing_hog_pc_sego = dplyr::if_else(!is.na(tam_hog) & tam_hog > 0, (ing_hog - ing_mensual_ipc) / tam_hog, NA_real_)
+    )
+
+  # Los quintiles deben representar la distribución de cada trimestre.
+  if (length(claves_periodo) > 0) {
+    data <- data %>%
+      dplyr::group_by(dplyr::across(dplyr::all_of(claves_periodo)))
+  }
+
+  data <- data %>%
     dplyr::mutate(
-      quintil_ing_ind          = dineq::ntiles.wtd(ing_ipc, n = 5, weights = fac),
+      quintil_ing_ind          = dineq::ntiles.wtd(ing_mensual_ipc, n = 5, weights = fac),
       quintil_ing_hog_pc       = dineq::ntiles.wtd(ing_hog_pc, n = 5, weights = fac),
       quintil_norem_pc         = dineq::ntiles.wtd(norem_pc, n = 5, weights = fac),
       quintil_ing_hog_pc_sego  = dineq::ntiles.wtd(ing_hog_pc_sego, n = 5, weights = fac)
     ) %>%
+    dplyr::ungroup() %>%
     sjlabelled::var_labels(
-      ing_ipc                 = "Ingreso ocupacional individual deflactado",
+      ing_ipc                 = "Ingreso ocupacional por hora a precios constantes",
+      ing_mensual_ipc         = "Ingreso ocupacional mensual imputado a precios constantes (IPC base 100)",
       ing_hog                 = "Ingreso total del hogar deflactado",
       norem_hog0              = "Horas totales de trabajo no remunerado del hogar",
       norem_hog               = "Horas totales de trabajo no remunerado del hogar",
