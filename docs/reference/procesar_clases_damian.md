@@ -1,4 +1,4 @@
-# Clasificar ocupaciones para el capitulo de Gerardo Damián Hernández
+# Clasificar ocupaciones para el capitulo de Gerardo Damian Hernandez
 
 Traduce el codigo ocupacional armonizado a SINCO 2011 hacia ISCO-88 y
 construye la tipologia de cuatro clases utilizada en la propuesta
@@ -21,8 +21,9 @@ procesar_clases_damian(
 
 - data:
 
-  Un data frame con `sinco4d`, `pos_ocu` y `emple7c`; para observaciones
-  anteriores a 2012-III tambien requiere `p3coe`, `anio` y `trim`.
+  Un data frame con `sinco4d_base2011` o `sinco4d`, `pos_ocu` y
+  `emple7c`. Cuando existe `sinco4d_base2011`, esta variable canonica
+  tiene prioridad y no se aplica un puente alternativo.
 
 - correspondencia:
 
@@ -52,13 +53,13 @@ de cobertura y metodo.
 ## Details
 
 La correspondencia SINCO 2011-ISCO-88 reproduce, en orden de prioridad,
-el do-file de Gerardo Damián Hernández `sinco-isco88.do`. Las variables
+el do-file de Gerardo Damian Hernandez `sinco-isco88.do`. Las variables
 auxiliares permiten auditar la cobertura y distinguir asignaciones
 directas de recuperaciones realizadas con el gran grupo SINCO.
 
 ## References
 
-Damián Hernández, G. (2026). *Quince anos de trabajo femenino en Mexico:
+Damian Hernandez, G. (2026). *Quince anos de trabajo femenino en Mexico:
 tipo de hogar y clase ocupacional, 2005-2020*. Propuesta de capitulo
 para el proyecto PAPIIT IN305925.
 
@@ -68,9 +69,10 @@ del esquema EGP para America Latina, citada en el programa original.
 ## See also
 
 Other procesamiento_enoe:
-[`armoniza_sinco()`](https://aniuxa.github.io/renoe/reference/armoniza_sinco.md),
+[`.armonizar_sinco_enoe_core()`](https://aniuxa.github.io/renoe/reference/dot-armonizar_sinco_enoe_core.md),
 [`armonizar_carreras_enoe()`](https://aniuxa.github.io/renoe/reference/armonizar_carreras_enoe.md),
 [`calcular_desajuste_estadistico()`](https://aniuxa.github.io/renoe/reference/calcular_desajuste_estadistico.md),
+[`calcular_desajuste_horizontal()`](https://aniuxa.github.io/renoe/reference/calcular_desajuste_horizontal.md),
 [`crear_folios()`](https://aniuxa.github.io/renoe/reference/crear_folios.md),
 [`imputa_ingocup()`](https://aniuxa.github.io/renoe/reference/imputa_ingocup.md),
 [`ipc_enoe()`](https://aniuxa.github.io/renoe/reference/ipc_enoe.md),
@@ -83,6 +85,7 @@ Other procesamiento_enoe:
 [`procesar_vars_hogar()`](https://aniuxa.github.io/renoe/reference/procesar_vars_hogar.md),
 [`procesar_vars_laborales()`](https://aniuxa.github.io/renoe/reference/procesar_vars_laborales.md),
 [`procesar_vars_sociodemo()`](https://aniuxa.github.io/renoe/reference/procesar_vars_sociodemo.md),
+[`reglas_enoe()`](https://aniuxa.github.io/renoe/reference/reglas_enoe.md),
 [`sinco2019_to_sinco2011()`](https://aniuxa.github.io/renoe/reference/sinco2019_to_sinco2011.md)
 
 ## Examples
@@ -95,46 +98,46 @@ datos <- data.frame(
   clase2 = c(1, 1, 1, 1, 4)
 )
 procesar_clases_damian(datos)
-#>   sinco4d pos_ocu emple7c clase2 sinco4d_damian calidad_cmo_damian
-#> 1    2211       1       5      1           2211               <NA>
-#> 2    4111       1       5      1           4111               <NA>
-#> 3    7111       1       5      1           7111               <NA>
-#> 4    9111       1       5      1           9111               <NA>
-#> 5      NA      NA      NA      4             NA               <NA>
-#>   n_destinos_cmo_damian isco88_damian grupo_ocu9_damian clase_ocu_damian
-#> 1                    NA          2111                 2                1
-#> 2                    NA          5220                 4                2
-#> 3                    NA          7111                 7                3
-#> 4                    NA          9211                 9                4
-#> 5                    NA            NA                NA               NA
-#>            metodo_clase_damian cobertura_isco88_damian cobertura_clase_damian
-#> 1 Correspondencia SINCO-ISCO88                       1                      1
-#> 2 Correspondencia SINCO-ISCO88                       1                      1
-#> 3 Correspondencia SINCO-ISCO88                       1                      1
-#> 4 Correspondencia SINCO-ISCO88                       1                      1
-#> 5             Sin codigo SINCO                      NA                     NA
-#>   calificada_damian manual_damian supervisa_damian posocup_damian
-#> 1                 1             0                0              4
-#> 2                 0             0                0              4
-#> 3                 1             1                0              4
-#> 4                 0             1                0              4
-#> 5                NA            NA               NA             NA
-#>   tam_est_damian clase_egp13_damian cobertura_egp_damian clase_egp7_damian
-#> 1              4                  1                    1                 1
-#> 2              4                  4                    1                 2
-#> 3              4                  8                    1                 4
-#> 4              4                 10                    1                 5
-#> 5             NA                 NA                   NA                NA
-#>   clase_alt6_damian macro_egp4_damian macro_solis4_damian egp3_damian
-#> 1                 1                 1                   1           1
-#> 2                 3                 2                   1           2
-#> 3                 3                 2                   2           2
-#> 4                 5                 3                   3           3
-#> 5                NA                NA                  NA          NA
-#>   baja_damian alta_damian autoempleo_damian
-#> 1           0           1                 0
-#> 2           0           0                 0
-#> 3           0           0                 0
-#> 4           0           0                 0
-#> 5          NA          NA                NA
+#>   sinco4d pos_ocu emple7c clase2 sinco4d_damian             fuente_sinco_damian
+#> 1    2211       1       5      1           2211 sinco4d proporcionado al modulo
+#> 2    4111       1       5      1           4111 sinco4d proporcionado al modulo
+#> 3    7111       1       5      1           7111 sinco4d proporcionado al modulo
+#> 4    9111       1       5      1           9111 sinco4d proporcionado al modulo
+#> 5      NA      NA      NA      4             NA sinco4d proporcionado al modulo
+#>   calidad_cmo_damian n_destinos_cmo_damian isco88_damian grupo_ocu9_damian
+#> 1               <NA>                    NA          2111                 2
+#> 2               <NA>                    NA          5220                 4
+#> 3               <NA>                    NA          7111                 7
+#> 4               <NA>                    NA          9211                 9
+#> 5               <NA>                    NA            NA                NA
+#>   clase_ocu_damian          metodo_clase_damian cobertura_isco88_damian
+#> 1                1 Correspondencia SINCO-ISCO88                       1
+#> 2                2 Correspondencia SINCO-ISCO88                       1
+#> 3                3 Correspondencia SINCO-ISCO88                       1
+#> 4                4 Correspondencia SINCO-ISCO88                       1
+#> 5               NA             Sin codigo SINCO                      NA
+#>   cobertura_clase_damian calificada_damian manual_damian supervisa_damian
+#> 1                      1                 1             0                0
+#> 2                      1                 0             0                0
+#> 3                      1                 1             1                0
+#> 4                      1                 0             1                0
+#> 5                     NA                NA            NA               NA
+#>   posocup_damian tam_est_damian clase_egp13_damian cobertura_egp_damian
+#> 1              4              4                  1                    1
+#> 2              4              4                  4                    1
+#> 3              4              4                  8                    1
+#> 4              4              4                 13                    1
+#> 5             NA             NA                 NA                   NA
+#>   clase_egp7_damian clase_alt6_damian macro_egp4_damian macro_solis4_damian
+#> 1                 1                 1                 1                   1
+#> 2                 2                 3                 2                   1
+#> 3                 4                 3                 2                   2
+#> 4                 7                 6                 4                   4
+#> 5                NA                NA                NA                  NA
+#>   egp3_damian baja_damian alta_damian autoempleo_damian
+#> 1           1           0           1                 0
+#> 2           2           0           0                 0
+#> 3           2           0           0                 0
+#> 4           3           1           0                 0
+#> 5          NA          NA          NA                NA
 ```

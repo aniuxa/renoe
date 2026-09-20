@@ -22,11 +22,11 @@ descarga_enoe(
 
 - anio:
 
-  Año del trimestre (2005-2026). Debe ser un valor numérico.
+  Ano del trimestre (2005-2026). Debe ser un valor numerico.
 
 - trimestre:
 
-  Número del trimestre (1-4). Donde:
+  Numero del trimestre (1-4). Donde:
 
   - 1 = Enero-Marzo
 
@@ -48,23 +48,23 @@ descarga_enoe(
 
 - intentos:
 
-  Número máximo de intentos de descarga si falla la conexión (por
+  Numero maximo de intentos de descarga si falla la conexion (por
   defecto 3).
 
 - timeout_sec:
 
-  Tiempo máximo de espera para la descarga en segundos (por defecto
+  Tiempo maximo de espera para la descarga en segundos (por defecto
   300).
 
 - verificar_url:
 
-  Lógico. Si TRUE (por defecto), verifica múltiples formatos de URL para
-  encontrar la correcta. Útil cuando INEGI cambia la estructura de
+  Logico. Si TRUE (por defecto), verifica multiples formatos de URL para
+  encontrar la correcta. Util cuando INEGI cambia la estructura de
   archivos.
 
 - cache:
 
-  Lógico. Si TRUE (por defecto), usa archivos en caché si existen.
+  Logico. Si TRUE (por defecto), usa archivos en cache si existen.
 
 ## See also
 

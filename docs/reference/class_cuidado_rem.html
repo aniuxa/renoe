@@ -15,7 +15,7 @@ implica por si sola que se observe remuneracion positiva."><meta property="og:im
 
     <a class="navbar-brand me-2" href="../index.html">Uso del paquete renoe</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,7 +56,8 @@ implica por si sola que se observe remuneracion positiva.</p>
 <span>  variable_ocupado <span class="op">=</span> <span class="st">"clase2"</span>,</span>
 <span>  valor_ocupado <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  variable_cmo <span class="op">=</span> <span class="st">"p3coe"</span>,</span>
-<span>  aplicar_puente_cmo <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  aplicar_puente_cmo <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  puente_cmo_precalculado <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -93,12 +94,17 @@ implica por si sola que se observe remuneracion positiva.</p>
 <dd><p>Si es TRUE, aplica automaticamente el puente de
 cuidado a las observaciones de 2005-I a 2012-II.</p></dd>
 
+
+<dt id="arg-puente-cmo-precalculado">puente_cmo_precalculado<a class="anchor" aria-label="anchor" href="#arg-puente-cmo-precalculado"></a></dt>
+<dd><p>Si es TRUE, el llamador ya resolvio el
+remanente CMO antes de entrar y no se emite la advertencia de omision.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>El mismo data frame con <code>class_ocu</code>, <code>isco_care</code>, <code>care_industry</code>,
-<code>care_w</code>, <code>cuida_total</code>, <code>trabajo_cuidado_mercado</code>, el alias deprecado
-<code>trabajo_cuidado_rem</code>, <code>cuida_1d</code> y banderas de medición.</p>
+<code>care_w</code>, <code>trabajo_cuidado_mercado</code>, <code>cuida_1d</code> y banderas
+de medicion.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>

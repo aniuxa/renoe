@@ -1,20 +1,16 @@
 # Procesar variables de tiempo en actividades del hogar y cuidado
 
-Calcula duraciones semanales a partir de las baterías `p11_*` y `p9_*`
-de ENOE. Conserva sin cambios los campos fuente y distingue duración
-observada, actividad realizada con duración desconocida (98),
-realización desconocida (99), reactivo no seleccionado y batería no
-medible.
+Calcula duraciones semanales a partir de las baterias `p11_*`
+(cuestionario ampliado) y `p9_*` (cuestionario basico) de la ENOE.
+Conserva los campos fuente y distingue duracion observada, actividad
+realizada con duracion desconocida (98), realizacion desconocida (99),
+reactivo no seleccionado y reactivo que no existe en la version del
+instrumento.
 
 ## Usage
 
 ``` r
-procesar_tiempo(
-  data,
-  anio,
-  trimestre,
-  tratamiento_faltantes = c("distinguir", "historico_cero")
-)
+procesar_tiempo(data, anio, trimestre)
 ```
 
 ## Arguments
@@ -27,50 +23,42 @@ procesar_tiempo(
 
 - anio:
 
-  Año del trimestre, usado si falta `anio` en `data`.
+  Ano del trimestre, usado si falta `anio` en `data`.
 
 - trimestre:
 
-  Trimestre 1–4, usado si faltan metadatos en `data`.
-
-- tratamiento_faltantes:
-
-  Contrato de las variables principales: `"distinguir"` conserva los
-  estados y `NA`; `"historico_cero"` reproduce la conversión histórica a
-  cero. En ambos casos se crean columnas legacy.
+  Trimestre 1-4, usado si faltan metadatos en `data`.
 
 ## Value
 
 El mismo data frame, en el mismo orden, con duraciones, estados de
-medición, totales completos y parciales, y resultados históricos.
+medicion, version del instrumento y agregados conceptuales.
 
 ## Details
 
-El orden de las actividades cambió en 2011. Hasta 2010, los reactivos 3
-a 6 corresponden a construcción, reparación, quehaceres y servicios a la
-comunidad. Desde 2011, los reactivos 3 y 4 corresponden a compras y
-traslados, y las cuatro actividades anteriores pasan a los reactivos 5 a
-8.
+La bateria cambio en 2013. Hasta 2012 contiene seis actividades y el
+reactivo de cuidado incluye los traslados. Desde 2013 contiene ocho:
+separa traslados del cuidado y agrega compras, cuentas, tramites y
+seguridad del hogar.
 
-Las variables específicas `t_*` se expresan en horas. `t_total`,
-`t_total0` y sus versiones parciales se expresan en minutos; los sufijos
-`_hrs` son sus equivalentes en horas. Un total completo es `NA` cuando
-contiene una actividad con duración desconocida, realización
-desconocida, información incompleta o inválida. El total parcial suma
-sólo las duraciones observadas y los ceros de reactivos no
-seleccionados.
-
-Las columnas `*_legacy` reproducen el contrato histórico, que convertía
-a cero los códigos 98, 99 y todos los faltantes. El argumento
-`tratamiento_faltantes = "historico_cero"` permite mantener
-temporalmente ese resultado en los nombres principales.
+Todas las duraciones derivadas se expresan en horas. `t_cuidado_directo`
+solo es identificable desde 2013. `t_cuidado_amplio` armoniza el
+contenido anterior sumando cuidado y traslado desde 2013.
+`t_trabajo_hogar_indirecto_armonizado` usa construccion, reparacion y
+quehaceres. `t_trabajo_hogar_armonizado` suma cuidado amplio y trabajo
+indirecto realizado para el propio hogar. Los servicios comunitarios se
+conservan en `t_comun`, pero no integran estas sumas. La armonizacion no
+elimina la ruptura de medicion observada en 2013; `t_total_instrumento`
+suma todos los reactivos no educativos disponibles en cada version y,
+por ello, no debe usarse como serie homogenea.
 
 ## See also
 
 Other procesamiento_enoe:
-[`armoniza_sinco()`](https://aniuxa.github.io/renoe/reference/armoniza_sinco.md),
+[`.armonizar_sinco_enoe_core()`](https://aniuxa.github.io/renoe/reference/dot-armonizar_sinco_enoe_core.md),
 [`armonizar_carreras_enoe()`](https://aniuxa.github.io/renoe/reference/armonizar_carreras_enoe.md),
 [`calcular_desajuste_estadistico()`](https://aniuxa.github.io/renoe/reference/calcular_desajuste_estadistico.md),
+[`calcular_desajuste_horizontal()`](https://aniuxa.github.io/renoe/reference/calcular_desajuste_horizontal.md),
 [`crear_folios()`](https://aniuxa.github.io/renoe/reference/crear_folios.md),
 [`imputa_ingocup()`](https://aniuxa.github.io/renoe/reference/imputa_ingocup.md),
 [`ipc_enoe()`](https://aniuxa.github.io/renoe/reference/ipc_enoe.md),
@@ -83,4 +71,5 @@ Other procesamiento_enoe:
 [`procesar_vars_hogar()`](https://aniuxa.github.io/renoe/reference/procesar_vars_hogar.md),
 [`procesar_vars_laborales()`](https://aniuxa.github.io/renoe/reference/procesar_vars_laborales.md),
 [`procesar_vars_sociodemo()`](https://aniuxa.github.io/renoe/reference/procesar_vars_sociodemo.md),
+[`reglas_enoe()`](https://aniuxa.github.io/renoe/reference/reglas_enoe.md),
 [`sinco2019_to_sinco2011()`](https://aniuxa.github.io/renoe/reference/sinco2019_to_sinco2011.md)

@@ -2,44 +2,105 @@
 % Please edit documentation in R/armonizar_carreras_enoe.R
 \name{armonizar_carreras_enoe}
 \alias{armonizar_carreras_enoe}
+\alias{armonizar_carreras}
 \title{Armonizar carreras de la ENOE entre 2005 y la actualidad}
 \usage{
-armonizar_carreras_enoe(data)
+armonizar_carreras_enoe(
+  data,
+  usar_puente_2005 = FALSE,
+  perfil = c("panel_validado", "oficial", "experimental"),
+  advertir_cobertura = TRUE,
+  salida = c("auditable", "compacta")
+)
+
+armonizar_carreras(
+  data,
+  usar_puente_2005 = FALSE,
+  perfil = c("panel_validado", "oficial", "experimental"),
+  advertir_cobertura = TRUE,
+  salida = c("auditable", "compacta")
+)
 }
 \arguments{
 \item{data}{Data frame con \code{anio}, \code{trim}, \code{cs_p13_1} y \code{cs_p14_c}.}
+
+\item{usar_puente_2005}{Si es \code{TRUE}, aplica los destinos preferentes
+aceptados del puente Carreras 2005 -> CMPE 2011. El valor predeterminado
+es \code{FALSE}, porque para desajuste horizontal se recomienda comenzar en
+2012-III. Aun con \code{FALSE}, la funcion informa la evidencia disponible por
+codigo para facilitar futuras revisiones y desempates.}
+
+\item{perfil}{Ruta de evidencia que puede integrarse: \code{"oficial"} conserva
+unicamente la CMPE 2011 observada; \code{"panel_validado"} anade los destinos
+aceptados por panel; \code{"experimental"} anade consensos a ARM8 cuando todos
+los destinos detallados plausibles pertenecen al mismo campo. El perfil
+experimental no inventa una carrera CMPE 2011 detallada.}
+
+\item{advertir_cobertura}{Si es \code{TRUE}, valor predeterminado, emite en cada
+aplicacion una advertencia con la cobertura ARM8 por ano dentro de la
+serie historica recomendada desde 2014-III. Usa \code{fac} cuando esta
+disponible y registros en caso contrario.}
+
+\item{salida}{\code{"auditable"} conserva todas las columnas de evidencia;
+\code{"compacta"} conserva las variables recibidas y el contrato minimo de
+calidad, regla, fase, evidencia, granularidad, auxiliares y pendientes.}
 }
 \value{
-El mismo data frame, sin cambiar el número de filas, con:
+El mismo data frame, sin cambiar el numero de filas, con:
 \code{clasificador_carrera}, \code{cs_p14_c_original}, \code{cs_p14_c_canonica},
 \code{nivel_carrera}, \code{grupo_2005}, \code{campo_cmpe2011}, \code{campo_cmpe2016},
 \code{campo_arm8}, \code{campo_arm8_desc}, \code{campo_arm10}, \code{campo_arm10_desc},
 \code{descripcion_2005_arm}, \code{calidad_armonizacion}, \code{elegible_carrera},
-\code{tiene_codigo_carrera} y \code{cobertura_arm8}.
+\code{tiene_codigo_carrera}, \code{cobertura_arm8}, \code{carrera_cmpe2011},
+\code{campo_arm8_cmpe2011}, \code{campo_arm8_horizontal},
+\code{fuente_arm8_horizontal}, \code{nivel_cobertura_codigo}, proporciones modales,
+soporte, destinos posibles, \code{perfil_armonizacion_carrera}, fuente y nivel
+del resultado, \code{carrera_asistida_por_ocupacion},
+\code{apta_carrera_para_desajuste_horizontal} y \code{uso_desajuste_horizontal}.
 }
 \description{
-Identifica automáticamente el clasificador utilizado en cada observación,
+Identifica automaticamente el clasificador utilizado en cada observacion,
 normaliza la clave de carrera conservando ceros iniciales y genera campos de
-formación comparables. Reconoce el Catálogo de Carreras 2005 hasta 2012-II,
+formacion comparables. Reconoce el Catalogo de Carreras 2005 hasta 2012-II,
 la CMPE 2011 entre 2012-III y 2021-II y la CMPE 2016 desde 2021-III.
 }
 \details{
-La función conserva \code{cs_p14_c} y añade su versión original y canónica. Las
-equivalencias del catálogo 2005 se aplican primero por clave completa y sólo
-después por grupo. Las claves que mezclan campos incompatibles permanecen
-explícitamente como ambiguas.
+La funcion conserva \code{cs_p14_c} y anade su version original y canonica. Las
+equivalencias del catalogo 2005 se aplican primero por clave completa y solo
+despues por grupo. Las claves que mezclan campos incompatibles permanecen
+explicitamente como ambiguas.
 
-\code{campo_arm8} es la clasificación recomendada para comparaciones de toda la
-serie. \code{campo_arm10} conserva mayor cercanía con los diez campos amplios de
-la CMPE 2016. Los códigos se manejan como texto para preservar sus ceros.
+\code{campo_arm8} conserva la salida historica de la funcion. Para el desajuste
+horizontal se recomienda \code{campo_arm8_horizontal}: usa CMPE 2011 nativa y,
+desde 2021-III, agrega directamente el prefijo oficial de CMPE 2016 a ARM8,
+sin imputar una carrera detallada CMPE 2011 ni usar ocupacion. La variable
+\code{campo_arm8_cmpe2011} se conserva para analisis que si requieren el puente
+detallado entre clasificadores. \code{campo_arm10} conserva mayor
+cercania con los diez campos amplios de la CMPE 2016. Los codigos se manejan
+como texto para preservar sus ceros.
+
+\code{nivel_cobertura_codigo} distingue catalogo nativo, puente con proporciones
+modales de 80\% o mas, puente aceptado entre 65\% y 79\%, y codigos sin regla
+aceptada. Las proporciones son evidencia empirica del destino modal por
+codigo, no probabilidades individuales ni equivalencias oficiales.
 
 \code{campo_arm8} puede emplearse posteriormente para estudiar desajuste
-horizontal, comparándolo con la ocupación. Esta función no calcula ese
+horizontal, comparandolo con la ocupacion. Esta funcion no calcula ese
 indicador. El archivo \code{correspondencia_arm8_isco08_montt.csv} reproduce la
 tabla normativa internacional de Montt (2015). El archivo
-\code{correspondencia_campo_arm8_sinco3d.csv} contiene la adaptación mexicana
-propuesta y versionada. Sus filas con \code{estado_revision = "propuesta"}
-requieren validación sustantiva antes de considerarse definitivas.
+\code{correspondencia_campo_arm8_sinco3d.csv} contiene la adaptacion mexicana
+aceptada y versionada. La version 1.0.0 conserva 216 relaciones con
+\code{estado_revision = "aceptada"}; el indicador rechaza matrices propuestas.
+
+La ruta integrada de carreras se construyo sin ocupacion, CMO ni SINCO. No
+deben usarse codigos SINCO observados o imputados para completar una carrera
+que despues se comparara con SINCO: ello introduce circularidad mecanica.
+Aun una regla asistida por SINCO observado debera marcar
+\code{carrera_asistida_por_ocupacion = TRUE} y excluirse del indicador principal;
+solo podra presentarse como sensibilidad. El orden canonico del proceso es
+armonizar carreras, armonizar SCIAN y finalmente armonizar SINCO. SCIAN puede
+auxiliar la ultima etapa si se conserva la procedencia, pero la carrera no
+puede escoger el SINCO usado por el indicador principal.
 }
 \examples{
 datos <- data.frame(
@@ -49,6 +110,8 @@ datos <- data.frame(
   cs_p14_c = c("3111", "5335", 41400)
 )
 armonizar_carreras_enoe(datos)
+armonizar_carreras_enoe(datos, usar_puente_2005 = TRUE)
+armonizar_carreras_enoe(datos, perfil = "experimental")
 }
 \references{
 Montt, G. (2015). The causes and consequences of field-of-study mismatch:
@@ -69,8 +132,9 @@ from a systematic literature review. Journal of Economic Surveys, 33(2),
 }
 \seealso{
 Other procesamiento_enoe:
-\code{\link[=armoniza_sinco]{armoniza_sinco()}},
+\code{\link[=.armonizar_sinco_enoe_core]{.armonizar_sinco_enoe_core()}},
 \code{\link[=calcular_desajuste_estadistico]{calcular_desajuste_estadistico()}},
+\code{\link[=calcular_desajuste_horizontal]{calcular_desajuste_horizontal()}},
 \code{\link[=crear_folios]{crear_folios()}},
 \code{\link[=imputa_ingocup]{imputa_ingocup()}},
 \code{\link[=ipc_enoe]{ipc_enoe()}},
@@ -84,6 +148,7 @@ Other procesamiento_enoe:
 \code{\link[=procesar_vars_hogar]{procesar_vars_hogar()}},
 \code{\link[=procesar_vars_laborales]{procesar_vars_laborales()}},
 \code{\link[=procesar_vars_sociodemo]{procesar_vars_sociodemo()}},
+\code{\link[=reglas_enoe]{reglas_enoe()}},
 \code{\link[=sinco2019_to_sinco2011]{sinco2019_to_sinco2011()}}
 }
 \concept{procesamiento_enoe}

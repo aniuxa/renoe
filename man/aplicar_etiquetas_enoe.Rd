@@ -20,30 +20,30 @@ aplicar_etiquetas_enoe(
 incluido en \code{renoe}.}
 
 \item{diccionario_valores}{Ruta a un CSV o data frame con las columnas
-\code{variable_nombre}, \code{codigo} y \code{etiqueta}. Si es \code{NULL}, usa el catálogo
+\code{variable_nombre}, \code{codigo} y \code{etiqueta}. Si es \code{NULL}, usa el catalogo
 incluido en \code{renoe}.}
 
 \item{sobrescribir}{Si es \code{TRUE}, sustituye etiquetas existentes. Por
-defecto sólo completa etiquetas ausentes.}
+defecto solo completa etiquetas ausentes.}
 
-\item{informar}{Si es \code{TRUE}, informa cuántas etiquetas fueron aplicadas.}
+\item{informar}{Si es \code{TRUE}, informa cuantas etiquetas fueron aplicadas.}
 }
 \value{
-El mismo objeto con atributos \code{label} y, para variables numéricas
+El mismo objeto con atributos \code{label} y, para variables numericas
 catalogadas, clase \code{haven_labelled} y etiquetas de valores.
 }
 \description{
 Restaura metadatos que pueden perderse al guardar y volver a leer archivos
 Parquet. Las descripciones de variables se toman de
-\code{diccionario_variables.csv} y las etiquetas de códigos de
-\code{diccionario_etiquetas_valores.csv}. La función conserva los códigos
-numéricos y usa la clase \code{haven_labelled}, por lo que el resultado puede
+\code{diccionario_variables.csv} y las etiquetas de codigos de
+\code{diccionario_etiquetas_valores.csv}. La funcion conserva los codigos
+numericos y usa la clase \code{haven_labelled}, por lo que el resultado puede
 guardarse como RDS o exportarse a Stata sin convertir las variables en
 factores.
 }
 \details{
-Esta función está pensada para la etapa de distribución o exportación. No
-es necesario aplicarla antes de cada transformación analítica.
+Esta funcion esta pensada para la etapa de distribucion o exportacion. No
+es necesario aplicarla antes de cada transformacion analitica.
 }
 \examples{
 datos_etiquetados <- aplicar_etiquetas_enoe(

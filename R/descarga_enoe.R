@@ -63,23 +63,6 @@ descarga_enoe <- function(anio, trimestre, formato = "parquet", intentos = 3,
     stop("No se pudo extraer los archivos del ZIP descargado")
   }
 
-  # 4B. Sustitucion especial para hogares 2022 T1
-  if (anio == 2022 && trimestre == 1) {
-    message("Sustituyendo archivo de hogares para 2022T1 con versi\u00F3n corregida...")
-    archivo_origen <- system.file("extdata", "conjunto_de_datos_hog_enoen_2022_1t.csv", package = "renoe")
-    subcarpeta <- file.path(unzip_dir, "conjunto_de_datos_hog_enoen_2022_1t", "conjunto_de_datos")
-    archivo_destino <- file.path(subcarpeta, "conjunto_de_datos_hog_enoen_2022_1t.csv")
-
-    if (!file.exists(archivo_destino) || file.size(archivo_destino) < 1000) {
-      dir.create(subcarpeta, recursive = TRUE, showWarnings = FALSE)
-      if (!file.exists(archivo_origen)) {
-        warning("No se encontr\u00F3 el archivo corregido para hogares 2022T1 en inst/extdata")
-      } else {
-        file.copy(archivo_origen, archivo_destino, overwrite = TRUE)
-      }
-    }
-  }
-
   # 5. Procesar y guardar cada tabla
   resultados <- sapply(tablas, function(tabla) {
     tryCatch({

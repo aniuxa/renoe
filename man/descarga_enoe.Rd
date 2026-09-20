@@ -16,9 +16,9 @@ descarga_enoe(
 )
 }
 \arguments{
-\item{anio}{Año del trimestre (2005-2026). Debe ser un valor numérico.}
+\item{anio}{Ano del trimestre (2005-2026). Debe ser un valor numerico.}
 
-\item{trimestre}{Número del trimestre (1-4). Donde:
+\item{trimestre}{Numero del trimestre (1-4). Donde:
 \itemize{
 \item 1 = Enero-Marzo
 \item 2 = Abril-Junio
@@ -33,14 +33,14 @@ descarga_enoe(
 \item "dta" (compatible con Stata)
 }}
 
-\item{intentos}{Número máximo de intentos de descarga si falla la conexión (por defecto 3).}
+\item{intentos}{Numero maximo de intentos de descarga si falla la conexion (por defecto 3).}
 
-\item{timeout_sec}{Tiempo máximo de espera para la descarga en segundos (por defecto 300).}
+\item{timeout_sec}{Tiempo maximo de espera para la descarga en segundos (por defecto 300).}
 
-\item{verificar_url}{Lógico. Si TRUE (por defecto), verifica múltiples formatos de URL
-para encontrar la correcta. Útil cuando INEGI cambia la estructura de archivos.}
+\item{verificar_url}{Logico. Si TRUE (por defecto), verifica multiples formatos de URL
+para encontrar la correcta. Util cuando INEGI cambia la estructura de archivos.}
 
-\item{cache}{Lógico. Si TRUE (por defecto), usa archivos en caché si existen.}
+\item{cache}{Logico. Si TRUE (por defecto), usa archivos en cache si existen.}
 }
 \description{
 Descarga los archivos comprimidos de microdatos de la ENOE desde el sitio del INEGI,

@@ -1,0 +1,123 @@
+stage,function_name,classification,required_sinco_level,additional_requirements,applicable,records_total,population_total,records_classified,records_pending,population_classified,population_pending,record_coverage,population_coverage
+official_only,procesar_vars_laborales,skill_level,sinco1d,Solo requiere SINCO 1d,TRUE,170325,48766853,140821,29504,40760558,8006295,0.8267782181124321,0.8358250633888555
+official_only,procesar_vars_laborales,mismatch,sinco1d,Tambien requiere escolaridad valida,TRUE,170325,48766853,140751,29574,40739662,8027191,0.8263672391017173,0.8353965756207398
+official_only,calcular_desajuste_estadistico,mismatch2,sinco1d,Tambien requiere anios_es y referencia estimable,TRUE,170325,48766853,140607,29718,40695675,8071178,0.8255217965653897,0.834494590003583
+official_only,procesar_clases_damian,grupo_ocu9_damian,sinco1d (4d preferido para clase),Solo requiere SINCO 1d,TRUE,170325,48766853,140821,29504,40760558,8006295,0.8267782181124321,0.8358250633888555
+official_only,procesar_clases_damian,isco88_damian,sinco4d,Requiere correspondencia SINCO-ISCO88,TRUE,170325,48766853,103019,67306,30487764,18279089,0.6048378100689857,0.6251739065467276
+official_only,procesar_clases_damian,clase_ocu_damian,sinco1d (4d preferido para clase),Puede recuperar por gran grupo SINCO,TRUE,170325,48766853,140821,29504,40760558,8006295,0.8267782181124321,0.8358250633888555
+official_only,procesar_clases_damian,calificada_damian,sinco1d (4d preferido para clase),Derivada de clase_ocu_damian,TRUE,170325,48766853,140821,29504,40760558,8006295,0.8267782181124321,0.8358250633888555
+official_only,procesar_clases_damian,manual_damian,sinco1d (4d preferido para clase),Derivada de clase_ocu_damian,TRUE,170325,48766853,140821,29504,40760558,8006295,0.8267782181124321,0.8358250633888555
+official_only,procesar_clases_damian,supervisa_damian,sinco4d,Solo requiere SINCO 4d,TRUE,170325,48766853,103444,66881,30586420,18180433,0.6073330397768971,0.6271969200063002
+official_only,procesar_clases_damian,clase_egp13_damian,sinco4d,Tambien requiere posicion y tamano del establecimiento,TRUE,170325,48766853,103550,66775,30613479,18153374,0.6079553794216939,0.6277517845984444
+official_only,procesar_clases_damian,clase_egp7_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,103550,66775,30613479,18153374,0.6079553794216939,0.6277517845984444
+official_only,procesar_clases_damian,clase_alt6_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,103550,66775,30613479,18153374,0.6079553794216939,0.6277517845984444
+official_only,procesar_clases_damian,macro_egp4_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,103550,66775,30613479,18153374,0.6079553794216939,0.6277517845984444
+official_only,procesar_clases_damian,macro_solis4_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,103550,66775,30613479,18153374,0.6079553794216939,0.6277517845984444
+official_only,procesar_clases_damian,egp3_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,103550,66775,30613479,18153374,0.6079553794216939,0.6277517845984444
+official_only,procesar_clases_damian,baja_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,103550,66775,30613479,18153374,0.6079553794216939,0.6277517845984444
+official_only,procesar_clases_damian,alta_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,103550,66775,30613479,18153374,0.6079553794216939,0.6277517845984444
+panel_validated,procesar_vars_laborales,skill_level,sinco1d,Solo requiere SINCO 1d,TRUE,170325,48766853,154013,16312,44445540,4321313,0.9042301482460003,0.9113883153378792
+panel_validated,procesar_vars_laborales,mismatch,sinco1d,Tambien requiere escolaridad valida,TRUE,170325,48766853,153935,16390,44423414,4343439,0.9037722002054895,0.9109346055198599
+panel_validated,calcular_desajuste_estadistico,mismatch2,sinco1d,Tambien requiere anios_es y referencia estimable,TRUE,170325,48766853,153775,16550,44372719,4394134,0.90283281960957,0.9098950674549371
+panel_validated,procesar_clases_damian,grupo_ocu9_damian,sinco1d (4d preferido para clase),Solo requiere SINCO 1d,TRUE,170325,48766853,154013,16312,44445540,4321313,0.9042301482460003,0.9113883153378792
+panel_validated,procesar_clases_damian,isco88_damian,sinco4d,Requiere correspondencia SINCO-ISCO88,TRUE,170325,48766853,142167,28158,41157015,7609838,0.8346807573756054,0.8439547042332217
+panel_validated,procesar_clases_damian,clase_ocu_damian,sinco1d (4d preferido para clase),Puede recuperar por gran grupo SINCO,TRUE,170325,48766853,154013,16312,44445540,4321313,0.9042301482460003,0.9113883153378792
+panel_validated,procesar_clases_damian,calificada_damian,sinco1d (4d preferido para clase),Derivada de clase_ocu_damian,TRUE,170325,48766853,154013,16312,44445540,4321313,0.9042301482460003,0.9113883153378792
+panel_validated,procesar_clases_damian,manual_damian,sinco1d (4d preferido para clase),Derivada de clase_ocu_damian,TRUE,170325,48766853,154013,16312,44445540,4321313,0.9042301482460003,0.9113883153378792
+panel_validated,procesar_clases_damian,supervisa_damian,sinco4d,Solo requiere SINCO 4d,TRUE,170325,48766853,142592,27733,41255671,7511182,0.8371759870835168,0.8459777176927943
+panel_validated,procesar_clases_damian,clase_egp13_damian,sinco4d,Tambien requiere posicion y tamano del establecimiento,TRUE,170325,48766853,142672,27653,41277465,7489388,0.83764567738147655,0.8464246196079128
+panel_validated,procesar_clases_damian,clase_egp7_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,142672,27653,41277465,7489388,0.83764567738147655,0.8464246196079128
+panel_validated,procesar_clases_damian,clase_alt6_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,142672,27653,41277465,7489388,0.83764567738147655,0.8464246196079128
+panel_validated,procesar_clases_damian,macro_egp4_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,142672,27653,41277465,7489388,0.83764567738147655,0.8464246196079128
+panel_validated,procesar_clases_damian,macro_solis4_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,142672,27653,41277465,7489388,0.83764567738147655,0.8464246196079128
+panel_validated,procesar_clases_damian,egp3_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,142672,27653,41277465,7489388,0.83764567738147655,0.8464246196079128
+panel_validated,procesar_clases_damian,baja_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,142672,27653,41277465,7489388,0.83764567738147655,0.8464246196079128
+panel_validated,procesar_clases_damian,alta_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,142672,27653,41277465,7489388,0.83764567738147655,0.8464246196079128
+previous_implemented,procesar_vars_laborales,skill_level,sinco1d,Solo requiere SINCO 1d,TRUE,170325,48766853,170325,0,48766853,0,1,1
+previous_implemented,procesar_vars_laborales,mismatch,sinco1d,Tambien requiere escolaridad valida,TRUE,170325,48766853,170240,85,48743627,23226,0.9995009540584178,0.9995237338771891
+previous_implemented,calcular_desajuste_estadistico,mismatch2,sinco1d,Tambien requiere anios_es y referencia estimable,TRUE,170325,48766853,170063,262,48685019,81834,0.9984617642741818,0.9983219339578874
+previous_implemented,procesar_clases_damian,grupo_ocu9_damian,sinco1d (4d preferido para clase),Solo requiere SINCO 1d,TRUE,170325,48766853,170325,0,48766853,0,1,1
+previous_implemented,procesar_clases_damian,isco88_damian,sinco4d,Requiere correspondencia SINCO-ISCO88,TRUE,170325,48766853,105360,64965,31272117,17494736,0.6185821224130339,0.6412576386669856
+previous_implemented,procesar_clases_damian,clase_ocu_damian,sinco1d (4d preferido para clase),Puede recuperar por gran grupo SINCO,TRUE,170325,48766853,170325,0,48766853,0,1,1
+previous_implemented,procesar_clases_damian,calificada_damian,sinco1d (4d preferido para clase),Derivada de clase_ocu_damian,TRUE,170325,48766853,170325,0,48766853,0,1,1
+previous_implemented,procesar_clases_damian,manual_damian,sinco1d (4d preferido para clase),Derivada de clase_ocu_damian,TRUE,170325,48766853,170325,0,48766853,0,1,1
+previous_implemented,procesar_clases_damian,supervisa_damian,sinco4d,Solo requiere SINCO 4d,TRUE,170325,48766853,105785,64540,31370773,17396080,0.6210773521209453,0.6432806521265582
+previous_implemented,procesar_clases_damian,clase_egp13_damian,sinco4d,Tambien requiere posicion y tamano del establecimiento,TRUE,170325,48766853,105891,64434,31397832,17369021,0.6216996917657419,0.6438355167187023
+previous_implemented,procesar_clases_damian,clase_egp7_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,105891,64434,31397832,17369021,0.6216996917657419,0.6438355167187023
+previous_implemented,procesar_clases_damian,clase_alt6_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,105891,64434,31397832,17369021,0.6216996917657419,0.6438355167187023
+previous_implemented,procesar_clases_damian,macro_egp4_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,105891,64434,31397832,17369021,0.6216996917657419,0.6438355167187023
+previous_implemented,procesar_clases_damian,macro_solis4_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,105891,64434,31397832,17369021,0.6216996917657419,0.6438355167187023
+previous_implemented,procesar_clases_damian,egp3_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,105891,64434,31397832,17369021,0.6216996917657419,0.6438355167187023
+previous_implemented,procesar_clases_damian,baja_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,105891,64434,31397832,17369021,0.6216996917657419,0.6438355167187023
+previous_implemented,procesar_clases_damian,alta_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,105891,64434,31397832,17369021,0.6216996917657419,0.6438355167187023
+all_accepted_enoe,procesar_vars_laborales,skill_level,sinco1d,Solo requiere SINCO 1d,TRUE,170325,48766853,170325,0,48766853,0,1,1
+all_accepted_enoe,procesar_vars_laborales,mismatch,sinco1d,Tambien requiere escolaridad valida,TRUE,170325,48766853,170240,85,48743627,23226,0.9995009540584178,0.9995237338771891
+all_accepted_enoe,calcular_desajuste_estadistico,mismatch2,sinco1d,Tambien requiere anios_es y referencia estimable,TRUE,170325,48766853,170063,262,48685019,81834,0.9984617642741818,0.9983219339578874
+all_accepted_enoe,procesar_clases_damian,grupo_ocu9_damian,sinco1d (4d preferido para clase),Solo requiere SINCO 1d,TRUE,170325,48766853,170325,0,48766853,0,1,1
+all_accepted_enoe,procesar_clases_damian,isco88_damian,sinco4d,Requiere correspondencia SINCO-ISCO88,TRUE,170325,48766853,146531,23794,42500652,6266201,0.8603023631293116,0.8715069639617713
+all_accepted_enoe,procesar_clases_damian,clase_ocu_damian,sinco1d (4d preferido para clase),Puede recuperar por gran grupo SINCO,TRUE,170325,48766853,170325,0,48766853,0,1,1
+all_accepted_enoe,procesar_clases_damian,calificada_damian,sinco1d (4d preferido para clase),Derivada de clase_ocu_damian,TRUE,170325,48766853,170325,0,48766853,0,1,1
+all_accepted_enoe,procesar_clases_damian,manual_damian,sinco1d (4d preferido para clase),Derivada de clase_ocu_damian,TRUE,170325,48766853,170325,0,48766853,0,1,1
+all_accepted_enoe,procesar_clases_damian,supervisa_damian,sinco4d,Solo requiere SINCO 4d,TRUE,170325,48766853,146956,23369,42599308,6167545,0.8627975928372229,0.873529977421344
+all_accepted_enoe,procesar_clases_damian,clase_egp13_damian,sinco4d,Tambien requiere posicion y tamano del establecimiento,TRUE,170325,48766853,147034,23291,42620142,6146711,0.8632555408777337,0.8739571938340988
+all_accepted_enoe,procesar_clases_damian,clase_egp7_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,147034,23291,42620142,6146711,0.8632555408777337,0.8739571938340988
+all_accepted_enoe,procesar_clases_damian,clase_alt6_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,147034,23291,42620142,6146711,0.8632555408777337,0.8739571938340988
+all_accepted_enoe,procesar_clases_damian,macro_egp4_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,147034,23291,42620142,6146711,0.8632555408777337,0.8739571938340988
+all_accepted_enoe,procesar_clases_damian,macro_solis4_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,147034,23291,42620142,6146711,0.8632555408777337,0.8739571938340988
+all_accepted_enoe,procesar_clases_damian,egp3_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,147034,23291,42620142,6146711,0.8632555408777337,0.8739571938340988
+all_accepted_enoe,procesar_clases_damian,baja_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,147034,23291,42620142,6146711,0.8632555408777337,0.8739571938340988
+all_accepted_enoe,procesar_clases_damian,alta_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,147034,23291,42620142,6146711,0.8632555408777337,0.8739571938340988
+all_plus_consensus_panel,procesar_vars_laborales,skill_level,sinco1d,Solo requiere SINCO 1d,TRUE,170325,48766853,170325,0,48766853,0,1,1
+all_plus_consensus_panel,procesar_vars_laborales,mismatch,sinco1d,Tambien requiere escolaridad valida,TRUE,170325,48766853,170240,85,48743627,23226,0.9995009540584178,0.9995237338771891
+all_plus_consensus_panel,calcular_desajuste_estadistico,mismatch2,sinco1d,Tambien requiere anios_es y referencia estimable,TRUE,170325,48766853,170063,262,48685019,81834,0.9984617642741818,0.9983219339578874
+all_plus_consensus_panel,procesar_clases_damian,grupo_ocu9_damian,sinco1d (4d preferido para clase),Solo requiere SINCO 1d,TRUE,170325,48766853,170325,0,48766853,0,1,1
+all_plus_consensus_panel,procesar_clases_damian,isco88_damian,sinco4d,Requiere correspondencia SINCO-ISCO88,TRUE,170325,48766853,150570,19755,43646929,5119924,0.8840158520475562,0.8950122124960576
+all_plus_consensus_panel,procesar_clases_damian,clase_ocu_damian,sinco1d (4d preferido para clase),Puede recuperar por gran grupo SINCO,TRUE,170325,48766853,170325,0,48766853,0,1,1
+all_plus_consensus_panel,procesar_clases_damian,calificada_damian,sinco1d (4d preferido para clase),Derivada de clase_ocu_damian,TRUE,170325,48766853,170325,0,48766853,0,1,1
+all_plus_consensus_panel,procesar_clases_damian,manual_damian,sinco1d (4d preferido para clase),Derivada de clase_ocu_damian,TRUE,170325,48766853,170325,0,48766853,0,1,1
+all_plus_consensus_panel,procesar_clases_damian,supervisa_damian,sinco4d,Solo requiere SINCO 4d,TRUE,170325,48766853,169000,1325,48421080,345773,0.9922207544400411,0.9929096716575089
+all_plus_consensus_panel,procesar_clases_damian,clase_egp13_damian,sinco4d,Tambien requiere posicion y tamano del establecimiento,TRUE,170325,48766853,159337,10988,45827031,2939822,0.9354880375752238,0.9397167990315061
+all_plus_consensus_panel,procesar_clases_damian,clase_egp7_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,162302,8023,46597604,2169249,0.9528959342433583,0.955517962169919
+all_plus_consensus_panel,procesar_clases_damian,clase_alt6_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,162717,7608,46693014,2073839,0.9553324526640247,0.9574744140246245
+all_plus_consensus_panel,procesar_clases_damian,macro_egp4_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,165951,4374,47569790,1197063,0.9743196829590489,0.9754533473792126
+all_plus_consensus_panel,procesar_clases_damian,macro_solis4_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,164050,6275,47086516,1680337,0.9631586672537795,0.9655434604320274
+all_plus_consensus_panel,procesar_clases_damian,egp3_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,166114,4211,47604713,1162140,0.975276676941142,0.9761694690448859
+all_plus_consensus_panel,procesar_clases_damian,baja_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,169327,998,48515549,251304,0.9941406135329517,0.9948468276187517
+all_plus_consensus_panel,procesar_clases_damian,alta_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,167018,3307,47852081,914772,0.9805841773080874,0.9812419308664433
+all_plus_consensus_official,procesar_vars_laborales,skill_level,sinco1d,Solo requiere SINCO 1d,TRUE,170325,48766853,170325,0,48766853,0,1,1
+all_plus_consensus_official,procesar_vars_laborales,mismatch,sinco1d,Tambien requiere escolaridad valida,TRUE,170325,48766853,170240,85,48743627,23226,0.9995009540584178,0.9995237338771891
+all_plus_consensus_official,calcular_desajuste_estadistico,mismatch2,sinco1d,Tambien requiere anios_es y referencia estimable,TRUE,170325,48766853,170063,262,48685019,81834,0.9984617642741818,0.9983219339578874
+all_plus_consensus_official,procesar_clases_damian,grupo_ocu9_damian,sinco1d (4d preferido para clase),Solo requiere SINCO 1d,TRUE,170325,48766853,170325,0,48766853,0,1,1
+all_plus_consensus_official,procesar_clases_damian,isco88_damian,sinco4d,Requiere correspondencia SINCO-ISCO88,TRUE,170325,48766853,151096,19229,43788271,4978582,0.8871040657566417,0.8979105336159379
+all_plus_consensus_official,procesar_clases_damian,clase_ocu_damian,sinco1d (4d preferido para clase),Puede recuperar por gran grupo SINCO,TRUE,170325,48766853,170325,0,48766853,0,1,1
+all_plus_consensus_official,procesar_clases_damian,calificada_damian,sinco1d (4d preferido para clase),Derivada de clase_ocu_damian,TRUE,170325,48766853,170325,0,48766853,0,1,1
+all_plus_consensus_official,procesar_clases_damian,manual_damian,sinco1d (4d preferido para clase),Derivada de clase_ocu_damian,TRUE,170325,48766853,170325,0,48766853,0,1,1
+all_plus_consensus_official,procesar_clases_damian,supervisa_damian,sinco4d,Solo requiere SINCO 4d,TRUE,170325,48766853,168491,1834,48268869,497984,0.989232349919272,0.9897884737405549
+all_plus_consensus_official,procesar_clases_damian,clase_egp13_damian,sinco4d,Tambien requiere posicion y tamano del establecimiento,TRUE,170325,48766853,157852,12473,45610128,3156725,0.9267694114193453,0.9352690443240207
+all_plus_consensus_official,procesar_clases_damian,clase_egp7_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,159366,10959,45999824,2767029,0.9356583003082343,0.9432600459168444
+all_plus_consensus_official,procesar_clases_damian,clase_alt6_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,160340,9985,46249251,2517602,0.9413767796858946,0.9483747290398254
+all_plus_consensus_official,procesar_clases_damian,macro_egp4_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,160139,10186,46209902,2556951,0.9401966828122706,0.9475678490059631
+all_plus_consensus_official,procesar_clases_damian,macro_solis4_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,159787,10538,46097927,2668926,0.9381300455012476,0.9452717197068262
+all_plus_consensus_official,procesar_clases_damian,egp3_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,160700,9625,46343901,2422952,0.9434903860267136,0.9503155965384931
+all_plus_consensus_official,procesar_clases_damian,baja_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,167004,3321,47888299,878554,0.9805019815059445,0.9819846074545757
+all_plus_consensus_official,procesar_clases_damian,alta_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,166739,3586,47825305,941548,0.9789461323939528,0.98069286939635
+care_first_destination,procesar_vars_laborales,skill_level,sinco1d,Solo requiere SINCO 1d,TRUE,170325,48766853,170106,219,48710051,56802,0.9987142228093351,0.9988352334320199
+care_first_destination,procesar_vars_laborales,mismatch,sinco1d,Tambien requiere escolaridad valida,TRUE,170325,48766853,170021,304,48686825,80028,0.9982151768677529,0.998358967309209
+care_first_destination,calcular_desajuste_estadistico,mismatch2,sinco1d,Tambien requiere anios_es y referencia estimable,TRUE,170325,48766853,169845,480,48628301,138552,0.9971818582122413,0.997158889871364
+care_first_destination,procesar_clases_damian,grupo_ocu9_damian,sinco1d (4d preferido para clase),Solo requiere SINCO 1d,TRUE,170325,48766853,170106,219,48710051,56802,0.9987142228093351,0.9988352334320199
+care_first_destination,procesar_clases_damian,isco88_damian,sinco4d,Requiere correspondencia SINCO-ISCO88,TRUE,170325,48766853,169676,649,48610450,156403,0.9961896374578013,0.996792842056058
+care_first_destination,procesar_clases_damian,clase_ocu_damian,sinco1d (4d preferido para clase),Puede recuperar por gran grupo SINCO,TRUE,170325,48766853,170106,219,48710051,56802,0.9987142228093351,0.9988352334320199
+care_first_destination,procesar_clases_damian,calificada_damian,sinco1d (4d preferido para clase),Derivada de clase_ocu_damian,TRUE,170325,48766853,170106,219,48710051,56802,0.9987142228093351,0.9988352334320199
+care_first_destination,procesar_clases_damian,manual_damian,sinco1d (4d preferido para clase),Derivada de clase_ocu_damian,TRUE,170325,48766853,170106,219,48710051,56802,0.9987142228093351,0.9988352334320199
+care_first_destination,procesar_clases_damian,supervisa_damian,sinco4d,Solo requiere SINCO 4d,TRUE,170325,48766853,170106,219,48710051,56802,0.9987142228093351,0.9988352334320199
+care_first_destination,procesar_clases_damian,clase_egp13_damian,sinco4d,Tambien requiere posicion y tamano del establecimiento,TRUE,170325,48766853,170080,245,48701478,65375,0.9985615734624982,0.9986594377947661
+care_first_destination,procesar_clases_damian,clase_egp7_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,170080,245,48701478,65375,0.9985615734624982,0.9986594377947661
+care_first_destination,procesar_clases_damian,clase_alt6_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,170080,245,48701478,65375,0.9985615734624982,0.9986594377947661
+care_first_destination,procesar_clases_damian,macro_egp4_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,170080,245,48701478,65375,0.9985615734624982,0.9986594377947661
+care_first_destination,procesar_clases_damian,macro_solis4_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,170080,245,48701478,65375,0.9985615734624982,0.9986594377947661
+care_first_destination,procesar_clases_damian,egp3_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,170080,245,48701478,65375,0.9985615734624982,0.9986594377947661
+care_first_destination,procesar_clases_damian,baja_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,170080,245,48701478,65375,0.9985615734624982,0.9986594377947661
+care_first_destination,procesar_clases_damian,alta_damian,sinco4d,Derivada de clase_egp13_damian,TRUE,170325,48766853,170080,245,48701478,65375,0.9985615734624982,0.9986594377947661
+puente_cuidado_propio,procesar_cuidado_remunerado,codigo_ocupacion_armonizado,sinco3d,Puente propio CMO a SINCO 3d,TRUE,170325,48766853,170087,238,48698565,68288,0.9986026713635696,0.9985997045985313
+puente_cuidado_propio,procesar_cuidado_remunerado,trabajo_cuidado_mercado,sinco3d,SINCO 3d y actividad SCIAN-Hogares,TRUE,170325,48766853,170067,258,48688367,78486,0.9984852487890797,0.9983905871473806
+all_accepted_enoe,clasificar_susceptibilidad_teletrabajo,susceptible_teletrabajo,sinco4d,No comparable antes de 2012-T3,FALSE,170325,48766853,NA,NA,NA,NA,NA,NA

@@ -1,6 +1,6 @@
-# Estandariza variables de identificación
+# Estandariza variables de identificacion
 
-Estandariza variables de identificación
+Estandariza variables de identificacion
 
 ## Usage
 

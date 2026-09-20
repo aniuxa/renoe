@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{descargar_cuestionarios}
 \alias{descargar_cuestionarios}
-\title{Descargar cuestionarios técnicos de la ENOE}
+\title{Descargar cuestionarios tecnicos de la ENOE}
 \usage{
 descargar_cuestionarios(
   anio,
@@ -13,23 +13,23 @@ descargar_cuestionarios(
 )
 }
 \arguments{
-\item{anio}{Año del trimestre (2005-2024). Debe ser un valor numérico entre 2005 y 2024.}
+\item{anio}{Ano del trimestre (2005-2024). Debe ser un valor numerico entre 2005 y 2024.}
 
-\item{trimestre}{Número del trimestre (1-4). Donde 1 = ENE-MAR, 2 = ABR-JUN,
+\item{trimestre}{Numero del trimestre (1-4). Donde 1 = ENE-MAR, 2 = ABR-JUN,
 3 = JUL-SEP, 4 = OCT-DIC.}
 
-\item{destino}{Directorio base donde se guardarán los archivos. Por defecto, "cuestionarios".}
+\item{destino}{Directorio base donde se guardaran los archivos. Por defecto, "cuestionarios".}
 
-\item{sobrescribir}{Lógico. ¿Deben sobrescribirse los archivos existentes?
+\item{sobrescribir}{Logico. ?Deben sobrescribirse los archivos existentes?
 (FALSE por defecto).}
 }
 \value{
 Vector invisible con las rutas de los archivos descargados.
 }
 \description{
-Descarga automáticamente los cuestionarios en PDF y los descriptores de archivos (FD) correspondientes
-a un trimestre específico de la ENOE, basándose en la información de versiones. Los archivos se almacenan
-en una carpeta única con nombre \verb{docs_\{anio\}_\{trim\}} dentro del directorio especificado.
+Descarga automaticamente los cuestionarios en PDF y los descriptores de archivos (FD) correspondientes
+a un trimestre especifico de la ENOE, basandose en la informacion de versiones. Los archivos se almacenan
+en una carpeta unica con nombre \verb{docs_\{anio\}_\{trim\}} dentro del directorio especificado.
 }
 \examples{
 \dontrun{

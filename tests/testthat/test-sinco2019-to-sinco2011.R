@@ -11,7 +11,7 @@ test_that("el puente oficial conserva cambios directos y ambigüedades", {
   expect_true(is.na(resultado$sinco2011[5]))
 })
 
-test_that("armoniza_sinco aplica el cambio desde 2021-III", {
+test_that("armonizar_sinco aplica el cambio desde 2021-III", {
   datos <- data.frame(
     anio = c(2021, 2021, 2021, 2022),
     trim = c(2, 3, 3, 1),
@@ -19,7 +19,7 @@ test_that("armoniza_sinco aplica el cambio desde 2021-III", {
     pos_ocu = 1,
     tue2 = 1
   )
-  resultado <- armoniza_sinco(datos)
+  resultado <- armonizar_sinco(datos)
 
   expect_equal(resultado$sinco4d[1], 2423L)
   expect_equal(resultado$sinco4d[2], 2423L)

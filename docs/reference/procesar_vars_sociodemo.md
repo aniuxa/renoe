@@ -1,9 +1,11 @@
-# Procesar variables sociodemográficas básicas y extendidas
+# Procesar variables sociodemograficas basicas y extendidas
 
-Añade sexo, edad, grupos etarios, metadatos como año, trimestre y tipo
-de cuestionario COE, así como variables extendidas de asistencia
-escolar, estado conyugal, escolaridad, zona rural, tamaño de localidad y
-zona económica regional.
+Anade sexo, edad, grupos etarios, metadatos como ano, trimestre y tipo
+de cuestionario COE, asi como variables extendidas de asistencia
+escolar, estado conyugal, escolaridad, zona rural, tamano de localidad y
+zona economica regional. `zona_econ` sigue una regionalizacion analitica
+de ocho zonas documentada en `clasificacion_region_socioeconomica.csv`;
+no representa una clasificacion territorial oficial unica.
 
 ## Usage
 
@@ -20,22 +22,23 @@ procesar_vars_sociodemo(data, anio, trimestre)
 
 - anio:
 
-  Año del trimestre.
+  Ano del trimestre.
 
 - trimestre:
 
-  Trimestre numérico (1-4).
+  Trimestre numerico (1-4).
 
 ## Value
 
-Un data frame con variables sociodemográficas procesadas y etiquetadas.
+Un data frame con variables sociodemograficas procesadas y etiquetadas.
 
 ## See also
 
 Other procesamiento_enoe:
-[`armoniza_sinco()`](https://aniuxa.github.io/renoe/reference/armoniza_sinco.md),
+[`.armonizar_sinco_enoe_core()`](https://aniuxa.github.io/renoe/reference/dot-armonizar_sinco_enoe_core.md),
 [`armonizar_carreras_enoe()`](https://aniuxa.github.io/renoe/reference/armonizar_carreras_enoe.md),
 [`calcular_desajuste_estadistico()`](https://aniuxa.github.io/renoe/reference/calcular_desajuste_estadistico.md),
+[`calcular_desajuste_horizontal()`](https://aniuxa.github.io/renoe/reference/calcular_desajuste_horizontal.md),
 [`crear_folios()`](https://aniuxa.github.io/renoe/reference/crear_folios.md),
 [`imputa_ingocup()`](https://aniuxa.github.io/renoe/reference/imputa_ingocup.md),
 [`ipc_enoe()`](https://aniuxa.github.io/renoe/reference/ipc_enoe.md),
@@ -48,6 +51,7 @@ Other procesamiento_enoe:
 [`procesar_variables_enoe()`](https://aniuxa.github.io/renoe/reference/procesar_variables_enoe.md),
 [`procesar_vars_hogar()`](https://aniuxa.github.io/renoe/reference/procesar_vars_hogar.md),
 [`procesar_vars_laborales()`](https://aniuxa.github.io/renoe/reference/procesar_vars_laborales.md),
+[`reglas_enoe()`](https://aniuxa.github.io/renoe/reference/reglas_enoe.md),
 [`sinco2019_to_sinco2011()`](https://aniuxa.github.io/renoe/reference/sinco2019_to_sinco2011.md)
 
 ## Examples

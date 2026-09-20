@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Uso del paquete renoe</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,7 +62,7 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aniuxa.github.io/renoe">renoe</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aniuxa.github.io/renoe/">renoe</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="introducción-al-paquete-renoe">Introducción al paquete <code>renoe</code><a class="anchor" aria-label="anchor" href="#introducci%C3%B3n-al-paquete-renoe"></a>
 </h2>
@@ -113,10 +113,9 @@ sociodemográfico y los componentes COE, puede utilizarse
 <code><a href="../reference/fusion_enoe.html">fusion_enoe()</a></code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">datos_fusionados</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fusion_enoe.html">fusion_enoe</a></span><span class="op">(</span><span class="fl">2023</span>, <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
-<p>La función utiliza una estrategia de fusión robusta basada en
-identificadores disponibles, lo que reduce problemas de duplicación o
-pérdida de registros cuando cambian nombres o tipos de variables entre
-trimestres.</p>
+<p>La función utiliza una única ruta canónica: valida la unicidad de las
+llaves, usa SDEM como tabla ancla y conserva la auditoría de pérdidas,
+duplicaciones y llaves sin pareja en cada unión.</p>
 <p>También es posible guardar directamente el resultado en distintos
 formatos:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -179,8 +178,9 @@ desconocida y 99 una realización desconocida. Una actividad no
 seleccionada dentro de una batería respondida vale cero, mientras que
 una batería no medible conserva <code>NA</code>. Los totales completos
 quedan en <code>NA</code> si falta una duración y los totales parciales
-se conservan con una bandera de incompletitud. Las columnas
-<code>*_legacy</code> reproducen la recodificación histórica a cero.</p>
+se conservan con una bandera de incompletitud. Las actividades que no
+existían en el instrumento permanecen como <code>NA</code>, no como
+cero.</p>
 </div>
 <div class="section level4">
 <h4 id="contribución-al-hogar">Contribución al hogar<a class="anchor" aria-label="anchor" href="#contribuci%C3%B3n-al-hogar"></a>

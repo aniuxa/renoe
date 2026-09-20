@@ -27,7 +27,7 @@ procesar_cuidado_extra(
 \item{umbral_jornada_muy_alta}{Horas semanales que definen jornada mayor a 48.}
 }
 \value{
-El mismo data frame individual con variables del hogar aÃ±adidas.
+El mismo data frame individual con variables del hogar anadidas.
 }
 \description{
 Construye indicadores individuales auxiliares, los agrega por hogar y une
@@ -43,15 +43,16 @@ datos <- datos |>
 }
 \references{
 Escoto, Ana (2026, 4 de junio). \emph{Transversalidad del derecho al cuidado:
-tensiones y desafíos} (ponencia). Mesa 1 del conversatorio \emph{¿Una cancha
-pareja? Escuela, cuidado y fragmentación de derechos}, El Colegio de México.
-Transmisión oficial: \url{https://www.youtube.com/watch?v=fdpzAe6IYBc}
+tensiones y desafios} (ponencia). Mesa 1 del conversatorio \emph{?Una cancha
+pareja? Escuela, cuidado y fragmentacion de derechos}, El Colegio de Mexico.
+Transmision oficial: \url{https://www.youtube.com/watch?v=fdpzAe6IYBc}
 }
 \seealso{
 Other procesamiento_enoe:
-\code{\link[=armoniza_sinco]{armoniza_sinco()}},
+\code{\link[=.armonizar_sinco_enoe_core]{.armonizar_sinco_enoe_core()}},
 \code{\link[=armonizar_carreras_enoe]{armonizar_carreras_enoe()}},
 \code{\link[=calcular_desajuste_estadistico]{calcular_desajuste_estadistico()}},
+\code{\link[=calcular_desajuste_horizontal]{calcular_desajuste_horizontal()}},
 \code{\link[=crear_folios]{crear_folios()}},
 \code{\link[=imputa_ingocup]{imputa_ingocup()}},
 \code{\link[=ipc_enoe]{ipc_enoe()}},
@@ -64,6 +65,7 @@ Other procesamiento_enoe:
 \code{\link[=procesar_vars_hogar]{procesar_vars_hogar()}},
 \code{\link[=procesar_vars_laborales]{procesar_vars_laborales()}},
 \code{\link[=procesar_vars_sociodemo]{procesar_vars_sociodemo()}},
+\code{\link[=reglas_enoe]{reglas_enoe()}},
 \code{\link[=sinco2019_to_sinco2011]{sinco2019_to_sinco2011()}}
 }
 \concept{procesamiento_enoe}

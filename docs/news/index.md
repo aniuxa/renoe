@@ -1,5 +1,26 @@
 # Changelog
 
+## renoe 0.3.0
+
+- Establece una ruta canonica reproducible desde la fusion ENOE hasta
+  las clasificaciones finales, sin alias ni opciones legacy no
+  publicadas.
+- Incorpora la cascada ocupacional oficial, panel, reglas ENOE/SCIAN,
+  consenso y reglas de autor, con procedencia y nivel de digitos.
+- Corrige los quintiles del hogar para usar una fila y un factor por
+  hogar y conserva como `NA` los ingresos completamente desconocidos.
+- Separa cuidado adolescente amplio y directo, corrige el indicador de
+  cuidado adolescente y armoniza el trabajo no remunerado dentro del
+  hogar.
+- Documenta las rupturas de 2013, 2020 y 2023 y audita 85 trimestres
+  entre 2005-T1 y 2026-T2.
+- Anade clasificaciones reproducibles de origen, parentesco, hogares,
+  educacion, situacion laboral, cuidados y region socioeconomica.
+- Corrige HOG de 2022-T1 combinando los componentes oficiales urbano y
+  rural, armoniza sus meses, incorpora `ur` a las llaves de union y usa
+  SDEM como ancla para impedir que una ausencia auxiliar elimine
+  personas.
+
 ## renoe 0.2.0 (10 de septiembre de 2026)
 
 - Se formalizó a Ana Escoto como única autora y mantenedora (`aut`,
@@ -58,10 +79,9 @@
   [`sinco2019_to_sinco2011()`](https://aniuxa.github.io/renoe/reference/sinco2019_to_sinco2011.md)
   y la tabla de equivalencia oficial de INEGI para armonizar el cambio
   de clasificador aplicado por la ENOE desde 2021-III.
-  [`armoniza_sinco()`](https://aniuxa.github.io/renoe/reference/armoniza_sinco.md)
-  ahora distingue CMO, SINCO 2011 y SINCO 2019, conserva el código
-  original y no selecciona arbitrariamente las correspondencias
-  uno-a-varios.
+  `armoniza_sinco()` ahora distingue CMO, SINCO 2011 y SINCO 2019,
+  conserva el código original y no selecciona arbitrariamente las
+  correspondencias uno-a-varios.
 - Se incorporó
   [`armonizar_carreras_enoe()`](https://aniuxa.github.io/renoe/reference/armonizar_carreras_enoe.md)
   para identificar el clasificador de carreras vigente, conservar los

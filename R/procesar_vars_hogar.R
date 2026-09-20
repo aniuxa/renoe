@@ -55,17 +55,27 @@ procesar_vars_hogar <- function(data, anio, trimestre) {
   # existen, se conserva el comportamiento previo para un solo trimestre.
   claves_hogar <- c(intersect(c("anio", "trim"), names(data)), "folio2")
 
-  version_parc <- ifelse(anio < 2012 | (anio == 2012 & trimestre <= 2), "par_c1", "par_c2")
-  archivo_parc <- system.file(paste0("extdata/", version_parc, ".csv"), package = "renoe")
-  cat_parc <- readr::read_csv(archivo_parc, show_col_types = FALSE)
+  version_parc <- ifelse(
+    anio < 2012 | (anio == 2012 & trimestre <= 2), "par_c1", "par_c2"
+  )
+  archivo_parc <- system.file(
+    paste0("extdata/", version_parc, ".csv"), package = "renoe"
+  )
+  cat_parc <- readr::read_csv(archivo_parc, show_col_types = FALSE) |>
+    dplyr::select(par_c, relative)
 
   data <- data %>%
     dplyr::left_join(cat_parc, by = "par_c") %>%
     dplyr::mutate(
       relative = dplyr::if_else(is.na(relative), 6L, relative)
-    ) %>%
+    )
+
+  # Calcular todos los agregados una sola vez por hogar y unirlos de vuelta es
+  # sustancialmente mas rapido que ejecutar dos group_by() + mutate() sobre
+  # cada integrante. La llave incluye el periodo cuando procesa bases apiladas.
+  agregados_hogar <- data %>%
     dplyr::group_by(dplyr::across(dplyr::all_of(claves_hogar))) %>%
-    dplyr::mutate(
+    dplyr::summarise(
       rela1 = sum(relative == 1, na.rm = TRUE),
       rela2 = sum(relative == 2, na.rm = TRUE),
       rela3 = sum(relative == 3, na.rm = TRUE),
@@ -73,92 +83,11 @@ procesar_vars_hogar <- function(data, anio, trimestre) {
       rela5 = sum(relative == 5, na.rm = TRUE),
       rela6 = sum(relative == 6, na.rm = TRUE),
       jefa_mujer = sum(relative == 1 & sexo == 2, na.rm = TRUE),
-      jefe_hombre = sum(relative == 1 & sexo == 1, na.rm = TRUE)
-    ) %>%
-    dplyr::ungroup() %>%
-    dplyr::mutate(
-      family = dplyr::case_when(
-        rela1 == 1 & rela2 == 0 & rela3 == 0 & rela4 == 0 & rela5 == 0 & rela6 == 0 ~ 1,
-        rela1 == 1 & rela2 >= 1 & rela3 == 0 & rela4 == 0 & rela5 == 0 & rela6 == 0 ~ 2,
-        rela1 == 1 & rela2 == 0 & rela3 >= 1 & rela4 == 0 & rela5 == 0 & rela6 == 0 ~ 3,
-        rela1 == 1 & rela2 == 0 & rela3 == 0 & rela4 >= 1 & rela5 == 0 & rela6 == 0 ~ 4,
-        rela1 == 1 & rela2 == 0 & rela3 == 0 & rela4 == 0 & rela5 >= 1 & rela6 == 0 ~ 5,
-        rela1 == 1 & rela2 == 0 & rela3 == 0 & rela4 == 0 & rela5 == 0 & rela6 >= 1 ~ 6,
-        rela1 == 1 & rela2 >= 1 & rela3 >= 1 & rela4 == 0 & rela5 == 0 & rela6 == 0 ~ 7,
-        rela1 == 1 & rela2 >= 1 & rela3 == 0 & rela4 >= 1 & rela5 == 0 & rela6 == 0 ~ 8,
-        rela1 == 1 & rela2 >= 1 & rela3 == 0 & rela4 == 0 & rela5 >= 1 & rela6 == 0 ~ 9,
-        rela1 == 1 & rela2 >= 1 & rela3 == 0 & rela4 == 0 & rela5 == 0 & rela6 >= 1 ~ 10,
-        rela1 == 1 & rela2 == 0 & rela3 >= 1 & rela4 >= 1 & rela5 == 0 & rela6 == 0 ~ 11,
-        rela1 == 1 & rela2 == 0 & rela3 >= 1 & rela4 == 0 & rela5 >= 1 & rela6 == 0 ~ 12,
-        rela1 == 1 & rela2 == 0 & rela3 >= 1 & rela4 == 0 & rela5 == 0 & rela6 >= 1 ~ 13,
-        rela1 == 1 & rela2 == 0 & rela3 == 0 & rela4 >= 1 & rela5 >= 1 & rela6 == 0 ~ 14,
-        rela1 == 1 & rela2 == 0 & rela3 == 0 & rela4 >= 1 & rela5 == 0 & rela6 >= 1 ~ 15,
-        rela1 == 1 & rela2 == 0 & rela3 == 0 & rela4 == 0 & rela5 >= 1 & rela6 >= 1 ~ 16,
-        rela1 == 1 & rela2 >= 1 & rela3 >= 1 & rela4 >= 1 & rela5 == 0 & rela6 == 0 ~ 17,
-        rela1 == 1 & rela2 >= 1 & rela3 >= 1 & rela4 == 0 & rela5 >= 1 & rela6 == 0 ~ 18,
-        rela1 == 1 & rela2 >= 1 & rela3 >= 1 & rela4 == 0 & rela5 == 0 & rela6 >= 1 ~ 19,
-        rela1 == 1 & rela2 >= 1 & rela3 == 0 & rela4 >= 1 & rela5 >= 1 & rela6 == 0 ~ 20,
-        rela1 == 1 & rela2 >= 1 & rela3 == 0 & rela4 >= 1 & rela5 == 0 & rela6 >= 1 ~ 21,
-        rela1 == 1 & rela2 >= 1 & rela3 == 0 & rela4 == 0 & rela5 >= 1 & rela6 >= 1 ~ 22,
-        rela1 == 1 & rela2 == 0 & rela3 >= 1 & rela4 >= 1 & rela5 >= 1 & rela6 == 0 ~ 23,
-        rela1 == 1 & rela2 == 0 & rela3 >= 1 & rela4 >= 1 & rela5 == 0 & rela6 >= 1 ~ 24,
-        rela1 == 1 & rela2 == 0 & rela3 >= 1 & rela4 == 0 & rela5 >= 1 & rela6 >= 1 ~ 25,
-        rela1 == 1 & rela2 == 0 & rela3 == 0 & rela4 >= 1 & rela5 >= 1 & rela6 >= 1 ~ 26,
-        rela1 == 1 & rela2 == 0 & rela3 >= 1 & rela4 >= 1 & rela5 >= 1 & rela6 >= 1 ~ 27,
-        rela1 == 1 & rela2 >= 1 & rela3 == 0 & rela4 >= 1 & rela5 >= 1 & rela6 >= 1 ~ 28,
-        rela1 == 1 & rela2 >= 1 & rela3 >= 1 & rela4 == 0 & rela5 >= 1 & rela6 >= 1 ~ 29,
-        rela1 == 1 & rela2 >= 1 & rela3 >= 1 & rela4 >= 1 & rela5 == 0 & rela6 >= 1 ~ 30,
-        rela1 == 1 & rela2 >= 1 & rela3 >= 1 & rela4 >= 1 & rela5 >= 1 & rela6 == 0 ~ 31,
-        rela1 == 1 & rela2 >= 1 & rela3 >= 1 & rela4 >= 1 & rela5 >= 1 & rela6 >= 1 ~ 32,
-        TRUE ~ 99
-      ),
-      familyt = dplyr::case_when(
-        family == 1 ~ 1,
-        family == 6 ~ 2,
-        family == 2 ~ 3,
-        family == 7 ~ 4,
-        family == 3 ~ 5,
-        family %in% c(4, 5, 8, 9, 11, 12, 14, 17, 18, 20, 23, 31) ~ 6,
-        family %in% c(10, 13, 15, 16, 19, 21, 22, 24, 25, 26, 27, 28, 29, 30, 32) ~ 7
-      ),
-      familyt_lab = factor(
-        familyt,
-        levels = 1:7,
-        labels = c(
-          "Unipersonal", "Corresidentes", "Parejas sin hijos",
-          "Parejas con hijos", "Jefa/e con hijos",
-          "Hogares extensos", "Compuestos"
-        )
-      ),
-      tipo_hog = dplyr::case_when(
-        familyt == 1 ~ 1,
-        familyt == 2 ~ 2,
-        familyt %in% c(3, 4, 5) ~ 3,
-        familyt == 6 ~ 6,
-        familyt == 7 ~ 7
-      ),
-      tipo_hog_lab = factor(
-        tipo_hog,
-        levels = c(1, 2, 3, 6, 7),
-        labels = c("Unipersonal", "Corresidentes", "Nuclear", "Hogares extensos", "Compuestos")
-      ),
-      tipo_hog2 = dplyr::recode(tipo_hog, `1` = 1, `2` = 1, `3` = 3, `6` = 6, `7` = 6),
-      tipo_hog2_lab = factor(
-        tipo_hog2,
-        levels = c(1, 3, 6),
-        labels = c("No familiar", "Nuclear", "Extensos")
-      )
-    ) %>%
-    dplyr::group_by(dplyr::across(dplyr::all_of(claves_hogar))) %>%
-    dplyr::mutate(
+      jefe_hombre = sum(relative == 1 & sexo == 1, na.rm = TRUE),
       tam_hog = sum(relative != 7, na.rm = TRUE),
       men = sum(edad < 15 & relative != 7, na.rm = TRUE),
       may = sum(edad >= 65 & relative != 7, na.rm = TRUE),
       nondep = sum(edad >= 15 & edad < 65 & relative != 7, na.rm = TRUE),
-      dep = men + may,
-      t_dep1 = dplyr::if_else(nondep > 0, men / nondep, tam_hog),
-      t_dep2 = dplyr::if_else(nondep > 0, may / nondep, tam_hog),
-      t_dep3 = dplyr::if_else(nondep > 0, dep / nondep, tam_hog),
       h_00_05 = sum(i_00_05 == 1 & relative != 7, na.rm = TRUE),
       h_06_12 = sum(i_06_12 == 1 & relative != 7, na.rm = TRUE),
       h_13_17 = sum(i_13_17 == 1 & relative != 7, na.rm = TRUE),
@@ -174,9 +103,90 @@ procesar_vars_hogar <- function(data, anio, trimestre) {
       d_joven2 = as.integer(any(i_joven2 == 1 & relative != 7, na.rm = TRUE)),
       d_adm = as.integer(any(adm == 1 & relative != 7, na.rm = TRUE)),
       p_lab = sum(clase2 == 1 & relative != 7, na.rm = TRUE),
+      .groups = "drop"
+    )
+
+  archivo_tipologia <- system.file(
+    "extdata/clasificacion_tipologia_hogar.csv",
+    package = "renoe"
+  )
+  if (!nzchar(archivo_tipologia)) {
+    archivo_tipologia <- file.path(
+      "package", "renoe", "inst", "extdata",
+      "clasificacion_tipologia_hogar.csv"
+    )
+  }
+  tabla_tipologia <- readr::read_csv(
+    archivo_tipologia,
+    show_col_types = FALSE
+  ) %>%
+    dplyr::select(
+      tiene_conyuge, tiene_hijos, tiene_ascendientes,
+      tiene_otros_parientes, tiene_no_parientes,
+      family, familyt, tipo_hog, tipo_hog2,
+      tipologia_hogar_capa, tipologia_hogar_regla_id
+    )
+
+  claves_tipologia <- c(
+    "tiene_conyuge", "tiene_hijos", "tiene_ascendientes",
+    "tiene_otros_parientes", "tiene_no_parientes"
+  )
+  if (nrow(tabla_tipologia) != 32L ||
+      anyDuplicated(tabla_tipologia[claves_tipologia])) {
+    stop("La tabla canonica de tipologia del hogar no contiene 32 llaves unicas.")
+  }
+
+  agregados_hogar <- agregados_hogar %>%
+    dplyr::mutate(
+      tiene_conyuge = as.integer(rela2 >= 1),
+      tiene_hijos = as.integer(rela3 >= 1),
+      tiene_ascendientes = as.integer(rela4 >= 1),
+      tiene_otros_parientes = as.integer(rela5 >= 1),
+      tiene_no_parientes = as.integer(rela6 >= 1)
+    ) %>%
+    dplyr::left_join(tabla_tipologia, by = claves_tipologia) %>%
+    dplyr::mutate(
+      family = dplyr::if_else(rela1 == 1, family, 99L),
+      familyt = dplyr::if_else(rela1 == 1, familyt, NA_integer_),
+      tipo_hog = dplyr::if_else(rela1 == 1, tipo_hog, NA_integer_),
+      tipo_hog2 = dplyr::if_else(rela1 == 1, tipo_hog2, NA_integer_),
+      tipologia_hogar_capa = dplyr::if_else(
+        rela1 == 1, tipologia_hogar_capa, NA_character_
+      ),
+      tipologia_hogar_regla_id = dplyr::if_else(
+        rela1 == 1, tipologia_hogar_regla_id, NA_character_
+      )
+    ) %>%
+    dplyr::select(-dplyr::all_of(claves_tipologia))
+
+  data <- data %>%
+    dplyr::left_join(agregados_hogar, by = claves_hogar) %>%
+    dplyr::mutate(
+      familyt_lab = factor(
+        familyt,
+        levels = 1:7,
+        labels = c(
+          "Unipersonal", "Corresidentes", "Parejas sin hijos",
+          "Parejas con hijos", "Jefa/e con hijos",
+          "Hogares extensos", "Compuestos"
+        )
+      ),
+      tipo_hog_lab = factor(
+        tipo_hog,
+        levels = c(1, 2, 3, 6, 7),
+        labels = c("Unipersonal", "Corresidentes", "Nuclear", "Hogares extensos", "Compuestos")
+      ),
+      tipo_hog2_lab = factor(
+        tipo_hog2,
+        levels = c(1, 3, 6),
+        labels = c("No familiar", "Nuclear", "Extensos")
+      ),
+      dep = men + may,
+      t_dep1 = dplyr::if_else(nondep > 0, men / nondep, tam_hog),
+      t_dep2 = dplyr::if_else(nondep > 0, may / nondep, tam_hog),
+      t_dep3 = dplyr::if_else(nondep > 0, dep / nondep, tam_hog),
       p_lab_ratio = dplyr::if_else(tam_hog > 0, p_lab / tam_hog, NA_real_)
     ) %>%
-    dplyr::ungroup() %>%
     sjlabelled::var_labels(
       relative      = "Clasificaci\u00F3n del parentesco respecto a la jefatura del hogar",
       rela1         = "N\u00FAmero de jefas o jefes en el hogar",
@@ -188,6 +198,8 @@ procesar_vars_hogar <- function(data, anio, trimestre) {
       family        = "Tipolog\u00EDa detallada del hogar",
       familyt       = "Tipolog\u00EDa resumida del hogar",
       familyt_lab   = "Tipolog\u00EDa resumida del hogar",
+      tipologia_hogar_capa = "Capa que asigna la tipolog\u00EDa del hogar",
+      tipologia_hogar_regla_id = "Regla que asigna la tipolog\u00EDa del hogar",
       tipo_hog      = "Tipolog\u00EDa sint\u00E9tica del hogar",
       tipo_hog_lab  = "Tipolog\u00EDa sint\u00E9tica del hogar",
       tipo_hog2     = "Tipolog\u00EDa agregada del hogar",

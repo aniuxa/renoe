@@ -14,5 +14,5 @@ drop_tri(data)
 Un data.frame con los nombres de variables modificados.
 }
 \description{
-Esta función renombra las variables eliminando el sufijo '_tri' y el prefijo cve si existe. Para compatibilidad de la serie
+Esta funcion renombra las variables eliminando el sufijo '_tri' y el prefijo cve si existe. Para compatibilidad de la serie
 }

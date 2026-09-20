@@ -10,42 +10,50 @@ clasificar_susceptibilidad_teletrabajo(
   variable_anio = "anio",
   variable_trim = "trim",
   nombre_salida = "susceptible_teletrabajo",
-  sobrescribir = FALSE
+  sobrescribir = FALSE,
+  base_sinco = c("auto", "canonica_2011", "observada")
 )
 }
 \arguments{
-\item{data}{Data frame con el código SINCO, año y trimestre.}
+\item{data}{Data frame con el codigo SINCO, ano y trimestre.}
 
-\item{variable_sinco}{Nombre de la variable SINCO a cuatro dígitos.}
+\item{variable_sinco}{Nombre de la variable SINCO a cuatro digitos.}
 
-\item{variable_anio}{Nombre de la variable de año.}
+\item{variable_anio}{Nombre de la variable de ano.}
 
 \item{variable_trim}{Nombre de la variable de trimestre.}
 
 \item{nombre_salida}{Nombre del indicador binario creado.}
 
 \item{sobrescribir}{Si es \code{TRUE}, permite reemplazar variables existentes.}
+
+\item{base_sinco}{Base del codigo recibido. \code{"auto"} usa SINCO 2011 cuando
+detecta metadatos de \code{\link[=armonizar_sinco]{armonizar_sinco()}}; \code{"canonica_2011"} fuerza la
+clasificacion comun y \code{"observada"} conserva el comportamiento historico.}
 }
 \value{
 El mismo data frame con \code{nombre_salida} y
 \code{version_sinco_teletrabajo}. El indicador vale 1 para ocupaciones
-susceptibles, 0 para códigos observados no susceptibles y \code{NA} cuando
-falta el código o el periodo queda fuera de la ventana comparable.
+susceptibles, 0 para codigos observados no susceptibles y \code{NA} cuando
+falta el codigo o el periodo queda fuera de la ventana comparable.
 }
 \description{
 Identifica ocupaciones cuyo contenido permite potencialmente realizar
-teletrabajo. No mide si la persona teletrabajó efectivamente. La función usa
-la clasificación de Gabriela Cervantes para SINCO 2011 entre 2012-III y
-2021-II, y su actualización a SINCO 2019 desde 2021-III.
+teletrabajo. No mide si la persona teletrabajo efectivamente. La funcion usa
+la clasificacion de Gabriela Cervantes para SINCO 2011 entre 2012-III y
+2021-II, y su actualizacion a SINCO 2019 desde 2021-III.
 }
 \details{
-La actualización conserva la equivalencia sustantiva de Nutriólogos:
-SINCO 2011 \code{2423} pasa a SINCO 2019 \code{2433}. El código \code{2423} de SINCO 2019
-corresponde a Ginecólogos y obstetras y no se clasifica como susceptible.
+Si recibe metadatos de \code{\link[=armonizar_sinco]{armonizar_sinco()}}, aplica la clasificacion SINCO
+2011 a toda la serie comparable. El modo observado permanece disponible
+para reproducir resultados historicos. La actualizacion observada conserva
+la equivalencia sustantiva de Nutriologos:
+SINCO 2011 \code{2423} pasa a SINCO 2019 \code{2433}. El codigo \code{2423} de SINCO 2019
+corresponde a Ginecologos y obstetras y no se clasifica como susceptible.
 
 Periodo comparable: desde 2012-III. El corte entre clasificadores se fija en
-2021-III. Para estudiar población ocupada, filtre \code{clase2 == 1} antes o
-después de ejecutar la función.
+2021-III. Para estudiar poblacion ocupada, filtre \code{clase2 == 1} antes o
+despues de ejecutar la funcion.
 }
 \examples{
 datos <- data.frame(

@@ -1,6 +1,6 @@
-# Lista completa de variables de identificación ENOE/ENOEN
+# Lista completa de variables de identificacion ENOE/ENOEN
 
-Lista completa de variables de identificación ENOE/ENOEN
+Lista completa de variables de identificacion ENOE/ENOEN
 
 ## Usage
 

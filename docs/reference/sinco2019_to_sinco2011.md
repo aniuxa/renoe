@@ -3,8 +3,8 @@
 Aplica la tabla de equivalencia oficial incluida en el anexo del [SINCO
 2019](https://www.inegi.org.mx/app/biblioteca/ficha.html?upc=702825198411).
 La tabla conserva todas las relaciones uno-a-varios. Por defecto, la
-función no elige arbitrariamente un destino cuando el código SINCO 2019
-tiene más de una equivalencia en SINCO 2011.
+funcion no elige arbitrariamente un destino cuando el codigo SINCO 2019
+tiene mas de una equivalencia en SINCO 2011.
 
 ## Usage
 
@@ -22,11 +22,11 @@ sinco2019_to_sinco2011(
 
 - data:
 
-  Data frame que contiene el código SINCO 2019.
+  Data frame que contiene el codigo SINCO 2019.
 
 - variable_sinco:
 
-  Nombre de la variable con el código SINCO 2019.
+  Nombre de la variable con el codigo SINCO 2019.
 
 - correspondencia:
 
@@ -38,12 +38,12 @@ sinco2019_to_sinco2011(
 
   Tratamiento de correspondencias uno-a-varios: `"na"` (recomendado) las
   conserva como ambiguas y deja `sinco2011` en `NA`; `"primero"`
-  selecciona el primer destino únicamente para reproducir un análisis
-  que documente expresamente esa decisión.
+  selecciona el primer destino unicamente para reproducir un analisis
+  que documente expresamente esa decision.
 
 - sobrescribir:
 
-  Si es `FALSE`, detiene la ejecución cuando alguna variable de salida
+  Si es `FALSE`, detiene la ejecucion cuando alguna variable de salida
   ya existe.
 
 ## Value
@@ -53,15 +53,16 @@ El mismo data frame con `sinco2019_original`, `sinco2011`,
 
 ## References
 
-INEGI (2020). *Sistema Nacional de Clasificación de Ocupaciones 2019*.
+INEGI (2020). *Sistema Nacional de Clasificacion de Ocupaciones 2019*.
 Anexo: Tabla de equivalencia SINCO 2011-2019.
 
 ## See also
 
 Other procesamiento_enoe:
-[`armoniza_sinco()`](https://aniuxa.github.io/renoe/reference/armoniza_sinco.md),
+[`.armonizar_sinco_enoe_core()`](https://aniuxa.github.io/renoe/reference/dot-armonizar_sinco_enoe_core.md),
 [`armonizar_carreras_enoe()`](https://aniuxa.github.io/renoe/reference/armonizar_carreras_enoe.md),
 [`calcular_desajuste_estadistico()`](https://aniuxa.github.io/renoe/reference/calcular_desajuste_estadistico.md),
+[`calcular_desajuste_horizontal()`](https://aniuxa.github.io/renoe/reference/calcular_desajuste_horizontal.md),
 [`crear_folios()`](https://aniuxa.github.io/renoe/reference/crear_folios.md),
 [`imputa_ingocup()`](https://aniuxa.github.io/renoe/reference/imputa_ingocup.md),
 [`ipc_enoe()`](https://aniuxa.github.io/renoe/reference/ipc_enoe.md),
@@ -74,7 +75,8 @@ Other procesamiento_enoe:
 [`procesar_variables_enoe()`](https://aniuxa.github.io/renoe/reference/procesar_variables_enoe.md),
 [`procesar_vars_hogar()`](https://aniuxa.github.io/renoe/reference/procesar_vars_hogar.md),
 [`procesar_vars_laborales()`](https://aniuxa.github.io/renoe/reference/procesar_vars_laborales.md),
-[`procesar_vars_sociodemo()`](https://aniuxa.github.io/renoe/reference/procesar_vars_sociodemo.md)
+[`procesar_vars_sociodemo()`](https://aniuxa.github.io/renoe/reference/procesar_vars_sociodemo.md),
+[`reglas_enoe()`](https://aniuxa.github.io/renoe/reference/reglas_enoe.md)
 
 ## Examples
 
@@ -86,9 +88,9 @@ sinco2019_to_sinco2011(datos, variable_sinco = "ocupacion")
 #> 2      2423               2423      2412                    1
 #> 3      2429               2429        NA                    2
 #> 4        NA                 NA        NA                   NA
-#>                                    sinco2011_calidad
-#> 1                       Equivalencia oficial directa
-#> 2                       Equivalencia oficial directa
-#> 3 Equivalencia oficial m<U+00FA>ltiple: sin resolver
-#> 4                                SINCO 2019 faltante
+#>                             sinco2011_calidad
+#> 1                Equivalencia oficial directa
+#> 2                Equivalencia oficial directa
+#> 3 Equivalencia oficial múltiple: sin resolver
+#> 4                         SINCO 2019 faltante
 ```

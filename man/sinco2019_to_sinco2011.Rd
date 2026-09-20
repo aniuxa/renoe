@@ -14,9 +14,9 @@ sinco2019_to_sinco2011(
 )
 }
 \arguments{
-\item{data}{Data frame que contiene el código SINCO 2019.}
+\item{data}{Data frame que contiene el codigo SINCO 2019.}
 
-\item{variable_sinco}{Nombre de la variable con el código SINCO 2019.}
+\item{variable_sinco}{Nombre de la variable con el codigo SINCO 2019.}
 
 \item{correspondencia}{Tabla opcional en formato largo con las columnas
 \code{sinco2019} y \code{sinco2011}. Si se omite, se utiliza la tabla oficial
@@ -24,10 +24,10 @@ distribuida con el paquete.}
 
 \item{resolver_multiples}{Tratamiento de correspondencias uno-a-varios:
 \code{"na"} (recomendado) las conserva como ambiguas y deja \code{sinco2011} en
-\code{NA}; \code{"primero"} selecciona el primer destino únicamente para reproducir
-un análisis que documente expresamente esa decisión.}
+\code{NA}; \code{"primero"} selecciona el primer destino unicamente para reproducir
+un analisis que documente expresamente esa decision.}
 
-\item{sobrescribir}{Si es \code{FALSE}, detiene la ejecución cuando alguna
+\item{sobrescribir}{Si es \code{FALSE}, detiene la ejecucion cuando alguna
 variable de salida ya existe.}
 }
 \value{
@@ -38,22 +38,23 @@ El mismo data frame con \code{sinco2019_original}, \code{sinco2011},
 Aplica la tabla de equivalencia oficial incluida en el anexo del
 \href{https://www.inegi.org.mx/app/biblioteca/ficha.html?upc=702825198411}{SINCO 2019}.
 La tabla conserva todas las relaciones uno-a-varios. Por defecto, la
-función no elige arbitrariamente un destino cuando el código SINCO 2019
-tiene más de una equivalencia en SINCO 2011.
+funcion no elige arbitrariamente un destino cuando el codigo SINCO 2019
+tiene mas de una equivalencia en SINCO 2011.
 }
 \examples{
 datos <- data.frame(ocupacion = c(2433, 2423, 2429, NA))
 sinco2019_to_sinco2011(datos, variable_sinco = "ocupacion")
 }
 \references{
-INEGI (2020). \emph{Sistema Nacional de Clasificación de Ocupaciones 2019}.
+INEGI (2020). \emph{Sistema Nacional de Clasificacion de Ocupaciones 2019}.
 Anexo: Tabla de equivalencia SINCO 2011-2019.
 }
 \seealso{
 Other procesamiento_enoe:
-\code{\link[=armoniza_sinco]{armoniza_sinco()}},
+\code{\link[=.armonizar_sinco_enoe_core]{.armonizar_sinco_enoe_core()}},
 \code{\link[=armonizar_carreras_enoe]{armonizar_carreras_enoe()}},
 \code{\link[=calcular_desajuste_estadistico]{calcular_desajuste_estadistico()}},
+\code{\link[=calcular_desajuste_horizontal]{calcular_desajuste_horizontal()}},
 \code{\link[=crear_folios]{crear_folios()}},
 \code{\link[=imputa_ingocup]{imputa_ingocup()}},
 \code{\link[=ipc_enoe]{ipc_enoe()}},
@@ -66,6 +67,7 @@ Other procesamiento_enoe:
 \code{\link[=procesar_variables_enoe]{procesar_variables_enoe()}},
 \code{\link[=procesar_vars_hogar]{procesar_vars_hogar()}},
 \code{\link[=procesar_vars_laborales]{procesar_vars_laborales()}},
-\code{\link[=procesar_vars_sociodemo]{procesar_vars_sociodemo()}}
+\code{\link[=procesar_vars_sociodemo]{procesar_vars_sociodemo()}},
+\code{\link[=reglas_enoe]{reglas_enoe()}}
 }
 \concept{procesamiento_enoe}

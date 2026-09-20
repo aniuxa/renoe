@@ -5,26 +5,26 @@
 - `correspondencia_arm8_isco08_montt.csv`: reproducción estructurada de la
   tabla normativa internacional del Anexo 2 de Montt (2015). Sus códigos de
   ocupación pertenecen a ISCO-08 y no deben aplicarse directamente a SINCO.
-- `correspondencia_campo_arm8_sinco3d.csv`: adaptación mexicana preliminar,
+- `correspondencia_campo_arm8_sinco3d.csv`: adaptación mexicana aceptada,
   normalizada a una fila por combinación `campo_arm8`–`sinco3d`.
 
 ## Estado de la matriz mexicana
 
-La versión 0.1.0 es una propuesta para revisión. Distingue relaciones directas
-y transversales, pero ninguna fila debe considerarse validada mientras
-`estado_revision` conserve el valor `propuesta`. La ausencia de una combinación
-no equivale todavía a desajuste: las ocupaciones no relacionadas se incorporarán
-explícitamente después de la revisión sustantiva.
+La versión 1.0.0 fue aceptada como regla metodológica interna del proyecto el
+14 de septiembre de 2026. Distingue relaciones directas y transversales. En el
+universo elegible, desde 2014-T3 y con ambos componentes observados, la ausencia
+de una combinación aceptada equivale a desajuste horizontal. Fuera de esas
+condiciones el indicador permanece ausente, no se asigna cero.
 
 La matriz se construyó mediante la traducción conceptual de la tabla ISCO-08 de
 Montt (2015) a las descripciones y criterios de especialización del SINCO 2011.
-No existe identidad numérica entre los códigos ISCO-08 y SINCO.
+No existe identidad numérica entre los códigos ISCO-08 y SINCO. Su aceptación no la convierte en una equivalencia oficial de INEGI.
 
-## Citación provisional
+## Citación
 
-Escoto, Ana, y equipo del proyecto IN305925 (2026). *Correspondencia propuesta
+Escoto, Ana, y equipo del proyecto IN305925 (2026). *Correspondencia aceptada
 entre campos de formación armonizados de la ENOE y ocupaciones SINCO a tres
-dígitos*, versión 0.1.0 [archivo de datos]. `renoe`.
+dígitos*, versión 1.0.0 [archivo de datos]. `renoe`.
 
 La autoría deberá completarse con los nombres y apellidos de quienes participen
 en la validación final.

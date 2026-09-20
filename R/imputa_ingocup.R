@@ -71,6 +71,11 @@ imputa_ingocup <- function(data,
   requireNamespace("ggplot2")
   requireNamespace("sjlabelled")
 
+  if (length(seed) != 1L || !is.numeric(seed) || is.na(seed) ||
+      !is.finite(seed) || seed != floor(seed)) {
+    stop("`seed` debe ser un entero finito.", call. = FALSE)
+  }
+
   if (!"folio3" %in% names(data)) {
     message("Variable 'folio3' no encontrada. Se crea con `crear_folios()`...")
     data <- crear_folios(data)
@@ -108,7 +113,8 @@ imputa_ingocup <- function(data,
     dplyr::filter(filtro_imputar) %>%
     dplyr::select(log_ingocup_imp, sex, ent,
                   dplyr::all_of(donantes_disponibles),
-                  dplyr::all_of(id_vars), .renoe_fila_imputacion)
+                  dplyr::all_of(id_vars), .renoe_fila_imputacion) %>%
+    dplyr::arrange(dplyr::across(dplyr::all_of(id_vars)))
 
   periodos <- data %>%
     dplyr::distinct(anio, trim) %>%

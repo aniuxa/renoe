@@ -1,8 +1,8 @@
-# Procesar contribución económica y de trabajo no remunerado al hogar
+# Procesar contribucion economica y de trabajo no remunerado al hogar
 
 A partir de variables laborales previamente construidas, genera el
 ingreso ocupacional individual deflactado, agregados del hogar,
-indicadores per cápita y quintiles ponderados de ingreso y trabajo no
+indicadores per capita y quintiles ponderados de ingreso y trabajo no
 remunerado.
 
 ## Usage
@@ -16,21 +16,22 @@ procesar_contribucion_hogar(data)
 - data:
 
   Un data frame que contenga, al menos, las variables `ingocup_imp`,
-  `ipc`, `hrsocup`, `t_total_hrs0`, `t_total_hrs`, `folio2`, `tam_hog` y
-  `fac`.
+  `ipc`, `hrsocup`, `t_trabajo_hogar_armonizado`, `t_total_instrumento`,
+  `folio2`, `tam_hog` y `fac`.
 
 ## Value
 
-Un data frame con variables derivadas sobre contribución económica y
+Un data frame con variables derivadas sobre contribucion economica y
 trabajo no remunerado en el hogar, junto con quintiles ponderados
 etiquetados.
 
 ## See also
 
 Other procesamiento_enoe:
-[`armoniza_sinco()`](https://aniuxa.github.io/renoe/reference/armoniza_sinco.md),
+[`.armonizar_sinco_enoe_core()`](https://aniuxa.github.io/renoe/reference/dot-armonizar_sinco_enoe_core.md),
 [`armonizar_carreras_enoe()`](https://aniuxa.github.io/renoe/reference/armonizar_carreras_enoe.md),
 [`calcular_desajuste_estadistico()`](https://aniuxa.github.io/renoe/reference/calcular_desajuste_estadistico.md),
+[`calcular_desajuste_horizontal()`](https://aniuxa.github.io/renoe/reference/calcular_desajuste_horizontal.md),
 [`crear_folios()`](https://aniuxa.github.io/renoe/reference/crear_folios.md),
 [`imputa_ingocup()`](https://aniuxa.github.io/renoe/reference/imputa_ingocup.md),
 [`ipc_enoe()`](https://aniuxa.github.io/renoe/reference/ipc_enoe.md),
@@ -43,6 +44,7 @@ Other procesamiento_enoe:
 [`procesar_vars_hogar()`](https://aniuxa.github.io/renoe/reference/procesar_vars_hogar.md),
 [`procesar_vars_laborales()`](https://aniuxa.github.io/renoe/reference/procesar_vars_laborales.md),
 [`procesar_vars_sociodemo()`](https://aniuxa.github.io/renoe/reference/procesar_vars_sociodemo.md),
+[`reglas_enoe()`](https://aniuxa.github.io/renoe/reference/reglas_enoe.md),
 [`sinco2019_to_sinco2011()`](https://aniuxa.github.io/renoe/reference/sinco2019_to_sinco2011.md)
 
 ## Examples

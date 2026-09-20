@@ -10,9 +10,9 @@
 #' auxiliares permiten auditar la cobertura y distinguir asignaciones directas
 #' de recuperaciones realizadas con el gran grupo SINCO.
 #'
-#' @param data Un data frame con `sinco4d`, `pos_ocu` y `emple7c`; para
-#'   observaciones anteriores a 2012-III tambien requiere `p3coe`, `anio` y
-#'   `trim`.
+#' @param data Un data frame con `sinco4d_base2011` o `sinco4d`,
+#'   `pos_ocu` y `emple7c`. Cuando existe `sinco4d_base2011`, esta
+#'   variable canonica tiene prioridad y no se aplica un puente alternativo.
 #' @param correspondencia Tabla opcional con columnas `sinco4d` e `isco88`.
 #'   Si se omite, se usa la correspondencia distribuida con el paquete.
 #' @param recuperar_sin_isco Si es `TRUE`, clasifica casos sin equivalencia
@@ -52,7 +52,15 @@ procesar_clases_damian <- function(
     recuperar_sin_isco = TRUE,
     usar_puente_cmo = TRUE) {
 
-  faltantes_data <- setdiff(c("sinco4d", "pos_ocu", "emple7c"), names(data))
+  variable_sinco_damian <- if ("sinco4d_base2011" %in% names(data)) {
+    "sinco4d_base2011"
+  } else {
+    "sinco4d"
+  }
+  faltantes_data <- setdiff(
+    c(variable_sinco_damian, "pos_ocu", "emple7c"),
+    names(data)
+  )
   if (length(faltantes_data) > 0L) {
     stop(
       "Faltan variables requeridas: ",
@@ -101,7 +109,10 @@ procesar_clases_damian <- function(
     7501L, 7601L, 8101L, 8201L, 8301L, 9601L
   )
 
-  sinco_damian <- suppressWarnings(as.integer(as.character(data$sinco4d)))
+  sinco_damian <- suppressWarnings(as.integer(
+    as.character(data[[variable_sinco_damian]])
+  ))
+  sinco_damian[!is.na(sinco_damian) & sinco_damian == 9999L] <- NA_integer_
   calidad_cmo <- rep(NA_character_, nrow(data))
   n_destinos_cmo <- rep(NA_integer_, nrow(data))
 
@@ -115,19 +126,31 @@ procesar_clases_damian <- function(
     periodo_cmo <- data$anio < 2012L |
       (data$anio == 2012L & trimestre_n <= 2L)
 
-    if (any(periodo_cmo, na.rm = TRUE)) {
+    remanente_cmo <- which(periodo_cmo & is.na(sinco_damian))
+    if (length(remanente_cmo)) {
       puente <- renoe::cmo_to_sinco11_care(
-        data.frame(p3coe = data$p3coe),
+        data.frame(p3coe = data$p3coe[remanente_cmo]),
         variable_cmo = "p3coe",
         sobrescribir = TRUE
       )
-      sinco_damian[periodo_cmo] <- puente$sinco11[periodo_cmo]
-      calidad_cmo[periodo_cmo] <- puente$sinco11_calidad[periodo_cmo]
-      n_destinos_cmo[periodo_cmo] <- puente$sinco11_n_destinos[periodo_cmo]
+      destino <- suppressWarnings(as.integer(puente$sinco11))
+      destino[is.na(destino) | destino < 1000L |
+                destino >= 9999L] <- NA_integer_
+      sinco_damian[remanente_cmo] <- destino
+      calidad_cmo[remanente_cmo] <- puente$sinco11_calidad
+      n_destinos_cmo[remanente_cmo] <- puente$sinco11_n_destinos
     }
   }
 
   data$sinco4d_damian <- sinco_damian
+  data$fuente_sinco_damian <- if (variable_sinco_damian == "sinco4d_base2011") {
+    rep("SINCO 2011 canonico de armonizar_sinco", nrow(data))
+  } else {
+    rep("sinco4d proporcionado al modulo", nrow(data))
+  }
+  rescate_cmo <- !is.na(calidad_cmo) & !is.na(sinco_damian)
+  data$fuente_sinco_damian[rescate_cmo] <-
+    "Puente analitico CMO de Damian en remanente; no equivalencia oficial"
   data$calidad_cmo_damian <- calidad_cmo
   data$n_destinos_cmo_damian <- n_destinos_cmo
 
@@ -300,22 +323,32 @@ procesar_clases_damian <- function(
   asignar(pos == 4L & dplyr::between(isco, 7111L, 8340L) &
             (tam < 4L | tam == 9L), 9L)
 
-  asignar(pos == 4L & dplyr::between(isco, 9111L, 9333L) & tam == 4L, 10L)
+  # ISCO 9211 corresponde a trabajo agricola y queda reservado para las
+  # reglas EGP12/EGP13 de abajo. La exclusion explicita evita que la
+  # excepcion dependa silenciosamente del orden secuencial de `asignar()`.
+  elementales_no_agricolas <- dplyr::between(isco, 9111L, 9333L) &
+    isco != 9211L
+
+  asignar(pos == 4L & elementales_no_agricolas & tam == 4L, 10L)
   asignar(pos == 4L & isco %in% c(5123L, 5169L, 9151L) & tam >= 4L, 10L)
 
-  asignar(pos == 4L & dplyr::between(isco, 9111L, 9333L) &
+  asignar(pos == 4L & elementales_no_agricolas &
             (tam < 4L | tam == 9L), 11L)
   asignar(pos == 4L & isco %in% c(5123L, 5169L, 9151L) & tam < 4L, 11L)
-  asignar(pos == 3L & dplyr::between(isco, 9111L, 9333L) & tam < 4L, 11L)
+  asignar(pos == 3L & elementales_no_agricolas & tam < 4L, 11L)
   asignar(isco == 9113L & tam < 4L, 11L)
   asignar(sinco == 1006L & pos == 3L, 11L)
 
+  # Predicados agricolas explicitos; 9211 ya fue excluido de EGP10/11.
+  agricola_9211_cuenta_propia <- isco == 9211L & pos == 3L & tam < 4L
+  agricola_9211_subordinada <- isco == 9211L & pos == 4L
+
   asignar(pos == 3L & dplyr::between(isco, 6111L, 6299L), 12L)
   asignar(pos == 2L & dplyr::between(isco, 6111L, 6299L) & tam < 4L, 12L)
-  asignar(pos == 3L & isco == 9211L & tam < 4L, 12L)
+  asignar(agricola_9211_cuenta_propia, 12L)
 
   asignar(pos == 4L & dplyr::between(isco, 6111L, 6299L), 13L)
-  asignar(pos == 4L & isco == 9211L, 13L)
+  asignar(agricola_9211_subordinada, 13L)
 
   # Resoluciones finales documentadas por Damian para casos residuales.
   asignar(sinco == 9999L, 4L)
@@ -398,6 +431,7 @@ procesar_clases_damian <- function(
     sjlabelled::var_labels(
       isco88_damian = "Codigo ISCO-88 derivado de SINCO 2011 (correspondencia de Gerardo Dami\u00E1n Hern\u00E1ndez)",
       sinco4d_damian = "Codigo SINCO 2011 especifico para el modulo de Gerardo Dami\u00E1n Hern\u00E1ndez",
+      fuente_sinco_damian = "Variable SINCO 2011 utilizada por el modulo de clase",
       calidad_cmo_damian = "Calidad del puente CMO-SINCO usado por el modulo de Gerardo Dami\u00E1n Hern\u00E1ndez",
       n_destinos_cmo_damian = "Numero de destinos SINCO posibles desde CMO en el modulo de Gerardo Dami\u00E1n Hern\u00E1ndez",
       grupo_ocu9_damian = "Gran grupo ocupacional SINCO en nueve categorias",

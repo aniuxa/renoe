@@ -97,19 +97,3 @@ cmo_to_sinco11_care <- function(
       sinco11_calidad = "Calidad de la homologacion CMO a SINCO 2011"
     )
 }
-
-
-# Alias temporal ---------------------------------------------------------------
-
-#' @rdname cmo_to_sinco11_care
-#' @param ... Argumentos enviados a `cmo_to_sinco11_care()`.
-#' @export
-cmo_to_sinco11 <- function(...) {
-  warning(
-    "`cmo_to_sinco11()` cambio de nombre a `cmo_to_sinco11_care()` porque ",
-    "es un puente analitico para el estudio de cuidados, no una conversion ",
-    "general y exacta de clasificadores.",
-    call. = FALSE
-  )
-  cmo_to_sinco11_care(...)
-}

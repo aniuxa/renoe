@@ -19,74 +19,75 @@ imputa_ingocup(
 }
 \arguments{
 \item{data}{Un data frame con personas ocupadas (\code{clase2 == 1}) y variables de ingreso (\code{ingocup}),
-variables donantes y metadatos de identificación.}
+variables donantes y metadatos de identificacion.}
 
-\item{vars_donantes}{Vector con nombres de variables que se utilizarán como predictores para la imputación.}
+\item{vars_donantes}{Vector con nombres de variables que se utilizaran como predictores para la imputacion.}
 
 \item{id_vars}{Vector con nombres de variables identificadoras (por defecto: \code{folio3}, \code{trim}, \code{anio}).}
 
-\item{method}{Método de imputación utilizado por \code{mice} (por defecto: \code{"pmm"}).}
+\item{method}{Metodo de imputacion utilizado por \code{mice} (por defecto: \code{"pmm"}).}
 
 \item{seed}{Semilla aleatoria para reproducibilidad.}
 
-\item{plot}{Lógico. Si \code{TRUE}, se muestra un gráfico comparando la distribución del ingreso original vs imputado.}
+\item{plot}{Logico. Si \code{TRUE}, se muestra un grafico comparando la distribucion del ingreso original vs imputado.}
 
-\item{anio}{Año del trimestre, si \code{data} no contiene esta variable.}
+\item{anio}{Ano del trimestre, si \code{data} no contiene esta variable.}
 
-\item{trimestre}{Trimestre del año (1–4), si \code{data} no contiene esta variable.}
+\item{trimestre}{Trimestre del ano (1-4), si \code{data} no contiene esta variable.}
 }
 \value{
 Un data frame con las variables:
 \describe{
 \item{ingocup_imp}{Ingreso mensual imputado}
 \item{log_ingocup_imp}{Logaritmo del ingreso imputado}
-\item{imp_ingocup}{Indicador binario de si el ingreso fue imputado (1 = sí)}
+\item{imp_ingocup}{Indicador binario de si el ingreso fue imputado (1 = si)}
 }
 }
 \description{
-Esta función aplica imputación de ingresos mensuales (\code{ingocup}) para personas ocupadas en la ENOE
-utilizando modelos de imputación múltiple con el paquete \code{mice}. Se utiliza el logaritmo del ingreso
-como variable objetivo y se imputan los valores faltantes en función de variables donantes como edad,
-escolaridad, ocupación, horas trabajadas, entre otras.
+Esta funcion aplica imputacion de ingresos mensuales (\code{ingocup}) para personas ocupadas en la ENOE
+utilizando modelos de imputacion multiple con el paquete \code{mice}. Se utiliza el logaritmo del ingreso
+como variable objetivo y se imputan los valores faltantes en funcion de variables donantes como edad,
+escolaridad, ocupacion, horas trabajadas, entre otras.
 }
 \details{
-La imputación se realiza primero por bloques de sexo y entidad federativa. Los casos que no pueden
+La imputacion se realiza primero por bloques de sexo y entidad federativa. Los casos que no pueden
 imputarse dentro de esos bloques pasan a un modelo conjunto de respaldo, en el cual el sexo y la
 entidad se incorporan como covariables. Si no existen las variables \code{folio3}, \code{anio} o \code{trim}, se
-generan automáticamente con funciones auxiliares (\code{crear_folios()} y \code{procesar_vars_sociodemo()}).
+generan automaticamente con funciones auxiliares (\code{crear_folios()} y \code{procesar_vars_sociodemo()}).
 
-La imputación de ingresos se realiza únicamente para personas ocupadas (\code{clase2 == 1})
-con datos válidos de edad, y en caso de estar disponible, también de años de escolaridad (\code{anios_es}).
+La imputacion de ingresos se realiza unicamente para personas ocupadas (\code{clase2 == 1})
+con datos validos de edad, y en caso de estar disponible, tambien de anos de escolaridad (\code{anios_es}).
 
-La variable a imputar es el logaritmo natural del ingreso mensual (\code{log_ingocup_imp}), y la imputación
-se realiza utilizando el método especificado (por defecto \code{"pmm"}, predictive mean matching) a través del paquete \code{mice}.
+La variable a imputar es el logaritmo natural del ingreso mensual (\code{log_ingocup_imp}), y la imputacion
+se realiza utilizando el metodo especificado (por defecto \code{"pmm"}, predictive mean matching) a traves del paquete \code{mice}.
 
 Las imputaciones se hacen primero de forma separada por bloques definidos por el sexo (\code{sex}) y la
 entidad federativa (\code{ent}), para capturar mejor las heterogeneidades contextuales. Cuando un bloque
-no contiene donantes o variación suficiente, sus casos pendientes se imputan conjuntamente usando
-\code{sex}, \code{ent} y las demás variables donantes disponibles como predictores. Las variables identificadoras
+no contiene donantes o variacion suficiente, sus casos pendientes se imputan conjuntamente usando
+\code{sex}, \code{ent} y las demas variables donantes disponibles como predictores. Las variables identificadoras
 nunca se usan como predictores.
 
-Las variables utilizadas como predictoras ("donantes") incluyen, si están presentes:
+Las variables utilizadas como predictoras ("donantes") incluyen, si estan presentes:
 \itemize{
-\item \code{edad}: Edad en años.
-\item \code{anios_es}: Años aprobados de escolaridad.
+\item \code{edad}: Edad en anos.
+\item \code{anios_es}: Anos aprobados de escolaridad.
 \item \code{c_ocu11c}: 11 grandes grupos ocupacionales.
-\item \code{pos_ocu}: Posición en la ocupación.
+\item \code{pos_ocu}: Posicion en la ocupacion.
 \item \code{rama_est2}: Rama de actividad.
-\item \code{ing7c}: Indicador de percepción de ingresos.
+\item \code{ing7c}: Indicador de percepcion de ingresos.
 \item \code{ent}: Clave de entidad federativa.
 \item \code{hrsocup}: Horas trabajadas a la semana.
-\item \code{t_loc}: Tamaño de localidad.
+\item \code{t_loc}: Tamano de localidad.
 }
 
-Solo se consideran aquellas variables donantes que están disponibles en el conjunto de datos.
+Solo se consideran aquellas variables donantes que estan disponibles en el conjunto de datos.
 }
 \seealso{
 Other procesamiento_enoe:
-\code{\link[=armoniza_sinco]{armoniza_sinco()}},
+\code{\link[=.armonizar_sinco_enoe_core]{.armonizar_sinco_enoe_core()}},
 \code{\link[=armonizar_carreras_enoe]{armonizar_carreras_enoe()}},
 \code{\link[=calcular_desajuste_estadistico]{calcular_desajuste_estadistico()}},
+\code{\link[=calcular_desajuste_horizontal]{calcular_desajuste_horizontal()}},
 \code{\link[=crear_folios]{crear_folios()}},
 \code{\link[=ipc_enoe]{ipc_enoe()}},
 \code{\link[=procesar_clases_damian]{procesar_clases_damian()}},
@@ -99,6 +100,7 @@ Other procesamiento_enoe:
 \code{\link[=procesar_vars_hogar]{procesar_vars_hogar()}},
 \code{\link[=procesar_vars_laborales]{procesar_vars_laborales()}},
 \code{\link[=procesar_vars_sociodemo]{procesar_vars_sociodemo()}},
+\code{\link[=reglas_enoe]{reglas_enoe()}},
 \code{\link[=sinco2019_to_sinco2011]{sinco2019_to_sinco2011()}}
 }
 \concept{procesamiento_enoe}

@@ -2,14 +2,14 @@
 % Please edit documentation in R/ipc_enoe.R
 \name{ipc_enoe}
 \alias{ipc_enoe}
-\title{Añadir IPC al conjunto fusionado de ENOE}
+\title{Anadir IPC al conjunto fusionado de ENOE}
 \usage{
 ipc_enoe(datos_fusionados, anio, trimestre)
 }
 \arguments{
 \item{datos_fusionados}{Un data.frame ya fusionado con \code{fusion_enoe()}.}
 
-\item{anio}{Año del trimestre (numérico).}
+\item{anio}{Ano del trimestre (numerico).}
 
 \item{trimestre}{Trimestre (1 a 4).}
 }
@@ -17,14 +17,14 @@ ipc_enoe(datos_fusionados, anio, trimestre)
 El mismo \code{data.frame} con una nueva columna \code{ipc}.
 }
 \description{
-Esta función agrega una columna llamada \code{ipc} al objeto fusionado de la ENOE,
-correspondiente al promedio trimestral del Índice de Precios al Consumidor (IPC).
+Esta funcion agrega una columna llamada \code{ipc} al objeto fusionado de la ENOE,
+correspondiente al promedio trimestral del Indice de Precios al Consumidor (IPC).
 }
 \details{
 El archivo \code{ipc.rds} debe estar ubicado en \verb{inst/extdata/} y contener
-las columnas numéricas \code{anio}, \code{trim} e \code{ipc}, una fila por trimestre. La
-función se detiene si el recurso tiene claves duplicadas, valores inválidos o
-no contiene el periodo solicitado; así se evita propagar ingresos
+las columnas numericas \code{anio}, \code{trim} e \code{ipc}, una fila por trimestre. La
+funcion se detiene si el recurso tiene claves duplicadas, valores invalidos o
+no contiene el periodo solicitado; asi se evita propagar ingresos
 deflactados ausentes sin advertencia suficiente.
 }
 \examples{
@@ -35,9 +35,10 @@ datos <- ipc_enoe(datos, 2023, 1)
 }
 \seealso{
 Other procesamiento_enoe:
-\code{\link[=armoniza_sinco]{armoniza_sinco()}},
+\code{\link[=.armonizar_sinco_enoe_core]{.armonizar_sinco_enoe_core()}},
 \code{\link[=armonizar_carreras_enoe]{armonizar_carreras_enoe()}},
 \code{\link[=calcular_desajuste_estadistico]{calcular_desajuste_estadistico()}},
+\code{\link[=calcular_desajuste_horizontal]{calcular_desajuste_horizontal()}},
 \code{\link[=crear_folios]{crear_folios()}},
 \code{\link[=imputa_ingocup]{imputa_ingocup()}},
 \code{\link[=procesar_clases_damian]{procesar_clases_damian()}},
@@ -50,6 +51,7 @@ Other procesamiento_enoe:
 \code{\link[=procesar_vars_hogar]{procesar_vars_hogar()}},
 \code{\link[=procesar_vars_laborales]{procesar_vars_laborales()}},
 \code{\link[=procesar_vars_sociodemo]{procesar_vars_sociodemo()}},
+\code{\link[=reglas_enoe]{reglas_enoe()}},
 \code{\link[=sinco2019_to_sinco2011]{sinco2019_to_sinco2011()}}
 }
 \concept{procesamiento_enoe}

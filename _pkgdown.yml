@@ -57,7 +57,7 @@ reference:
     contents:
       - cmo_to_sinco
       - cmo_to_sinco1d
-      - armoniza_sinco
+      - armonizar_sinco
       - starts_with(".")
 
 articles:

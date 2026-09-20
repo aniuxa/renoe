@@ -1,0 +1,7 @@
+consumer,function_name,required_level,affected_by_cmo_bridge,scope_note
+skill_level,procesar_vars_laborales,sinco1d,TRUE,Cobertura depende de obtener SINCO 1d
+mismatch,procesar_vars_laborales,sinco1d,TRUE,Ademas requiere escolaridad valida
+mismatch2_reference,calcular_desajuste_estadistico,sinco1d,TRUE,Ademas requiere anios_es y periodo validos
+susceptible_teletrabajo,clasificar_susceptibilidad_teletrabajo,sinco4d,FALSE,La funcion solo es comparable desde 2012-T3; no usa el periodo CMO
+trabajo_cuidado_mercado,procesar_cuidado_remunerado,sinco3d,FALSE,"Usa cmo_to_sinco11_care en el periodo CMO, no el puente general"
+clases_damian,procesar_clases_damian,sinco4d,FALSE,En periodo CMO reconstruye su propio puente historico de Damian

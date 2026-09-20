@@ -1,6 +1,6 @@
-# Descomprensión de archivos
+# Descomprension de archivos
 
-Descomprensión de archivos
+Descomprension de archivos
 
 ## Usage
 

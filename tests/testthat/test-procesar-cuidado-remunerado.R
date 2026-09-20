@@ -10,7 +10,6 @@ test_that("wrapper distingue los cortes y preserva la armonizacion general", {
   expect_equal(y$clasificador_ocupacion, c('CMO','SINCO 2011','SINCO 2011','SINCO 2019'))
   expect_equal(y$codigo_ocupacion_armonizado, c(511L,233L,242L,243L))
   expect_equal(as.numeric(y$class_ocu), c(13,11,12,12))
-  expect_equal(as.numeric(y$trabajo_cuidado_rem), rep(1,4))
   expect_equal(as.numeric(y$trabajo_cuidado_mercado), rep(1,4))
   expect_match(y$calidad_armonizacion_cuidado[1], 'multiple')
   expect_identical(suppressMessages(procesar_cuidado_remunerado(y)), y)
@@ -33,7 +32,7 @@ test_that("ocupacion e industria se distinguen con las reglas del articulo", {
                   p4a=c(4611,6111,8140,8140,5413), clase2=1)
   y <- procesar_cuidado_remunerado(x,2022,1)
   expect_equal(as.numeric(y$care_w), c(3,4,2,2,0))
-  expect_equal(as.numeric(y$trabajo_cuidado_rem), c(1,1,1,0,0))
+  expect_equal(as.numeric(y$trabajo_cuidado_mercado), c(1,1,1,0,0))
   expect_equal(as.numeric(y$care_industry), c(0,1,2,2,3))
   expect_identical(y[names(x)], x)
 })
@@ -43,7 +42,7 @@ test_that("faltantes, no ocupados y codigos no aplicables no son no cuidado", {
                   p4a=c(6111,6111,6111,6111,6111,9999,NA,6111),
                   clase2=c(2,NA,1,1,1,1,1,1))
   y <- procesar_cuidado_remunerado(x,2022,1)
-  expect_true(all(is.na(y$trabajo_cuidado_rem)))
+  expect_true(all(is.na(y$trabajo_cuidado_mercado)))
   expect_false(any(y$cuidado_ocupacion_medible[1:5]))
   expect_false(any(y$cuidado_actividad_medible[6:7]))
 })
@@ -96,7 +95,7 @@ test_that("wrapper procesa cero filas", {
   x <- data.frame(anio=integer(),trim=integer(),p3coe=integer(),p4a=integer(),clase2=integer())
   y <- procesar_cuidado_remunerado(x)
   expect_equal(nrow(y),0)
-  expect_true(all(c('class_ocu','trabajo_cuidado_mercado','trabajo_cuidado_rem',
+  expect_true(all(c('class_ocu','trabajo_cuidado_mercado',
                     'cuidado_posicion_remunerada','cuidado_sin_pago',
                     'estado_ingreso_cuidado') %in% names(y)))
 })
@@ -115,7 +114,6 @@ test_that("cuidado de mercado separa posición e ingreso observado o imputado", 
 
   expect_identical(y[names(original)], original)
   expect_equal(as.numeric(y$trabajo_cuidado_mercado), rep(1, 4))
-  expect_equal(as.numeric(y$trabajo_cuidado_rem), rep(1, 4))
   expect_equal(as.numeric(y$cuidado_posicion_remunerada), c(1, 1, 0, 1))
   expect_equal(as.numeric(y$cuidado_sin_pago), c(0, 0, 1, 0))
   expect_equal(

@@ -11,12 +11,44 @@
     coe2 = "conjunto_de_datos_coe2.*\\.csv$"
   )
 
-  # Manejo especial para todas las tablas de 2022T1
+  # El ZIP oficial de 2022-T1 contiene dos componentes complementarios de
+  # HOG. El archivo raiz conserva el ambito urbano con meses 1-3; el archivo
+  # incluido en `conjunto_de_datos/` aporta el ambito rural con meses
+  # desplazados 10-12 y 99. Se integran explicitamente antes de fusionar.
   if (anio == 2022 && trimestre == 1) {
     nombre_archivo <- paste0("conjunto_de_datos_", tabla, "_enoen_2022_1t.csv")
-    ruta <- file.path(unzip_dir, paste0("conjunto_de_datos_", tabla, "_enoen_2022_1t"), nombre_archivo)
+    carpeta <- file.path(
+      unzip_dir, paste0("conjunto_de_datos_", tabla, "_enoen_2022_1t")
+    )
+    ruta <- file.path(carpeta, nombre_archivo)
+    if (identical(tabla, "hog")) {
+      ruta_rural <- file.path(carpeta, "conjunto_de_datos", nombre_archivo)
+      if (!all(file.exists(c(ruta, ruta_rural)))) {
+        warning("No se encontraron ambos componentes oficiales de HOG 2022-T1.")
+        return(NULL)
+      }
+      leer_hog <- function(path) {
+        x <- suppressWarnings(readr::read_csv(
+          path, locale = readr::locale(encoding = "UTF-8"),
+          show_col_types = FALSE, progress = FALSE
+        ))
+        names(x) <- tolower(names(x))
+        x
+      }
+      urbano <- leer_hog(ruta)
+      rural <- leer_hog(ruta_rural)
+      rural <- rural[rural$ur == 2, , drop = FALSE]
+      mapa_mes <- c("10" = 1, "11" = 2, "12" = 3, "99" = 96)
+      rural$mes_cal <- unname(mapa_mes[as.character(rural$mes_cal)])
+      if (anyNA(rural$mes_cal)) {
+        warning("HOG rural 2022-T1 contiene meses fuera del mapa oficial.")
+        return(NULL)
+      }
+      return(dplyr::bind_rows(urbano, rural))
+    }
     if (!file.exists(ruta)) {
-      warning("No se encontr\u00F3 el archivo corregido para ", tabla, " en ", ruta, ". Buscando archivo est\u00E1ndar...")
+      warning("No se encontr\u00F3 el archivo oficial requerido para ", tabla,
+              " en ", ruta, ".")
       ruta <- NULL
     }
     archivo <- ruta
@@ -57,49 +89,6 @@
 }
 
 
-#' Sustituye los cinco archivos de datos de ENOE 2022T1 con una version alternativa descargada desde INEGI.
-#'
-#' @keywords internal
-.sustituir_todo_enoe_2022t1 <- function(unzip_dir) {
-  url_zip <- "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/microdatos/enoe_n_2022_trim1_csv.zip"
-  temp_zip <- tempfile(fileext = ".zip")
-  temp_dir <- tempfile()
-
-  message("Descargando versi\u00F3n alternativa de ENOE 2022T1 desde INEGI...")
-  tryCatch({
-    utils::download.file(url_zip, temp_zip, mode = "wb", quiet = TRUE)
-    utils::unzip(temp_zip, exdir = temp_dir)
-  }, error = function(e) {
-    warning("No se pudo descargar o descomprimir la versi\u00F3n alternativa de ENOE 2022T1: ", e$message)
-    return(invisible(NULL))
-  })
-
-  archivos_a_copiar <- list(
-    viv  = "ENOEN_VIVT122.csv",
-    hog  = "ENOEN_HOGT122.csv",
-    sdem = "ENOEN_SDEMT122.csv",
-    coe1 = "ENOEN_COE1T122.csv",
-    coe2 = "ENOEN_COE2T122.csv"
-  )
-
-  for (tabla in names(archivos_a_copiar)) {
-    archivo_fuente <- file.path(temp_dir, archivos_a_copiar[[tabla]])
-    if (!file.exists(archivo_fuente)) {
-      warning("No se encontr\u00F3 el archivo ", archivos_a_copiar[[tabla]], " en el ZIP.")
-      next
-    }
-
-    # Crear subcarpeta de destino coherente con el flujo de lectura
-    carpeta_tabla <- file.path(unzip_dir, paste0("conjunto_de_datos_", tabla, "_enoen_2022_1t"))
-    archivo_destino <- file.path(carpeta_tabla, paste0("conjunto_de_datos_", tabla, "_enoen_2022_1t.csv"))
-    dir.create(carpeta_tabla, recursive = TRUE, showWarnings = FALSE)
-
-    file.copy(archivo_fuente, archivo_destino, overwrite = TRUE)
-    message("Archivo de ", tabla, " sustituido exitosamente.")
-  }
-
-  invisible(NULL)
-}
 #' Funcion interna que determina la estructura de URL apropiada segun el ano y trimestre
 #' @keywords internal
 .construir_url_enoe <- function(anio, trimestre) {
@@ -328,34 +317,6 @@
   all(archivos_presentes)
 }
 
-.cargar_desde_cache <- function(unzip_dir, tablas, prefijo, anio, trimestre) {
-  lapply(tablas, function(tabla) {
-    # Buscar en ambas posibles ubicaciones
-    path1 <- file.path(
-      unzip_dir,
-      paste0("conjunto_de_datos_", tabla, "_", prefijo, "_", anio, "_", trimestre, "t.csv")
-    )
-
-    path2 <- file.path(
-      unzip_dir,
-      paste0("conjunto_de_datos_", prefijo, "_", anio, "_", trimestre, "t"),
-      paste0("conjunto_de_datos_", tabla, "_", prefijo, "_", anio, "_", trimestre, "t.csv")
-    )
-
-    archivo <- if (file.exists(path1)) path1 else path2
-
-    if (file.exists(archivo)) {
-      tryCatch({
-        readr::read_csv(archivo, show_col_types = FALSE)
-      }, error = function(e) {
-        warning("Error al leer ", archivo, ": ", e$message)
-        NULL
-      })
-    } else {
-      NULL
-    }
-  }) |> stats::setNames(tablas)
-}
 
 #' Procesamiento de etiquetas y metadatos
 #' @keywords internal

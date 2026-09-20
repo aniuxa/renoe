@@ -1,7 +1,7 @@
-# Función interna que determina la estructura de URL apropiada según el año y trimestre
+# Funcion interna que determina la estructura de URL apropiada segun el ano y trimestre
 
-Función interna que determina la estructura de URL apropiada según el
-año y trimestre
+Funcion interna que determina la estructura de URL apropiada segun el
+ano y trimestre
 
 ## Usage
 

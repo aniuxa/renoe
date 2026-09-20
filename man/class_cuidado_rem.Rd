@@ -11,7 +11,8 @@ class_cuidado_rem(
   variable_ocupado = "clase2",
   valor_ocupado = 1,
   variable_cmo = "p3coe",
-  aplicar_puente_cmo = TRUE
+  aplicar_puente_cmo = TRUE,
+  puente_cmo_precalculado = FALSE
 )
 }
 \arguments{
@@ -30,11 +31,14 @@ class_cuidado_rem(
 
 \item{aplicar_puente_cmo}{Si es TRUE, aplica automaticamente el puente de
 cuidado a las observaciones de 2005-I a 2012-II.}
+
+\item{puente_cmo_precalculado}{Si es TRUE, el llamador ya resolvio el
+remanente CMO antes de entrar y no se emite la advertencia de omision.}
 }
 \value{
 El mismo data frame con \code{class_ocu}, \code{isco_care}, \code{care_industry},
-\code{care_w}, \code{cuida_total}, \code{trabajo_cuidado_mercado}, el alias deprecado
-\code{trabajo_cuidado_rem}, \code{cuida_1d} y banderas de medición.
+\code{care_w}, \code{trabajo_cuidado_mercado}, \code{cuida_1d} y banderas
+de medicion.
 }
 \description{
 Reproduce la clasificacion utilizada en el articulo a partir de la

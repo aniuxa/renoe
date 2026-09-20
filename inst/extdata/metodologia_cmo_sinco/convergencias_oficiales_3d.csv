@@ -1,0 +1,27 @@
+source_code,source_label,target_3d,destinations_4d,n_destinations_4d,rule_type,scope,requires_enoe_auxiliary,newly_recovered_2026_09_13,evidence_source
+1104,"Ingenieros químicos, industriales y mecánicos",225,2251|2252|2253,3,official_convergence_3d,general_classifiers,FALSE,FALSE,Tabla comparativa oficial INEGI CMO-SINCO 2011
+1172,Contadores públicos,212,2121|2122,2,official_convergence_3d,general_classifiers,FALSE,TRUE,Tabla comparativa oficial INEGI CMO-SINCO 2011
+1206,"Técnicos en la operación de equipos de televisión, filmación, proyección y grabación de imagen y sonido y fotógrafos",265,2653|2654|2655,3,official_convergence_3d,general_classifiers,FALSE,FALSE,Tabla comparativa oficial INEGI CMO-SINCO 2011
+1401,Periodistas y redactores,215,2152|2153,2,official_convergence_3d,general_classifiers,FALSE,TRUE,Tabla comparativa oficial INEGI CMO-SINCO 2011
+1420,Pintores y dibujantes artísticos,216,2161|2162,2,official_convergence_3d,general_classifiers,FALSE,TRUE,Tabla comparativa oficial INEGI CMO-SINCO 2011
+1423,Decoradores y diseñadores,254,2541|2542|2543|2544,4,official_convergence_3d,general_classifiers,FALSE,FALSE,Tabla comparativa oficial INEGI CMO-SINCO 2011
+2100,Altas autoridades gubernamentales y legislativas,111,1111|1112,2,official_convergence_3d,general_classifiers,FALSE,FALSE,Tabla comparativa oficial INEGI CMO-SINCO 2011
+2123,"Directores, gerentes y administradores de área o establecimientos en comunicaciones y transportes",132,1322|1323,2,official_convergence_3d,general_classifiers,FALSE,FALSE,Tabla comparativa oficial INEGI CMO-SINCO 2011
+2124,"Directores, gerentes y administradores de área o establecimientos en actividades de producción en industrias manufactureras, en la construcción y los servicios de reparación y mantenimiento",131,1312|1313|1314|1315,4,official_convergence_3d,general_classifiers,FALSE,FALSE,Tabla comparativa oficial INEGI CMO-SINCO 2011
+2126,"Directores, gerentes y administradores de área o establecimientos en servicios asistenciales y de readaptación social",122,1222|1225|1226,3,official_convergence_3d,general_classifiers,FALSE,FALSE,Tabla comparativa oficial INEGI CMO-SINCO 2011
+2133,"Directivos de organizaciones humanitarias, religiosas, asociaciones civiles y ejidales",113,1134|1135,2,official_convergence_3d,general_classifiers,FALSE,FALSE,Tabla comparativa oficial INEGI CMO-SINCO 2011
+5169,Otros trabajadores que desempeñan una ocupación afín a las comprendidas en este subgrupo,161,1615|1619,2,official_convergence_3d,general_classifiers,FALSE,FALSE,Tabla comparativa oficial INEGI CMO-SINCO 2011
+5246,"Mecánicos, ajustadores, instaladores y trabajadores de mantenimiento y reparación de maquinaria, instrumentos industriales y equipos de refrigeración",263,2634|2638,2,official_convergence_3d,general_classifiers,FALSE,FALSE,Tabla comparativa oficial INEGI CMO-SINCO 2011
+5380,Operadores de máquinas para el tratamiento de sustancias químicas y agua,813,8131|8134,2,official_convergence_3d,general_classifiers,FALSE,FALSE,Tabla comparativa oficial INEGI CMO-SINCO 2011
+5410,"Ayudantes, peones y similares en la extracción en minas, canteras y pozos",921,9211|9212,2,official_convergence_3d,general_classifiers,FALSE,FALSE,Tabla comparativa oficial INEGI CMO-SINCO 2011
+6150,"Jefes de departamento, coordinadores y supervisores en servicios culturales y de esparcimiento",172,1721|1722,2,official_convergence_3d,general_classifiers,FALSE,FALSE,Tabla comparativa oficial INEGI CMO-SINCO 2011
+6160,"Jefes de departamento, coordinadores y supervisores en servicios de restaurante, hospedaje y comercio",171,1711|1712,2,official_convergence_3d,general_classifiers,FALSE,FALSE,Tabla comparativa oficial INEGI CMO-SINCO 2011
+6210,"Cajeros, pagadores y cobradores",312,3121|3122,2,official_convergence_3d,general_classifiers,FALSE,FALSE,Tabla comparativa oficial INEGI CMO-SINCO 2011
+6232,"Encuestadores, codificadores, verificadores y similares",323,3231|3232,2,official_convergence_3d,general_classifiers,FALSE,FALSE,Tabla comparativa oficial INEGI CMO-SINCO 2011
+6260,"Despachadores, checadores y similares en la operación del transporte",314,3141|3142,2,official_convergence_3d,general_classifiers,FALSE,FALSE,Tabla comparativa oficial INEGI CMO-SINCO 2011
+7111,Despachadores y dependientes de comercio,421,4211|4212|4213|4214,4,official_convergence_3d,general_classifiers,FALSE,FALSE,Tabla comparativa oficial INEGI CMO-SINCO 2011
+7212,Lavadores y cuidadores de coches sin establecimiento,963,9632|9634,2,official_convergence_3d,general_classifiers,FALSE,FALSE,Tabla comparativa oficial INEGI CMO-SINCO 2011
+8100,Fonderos (preparan y sirven alimentos) en establecimientos,511,5112|5114,2,official_convergence_3d,general_classifiers,FALSE,FALSE,Tabla comparativa oficial INEGI CMO-SINCO 2011
+8101,"Cantineros, meseros y camareros",511,5115|5116,2,official_convergence_3d,general_classifiers,FALSE,FALSE,Tabla comparativa oficial INEGI CMO-SINCO 2011
+8122,"Maleteros, equipajeros y empleados de paquetería y guardarropa",971,9711|9712,2,official_convergence_3d,general_classifiers,FALSE,FALSE,Tabla comparativa oficial INEGI CMO-SINCO 2011
+8123,"Mozos de hotel, botones y similares",962,9622|9623,2,official_convergence_3d,general_classifiers,FALSE,FALSE,Tabla comparativa oficial INEGI CMO-SINCO 2011

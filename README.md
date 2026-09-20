@@ -5,7 +5,7 @@
 fusión, procesamiento y análisis de los microdatos de la Encuesta
 Nacional de Ocupación y Empleo (ENOE) del INEGI desde 2005.
 
-La versión 0.2.0 cubre los trimestres habilitados desde 2005-T1 hasta
+La versión 0.3.0 cubre los trimestres habilitados desde 2005-T1 hasta
 2026-T2. En 2026 están publicados y auditados T1 y T2; T3 y T4
 permanecen deshabilitados hasta su publicación y validación.
 
@@ -114,12 +114,9 @@ datos_proyecto <- datos_proc |>
 internamente `cmo_to_sinco11_care()` cuando corresponde al periodo CMO.
 No es necesario ejecutar el puente por separado en el flujo habitual.
 
-En caso de que haya algun problema de codificación, se pide que se
-utilice la opción `fusion_robusta`
-
-``` r
-datos <- fusion_enoe(2025, 4, fusion_robusta = T)
-```
+`fusion_enoe()` aplica una única ruta canónica: valida la unicidad de las
+llaves, usa SDEM como tabla ancla y conserva una auditoría de cada unión.
+No existe una ruta alternativa o *legacy*.
 
 ------------------------------------------------------------------------
 
@@ -142,8 +139,7 @@ la procedencia, el metodo y la calidad de la armonizacion.
 La concordancia analitica se distribuye en
 `inst/extdata/concordancia_cmo_sinco_cuidado.csv`; no es un puente oficial general.
 El indicador principal es `trabajo_cuidado_mercado`. Describe la insercion
-ocupacional en el cuidado y no presupone remuneracion positiva. El alias
-`trabajo_cuidado_rem` se conserva durante la transicion. El wrapper distingue
+ocupacional en el cuidado y no presupone remuneracion positiva. El wrapper distingue
 ademas posicion remunerada, trabajo sin pago e ingreso observado, imputado,
 cero o faltante.
 Vease [la guia del modulo](articles/cuidado-remunerado.html).
@@ -200,16 +196,16 @@ Las columnas son `variable_nombre`, `descripcion` y `funcion`.
 
 - Se incluye validación del número de filas esperadas posterior al
   filtrado (`r_def == 0 & c_res != 2`).
-- Para el trimestre **2022T1** se utilizan archivos alternativos
-  descargados del sitio de microdatos del INEGI.
-- La fusión robusta utiliza identificadores disponibles y armonización
-  de nombres para reducir problemas por cambios recientes en las bases.
+- Para **2022-T1** se combinan los componentes oficiales urbano y rural
+  de HOG, se armonizan sus códigos de mes y se incluye `ur` en la llave.
+- La fusión canónica valida las llaves y detiene el proceso si no conserva
+  el universo elegible de SDEM.
 - Si se detectan anomalías como menos filas de lo esperado o posibles
   duplicaciones, se emiten advertencias para revisión manual.
 - En uso del tiempo se distinguen duración observada, actividad
   realizada con duración desconocida, realización desconocida y batería
-  no medible. Las columnas `*_legacy` reproducen temporalmente la
-  recodificación histórica a cero.
+  no medible. Las actividades ausentes del instrumento permanecen como
+  `NA`, no como cero.
 
 ------------------------------------------------------------------------
 
@@ -268,7 +264,7 @@ por favor cita de la siguiente manera:
 
 > Escoto, A. (2026). *renoe: Herramientas para trabajar con la Encuesta
 > Nacional de Ocupación y Empleo (ENOE) desde 2005*. R package version
-> 0.2.0. <https://aniuxa.github.io/renoe>
+> 0.3.0. <https://aniuxa.github.io/renoe>
 
 También puedes usar la función `citation("renoe")` en R para obtener la
 referencia en formato BibTeX.

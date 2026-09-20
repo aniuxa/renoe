@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{procesar_clases_damian}
 \alias{procesar_clases_damian}
-\title{Clasificar ocupaciones para el capitulo de Gerardo Damián Hernández}
+\title{Clasificar ocupaciones para el capitulo de Gerardo Damian Hernandez}
 \usage{
 procesar_clases_damian(
   data,
@@ -13,9 +13,9 @@ procesar_clases_damian(
 )
 }
 \arguments{
-\item{data}{Un data frame con \code{sinco4d}, \code{pos_ocu} y \code{emple7c}; para
-observaciones anteriores a 2012-III tambien requiere \code{p3coe}, \code{anio} y
-\code{trim}.}
+\item{data}{Un data frame con \code{sinco4d_base2011} o \code{sinco4d},
+\code{pos_ocu} y \code{emple7c}. Cuando existe \code{sinco4d_base2011}, esta
+variable canonica tiene prioridad y no se aplica un puente alternativo.}
 
 \item{correspondencia}{Tabla opcional con columnas \code{sinco4d} e \code{isco88}.
 Si se omite, se usa la correspondencia distribuida con el paquete.}
@@ -42,7 +42,7 @@ no manual no calificado, manual calificado y manual no calificado.
 }
 \details{
 La correspondencia SINCO 2011-ISCO-88 reproduce, en orden de prioridad, el
-do-file de Gerardo Damián Hernández \code{sinco-isco88.do}. Las variables
+do-file de Gerardo Damian Hernandez \code{sinco-isco88.do}. Las variables
 auxiliares permiten auditar la cobertura y distinguir asignaciones directas
 de recuperaciones realizadas con el gran grupo SINCO.
 }
@@ -56,7 +56,7 @@ datos <- data.frame(
 procesar_clases_damian(datos)
 }
 \references{
-Damián Hernández, G. (2026). \emph{Quince anos de trabajo femenino en Mexico:
+Damian Hernandez, G. (2026). \emph{Quince anos de trabajo femenino en Mexico:
 tipo de hogar y clase ocupacional, 2005-2020}. Propuesta de capitulo para
 el proyecto PAPIIT IN305925.
 
@@ -65,9 +65,10 @@ esquema EGP para America Latina, citada en el programa original.
 }
 \seealso{
 Other procesamiento_enoe:
-\code{\link[=armoniza_sinco]{armoniza_sinco()}},
+\code{\link[=.armonizar_sinco_enoe_core]{.armonizar_sinco_enoe_core()}},
 \code{\link[=armonizar_carreras_enoe]{armonizar_carreras_enoe()}},
 \code{\link[=calcular_desajuste_estadistico]{calcular_desajuste_estadistico()}},
+\code{\link[=calcular_desajuste_horizontal]{calcular_desajuste_horizontal()}},
 \code{\link[=crear_folios]{crear_folios()}},
 \code{\link[=imputa_ingocup]{imputa_ingocup()}},
 \code{\link[=ipc_enoe]{ipc_enoe()}},
@@ -80,6 +81,7 @@ Other procesamiento_enoe:
 \code{\link[=procesar_vars_hogar]{procesar_vars_hogar()}},
 \code{\link[=procesar_vars_laborales]{procesar_vars_laborales()}},
 \code{\link[=procesar_vars_sociodemo]{procesar_vars_sociodemo()}},
+\code{\link[=reglas_enoe]{reglas_enoe()}},
 \code{\link[=sinco2019_to_sinco2011]{sinco2019_to_sinco2011()}}
 }
 \concept{procesamiento_enoe}

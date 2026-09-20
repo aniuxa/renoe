@@ -2,7 +2,7 @@
 % Please edit documentation in R/calcular_desajuste_estadistico.R
 \name{calcular_desajuste_estadistico}
 \alias{calcular_desajuste_estadistico}
-\title{Calcular una referencia estadística de escolaridad y su desajuste}
+\title{Calcular una referencia estadistica de escolaridad y su desajuste}
 \usage{
 calcular_desajuste_estadistico(
   data,
@@ -18,36 +18,35 @@ calcular_desajuste_estadistico(
 
 \item{periodo_referencia}{\code{"trimestre"} o \code{"anio"}.}
 
-\item{umbral_anios}{Umbral simétrico en años; por defecto 1.}
+\item{umbral_anios}{Umbral simetrico en anos; por defecto 1.}
 
 \item{ponderado}{Si es \code{TRUE}, usa el ponderador indicado.}
 
 \item{variable_ponderador}{Nombre del ponderador; por defecto \code{fac}.}
 
-\item{anio_incompleto}{Tratamiento de años con menos de cuatro trimestres:
+\item{anio_incompleto}{Tratamiento de anos con menos de cuatro trimestres:
 \code{"error"}, \code{"advertir"} o \code{"permitir"}.}
 }
 \value{
 El mismo data frame, en el mismo orden, con \code{esco_ref}, \code{mismatch2}
-y metadatos explícitos del periodo, ponderador, número de trimestres y
+y metadatos explicitos del periodo, ponderador, numero de trimestres y
 unidad persona-trimestre.
 }
 \description{
-Calcula la escolaridad media observada por división SINCO y periodo entre la
-población ocupada. \code{esco_ref} es una referencia estadística interna, no una
+Calcula la escolaridad media observada por division SINCO y periodo entre la
+poblacion ocupada. \code{esco_ref} es una referencia estadistica interna, no una
 norma ocupacional externa. La referencia predeterminada es trimestral.
 }
 \details{
-La referencia anual se calcula únicamente sobre datos ya acumulados y su
-unidad es persona-trimestre. La función no deduplica personas: la rotación de
+La referencia anual se calcula unicamente sobre datos ya acumulados y su
+unidad es persona-trimestre. La funcion no deduplica personas: la rotacion de
 ENOE forma parte de los cortes transversales acumulados. Para publicar una
-referencia anual se requieren cuatro trimestres por año; el tratamiento de
-años incompletos puede cambiarse explícitamente con \code{anio_incompleto}.
+referencia anual se requieren cuatro trimestres por ano; el tratamiento de
+anos incompletos puede cambiarse explicitamente con \code{anio_incompleto}.
 
 El ponderador se elige con \code{variable_ponderador}. Dividir por una constante
-común, como cuatro en un año completo, no cambia la media, aunque sí importa
-para estimar totales anuales. Si la entrada contiene un \code{mismatch2} histórico,
-se conserva en \code{mismatch2_legacy} durante la transición.
+comun, como cuatro en un ano completo, no cambia la media, aunque si importa
+para estimar totales anuales.
 }
 \examples{
 datos <- data.frame(
@@ -58,8 +57,9 @@ calcular_desajuste_estadistico(datos)
 }
 \seealso{
 Other procesamiento_enoe:
-\code{\link[=armoniza_sinco]{armoniza_sinco()}},
+\code{\link[=.armonizar_sinco_enoe_core]{.armonizar_sinco_enoe_core()}},
 \code{\link[=armonizar_carreras_enoe]{armonizar_carreras_enoe()}},
+\code{\link[=calcular_desajuste_horizontal]{calcular_desajuste_horizontal()}},
 \code{\link[=crear_folios]{crear_folios()}},
 \code{\link[=imputa_ingocup]{imputa_ingocup()}},
 \code{\link[=ipc_enoe]{ipc_enoe()}},
@@ -73,6 +73,7 @@ Other procesamiento_enoe:
 \code{\link[=procesar_vars_hogar]{procesar_vars_hogar()}},
 \code{\link[=procesar_vars_laborales]{procesar_vars_laborales()}},
 \code{\link[=procesar_vars_sociodemo]{procesar_vars_sociodemo()}},
+\code{\link[=reglas_enoe]{reglas_enoe()}},
 \code{\link[=sinco2019_to_sinco2011]{sinco2019_to_sinco2011()}}
 }
 \concept{procesamiento_enoe}

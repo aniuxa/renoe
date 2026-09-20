@@ -3,7 +3,7 @@
 #' Descarga, extrae y carga las tablas de microdatos de la Encuesta Nacional de Ocupacion y Empleo (ENOE)
 #' para un trimestre especifico. Incluye la correccion automatica del archivo defectuoso de hogares
 #' del primer trimestre de 2022. Las tablas disponibles son: vivienda (viv), hogar (hog), sociodemografica (sdem)
-#' y los dos componentes del cuestionario ampliado (coe1 y coe2).
+#' y los dos componentes del cuestionario de ocupacion (coe1 y coe2).
 #'
 #' @encoding UTF-8
 #' @param anio Ano del trimestre (2005-2026)
@@ -28,8 +28,9 @@
 #' @details
 #' Esta funcion combina varias operaciones comunes al trabajar con microdatos de la ENOE:
 #' descarga, extraccion del ZIP, lectura, estandarizacion de identificadores y aplicacion de etiquetas.
-#' La funcion maneja de forma especial el primer trimestre de 2022, sustituyendo automaticamente el archivo
-#' por la version que se descarga en microdatos de INEGI y no en datos abiertos..
+#' Para 2022-T1 combina el HOG urbano ubicado en la raiz del ZIP con el HOG
+#' rural distribuido en `conjunto_de_datos/` y armoniza los codigos de mes del
+#' segundo componente.
 #'
 #' @seealso \code{\link{fusion_enoe}}, \code{\link{descarga_enoe}}, \code{\link{procesar_vars_sociodemo}}
 #'
@@ -41,7 +42,7 @@
 #' # Cargar datos como lista sin etiquetas
 #' datos <- carga_enoe(2022, 4, list = TRUE, rapida = TRUE)
 #'
-#' # Cargar el trimestre corregido 2022T1 desde cache o desde extdata si es necesario
+#' # Cargar el trimestre 2022T1 combinando ambos componentes oficiales de HOG
 #' carga_enoe(2022, 1)
 #' }
 #'
@@ -82,12 +83,6 @@ carga_enoe <- function(anio, trimestre, list = FALSE, rapida = FALSE,
       stop("No se pudo extraer el ZIP descargado.")
     }
   }
-
-  # Sustitucion especial completa para todas las tablas 2022 T1
-  if (anio == 2022 && trimestre == 1) {
-    .sustituir_todo_enoe_2022t1(unzip_dir)
-  }
-
 
   # 5. Cargar y procesar las tablas
   datos_lista <- lapply(tablas, function(tabla) {

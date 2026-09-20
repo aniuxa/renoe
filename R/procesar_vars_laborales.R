@@ -42,7 +42,10 @@
 #' @family procesamiento_enoe
 
 procesar_vars_laborales <- function(data) {
-  data <- renoe::armoniza_sinco(data)
+  if ("p4a" %in% names(data)) {
+    data <- renoe::armonizar_scian(data)
+  }
+  data <- renoe::armonizar_sinco(data)
 
   if (!"cs_p13_1" %in% names(data)) {
     stop("Falta la variable `cs_p13_1`.", call. = FALSE)
@@ -69,9 +72,9 @@ procesar_vars_laborales <- function(data) {
   data <- data %>%
     dplyr::mutate(
       skill_level = dplyr::case_when(
-        sinco1d %in% 1:2 ~ 3,
-        sinco1d %in% 3:8 ~ 2,
-        sinco1d == 9 ~ 1,
+        sinco2011_comparable & sinco1d %in% 1:2 ~ 3,
+        sinco2011_comparable & sinco1d %in% 3:8 ~ 2,
+        sinco2011_comparable & sinco1d == 9 ~ 1,
         TRUE ~ NA_real_
       ),
       skill_actual = dplyr::case_when(

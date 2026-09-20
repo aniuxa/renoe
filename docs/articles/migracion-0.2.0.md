@@ -61,12 +61,13 @@ personas automáticamente.
 
 ## Cuidado de mercado
 
-Use `trabajo_cuidado_mercado` como indicador principal.
-`trabajo_cuidado_rem` permanece como alias transitorio. La posición
-remunerada, el trabajo sin pago y la observación o imputación del
-ingreso son dimensiones separadas; un ingreso positivo imputado no se
-presenta como remuneración observada. Los casos fuera del universo
-ocupado o sin clasificación medible permanecen como `NA`.
+Use `trabajo_cuidado_mercado` como indicador principal. En 0.2.0,
+`trabajo_cuidado_rem` se mantuvo como alias transitorio; 0.3.0 lo retira
+y conserva únicamente `trabajo_cuidado_mercado`. La posición remunerada,
+el trabajo sin pago y la observación o imputación del ingreso son
+dimensiones separadas; un ingreso positivo imputado no se presenta como
+remuneración observada. Los casos fuera del universo ocupado o sin
+clasificación medible permanecen como `NA`.
 
 ## Etiquetas y productos derivados
 

@@ -2,11 +2,11 @@
 % Please edit documentation in R/utils.R
 \name{.extraer_zip_enoe}
 \alias{.extraer_zip_enoe}
-\title{Descomprensión de archivos}
+\title{Descomprension de archivos}
 \usage{
 .extraer_zip_enoe(zipfile, exdir)
 }
 \description{
-Descomprensión de archivos
+Descomprension de archivos
 }
 \keyword{internal}

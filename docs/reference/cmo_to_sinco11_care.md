@@ -8,8 +8,6 @@ el do-file `cmo a sinco11.do` preparado por Damian (2026).
 
 ``` r
 cmo_to_sinco11_care(data, variable_cmo = "p3coe", sobrescribir = TRUE)
-
-cmo_to_sinco11(...)
 ```
 
 ## Arguments
@@ -26,10 +24,6 @@ cmo_to_sinco11(...)
 
   Si es FALSE, detiene la ejecucion cuando ya existen las variables de
   salida.
-
-- ...:
-
-  Argumentos enviados a `cmo_to_sinco11_care()`.
 
 ## Value
 

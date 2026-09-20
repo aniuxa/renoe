@@ -1,14 +1,14 @@
-# Procesar variables de análisis laboral y desajuste educativo
+# Procesar variables de analisis laboral y desajuste educativo
 
-Esta función genera variables clasificatorias relacionadas con la
-ocupación, el nivel educativo y el desajuste entre ambos, a partir de
-los códigos de ocupación (`p3coe`) y del nivel educativo alcanzado
-(`cs_p13_1`). Internamente armoniza los códigos SINCO (1, 2, 3 y 4
-dígitos) usando correspondencias con códigos CMO y reglas auxiliares.
-También clasifica el nivel agregado de competencia de la ocupación, un
-proxy basado en escolaridad y el desajuste entre ambos. La agrupación de
-competencia requerida es una aproximación a un dígito de SINCO y puede
-ocultar excepciones dentro de cada división.
+Esta funcion genera variables clasificatorias relacionadas con la
+ocupacion, el nivel educativo y el desajuste entre ambos, a partir de
+los codigos de ocupacion (`p3coe`) y del nivel educativo alcanzado
+(`cs_p13_1`). Internamente armoniza los codigos SINCO (1, 2, 3 y 4
+digitos) usando correspondencias con codigos CMO y reglas auxiliares.
+Tambien clasifica el nivel agregado de competencia de la ocupacion, un
+proxy basado en escolaridad y el desajuste entre ambos. La agrupacion de
+competencia requerida es una aproximacion a un digito de SINCO y puede
+ocultar excepciones dentro de cada division.
 
 ## Usage
 
@@ -22,18 +22,18 @@ procesar_vars_laborales(data)
 
   Un data.frame con variables como:
 
-  - `anio`, `trimestre`: año y trimestre de la entrevista
+  - `anio`, `trimestre`: ano y trimestre de la entrevista
 
   - `coe_tipo`: tipo de cuestionario (`"ampliado"` o `"basico"`)
 
-  - `p3coe`: código ocupacional
+  - `p3coe`: codigo ocupacional
 
   - `cs_p13_1`, `cs_p15`: nivel educativo y antecedente escolar
 
-  - `clase2`: clase de actividad económica
+  - `clase2`: clase de actividad economica
 
-  - `pos_ocu`, `tue2`: posición en la ocupación y tipo de unidad
-    económica
+  - `pos_ocu`, `tue2`: posicion en la ocupacion y tipo de unidad
+    economica
 
   - `p2h4`: experiencia laboral previa
 
@@ -55,25 +55,26 @@ Un data.frame con las variables originales y nuevas columnas:
 
 ## Details
 
-La referencia estadística en años de escolaridad se calcula por separado
+La referencia estadistica en anos de escolaridad se calcula por separado
 con
 [`calcular_desajuste_estadistico()`](https://aniuxa.github.io/renoe/reference/calcular_desajuste_estadistico.md).
-Esta separación evita construir una referencia aparentemente anual
+Esta separacion evita construir una referencia aparentemente anual
 cuando la entrada contiene un solo trimestre. Por compatibilidad, si la
-entrada ya contiene `esco_norm` o `mismatch2`, esas columnas históricas
+entrada ya contiene `esco_norm` o `mismatch2`, esas columnas historicas
 se conservan sin recalcularlas.
 
-Además, genera variables relacionadas con la experiencia previa
+Ademas, genera variables relacionadas con la experiencia previa
 (`nunca_trabajo`), el estatus laboral combinado (`status_seq`) y las
-características contractuales (`contrato0`, `contrato1`, `temporal`,
-`temporal_seq`) según el tipo de cuestionario.
+caracteristicas contractuales (`contrato0`, `contrato1`, `temporal`,
+`temporal_seq`) segun el tipo de cuestionario.
 
 ## See also
 
 Other procesamiento_enoe:
-[`armoniza_sinco()`](https://aniuxa.github.io/renoe/reference/armoniza_sinco.md),
+[`.armonizar_sinco_enoe_core()`](https://aniuxa.github.io/renoe/reference/dot-armonizar_sinco_enoe_core.md),
 [`armonizar_carreras_enoe()`](https://aniuxa.github.io/renoe/reference/armonizar_carreras_enoe.md),
 [`calcular_desajuste_estadistico()`](https://aniuxa.github.io/renoe/reference/calcular_desajuste_estadistico.md),
+[`calcular_desajuste_horizontal()`](https://aniuxa.github.io/renoe/reference/calcular_desajuste_horizontal.md),
 [`crear_folios()`](https://aniuxa.github.io/renoe/reference/crear_folios.md),
 [`imputa_ingocup()`](https://aniuxa.github.io/renoe/reference/imputa_ingocup.md),
 [`ipc_enoe()`](https://aniuxa.github.io/renoe/reference/ipc_enoe.md),
@@ -86,4 +87,5 @@ Other procesamiento_enoe:
 [`procesar_variables_enoe()`](https://aniuxa.github.io/renoe/reference/procesar_variables_enoe.md),
 [`procesar_vars_hogar()`](https://aniuxa.github.io/renoe/reference/procesar_vars_hogar.md),
 [`procesar_vars_sociodemo()`](https://aniuxa.github.io/renoe/reference/procesar_vars_sociodemo.md),
+[`reglas_enoe()`](https://aniuxa.github.io/renoe/reference/reglas_enoe.md),
 [`sinco2019_to_sinco2011()`](https://aniuxa.github.io/renoe/reference/sinco2019_to_sinco2011.md)

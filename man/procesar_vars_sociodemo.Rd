@@ -2,7 +2,7 @@
 % Please edit documentation in R/procesar_vars_sociodemo.R
 \name{procesar_vars_sociodemo}
 \alias{procesar_vars_sociodemo}
-\title{Procesar variables sociodemográficas básicas y extendidas}
+\title{Procesar variables sociodemograficas basicas y extendidas}
 \usage{
 procesar_vars_sociodemo(data, anio, trimestre)
 }
@@ -10,19 +10,22 @@ procesar_vars_sociodemo(data, anio, trimestre)
 \item{data}{Un data frame tipo sdem, con variables como \code{sex}, \code{eda},
 \code{cs_p17}, \code{e_con}, \code{anios_esc}, \code{par_c}, \code{t_loc} y \code{ent}.}
 
-\item{anio}{Año del trimestre.}
+\item{anio}{Ano del trimestre.}
 
-\item{trimestre}{Trimestre numérico (1-4).}
+\item{trimestre}{Trimestre numerico (1-4).}
 }
 \value{
-Un data frame con variables sociodemográficas procesadas y
+Un data frame con variables sociodemograficas procesadas y
 etiquetadas.
 }
 \description{
-Añade sexo, edad, grupos etarios, metadatos como año, trimestre y tipo de
-cuestionario COE, así como variables extendidas de asistencia escolar,
-estado conyugal, escolaridad, zona rural, tamaño de localidad y zona
-económica regional.
+Anade sexo, edad, grupos etarios, metadatos como ano, trimestre y tipo de
+cuestionario COE, asi como variables extendidas de asistencia escolar,
+estado conyugal, escolaridad, zona rural, tamano de localidad y zona
+economica regional.
+\code{zona_econ} sigue una regionalizacion analitica de ocho zonas documentada en
+\code{clasificacion_region_socioeconomica.csv}; no representa una clasificacion
+territorial oficial unica.
 }
 \examples{
 \dontrun{
@@ -31,9 +34,10 @@ datos_sdem_proc <- procesar_vars_sociodemo(sdem, anio = 2023, trimestre = 1)
 }
 \seealso{
 Other procesamiento_enoe:
-\code{\link[=armoniza_sinco]{armoniza_sinco()}},
+\code{\link[=.armonizar_sinco_enoe_core]{.armonizar_sinco_enoe_core()}},
 \code{\link[=armonizar_carreras_enoe]{armonizar_carreras_enoe()}},
 \code{\link[=calcular_desajuste_estadistico]{calcular_desajuste_estadistico()}},
+\code{\link[=calcular_desajuste_horizontal]{calcular_desajuste_horizontal()}},
 \code{\link[=crear_folios]{crear_folios()}},
 \code{\link[=imputa_ingocup]{imputa_ingocup()}},
 \code{\link[=ipc_enoe]{ipc_enoe()}},
@@ -46,6 +50,7 @@ Other procesamiento_enoe:
 \code{\link[=procesar_variables_enoe]{procesar_variables_enoe()}},
 \code{\link[=procesar_vars_hogar]{procesar_vars_hogar()}},
 \code{\link[=procesar_vars_laborales]{procesar_vars_laborales()}},
+\code{\link[=reglas_enoe]{reglas_enoe()}},
 \code{\link[=sinco2019_to_sinco2011]{sinco2019_to_sinco2011()}}
 }
 \concept{procesamiento_enoe}

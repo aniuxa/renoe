@@ -1,9 +1,9 @@
-# Descargar cuestionarios técnicos de la ENOE
+# Descargar cuestionarios tecnicos de la ENOE
 
-Descarga automáticamente los cuestionarios en PDF y los descriptores de
-archivos (FD) correspondientes a un trimestre específico de la ENOE,
-basándose en la información de versiones. Los archivos se almacenan en
-una carpeta única con nombre `docs_{anio}_{trim}` dentro del directorio
+Descarga automaticamente los cuestionarios en PDF y los descriptores de
+archivos (FD) correspondientes a un trimestre especifico de la ENOE,
+basandose en la informacion de versiones. Los archivos se almacenan en
+una carpeta unica con nombre `docs_{anio}_{trim}` dentro del directorio
 especificado.
 
 ## Usage
@@ -21,22 +21,22 @@ descargar_cuestionarios(
 
 - anio:
 
-  Año del trimestre (2005-2024). Debe ser un valor numérico entre 2005 y
+  Ano del trimestre (2005-2024). Debe ser un valor numerico entre 2005 y
   2024.
 
 - trimestre:
 
-  Número del trimestre (1-4). Donde 1 = ENE-MAR, 2 = ABR-JUN, 3 =
+  Numero del trimestre (1-4). Donde 1 = ENE-MAR, 2 = ABR-JUN, 3 =
   JUL-SEP, 4 = OCT-DIC.
 
 - destino:
 
-  Directorio base donde se guardarán los archivos. Por defecto,
+  Directorio base donde se guardaran los archivos. Por defecto,
   "cuestionarios".
 
 - sobrescribir:
 
-  Lógico. ¿Deben sobrescribirse los archivos existentes? (FALSE por
+  Logico. ?Deben sobrescribirse los archivos existentes? (FALSE por
   defecto).
 
 ## Value

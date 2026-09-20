@@ -1,3 +1,24 @@
+.validar_llave_union_enoe <- function(data, claves, tabla) {
+  faltantes <- setdiff(claves, names(data))
+  if (length(faltantes)) {
+    stop(
+      "Faltan llaves en ", tabla, ": ", paste(faltantes, collapse = ", "),
+      call. = FALSE
+    )
+  }
+  if (anyNA(data[claves])) {
+    stop("La llave de ", tabla, " contiene valores faltantes.", call. = FALSE)
+  }
+  if (anyDuplicated(data[claves])) {
+    stop(
+      "La llave de ", tabla, " no es unica: ",
+      paste(claves, collapse = ", "),
+      call. = FALSE
+    )
+  }
+  invisible(TRUE)
+}
+
 #' Fusionar tablas de la ENOE
 #'
 #' Une las tablas de vivienda, hogar, sociodemografico y componentes COE
@@ -10,9 +31,6 @@
 #' @param formato Formato de salida ("parquet", "rds" o "dta"). Opcional.
 #' @param guardar Logico. Si `TRUE` y se especifica formato, guarda el archivo fusionado.
 #' @param intentos Numero de intentos para cargar datos (por defecto 3).
-#' @param fusion_robusta Logico. Si `TRUE`, utiliza claves de identificacion
-#'   explicitas. En 2022-T1 la via robusta es obligatoria porque `ur` difiere
-#'   entre HOG y SDEM y no debe formar parte de la llave.
 #' @param ... Otros parametros para pasar a `carga_enoe()`.
 #'
 #' @return Un data frame con las tablas fusionadas. Si se especifica formato y
@@ -32,21 +50,12 @@
 #' @family descarga_documenta_enoe
 
 fusion_enoe <- function(anio, trimestre, rapida = FALSE, formato = NULL,
-                        guardar = !is.null(formato), intentos = 3,
-                        fusion_robusta = TRUE, ...) {
+                        guardar = !is.null(formato), intentos = 3, ...) {
 
   tablas <- c("viv", "hog", "sdem", "coe1", "coe2")
   url_info <- .construir_url_enoe(anio, trimestre)
   unzip_dir <- paste0("zip/enoe_", anio, "_", trimestre, "t")
   prefijo <- url_info$prefijo
-
-  if (anio == 2022 && trimestre == 1 && !fusion_robusta) {
-    warning(
-      "2022-T1 requiere fusi\u00F3n robusta para conservar la poblaci\u00F3n rural; se usar\u00E1 `fusion_robusta = TRUE`.",
-      call. = FALSE
-    )
-    fusion_robusta <- TRUE
-  }
 
   limpiar_sufijos_join <- function(df, preferir_y = character()) {
     for (variable in preferir_y) {
@@ -64,6 +73,27 @@ fusion_enoe <- function(anio, trimestre, rapida = FALSE, formato = NULL,
       )
   }
 
+  auditar_union <- function(izquierda, derecha, claves, etapa, tipo, salida) {
+    claves_izq <- dplyr::distinct(izquierda, dplyr::across(dplyr::all_of(claves)))
+    claves_der <- dplyr::distinct(derecha, dplyr::across(dplyr::all_of(claves)))
+    data.frame(
+      etapa = etapa,
+      tipo_union = tipo,
+      filas_izquierda = nrow(izquierda),
+      filas_derecha = nrow(derecha),
+      llaves_duplicadas_izquierda = sum(duplicated(izquierda[claves])),
+      llaves_duplicadas_derecha = sum(duplicated(derecha[claves])),
+      llaves_sin_pareja_izquierda = nrow(dplyr::anti_join(
+        claves_izq, claves_der, by = claves
+      )),
+      llaves_sin_pareja_derecha = nrow(dplyr::anti_join(
+        claves_der, claves_izq, by = claves
+      )),
+      filas_salida = nrow(salida),
+      stringsAsFactors = FALSE
+    )
+  }
+
   if (!dir.exists(unzip_dir)) {
     message("Archivos no encontrados localmente. Usando carga_enoe() para descargar y procesar.")
     datos <- carga_enoe(
@@ -75,10 +105,6 @@ fusion_enoe <- function(anio, trimestre, rapida = FALSE, formato = NULL,
       ...
     )
   } else {
-    if (anio == 2022 && trimestre == 1) {
-      .sustituir_todo_enoe_2022t1(unzip_dir)
-    }
-
     message("Cargando archivos desde ", unzip_dir)
 
     datos <- lapply(tablas, function(tabla) {
@@ -103,8 +129,7 @@ fusion_enoe <- function(anio, trimestre, rapida = FALSE, formato = NULL,
 
   message("\nFusionando tablas para ", anio, " trimestre ", trimestre, "...")
 
-  if (fusion_robusta) {
-    posibles_idviv  <- c("tipo", "mes_cal", "cd_a", "ca", "ent", "con", "v_sel")
+  posibles_idviv  <- c("tipo", "mes_cal", "cd_a", "ca", "ent", "ur", "con", "v_sel")
     posibles_idhog  <- c(posibles_idviv, "n_hog", "h_mud")
     posibles_idsdem <- c(posibles_idhog, "n_ren")
 
@@ -122,43 +147,71 @@ fusion_enoe <- function(anio, trimestre, rapida = FALSE, formato = NULL,
       stop("No se encontraron variables de uni\u00F3n entre sdem y coe.")
     }
 
-    coe_fusionado <- datos$coe1 %>%
-      dplyr::left_join(datos$coe2, by = idsdem) %>%
+    .validar_llave_union_enoe(datos$viv, idviv, "VIV")
+    .validar_llave_union_enoe(datos$hog, idhog, "HOG")
+    .validar_llave_union_enoe(datos$sdem, idsdem, "SDEM")
+    .validar_llave_union_enoe(datos$coe1, idsdem, "COE1")
+    .validar_llave_union_enoe(datos$coe2, idsdem, "COE2")
+
+    coe_union <- datos$coe1 %>%
+      dplyr::left_join(datos$coe2, by = idsdem)
+    auditoria_fusion <- list(auditar_union(
+      datos$coe1, datos$coe2, idsdem, "COE1-COE2", "left", coe_union
+    ))
+    coe_fusionado <- coe_union %>%
       limpiar_sufijos_join() %>%
       dplyr::rename_with(
         ~ paste0(.x, "coe"),
         dplyr::any_of(c("p1", "p3", "p4_1", "p4_2"))
       )
 
-    enoe_fusionado <- datos$viv %>%
-      dplyr::inner_join(datos$hog, by = idviv) %>%
-      limpiar_sufijos_join() %>%
-      dplyr::inner_join(datos$sdem, by = idhog) %>%
-      limpiar_sufijos_join(preferir_y = "ur") %>%
-      dplyr::filter(r_def == 0, c_res != 2) %>%
-      dplyr::left_join(coe_fusionado, by = idsdem) %>%
-      limpiar_sufijos_join()
-
-  } else {
-    columnas_comunes <- intersect(names(datos$coe1), names(datos$coe2))
-
-    coe_fusionado <- datos$coe1 %>%
-      dplyr::left_join(datos$coe2, by = columnas_comunes) %>%
-      limpiar_sufijos_join() %>%
-      dplyr::rename_with(
-        ~ paste0(.x, "coe"),
-        dplyr::any_of(c("p1", "p3", "p4_1", "p4_2"))
+    viv_hog_union <- datos$hog %>%
+      dplyr::left_join(datos$viv, by = idviv)
+    auditoria_fusion[[2L]] <- auditar_union(
+      datos$hog, datos$viv, idviv, "HOG-VIV", "left", viv_hog_union
+    )
+    viv_hog <- viv_hog_union %>% limpiar_sufijos_join()
+    sdem_filtrado <- datos$sdem %>% dplyr::filter(r_def == 0, c_res != 2)
+    auditoria_fusion[[3L]] <- data.frame(
+      etapa = "FILTRO-SDEM", tipo_union = "filtro",
+      filas_izquierda = nrow(datos$sdem), filas_derecha = NA_integer_,
+      llaves_duplicadas_izquierda = 0L,
+      llaves_duplicadas_derecha = NA_integer_,
+      llaves_sin_pareja_izquierda = nrow(datos$sdem) - nrow(sdem_filtrado),
+      llaves_sin_pareja_derecha = NA_integer_,
+      filas_salida = nrow(sdem_filtrado)
+    )
+    sdem_union <- sdem_filtrado %>% dplyr::left_join(viv_hog, by = idhog)
+    auditoria_fusion[[4L]] <- auditar_union(
+      sdem_filtrado, viv_hog, idhog, "SDEM-HOG", "left", sdem_union
+    )
+    hogares_sin_hog <- auditoria_fusion[[4L]]$llaves_sin_pareja_izquierda
+    if (hogares_sin_hog > 0L) {
+      warning(
+        "HOG no cubre ", hogares_sin_hog,
+        " llaves de SDEM; se conservan las personas y quedan NA auxiliares."
       )
-
-    enoe_fusionado <- datos$viv %>%
-      dplyr::left_join(datos$hog, by = intersect(names(datos$viv), names(datos$hog))) %>%
-      limpiar_sufijos_join() %>%
-      dplyr::left_join(datos$sdem, by = intersect(names(datos$hog), names(datos$sdem))) %>%
-      limpiar_sufijos_join(preferir_y = "ur") %>%
-      dplyr::filter(r_def == 0, c_res != 2) %>%
-      dplyr::left_join(coe_fusionado, by = intersect(names(datos$sdem), names(coe_fusionado))) %>%
+    }
+    sdem_con_hogar <- sdem_union %>% limpiar_sufijos_join()
+    enoe_union <- sdem_con_hogar %>%
+      dplyr::left_join(coe_fusionado, by = idsdem)
+    auditoria_fusion[[5L]] <- auditar_union(
+      sdem_con_hogar, coe_fusionado, idsdem, "SDEM-COE", "left", enoe_union
+    )
+    enoe_fusionado <- enoe_union %>%
       limpiar_sufijos_join()
-  }
+
+    auditoria_fusion <- dplyr::bind_rows(auditoria_fusion)
+    attr(enoe_fusionado, "auditoria_fusion") <- auditoria_fusion
+    for (i in seq_len(nrow(auditoria_fusion))) {
+      z <- auditoria_fusion[i, ]
+      message(
+        z$etapa, ": ", z$filas_izquierda, " + ", z$filas_derecha,
+        " -> ", z$filas_salida, "; sin pareja izq=",
+        z$llaves_sin_pareja_izquierda, ", der=",
+        z$llaves_sin_pareja_derecha
+      )
+    }
 
   n_sdem <- nrow(datos$sdem[datos$sdem$r_def == 0 & datos$sdem$c_res != 2, ])
   n_fusion <- nrow(enoe_fusionado)
@@ -166,18 +219,14 @@ fusion_enoe <- function(anio, trimestre, rapida = FALSE, formato = NULL,
   message("Filas esperadas tras el filtro (sdem): ", n_sdem)
   message("Filas en la tabla fusionada final: ", n_fusion)
 
-  if (fusion_robusta && n_fusion != n_sdem) {
+  if (n_fusion != n_sdem) {
     stop(
-      "La fusi\u00F3n robusta no conserv\u00F3 el n\u00FAmero esperado de filas de SDEM: ",
+      "La fusi\u00F3n can\u00F3nica no conserv\u00F3 el n\u00FAmero esperado de filas de SDEM: ",
       n_fusion, " frente a ", n_sdem, ". No se guardar\u00E1 el resultado.",
       call. = FALSE
     )
   } else if (n_fusion == 0) {
     warning("La tabla fusionada est\u00E1 vac\u00EDa. Verificar posibles errores.")
-  } else if (n_fusion > n_sdem) {
-    warning("La tabla fusionada tiene M\u00C1S filas que las esperadas despu\u00E9s del filtro. Verificar duplicaciones.")
-  } else if (n_fusion < n_sdem) {
-    warning("La tabla fusionada tiene MENOS filas que las esperadas despu\u00E9s del filtro. Posible p\u00E9rdida en joins.")
   }
 
   if (!is.null(formato) && guardar) {

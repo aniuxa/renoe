@@ -2,7 +2,7 @@
 % Please edit documentation in R/procesar_cuidado_remunerado.R
 \name{procesar_cuidado_remunerado}
 \alias{procesar_cuidado_remunerado}
-\title{Procesar el módulo de cuidado de mercado}
+\title{Procesar el modulo de cuidado de mercado}
 \usage{
 procesar_cuidado_remunerado(
   data,
@@ -37,30 +37,31 @@ las salidas propias del modulo si existen; preserva los insumos.
 }
 \description{
 Interfaz del modulo desarrollado para el articulo sobre brechas de ingreso
-mediante regresiones cuantílicas. Clasifica en memoria; no descarga, escribe
+mediante regresiones cuantilicas. Clasifica en memoria; no descarga, escribe
 ni reconstruye microdatos. Los modelos pertenecen al proyecto del articulo.
 }
 \details{
-Usa CMO hasta 2012-II, SINCO 2011 desde 2012-III y SINCO 2019 desde
-2021-III, conforme a las reglas existentes del paquete. Prefiere el codigo
-observado de cuatro digitos (\code{p3coe}) para evitar confundir un \code{sinco3d}
-previamente armonizado a 2011 con SINCO 2019. Si falta \code{p3coe}, acepta una
-columna de tres digitos en el clasificador observado del periodo. Rechaza
-el respaldo cuando detecta metadatos de armonizacion general en 2019.
+Cuando detecta la salida completa de \code{\link[=armonizar_sinco]{armonizar_sinco()}}, usa
+\code{sinco4d_base2011} y \code{sinco3d} como insumos canonicos para todos los
+periodos. Conserva \code{p3coe} como codigo original y no vuelve a decidir el
+catalogo por su cuenta. Si la ruta canonica no esta presente, conserva el
+comportamiento historico basado en el clasificador observado.
 
 Conserva las columnas originales, incluido \code{sinco3d}. Agrega las salidas de
 \code{class_cuidado_rem()} y trazabilidad especifica. \code{codigo_ocupacion_armonizado}
-tiene tres digitos: es un puente analitico en CMO y un codigo observado
-en SINCO; no representa una homologacion universal a SINCO 2011.
+tiene tres digitos y representa SINCO 2011 cuando la ruta canonica esta
+disponible; en el modo heredado conserva la interpretacion anterior.
+Para los remanentes CMO sin SINCO 3d canonico, el puente analitico de
+cuidado recupera solo la clasificacion dependiente y registra su
+multiplicidad; no rellena el SINCO general ni convierte 9999 en ocupacion.
 \code{codigo_ocupacion_original_cuidado} conserva el insumo sin recodificar.
 Las correspondencias multiples siguen la primera regla del material de
 Damian y quedan identificadas en \code{calidad_armonizacion_cuidado}.
 
-\code{trabajo_cuidado_mercado} es el nombre principal de la tipología. La columna
-\code{trabajo_cuidado_rem} se conserva como alias deprecado. La función separa la
-posición remunerada, la posición explícita sin pago y la evidencia de ingreso
+\code{trabajo_cuidado_mercado} es el nombre de la tipologia. La funcion separa la
+posicion remunerada, la posicion explicita sin pago y la evidencia de ingreso
 observado o imputado. Un ingreso imputado positivo nunca se presenta como
-remuneración observada.
+remuneracion observada.
 }
 \examples{
 x <- data.frame(p3coe = c(2331, 4111), p4a = c(6111, 6111), clase2 = 1)

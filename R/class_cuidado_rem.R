@@ -21,10 +21,12 @@
 #'   2012-II; normalmente `p3coe`.
 #' @param aplicar_puente_cmo Si es TRUE, aplica automaticamente el puente de
 #'   cuidado a las observaciones de 2005-I a 2012-II.
+#' @param puente_cmo_precalculado Si es TRUE, el llamador ya resolvio el
+#'   remanente CMO antes de entrar y no se emite la advertencia de omision.
 #'
 #' @return El mismo data frame con `class_ocu`, `isco_care`, `care_industry`,
-#'   `care_w`, `cuida_total`, `trabajo_cuidado_mercado`, el alias deprecado
-#'   `trabajo_cuidado_rem`, `cuida_1d` y banderas de medicion.
+#'   `care_w`, `trabajo_cuidado_mercado`, `cuida_1d` y banderas
+#'   de medicion.
 #' @export
 #' @family cuidado_remunerado
 #'
@@ -40,7 +42,8 @@ class_cuidado_rem <- function(
     variable_ocupado = "clase2",
     valor_ocupado = 1,
     variable_cmo = "p3coe",
-    aplicar_puente_cmo = TRUE
+    aplicar_puente_cmo = TRUE,
+    puente_cmo_precalculado = FALSE
 ) {
   requeridas <- c("anio", "trim", variable_actividad, variable_ocupado)
   faltantes <- setdiff(requeridas, names(data))
@@ -119,7 +122,8 @@ class_cuidado_rem <- function(
       data[[variable_ocupacion]][indice_cmo] <- datos_cmo$sinco3d
     }
     data$puente_cmo_aplicado[indice_cmo] <- TRUE
-  } else if (any(periodo_cmo) && !aplicar_puente_cmo) {
+  } else if (any(periodo_cmo) && !aplicar_puente_cmo &&
+             !isTRUE(puente_cmo_precalculado)) {
     warning(
       "Hay observaciones de 2005-I a 2012-II, pero el puente CMO fue ",
       "desactivado con `aplicar_puente_cmo = FALSE`.",
@@ -211,14 +215,18 @@ class_cuidado_rem <- function(
         TRUE ~ FALSE
       ),
       class_ocu = dplyr::case_when(
-        !ocupado | is.na(ocu) ~ NA_real_,
+        !ocupado ~ NA_real_,
+        cmo_8200_domestico ~ 13,
+        is.na(ocu) ~ NA_real_,
         ocu %in% ocupacion_directa ~ 11,
         ocu %in% ocupacion_directa_ampliada ~ 12,
-        ocu %in% ocupacion_indirecta | cmo_8200_domestico ~ 13,
+        ocu %in% ocupacion_indirecta ~ 13,
         TRUE ~ 0
       ),
       isco_care = dplyr::case_when(
-        !ocupado | is.na(ocu) ~ NA_real_,
+        !ocupado ~ NA_real_,
+        cmo_8200_domestico ~ 91,
+        is.na(ocu) ~ NA_real_,
         ocu %in% isco_13 ~ 13,
         ocu %in% isco_26 ~ 26,
         ocu %in% isco_22 ~ 22,
@@ -226,7 +234,7 @@ class_cuidado_rem <- function(
         ocu %in% isco_34 ~ 34,
         ocu %in% isco_32 ~ 32,
         ocu %in% isco_53 ~ 53,
-        ocu %in% isco_91 | cmo_8200_domestico ~ 91,
+        ocu %in% isco_91 ~ 91,
         TRUE ~ 0
       ),
       care_industry_detalle = dplyr::case_when(
@@ -253,7 +261,7 @@ class_cuidado_rem <- function(
       ),
       # Replica la tipologia del articulo. El orden es deliberado: el trabajo
       # contratado directamente por hogares se identifica antes de evaluar la
-      # ocupacion, y posteriormente `cuida_total` excluye ocupaciones no cuidadoras.
+      # ocupacion, y posteriormente la salida total excluye ocupaciones no cuidadoras.
       care_w = dplyr::case_when(
         is.na(class_ocu) | is.na(care_industry) ~ NA_real_,
         class_ocu != 0 & care_industry == 1 ~ 1,
@@ -263,14 +271,12 @@ class_cuidado_rem <- function(
         class_ocu == 0 & care_industry == 1 ~ 4,
         TRUE ~ 0
       ),
-      cuida_total = dplyr::case_when(
+      trabajo_cuidado_mercado = dplyr::case_when(
         is.na(care_w) ~ NA_real_,
         care_w == 2 & class_ocu == 0 ~ 0,
         care_w != 0 ~ 1,
         TRUE ~ 0
       ),
-      trabajo_cuidado_mercado = cuida_total,
-      trabajo_cuidado_rem = cuida_total,
       cuida_1d = dplyr::case_when(
         is.na(class_ocu) | is.na(care_w) ~ NA_real_,
         class_ocu == 11 ~ 1,
@@ -295,9 +301,7 @@ class_cuidado_rem <- function(
       care_industry = "Tipo de rama vinculada al cuidado",
       care_industry_detalle = "Rama detallada de la industria del cuidado",
       care_w = "Posicion del trabajador en la economia del cuidado",
-      cuida_total = "Trabajadora/or de cuidado de mercado",
       trabajo_cuidado_mercado = "Trabajadora/or de cuidado de mercado",
-      trabajo_cuidado_rem = "Alias deprecado de trabajo_cuidado_mercado",
       cuida_1d = "Grupo agregado de trabajo de cuidado de mercado"
     ) |>
     sjlabelled::val_labels(
@@ -320,9 +324,7 @@ class_cuidado_rem <- function(
         "Trabajadores de cuidado en otros sectores" = 3,
         "Otros trabajadores del sector de cuidado" = 4
       ),
-      cuida_total = c("No" = 0, "S\u00ED" = 1),
       trabajo_cuidado_mercado = c("No" = 0, "S\u00ED" = 1),
-      trabajo_cuidado_rem = c("No" = 0, "S\u00ED" = 1),
       cuida_1d = c(
         "No cuidado" = 0,
         "Cuidado directo" = 1,

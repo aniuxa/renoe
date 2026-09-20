@@ -1,8 +1,8 @@
 # Procesar variables de estructura del hogar en la ENOE
 
-Calcula variables derivadas sobre la composición y estructura de los
-hogares a partir de los microdatos de la ENOE. Esta función requiere que
-previamente se hayan generado variables sociodemográficas mediante
+Calcula variables derivadas sobre la composicion y estructura de los
+hogares a partir de los microdatos de la ENOE. Esta funcion requiere que
+previamente se hayan generado variables sociodemograficas mediante
 [`procesar_vars_sociodemo()`](https://aniuxa.github.io/renoe/reference/procesar_vars_sociodemo.md).
 
 ## Usage
@@ -21,47 +21,48 @@ procesar_vars_hogar(data, anio, trimestre)
 
 - anio:
 
-  Año de referencia de los datos.
+  Ano de referencia de los datos.
 
 - trimestre:
 
-  Trimestre de referencia de los datos (número del 1 al 4).
+  Trimestre de referencia de los datos (numero del 1 al 4).
 
 ## Value
 
 Un data frame con variables derivadas de estructura del hogar y
-composición demográfica, etiquetadas.
+composicion demografica, etiquetadas.
 
 ## Details
 
 Incluye:
 
-- Clasificación de parentesco (`relative`), ajustada al catálogo
-  correspondiente según el periodo
+- Clasificacion de parentesco (`relative`), ajustada al catalogo
+  correspondiente segun el periodo
 
-- Tipologías de hogares (familiares, extensos, compuestos, etc.)
+- Tipologias de hogares (familiares, extensos, compuestos, etc.)
 
-- Tamaño del hogar y tasas de dependencia (menores, mayores y total)
+- Tamano del hogar y tasas de dependencia (menores, mayores y total)
 
 - Conteo de integrantes por grupo etario
 
-- Indicadores dicotómicos de presencia de grupos clave (niñez, juventud,
+- Indicadores dicotomicos de presencia de grupos clave (ninez, juventud,
   adultez mayor)
 
-Las variables generadas permiten construir tipologías familiares,
-caracterizar hogares según su composición y analizar necesidades de
-cuidado o dependencia demográfica.
+Las variables generadas permiten construir tipologias familiares,
+caracterizar hogares segun su composicion y analizar necesidades de
+cuidado o dependencia demografica.
 
-La variable `tam_hog` se calcula excluyendo al servicio doméstico y a
-sus familiares, identificados en el catálogo de `par_c` mediante
+La variable `tam_hog` se calcula excluyendo al servicio domestico y a
+sus familiares, identificados en el catalogo de `par_c` mediante
 `relative == 7`.
 
 ## See also
 
 Other procesamiento_enoe:
-[`armoniza_sinco()`](https://aniuxa.github.io/renoe/reference/armoniza_sinco.md),
+[`.armonizar_sinco_enoe_core()`](https://aniuxa.github.io/renoe/reference/dot-armonizar_sinco_enoe_core.md),
 [`armonizar_carreras_enoe()`](https://aniuxa.github.io/renoe/reference/armonizar_carreras_enoe.md),
 [`calcular_desajuste_estadistico()`](https://aniuxa.github.io/renoe/reference/calcular_desajuste_estadistico.md),
+[`calcular_desajuste_horizontal()`](https://aniuxa.github.io/renoe/reference/calcular_desajuste_horizontal.md),
 [`crear_folios()`](https://aniuxa.github.io/renoe/reference/crear_folios.md),
 [`imputa_ingocup()`](https://aniuxa.github.io/renoe/reference/imputa_ingocup.md),
 [`ipc_enoe()`](https://aniuxa.github.io/renoe/reference/ipc_enoe.md),
@@ -74,6 +75,7 @@ Other procesamiento_enoe:
 [`procesar_variables_enoe()`](https://aniuxa.github.io/renoe/reference/procesar_variables_enoe.md),
 [`procesar_vars_laborales()`](https://aniuxa.github.io/renoe/reference/procesar_vars_laborales.md),
 [`procesar_vars_sociodemo()`](https://aniuxa.github.io/renoe/reference/procesar_vars_sociodemo.md),
+[`reglas_enoe()`](https://aniuxa.github.io/renoe/reference/reglas_enoe.md),
 [`sinco2019_to_sinco2011()`](https://aniuxa.github.io/renoe/reference/sinco2019_to_sinco2011.md)
 
 ## Examples

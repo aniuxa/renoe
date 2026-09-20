@@ -2,11 +2,11 @@
 % Please edit documentation in R/utils.R
 \name{.estandarizar_ids}
 \alias{.estandarizar_ids}
-\title{Estandariza variables de identificación}
+\title{Estandariza variables de identificacion}
 \usage{
 .estandarizar_ids(df, anio, trimestre)
 }
 \description{
-Estandariza variables de identificación
+Estandariza variables de identificacion
 }
 \keyword{internal}

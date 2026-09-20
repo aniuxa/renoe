@@ -8,32 +8,32 @@
 info_trimestre(anio, trimestre)
 }
 \arguments{
-\item{anio}{Año del trimestre (2005-2026). Debe ser un valor numérico entre 2005 y 2026.}
+\item{anio}{Ano del trimestre (2005-2026). Debe ser un valor numerico entre 2005 y 2026.}
 
-\item{trimestre}{Número del trimestre (1-4). Donde 1 = ENE-MAR, 2 = ABR-JUN,
+\item{trimestre}{Numero del trimestre (1-4). Donde 1 = ENE-MAR, 2 = ABR-JUN,
 3 = JUL-SEP, 4 = OCT-DIC.}
 }
 \value{
 Un data.frame con 6 columnas:
 \describe{
-\item{trimestre}{Código del trimestre (ej. "t105")}
+\item{trimestre}{Codigo del trimestre (ej. "t105")}
 \item{coe_tipo}{Tipo de cuestionario COE ("ampliado" o "basico")}
-\item{coe_v}{Versión del cuestionario COE (ej. "v1", "v2")}
-\item{sdem_v}{Versión del cuestionario SDEM}
-\item{fd}{Versión del file descriptor}
+\item{coe_v}{Version del cuestionario COE (ej. "v1", "v2")}
+\item{sdem_v}{Version del cuestionario SDEM}
+\item{fd}{Version del file descriptor}
 \item{encoding}{Encoding recomendado para los archivos}
 }
-Retorna NULL si no se encuentra información para el trimestre especificado.
+Retorna NULL si no se encuentra informacion para el trimestre especificado.
 }
 \description{
-Consulta la información sobre qué versiones de cuestionarios (COE, SDEM, FD)
-corresponden a un trimestre específico de la ENOE.
+Consulta la informacion sobre que versiones de cuestionarios (COE, SDEM, FD)
+corresponden a un trimestre especifico de la ENOE.
 }
 \examples{
-# Consultar información para el primer trimestre de 2020
+# Consultar informacion para el primer trimestre de 2020
 info_trimestre(2020, 1)
 
-# Consultar información para el tercer trimestre de 2015
+# Consultar informacion para el tercer trimestre de 2015
 info_trimestre(2015, 3)
 }
 \seealso{

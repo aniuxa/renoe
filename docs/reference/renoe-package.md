@@ -1,14 +1,14 @@
 # renoe: Herramientas para trabajar con la ENOE desde 2005
 
 Este paquete proporciona funciones para descargar, cargar, fusionar y
-procesar datos de la Encuesta Nacional de Ocupación y Empleo (ENOE) de
-México desde 2005.
+procesar datos de la Encuesta Nacional de Ocupacion y Empleo (ENOE) de
+Mexico desde 2005.
 
 ## Details
 
-Incluye utilidades para imputación de ingresos ocupacionales,
-procesamiento de estructura del hogar, uso del tiempo, codificación
-ocupacional y desajuste educativo, así como funciones para manejar
+Incluye utilidades para imputacion de ingresos ocupacionales,
+procesamiento de estructura del hogar, uso del tiempo, codificacion
+ocupacional y desajuste educativo, asi como funciones para manejar
 archivos ZIP, metadatos del INEGI y formatos como `.parquet`, `.dta` y
 `.rds`.
 
@@ -16,7 +16,7 @@ archivos ZIP, metadatos del INEGI y formatos como `.parquet`, `.dta` y
 
 Useful links:
 
-- <https://aniuxa.github.io/renoe>
+- <https://aniuxa.github.io/renoe/>
 
 - <https://github.com/aniuxa/renoe>
 

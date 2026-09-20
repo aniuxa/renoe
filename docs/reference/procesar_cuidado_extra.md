@@ -49,22 +49,23 @@ procesar_cuidado_extra(
 
 ## Value
 
-El mismo data frame individual con variables del hogar aÃ±adidas.
+El mismo data frame individual con variables del hogar anadidas.
 
 ## References
 
 Escoto, Ana (2026, 4 de junio). *Transversalidad del derecho al cuidado:
-tensiones y desafíos* (ponencia). Mesa 1 del conversatorio *¿Una cancha
-pareja? Escuela, cuidado y fragmentación de derechos*, El Colegio de
-México. Transmisión oficial:
+tensiones y desafios* (ponencia). Mesa 1 del conversatorio *?Una cancha
+pareja? Escuela, cuidado y fragmentacion de derechos*, El Colegio de
+Mexico. Transmision oficial:
 <https://www.youtube.com/watch?v=fdpzAe6IYBc>
 
 ## See also
 
 Other procesamiento_enoe:
-[`armoniza_sinco()`](https://aniuxa.github.io/renoe/reference/armoniza_sinco.md),
+[`.armonizar_sinco_enoe_core()`](https://aniuxa.github.io/renoe/reference/dot-armonizar_sinco_enoe_core.md),
 [`armonizar_carreras_enoe()`](https://aniuxa.github.io/renoe/reference/armonizar_carreras_enoe.md),
 [`calcular_desajuste_estadistico()`](https://aniuxa.github.io/renoe/reference/calcular_desajuste_estadistico.md),
+[`calcular_desajuste_horizontal()`](https://aniuxa.github.io/renoe/reference/calcular_desajuste_horizontal.md),
 [`crear_folios()`](https://aniuxa.github.io/renoe/reference/crear_folios.md),
 [`imputa_ingocup()`](https://aniuxa.github.io/renoe/reference/imputa_ingocup.md),
 [`ipc_enoe()`](https://aniuxa.github.io/renoe/reference/ipc_enoe.md),
@@ -77,6 +78,7 @@ Other procesamiento_enoe:
 [`procesar_vars_hogar()`](https://aniuxa.github.io/renoe/reference/procesar_vars_hogar.md),
 [`procesar_vars_laborales()`](https://aniuxa.github.io/renoe/reference/procesar_vars_laborales.md),
 [`procesar_vars_sociodemo()`](https://aniuxa.github.io/renoe/reference/procesar_vars_sociodemo.md),
+[`reglas_enoe()`](https://aniuxa.github.io/renoe/reference/reglas_enoe.md),
 [`sinco2019_to_sinco2011()`](https://aniuxa.github.io/renoe/reference/sinco2019_to_sinco2011.md)
 
 ## Examples

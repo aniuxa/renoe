@@ -5,7 +5,10 @@
 #' la clasificacion de Gabriela Cervantes para SINCO 2011 entre 2012-III y
 #' 2021-II, y su actualizacion a SINCO 2019 desde 2021-III.
 #'
-#' La actualizacion conserva la equivalencia sustantiva de Nutriologos:
+#' Si recibe metadatos de [armonizar_sinco()], aplica la clasificacion SINCO
+#' 2011 a toda la serie comparable. El modo observado permanece disponible
+#' para reproducir resultados historicos. La actualizacion observada conserva
+#' la equivalencia sustantiva de Nutriologos:
 #' SINCO 2011 `2423` pasa a SINCO 2019 `2433`. El codigo `2423` de SINCO 2019
 #' corresponde a Ginecologos y obstetras y no se clasifica como susceptible.
 #'
@@ -15,6 +18,9 @@
 #' @param variable_trim Nombre de la variable de trimestre.
 #' @param nombre_salida Nombre del indicador binario creado.
 #' @param sobrescribir Si es `TRUE`, permite reemplazar variables existentes.
+#' @param base_sinco Base del codigo recibido. `"auto"` usa SINCO 2011 cuando
+#'   detecta metadatos de [armonizar_sinco()]; `"canonica_2011"` fuerza la
+#'   clasificacion comun y `"observada"` conserva el comportamiento historico.
 #'
 #' @return El mismo data frame con `nombre_salida` y
 #'   `version_sinco_teletrabajo`. El indicador vale 1 para ocupaciones
@@ -46,8 +52,10 @@ clasificar_susceptibilidad_teletrabajo <- function(
     variable_anio = "anio",
     variable_trim = "trim",
     nombre_salida = "susceptible_teletrabajo",
-    sobrescribir = FALSE) {
+    sobrescribir = FALSE,
+    base_sinco = c("auto", "canonica_2011", "observada")) {
 
+  base_sinco <- match.arg(base_sinco)
   requeridas <- c(variable_sinco, variable_anio, variable_trim)
   faltantes <- setdiff(requeridas, names(data))
   if (length(faltantes) > 0L) {
@@ -93,6 +101,9 @@ clasificar_susceptibilidad_teletrabajo <- function(
 
   codigo <- trimws(as.character(data[[variable_sinco]]))
   codigo[codigo %in% c("", "NA", "NaN")] <- NA_character_
+  valido <- !is.na(codigo) & grepl("^[1-9][0-9]{3}$", codigo) &
+    codigo != "9999"
+  codigo[!valido] <- NA_character_
   anio <- suppressWarnings(as.integer(as.character(data[[variable_anio]])))
   trim_texto <- trimws(tolower(as.character(data[[variable_trim]])))
   trim_texto <- sub("^t", "", trim_texto)
@@ -100,8 +111,16 @@ clasificar_susceptibilidad_teletrabajo <- function(
   trim[!trim %in% 1:4] <- NA_integer_
 
   periodo <- anio * 10L + trim
-  usa_2011 <- !is.na(periodo) & periodo >= 20123L & periodo <= 20212L
-  usa_2019 <- !is.na(periodo) & periodo >= 20213L
+  usa_canonica <- base_sinco == "canonica_2011" ||
+    (base_sinco == "auto" && any(c(
+      "sinco4d_base2011", "calidad_puente_sinco",
+      "sinco2011_granularidad"
+    ) %in% names(data)))
+  usa_2011 <- !is.na(periodo) &
+    periodo >= 20123L & (
+    usa_canonica | (periodo >= 20123L & periodo <= 20212L)
+  )
+  usa_2019 <- !usa_canonica & !is.na(periodo) & periodo >= 20213L
   comparable <- usa_2011 | usa_2019
 
   resultado <- rep(NA_integer_, nrow(data))
@@ -111,7 +130,11 @@ clasificar_susceptibilidad_teletrabajo <- function(
   resultado[usa_2019 & !is.na(codigo) & codigo %in% sinco2019] <- 1L
 
   version <- rep(NA_character_, nrow(data))
-  version[usa_2011] <- "SINCO 2011"
+  version[usa_2011] <- if (usa_canonica) {
+    "SINCO 2011 armonizado"
+  } else {
+    "SINCO 2011 observado"
+  }
   version[usa_2019] <- "SINCO 2019"
 
   data[[nombre_salida]] <- resultado

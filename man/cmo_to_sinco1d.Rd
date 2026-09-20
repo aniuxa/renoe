@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{cmo_to_sinco1d}
 \alias{cmo_to_sinco1d}
-\title{Convertir códigos CMO a clasificación SINCO 1d (nivel agregado)}
+\title{Convertir codigos CMO a clasificacion SINCO 1d (nivel agregado)}
 \usage{
 cmo_to_sinco1d(data)
 }
@@ -15,5 +15,5 @@ El data frame original con la variable \code{sinco1d} agregada.
 }
 \description{
 Aplica mapeo manual desde 2005-I hasta el segundo trimestre de 2012,
-con base en \code{p3_coe}, usando reglas por \code{cmo2d}, \code{cmo3d} y códigos completos.
+con base en \code{p3_coe}, usando reglas por \code{cmo2d}, \code{cmo3d} y codigos completos.
 }
