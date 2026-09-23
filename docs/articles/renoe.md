@@ -69,10 +69,9 @@ sociodemográfico y los componentes COE, puede utilizarse
 datos_fusionados <- fusion_enoe(2023, 4)
 ```
 
-La función utiliza una estrategia de fusión robusta basada en
-identificadores disponibles, lo que reduce problemas de duplicación o
-pérdida de registros cuando cambian nombres o tipos de variables entre
-trimestres.
+La función utiliza una única ruta canónica: valida la unicidad de las
+llaves, usa SDEM como tabla ancla y conserva la auditoría de pérdidas,
+duplicaciones y llaves sin pareja en cada unión.
 
 También es posible guardar directamente el resultado en distintos
 formatos:
@@ -147,8 +146,8 @@ desconocida y 99 una realización desconocida. Una actividad no
 seleccionada dentro de una batería respondida vale cero, mientras que
 una batería no medible conserva `NA`. Los totales completos quedan en
 `NA` si falta una duración y los totales parciales se conservan con una
-bandera de incompletitud. Las columnas `*_legacy` reproducen la
-recodificación histórica a cero.
+bandera de incompletitud. Las actividades que no existían en el
+instrumento permanecen como `NA`, no como cero.
 
 #### Contribución al hogar
 

@@ -1,7 +1,7 @@
-# Añadir IPC al conjunto fusionado de ENOE
+# Anadir IPC al conjunto fusionado de ENOE
 
-Esta función agrega una columna llamada `ipc` al objeto fusionado de la
-ENOE, correspondiente al promedio trimestral del Índice de Precios al
+Esta funcion agrega una columna llamada `ipc` al objeto fusionado de la
+ENOE, correspondiente al promedio trimestral del Indice de Precios al
 Consumidor (IPC).
 
 ## Usage
@@ -19,7 +19,7 @@ ipc_enoe(datos_fusionados, anio, trimestre)
 
 - anio:
 
-  Año del trimestre (numérico).
+  Ano del trimestre (numerico).
 
 - trimestre:
 
@@ -32,17 +32,18 @@ El mismo `data.frame` con una nueva columna `ipc`.
 ## Details
 
 El archivo `ipc.rds` debe estar ubicado en `inst/extdata/` y contener
-las columnas numéricas `anio`, `trim` e `ipc`, una fila por trimestre.
-La función se detiene si el recurso tiene claves duplicadas, valores
-inválidos o no contiene el periodo solicitado; así se evita propagar
+las columnas numericas `anio`, `trim` e `ipc`, una fila por trimestre.
+La funcion se detiene si el recurso tiene claves duplicadas, valores
+invalidos o no contiene el periodo solicitado; asi se evita propagar
 ingresos deflactados ausentes sin advertencia suficiente.
 
 ## See also
 
 Other procesamiento_enoe:
-[`armoniza_sinco()`](https://aniuxa.github.io/renoe/reference/armoniza_sinco.md),
+[`.armonizar_sinco_enoe_core()`](https://aniuxa.github.io/renoe/reference/dot-armonizar_sinco_enoe_core.md),
 [`armonizar_carreras_enoe()`](https://aniuxa.github.io/renoe/reference/armonizar_carreras_enoe.md),
 [`calcular_desajuste_estadistico()`](https://aniuxa.github.io/renoe/reference/calcular_desajuste_estadistico.md),
+[`calcular_desajuste_horizontal()`](https://aniuxa.github.io/renoe/reference/calcular_desajuste_horizontal.md),
 [`crear_folios()`](https://aniuxa.github.io/renoe/reference/crear_folios.md),
 [`imputa_ingocup()`](https://aniuxa.github.io/renoe/reference/imputa_ingocup.md),
 [`procesar_clases_damian()`](https://aniuxa.github.io/renoe/reference/procesar_clases_damian.md),
@@ -55,6 +56,7 @@ Other procesamiento_enoe:
 [`procesar_vars_hogar()`](https://aniuxa.github.io/renoe/reference/procesar_vars_hogar.md),
 [`procesar_vars_laborales()`](https://aniuxa.github.io/renoe/reference/procesar_vars_laborales.md),
 [`procesar_vars_sociodemo()`](https://aniuxa.github.io/renoe/reference/procesar_vars_sociodemo.md),
+[`reglas_enoe()`](https://aniuxa.github.io/renoe/reference/reglas_enoe.md),
 [`sinco2019_to_sinco2011()`](https://aniuxa.github.io/renoe/reference/sinco2019_to_sinco2011.md)
 
 ## Examples

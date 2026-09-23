@@ -16,7 +16,8 @@ class_cuidado_rem(
   variable_ocupado = "clase2",
   valor_ocupado = 1,
   variable_cmo = "p3coe",
-  aplicar_puente_cmo = TRUE
+  aplicar_puente_cmo = TRUE,
+  puente_cmo_precalculado = FALSE
 )
 ```
 
@@ -52,11 +53,15 @@ class_cuidado_rem(
   Si es TRUE, aplica automaticamente el puente de cuidado a las
   observaciones de 2005-I a 2012-II.
 
+- puente_cmo_precalculado:
+
+  Si es TRUE, el llamador ya resolvio el remanente CMO antes de entrar y
+  no se emite la advertencia de omision.
+
 ## Value
 
 El mismo data frame con `class_ocu`, `isco_care`, `care_industry`,
-`care_w`, `cuida_total`, `trabajo_cuidado_mercado`, el alias deprecado
-`trabajo_cuidado_rem`, `cuida_1d` y banderas de medición.
+`care_w`, `trabajo_cuidado_mercado`, `cuida_1d` y banderas de medicion.
 
 ## Details
 

@@ -1,7 +1,7 @@
 # Fusionar tablas de la ENOE
 
-Une las tablas de vivienda, hogar, sociodemográfico y componentes COE en
-un único data frame.
+Une las tablas de vivienda, hogar, sociodemografico y componentes COE en
+un unico data frame.
 
 ## Usage
 
@@ -13,7 +13,6 @@ fusion_enoe(
   formato = NULL,
   guardar = !is.null(formato),
   intentos = 3,
-  fusion_robusta = TRUE,
   ...
 )
 ```
@@ -22,15 +21,15 @@ fusion_enoe(
 
 - anio:
 
-  Año del trimestre (2005-2026).
+  Ano del trimestre (2005-2026).
 
 - trimestre:
 
-  Número del trimestre (1-4).
+  Numero del trimestre (1-4).
 
 - rapida:
 
-  Lógico. Si `TRUE`, omite el etiquetado de variables.
+  Logico. Si `TRUE`, omite el etiquetado de variables.
 
 - formato:
 
@@ -38,22 +37,16 @@ fusion_enoe(
 
 - guardar:
 
-  Lógico. Si `TRUE` y se especifica formato, guarda el archivo
+  Logico. Si `TRUE` y se especifica formato, guarda el archivo
   fusionado.
 
 - intentos:
 
-  Número de intentos para cargar datos (por defecto 3).
-
-- fusion_robusta:
-
-  Lógico. Si `TRUE`, utiliza claves de identificación explícitas. En
-  2022-T1 la vía robusta es obligatoria porque `ur` difiere entre HOG y
-  SDEM y no debe formar parte de la llave.
+  Numero de intentos para cargar datos (por defecto 3).
 
 - ...:
 
-  Otros parámetros para pasar a
+  Otros parametros para pasar a
   [`carga_enoe()`](https://aniuxa.github.io/renoe/reference/carga_enoe.md).
 
 ## Value

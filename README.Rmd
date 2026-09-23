@@ -6,7 +6,7 @@ output: github_document
 
 **renoe** es un paquete en desarrollo para facilitar la descarga, carga, fusión, procesamiento y análisis de los microdatos de la Encuesta Nacional de Ocupación y Empleo (ENOE) del INEGI desde 2005.
 
-La candidata correctiva 0.3.1 cubre los trimestres habilitados desde 2005-T1 hasta
+La versión correctiva 0.3.1 cubre los trimestres habilitados desde 2005-T1 hasta
 2026-T2. En 2026 están publicados y auditados T1 y T2; T3 y T4 permanecen
 deshabilitados hasta su publicación y validación.
 

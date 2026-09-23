@@ -1,6 +1,6 @@
 # Eliminar sufijo '\_tri' y el prefijo 'cve' de nombres de variables
 
-Esta función renombra las variables eliminando el sufijo '\_tri' y el
+Esta funcion renombra las variables eliminando el sufijo '\_tri' y el
 prefijo cve si existe. Para compatibilidad de la serie
 
 ## Usage

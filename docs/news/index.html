@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Uso del paquete renoe</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,6 +30,32 @@
       <small>Source: <a href="https://github.com/aniuxa/renoe/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.1" id="renoe-031-correctiva-23-de-septiembre-de-2026">renoe 0.3.1 (correctiva, 23 de septiembre de 2026)<a class="anchor" aria-label="anchor" href="#renoe-031-correctiva-23-de-septiembre-de-2026"></a></h2>
+<ul><li>Para 2020-T1 usa conjuntamente las cinco tablas de la publicacion vigente de microdatos de INEGI. Esto recupera los codigos <code>P3</code> presentes en COE1 y evita mezclar ediciones de VIV, HOG, SDEM, COE1 y COE2.</li>
+<li>Invalida caches de 2020-T1 que no contienen las cinco tablas de microdatos y obliga a regenerar la fusion antes de sus derivados transversales y paneles.</li>
+<li>Excluye <code>ur</code> de la llave SDEM-COE de 2020-T1: en 2,851 registros el ambito difiere entre ambas tablas aunque la identidad personal coincide. <code>ur</code> se conserva como variable descriptiva y sigue formando parte de las uniones de vivienda y hogar donde corresponde.</li>
+<li>La anomalía fue detectada mediante una tabulación transversal simple de <code>clase_alt6_damian</code>: 3,011 personas ocupadas aparecían sin clasificación. Tras corregir la unión quedan 162 faltantes legítimos (factor 41,820): 133 con código oficial <code>9999</code> y 29 sin una regla EGP aplicable.</li>
+<li>El cambio invalida el transversal/PINI de 2020-T1, los paneles que contienen ese trimestre (57–61) y sus derivados. Otros trimestres conservan la llave con <code>ur</code> y no se regeneran sin una dependencia comprobada.</li>
+<li>La candidata interna 0.3.0 no fue publicada y queda sustituida por 0.3.1, que es la primera versión reproducible de este conjunto de cambios.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.0" id="renoe-030-candidata-final-local-20-de-septiembre-de-2026">renoe 0.3.0 (candidata final local, 20 de septiembre de 2026)<a class="anchor" aria-label="anchor" href="#renoe-030-candidata-final-local-20-de-septiembre-de-2026"></a></h2>
+<ul><li>Reconcilia la rama de publicación con los escenarios explícitos <code>official_strict</code>, <code>integrated_accepted</code> y <code>analysis_legacy</code>.</li>
+<li>Fija el orden canónico <code>SCIAN → SINCO → carreras → consumidores</code>.</li>
+<li>Conserva el descenso oficial por dígitos, separa los rescates históricos y mantiene <code>9999</code> como código no comparable.</li>
+<li>Añade <code><a href="../reference/procesar_productos_academicos.html">procesar_productos_academicos()</a></code> como wrapper sin reglas duplicadas y conserva <code><a href="../reference/armoniza_sinco.html">armoniza_sinco()</a></code> únicamente como alias deprecado de la API ya publicada antes de 0.3.0.</li>
+</ul><div class="section level3">
+<h3 id="cambios-acumulados-desde-0-3-0">Cambios acumulados desde 0.2.0<a class="anchor" aria-label="anchor" href="#cambios-acumulados-desde-0-3-0"></a></h3>
+<ul><li>Establece una ruta canonica reproducible desde la fusion ENOE hasta las clasificaciones finales, sin alias ni opciones legacy no publicadas.</li>
+<li>Incorpora la cascada ocupacional oficial, panel, reglas ENOE/SCIAN, consenso y reglas de autor, con procedencia y nivel de digitos.</li>
+<li>Corrige los quintiles del hogar para usar una fila y un factor por hogar y conserva como <code>NA</code> los ingresos completamente desconocidos.</li>
+<li>Separa cuidado adolescente amplio y directo, corrige el indicador de cuidado adolescente y armoniza el trabajo no remunerado dentro del hogar.</li>
+<li>Documenta las rupturas de 2013, 2020 y 2023 y audita 85 trimestres entre 2005-T1 y 2026-T2.</li>
+<li>Anade clasificaciones reproducibles de origen, parentesco, hogares, educacion, situacion laboral, cuidados y region socioeconomica.</li>
+<li>Corrige HOG de 2022-T1 combinando los componentes oficiales urbano y rural, armoniza sus meses, incorpora <code>ur</code> a las llaves de union y usa SDEM como ancla para impedir que una ausencia auxiliar elimine personas.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="renoe-020-10-de-septiembre-de-2026">renoe 0.2.0 (10 de septiembre de 2026)<a class="anchor" aria-label="anchor" href="#renoe-020-10-de-septiembre-de-2026"></a></h2>
 <ul><li>Se formalizó a Ana Escoto como única autora y mantenedora (<code>aut</code>, <code>cre</code>) y a Gerardo Damián Hernández y Gabriela Cervantes como colaboradores de código (<code>ctb</code>), sin incorporarlos a la cita bibliográfica del paquete.</li>

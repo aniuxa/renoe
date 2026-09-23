@@ -1,7 +1,7 @@
-# Procesar el módulo de cuidado de mercado
+# Procesar el modulo de cuidado de mercado
 
 Interfaz del modulo desarrollado para el articulo sobre brechas de
-ingreso mediante regresiones cuantílicas. Clasifica en memoria; no
+ingreso mediante regresiones cuantilicas. Clasifica en memoria; no
 descarga, escribe ni reconstruye microdatos. Los modelos pertenecen al
 proyecto del articulo.
 
@@ -58,29 +58,30 @@ las salidas propias del modulo si existen; preserva los insumos.
 
 ## Details
 
-Usa CMO hasta 2012-II, SINCO 2011 desde 2012-III y SINCO 2019 desde
-2021-III, conforme a las reglas existentes del paquete. Prefiere el
-codigo observado de cuatro digitos (`p3coe`) para evitar confundir un
-`sinco3d` previamente armonizado a 2011 con SINCO 2019. Si falta
-`p3coe`, acepta una columna de tres digitos en el clasificador observado
-del periodo. Rechaza el respaldo cuando detecta metadatos de
-armonizacion general en 2019.
+Cuando detecta la salida completa de
+[`armonizar_sinco()`](https://aniuxa.github.io/renoe/reference/armonizar_sinco.md),
+usa `sinco4d_base2011` y `sinco3d` como insumos canonicos para todos los
+periodos. Conserva `p3coe` como codigo original y no vuelve a decidir el
+catalogo por su cuenta. Si la ruta canonica no esta presente, conserva
+el comportamiento historico basado en el clasificador observado.
 
 Conserva las columnas originales, incluido `sinco3d`. Agrega las salidas
 de
 [`class_cuidado_rem()`](https://aniuxa.github.io/renoe/reference/class_cuidado_rem.md)
 y trazabilidad especifica. `codigo_ocupacion_armonizado` tiene tres
-digitos: es un puente analitico en CMO y un codigo observado en SINCO;
-no representa una homologacion universal a SINCO 2011.
+digitos y representa SINCO 2011 cuando la ruta canonica esta disponible;
+en el modo heredado conserva la interpretacion anterior. Para los
+remanentes CMO sin SINCO 3d canonico, el puente analitico de cuidado
+recupera solo la clasificacion dependiente y registra su multiplicidad;
+no rellena el SINCO general ni convierte 9999 en ocupacion.
 `codigo_ocupacion_original_cuidado` conserva el insumo sin recodificar.
 Las correspondencias multiples siguen la primera regla del material de
 Damian y quedan identificadas en `calidad_armonizacion_cuidado`.
 
-`trabajo_cuidado_mercado` es el nombre principal de la tipología. La
-columna `trabajo_cuidado_rem` se conserva como alias deprecado. La
-función separa la posición remunerada, la posición explícita sin pago y
-la evidencia de ingreso observado o imputado. Un ingreso imputado
-positivo nunca se presenta como remuneración observada.
+`trabajo_cuidado_mercado` es el nombre de la tipologia. La funcion
+separa la posicion remunerada, la posicion explicita sin pago y la
+evidencia de ingreso observado o imputado. Un ingreso imputado positivo
+nunca se presenta como remuneracion observada.
 
 ## See also
 
@@ -105,21 +106,21 @@ procesar_cuidado_remunerado(x, anio = 2022, trimestre = 1)
 #>   sinco_version_cuidado scian_version_cuidado scian_catalogo_alerta class_ocu
 #> 1            SINCO 2019    SCIAN-Hogares 2018                 FALSE        11
 #> 2            SINCO 2019    SCIAN-Hogares 2018                 FALSE         0
-#>   isco_care care_industry_detalle care_industry care_w cuida_total
-#> 1        23  Servicios educativos             1      1           1
-#> 2         0  Servicios educativos             1      4           1
-#>   trabajo_cuidado_mercado trabajo_cuidado_rem cuida_1d clasificador_ocupacion
-#> 1                       1                   1        1             SINCO 2019
-#> 2                       1                   1        4             SINCO 2019
-#>        version_scian codigo_ocupacion_original_cuidado
-#> 1 SCIAN-Hogares 2018                              2331
-#> 2 SCIAN-Hogares 2018                              4111
-#>   codigo_ocupacion_armonizado            metodo_armonizacion_cuidado
-#> 1                         233 SINCO observado: primeros tres digitos
-#> 2                         411 SINCO observado: primeros tres digitos
-#>   calidad_armonizacion_cuidado cuidado_posicion_remunerada cuidado_sin_pago
-#> 1              SINCO observado                          NA               NA
-#> 2              SINCO observado                          NA               NA
+#>   isco_care care_industry_detalle care_industry care_w trabajo_cuidado_mercado
+#> 1        23  Servicios educativos             1      1                       1
+#> 2         0  Servicios educativos             1      4                       1
+#>   cuida_1d clasificador_ocupacion      version_scian
+#> 1        1             SINCO 2019 SCIAN-Hogares 2018
+#> 2        4             SINCO 2019 SCIAN-Hogares 2018
+#>   codigo_ocupacion_original_cuidado codigo_ocupacion_armonizado
+#> 1                              2331                         233
+#> 2                              4111                         411
+#>              metodo_armonizacion_cuidado calidad_armonizacion_cuidado
+#> 1 SINCO observado: primeros tres digitos              SINCO observado
+#> 2 SINCO observado: primeros tres digitos              SINCO observado
+#>   cuidado_n_destinos_puente_cmo cuidado_posicion_remunerada cuidado_sin_pago
+#> 1                            NA                          NA               NA
+#> 2                            NA                          NA               NA
 #>   estado_ingreso_cuidado
 #> 1         no_determinado
 #> 2         no_determinado

@@ -1,7 +1,7 @@
-# Calcular una referencia estadística de escolaridad y su desajuste
+# Calcular una referencia estadistica de escolaridad y su desajuste
 
-Calcula la escolaridad media observada por división SINCO y periodo
-entre la población ocupada. `esco_ref` es una referencia estadística
+Calcula la escolaridad media observada por division SINCO y periodo
+entre la poblacion ocupada. `esco_ref` es una referencia estadistica
 interna, no una norma ocupacional externa. La referencia predeterminada
 es trimestral.
 
@@ -30,7 +30,7 @@ calcular_desajuste_estadistico(
 
 - umbral_anios:
 
-  Umbral simétrico en años; por defecto 1.
+  Umbral simetrico en anos; por defecto 1.
 
 - ponderado:
 
@@ -42,35 +42,34 @@ calcular_desajuste_estadistico(
 
 - anio_incompleto:
 
-  Tratamiento de años con menos de cuatro trimestres: `"error"`,
+  Tratamiento de anos con menos de cuatro trimestres: `"error"`,
   `"advertir"` o `"permitir"`.
 
 ## Value
 
 El mismo data frame, en el mismo orden, con `esco_ref`, `mismatch2` y
-metadatos explícitos del periodo, ponderador, número de trimestres y
+metadatos explicitos del periodo, ponderador, numero de trimestres y
 unidad persona-trimestre.
 
 ## Details
 
-La referencia anual se calcula únicamente sobre datos ya acumulados y su
-unidad es persona-trimestre. La función no deduplica personas: la
-rotación de ENOE forma parte de los cortes transversales acumulados.
+La referencia anual se calcula unicamente sobre datos ya acumulados y su
+unidad es persona-trimestre. La funcion no deduplica personas: la
+rotacion de ENOE forma parte de los cortes transversales acumulados.
 Para publicar una referencia anual se requieren cuatro trimestres por
-año; el tratamiento de años incompletos puede cambiarse explícitamente
+ano; el tratamiento de anos incompletos puede cambiarse explicitamente
 con `anio_incompleto`.
 
 El ponderador se elige con `variable_ponderador`. Dividir por una
-constante común, como cuatro en un año completo, no cambia la media,
-aunque sí importa para estimar totales anuales. Si la entrada contiene
-un `mismatch2` histórico, se conserva en `mismatch2_legacy` durante la
-transición.
+constante comun, como cuatro en un ano completo, no cambia la media,
+aunque si importa para estimar totales anuales.
 
 ## See also
 
 Other procesamiento_enoe:
-[`armoniza_sinco()`](https://aniuxa.github.io/renoe/reference/armoniza_sinco.md),
+[`.armonizar_sinco_enoe_core()`](https://aniuxa.github.io/renoe/reference/dot-armonizar_sinco_enoe_core.md),
 [`armonizar_carreras_enoe()`](https://aniuxa.github.io/renoe/reference/armonizar_carreras_enoe.md),
+[`calcular_desajuste_horizontal()`](https://aniuxa.github.io/renoe/reference/calcular_desajuste_horizontal.md),
 [`crear_folios()`](https://aniuxa.github.io/renoe/reference/crear_folios.md),
 [`imputa_ingocup()`](https://aniuxa.github.io/renoe/reference/imputa_ingocup.md),
 [`ipc_enoe()`](https://aniuxa.github.io/renoe/reference/ipc_enoe.md),
@@ -84,6 +83,7 @@ Other procesamiento_enoe:
 [`procesar_vars_hogar()`](https://aniuxa.github.io/renoe/reference/procesar_vars_hogar.md),
 [`procesar_vars_laborales()`](https://aniuxa.github.io/renoe/reference/procesar_vars_laborales.md),
 [`procesar_vars_sociodemo()`](https://aniuxa.github.io/renoe/reference/procesar_vars_sociodemo.md),
+[`reglas_enoe()`](https://aniuxa.github.io/renoe/reference/reglas_enoe.md),
 [`sinco2019_to_sinco2011()`](https://aniuxa.github.io/renoe/reference/sinco2019_to_sinco2011.md)
 
 ## Examples

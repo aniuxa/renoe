@@ -1,4 +1,4 @@
-# renoe 0.3.1 (correctiva, 22 de septiembre de 2026)
+# renoe 0.3.1 (correctiva, 23 de septiembre de 2026)
 
 - Para 2020-T1 usa conjuntamente las cinco tablas de la publicacion vigente
   de microdatos de INEGI. Esto recupera los codigos `P3` presentes en COE1 y

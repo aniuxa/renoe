@@ -17,7 +17,7 @@ x <- data.frame(
 y <- procesar_cuidado_remunerado(x)
 ```
 
-    ## Puente CMO-SINCO cuidado aplicado: 1 de 1 c<U+00F3>digos CMO no faltantes convertidos (1 observaciones del periodo CMO; 0 sin correspondencia).
+    ## Puente CMO-SINCO cuidado aplicado: 1 de 1 códigos CMO no faltantes convertidos (1 observaciones del periodo CMO; 0 sin correspondencia).
 
 ``` r
 
@@ -50,7 +50,7 @@ descarga, fusion o imputacion.
 
 | Funcion | Responsabilidad |
 |----|----|
-| [`cmo_to_sinco11_care()`](https://aniuxa.github.io/renoe/reference/cmo_to_sinco11_care.md) | Puente analitico CMO: conserva primera regla y numero de destinos; mantiene el alias anterior [`cmo_to_sinco11()`](https://aniuxa.github.io/renoe/reference/cmo_to_sinco11_care.md) con advertencia. |
+| [`cmo_to_sinco11_care()`](https://aniuxa.github.io/renoe/reference/cmo_to_sinco11_care.md) | Puente analitico CMO: conserva primera regla y numero de destinos. |
 | [`class_cuidado_rem()`](https://aniuxa.github.io/renoe/reference/class_cuidado_rem.md) | Tipologia heredada por ocupacion y actividad, con tratamiento explicito de CMO 8200. |
 | [`procesar_cuidado_remunerado()`](https://aniuxa.github.io/renoe/reference/procesar_cuidado_remunerado.md) | Valida periodos, selecciona insumos observados, llama al clasificador y agrega trazabilidad sin sustituir la armonizacion general. |
 
@@ -62,7 +62,7 @@ revalidaron aqui con los catalogos originales. Para periodos SINCO sin
 Si detecta metadatos de armonizacion general a 2011 en observaciones de
 2019, exige el codigo observado.
 
-[`armoniza_sinco()`](https://aniuxa.github.io/renoe/reference/armoniza_sinco.md)
+[`armonizar_sinco()`](https://aniuxa.github.io/renoe/reference/armonizar_sinco.md)
 genera `sinco3d` en base 2011. Por eso el wrapper utiliza el insumo
 original aunque exista esa columna, y conserva su contenido. La llamada
 directa a
@@ -85,7 +85,6 @@ apropiado y asume sus sobrescrituras historicas en CMO.
 | `care_industry_detalle` | Desglose de la rama. |
 | `care_w`, `cuida_1d`, `isco_care` | Tipologias heredadas; se conservan etiquetas y codigos. |
 | `trabajo_cuidado_mercado` | Indicador principal de insercion ocupacional en el cuidado de mercado; equivale a `cuida_total`. |
-| `trabajo_cuidado_rem` | Alias deprecado de `trabajo_cuidado_mercado`, conservado para la transicion. |
 | `cuidado_posicion_remunerada` | Posicion en el trabajo que presupone remuneracion; no acredita ingreso positivo observado. |
 | `cuidado_sin_pago` | Posicion en el trabajo declarada sin pago. |
 | `estado_ingreso_cuidado` | Distingue ingreso positivo observado, positivo imputado, ausencia de ingreso identificada y estado no determinado. |

@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="index.html">Uso del paquete renoe</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,7 +56,11 @@
 </h1>
 </div>
 <p><strong>renoe</strong> es un paquete en desarrollo para facilitar la descarga, carga, fusión, procesamiento y análisis de los microdatos de la Encuesta Nacional de Ocupación y Empleo (ENOE) del INEGI desde 2005.</p>
-<p>La versión 0.2.0 cubre los trimestres habilitados desde 2005-T1 hasta 2026-T2. En 2026 están publicados y auditados T1 y T2; T3 y T4 permanecen deshabilitados hasta su publicación y validación.</p>
+<p>La versión correctiva 0.3.1 cubre los trimestres habilitados desde 2005-T1 hasta 2026-T2. En 2026 están publicados y auditados T1 y T2; T3 y T4 permanecen deshabilitados hasta su publicación y validación.</p>
+<blockquote>
+<p><strong>Corrección 2020-T1.</strong> La versión 0.3.1 excluye <code>ur</code> únicamente de la unión SDEM–COE de ese trimestre porque el ámbito difiere entre tablas para 2,851 personas cuya identidad personal sí coincide. <code>ur</code> se conserva en las uniones de vivienda y hogar. Véase <code>inst/extdata/NOTA_CORRECCION_2020T1.md</code>.</p>
+</blockquote>
+<p>La ruta reproducible fija el orden <code>SCIAN → SINCO → carreras → consumidores</code> y exige declarar uno de tres escenarios: <code>official_strict</code>, <code>integrated_accepted</code> o <code>analysis_legacy</code>.</p>
 <p>Permite trabajar de forma reproducible y eficiente con los datos de los distintos trimestres y formatos de cuestionario (básico o ampliado), siguiendo un flujo de trabajo estructurado que abarca desde la descarga hasta el procesamiento avanzado de variables sociodemográficas, laborales, de uso del tiempo, estructura del hogar e ingresos.</p>
 <div class="section level2">
 <h2 id="instalación">Instalación<a class="anchor" aria-label="anchor" href="#instalaci%C3%B3n"></a>
@@ -127,7 +131,11 @@
 <tbody>
 <tr>
 <td><code><a href="reference/procesar_variables_enoe.html">procesar_variables_enoe()</a></code></td>
-<td>Función <em>wrapper</em> que aplica en cadena las funciones recomendadas de procesamiento. Dependiendo de la versión del paquete, puede incluir variables sociodemográficas, estructura del hogar, tiempo, IPC, imputación de ingresos y variables laborales.</td>
+<td>Wrapper canónico que ejecuta SCIAN, SINCO, carreras y consumidores en orden fijo y con escenario explícito.</td>
+</tr>
+<tr>
+<td><code><a href="reference/procesar_productos_academicos.html">procesar_productos_academicos()</a></code></td>
+<td>Perfil reproducible que reutiliza el pipeline canónico sin duplicar reglas.</td>
 </tr>
 <tr>
 <td><code><a href="reference/crear_folios.html">crear_folios()</a></code></td>
@@ -230,9 +238,7 @@
 <span>  <span class="fu"><a href="reference/procesar_libro1.html">procesar_libro1</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/procesar_cuidado_remunerado.html">procesar_cuidado_remunerado</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><code><a href="reference/class_cuidado_rem.html">class_cuidado_rem()</a></code> identifica el año y el trimestre y aplica internamente <code><a href="reference/cmo_to_sinco11_care.html">cmo_to_sinco11_care()</a></code> cuando corresponde al periodo CMO. No es necesario ejecutar el puente por separado en el flujo habitual.</p>
-<p>En caso de que haya algun problema de codificación, se pide que se utilice la opción <code>fusion_robusta</code></p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">datos</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fusion_enoe.html">fusion_enoe</a></span><span class="op">(</span><span class="fl">2025</span>, <span class="fl">4</span>, fusion_robusta <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
+<p><code><a href="reference/fusion_enoe.html">fusion_enoe()</a></code> aplica una única ruta canónica: valida la unicidad de las llaves, usa SDEM como tabla ancla y conserva una auditoría de cada unión. No existe una ruta alternativa o <em>legacy</em>.</p>
 <hr>
 </div>
 </div>
@@ -240,11 +246,11 @@
 <h2 id="modulo-de-cuidado-de-mercado">Modulo de cuidado de mercado<a class="anchor" aria-label="anchor" href="#modulo-de-cuidado-de-mercado"></a>
 </h2>
 <p>El modulo del articulo de brechas de ingreso mediante regresiones cuantílicas agrupa <code><a href="reference/procesar_cuidado_remunerado.html">procesar_cuidado_remunerado()</a></code>, <code><a href="reference/class_cuidado_rem.html">class_cuidado_rem()</a></code> y <code><a href="reference/cmo_to_sinco11_care.html">cmo_to_sinco11_care()</a></code>. El wrapper opera sobre un data frame en memoria:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">datos_cuidado</span> <span class="op">&lt;-</span> <span class="fu">renoe</span><span class="fu">::</span><span class="fu"><a href="reference/procesar_cuidado_remunerado.html">procesar_cuidado_remunerado</a></span><span class="op">(</span></span>
 <span>  <span class="va">datos_proc</span>, anio <span class="op">=</span> <span class="fl">2022</span>, trimestre <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>Prefiere <code>p3coe</code> observado para distinguir CMO, SINCO 2011 y SINCO 2019. Conserva <code>sinco3d</code> del procesamiento general y agrega el codigo de cuidado, la procedencia, el metodo y la calidad de la armonizacion. La concordancia analitica se distribuye en <code>inst/extdata/concordancia_cmo_sinco_cuidado.csv</code>; no es un puente oficial general. El indicador principal es <code>trabajo_cuidado_mercado</code>. Describe la insercion ocupacional en el cuidado y no presupone remuneracion positiva. El alias <code>trabajo_cuidado_rem</code> se conserva durante la transicion. El wrapper distingue ademas posicion remunerada, trabajo sin pago e ingreso observado, imputado, cero o faltante. Vease <a href="articles/cuidado-remunerado.html">la guia del modulo</a>.</p>
+<p>Prefiere <code>p3coe</code> observado para distinguir CMO, SINCO 2011 y SINCO 2019. Conserva <code>sinco3d</code> del procesamiento general y agrega el codigo de cuidado, la procedencia, el metodo y la calidad de la armonizacion. La concordancia analitica se distribuye en <code>inst/extdata/concordancia_cmo_sinco_cuidado.csv</code>; no es un puente oficial general. El indicador principal es <code>trabajo_cuidado_mercado</code>. Describe la insercion ocupacional en el cuidado y no presupone remuneracion positiva. El wrapper distingue ademas posicion remunerada, trabajo sin pago e ingreso observado, imputado, cero o faltante. Vease <a href="articles/cuidado-remunerado.html">la guia del modulo</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="funciones-internas-y-auxiliares">Funciones internas y auxiliares<a class="anchor" aria-label="anchor" href="#funciones-internas-y-auxiliares"></a>
@@ -317,7 +323,7 @@
 <h2 id="diccionario-de-variables">Diccionario de variables<a class="anchor" aria-label="anchor" href="#diccionario-de-variables"></a>
 </h2>
 <p>El paquete incluye un diccionario de las variables derivadas, con su descripción y la función que las genera:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">diccionario</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"diccionario_variables.csv"</span>, package <span class="op">=</span> <span class="st">"renoe"</span><span class="op">)</span>,</span>
 <span>  show_col_types <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -330,10 +336,10 @@
 </h2>
 <ul>
 <li>Se incluye validación del número de filas esperadas posterior al filtrado (<code>r_def == 0 &amp; c_res != 2</code>).</li>
-<li>Para el trimestre <strong>2022T1</strong> se utilizan archivos alternativos descargados del sitio de microdatos del INEGI.</li>
-<li>La fusión robusta utiliza identificadores disponibles y armonización de nombres para reducir problemas por cambios recientes en las bases.</li>
+<li>Para <strong>2022-T1</strong> se combinan los componentes oficiales urbano y rural de HOG, se armonizan sus códigos de mes y se incluye <code>ur</code> en la llave.</li>
+<li>La fusión canónica valida las llaves y detiene el proceso si no conserva el universo elegible de SDEM.</li>
 <li>Si se detectan anomalías como menos filas de lo esperado o posibles duplicaciones, se emiten advertencias para revisión manual.</li>
-<li>En uso del tiempo se distinguen duración observada, actividad realizada con duración desconocida, realización desconocida y batería no medible. Las columnas <code>*_legacy</code> reproducen temporalmente la recodificación histórica a cero.</li>
+<li>En uso del tiempo se distinguen duración observada, actividad realizada con duración desconocida, realización desconocida y batería no medible. Las actividades ausentes del instrumento permanecen como <code>NA</code>, no como cero.</li>
 </ul>
 <hr>
 </div>
@@ -370,7 +376,7 @@
 </h2>
 <p>Si utilizas el paquete <code>renoe</code> en tus investigaciones o publicaciones, por favor cita de la siguiente manera:</p>
 <blockquote>
-<p>Escoto, A. (2026). <em>renoe: Herramientas para trabajar con la Encuesta Nacional de Ocupación y Empleo (ENOE) desde 2005</em>. R package version 0.2.0. <a href="https://aniuxa.github.io/renoe" class="uri">https://aniuxa.github.io/renoe</a></p>
+<p>Escoto, A. (2026). <em>renoe: Herramientas para trabajar con la Encuesta Nacional de Ocupación y Empleo (ENOE) desde 2005</em>. R package version 0.3.0. <a href="https://aniuxa.github.io/renoe" class="uri">https://aniuxa.github.io/renoe</a></p>
 </blockquote>
 <p>También puedes usar la función <code>citation("renoe")</code> en R para obtener la referencia en formato BibTeX.</p>
 </div>

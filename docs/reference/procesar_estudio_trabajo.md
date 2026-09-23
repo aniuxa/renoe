@@ -1,10 +1,10 @@
-# Clasificar la combinación de estudio y trabajo
+# Clasificar la combinacion de estudio y trabajo
 
-Construye una clasificación general de asistencia escolar y condición de
-ocupación, además de indicadores para tres situaciones dentro de la
-población que no estudia ni trabaja: búsqueda de trabajo, dedicación a
+Construye una clasificacion general de asistencia escolar y condicion de
+ocupacion, ademas de indicadores para tres situaciones dentro de la
+poblacion que no estudia ni trabaja: busqueda de trabajo, dedicacion a
 los quehaceres del hogar y disponibilidad laboral. Los indicadores
-pueden superponerse; la variable `tipo_neet` ofrece una versión
+pueden superponerse; la variable `tipo_neet` ofrece una version
 mutuamente excluyente.
 
 ## Usage
@@ -21,22 +21,23 @@ procesar_estudio_trabajo(data)
 
 ## Value
 
-El mismo data frame con la clasificación de estudio y trabajo, el
+El mismo data frame con la clasificacion de estudio y trabajo, el
 indicador general de no estudio y no trabajo, tres indicadores de grupo
-y una tipología exclusiva.
+y una tipologia exclusiva.
 
 ## Details
 
 La disponibilidad (`neet_disponible`) se conserva con ese nombre
-descriptivo. Su interpretación como proxy de desaliento requiere
-justificación en cada análisis y no es impuesta por esta función.
+descriptivo. Su interpretacion como proxy de desaliento requiere
+justificacion en cada analisis y no es impuesta por esta funcion.
 
 ## See also
 
 Other procesamiento_enoe:
-[`armoniza_sinco()`](https://aniuxa.github.io/renoe/reference/armoniza_sinco.md),
+[`.armonizar_sinco_enoe_core()`](https://aniuxa.github.io/renoe/reference/dot-armonizar_sinco_enoe_core.md),
 [`armonizar_carreras_enoe()`](https://aniuxa.github.io/renoe/reference/armonizar_carreras_enoe.md),
 [`calcular_desajuste_estadistico()`](https://aniuxa.github.io/renoe/reference/calcular_desajuste_estadistico.md),
+[`calcular_desajuste_horizontal()`](https://aniuxa.github.io/renoe/reference/calcular_desajuste_horizontal.md),
 [`crear_folios()`](https://aniuxa.github.io/renoe/reference/crear_folios.md),
 [`imputa_ingocup()`](https://aniuxa.github.io/renoe/reference/imputa_ingocup.md),
 [`ipc_enoe()`](https://aniuxa.github.io/renoe/reference/ipc_enoe.md),
@@ -49,6 +50,7 @@ Other procesamiento_enoe:
 [`procesar_vars_hogar()`](https://aniuxa.github.io/renoe/reference/procesar_vars_hogar.md),
 [`procesar_vars_laborales()`](https://aniuxa.github.io/renoe/reference/procesar_vars_laborales.md),
 [`procesar_vars_sociodemo()`](https://aniuxa.github.io/renoe/reference/procesar_vars_sociodemo.md),
+[`reglas_enoe()`](https://aniuxa.github.io/renoe/reference/reglas_enoe.md),
 [`sinco2019_to_sinco2011()`](https://aniuxa.github.io/renoe/reference/sinco2019_to_sinco2011.md)
 
 ## Examples
@@ -67,11 +69,11 @@ procesar_estudio_trabajo(datos)
 #> 4      3      2   4                         4                     1
 #> 5      2      2  NA                         4                     1
 #> 6      4      2   6                         4                     1
-#>   neet_buscador neet_cuidador neet_disponible tipo_neet
-#> 1            NA            NA              NA        NA
-#> 2            NA            NA              NA        NA
-#> 3            NA            NA              NA        NA
-#> 4             0             1               1         2
-#> 5             1             0               0         1
-#> 6             0             0               0         4
+#>   neet_buscador neet_quehaceres neet_disponible tipo_neet
+#> 1            NA              NA              NA        NA
+#> 2            NA              NA              NA        NA
+#> 3            NA              NA              NA        NA
+#> 4             0               1               1         2
+#> 5             1               0               0         1
+#> 6             0               0               0         4
 ```

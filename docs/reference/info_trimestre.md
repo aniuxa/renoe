@@ -1,7 +1,7 @@
 # Obtener metadatos de versiones de cuestionarios ENOE por trimestre
 
-Consulta la información sobre qué versiones de cuestionarios (COE, SDEM,
-FD) corresponden a un trimestre específico de la ENOE.
+Consulta la informacion sobre que versiones de cuestionarios (COE, SDEM,
+FD) corresponden a un trimestre especifico de la ENOE.
 
 ## Usage
 
@@ -13,12 +13,12 @@ info_trimestre(anio, trimestre)
 
 - anio:
 
-  Año del trimestre (2005-2026). Debe ser un valor numérico entre 2005 y
+  Ano del trimestre (2005-2026). Debe ser un valor numerico entre 2005 y
   2026.
 
 - trimestre:
 
-  Número del trimestre (1-4). Donde 1 = ENE-MAR, 2 = ABR-JUN, 3 =
+  Numero del trimestre (1-4). Donde 1 = ENE-MAR, 2 = ABR-JUN, 3 =
   JUL-SEP, 4 = OCT-DIC.
 
 ## Value
@@ -27,7 +27,7 @@ Un data.frame con 6 columnas:
 
 - trimestre:
 
-  Código del trimestre (ej. "t105")
+  Codigo del trimestre (ej. "t105")
 
 - coe_tipo:
 
@@ -35,21 +35,21 @@ Un data.frame con 6 columnas:
 
 - coe_v:
 
-  Versión del cuestionario COE (ej. "v1", "v2")
+  Version del cuestionario COE (ej. "v1", "v2")
 
 - sdem_v:
 
-  Versión del cuestionario SDEM
+  Version del cuestionario SDEM
 
 - fd:
 
-  Versión del file descriptor
+  Version del file descriptor
 
 - encoding:
 
   Encoding recomendado para los archivos
 
-Retorna NULL si no se encuentra información para el trimestre
+Retorna NULL si no se encuentra informacion para el trimestre
 especificado.
 
 ## See also
@@ -63,12 +63,12 @@ Other descarga_documenta_enoe:
 ## Examples
 
 ``` r
-# Consultar información para el primer trimestre de 2020
+# Consultar informacion para el primer trimestre de 2020
 info_trimestre(2020, 1)
 #>    trimestre coe_tipo coe_v sdem_v fd encoding
 #> 61      t120 ampliado    v5     v4 v1    UTF-8
 
-# Consultar información para el tercer trimestre de 2015
+# Consultar informacion para el tercer trimestre de 2015
 info_trimestre(2015, 3)
 #>    trimestre coe_tipo coe_v sdem_v fd encoding
 #> 43      t315   basico    v4     v3 v1   latin1
