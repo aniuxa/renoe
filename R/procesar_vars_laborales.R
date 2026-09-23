@@ -31,6 +31,8 @@
 #' - `p2h4`: experiencia laboral previa
 #' - `p3i`, `p3j`, `p3j1`, `p3k1`: variables sobre tipo de contrato
 #'
+#' @param escenario Contrato de armonizacion ocupacional. Se conserva cuando
+#'   la entrada ya fue armonizada por la ruta canonica.
 #' @return Un data.frame con las variables originales y nuevas columnas:
 #' - `sinco1d`, `sinco2d`, `sinco3d`, `sinco4d`
 #' - `skill_level`, `skill_actual`
@@ -41,11 +43,23 @@
 #' @export
 #' @family procesamiento_enoe
 
-procesar_vars_laborales <- function(data) {
-  if ("p4a" %in% names(data)) {
+procesar_vars_laborales <- function(
+    data,
+    escenario = c("integrated_accepted", "official_strict", "analysis_legacy")) {
+  escenario <- match.arg(escenario)
+  if ("p4a" %in% names(data) &&
+      !"scian_version_observada" %in% names(data)) {
     data <- renoe::armonizar_scian(data)
   }
-  data <- renoe::armonizar_sinco(data)
+  escenario_actual <- if ("sinco_escenario" %in% names(data)) {
+    unique(as.character(data$sinco_escenario))
+  } else {
+    character()
+  }
+  if (!"sinco2011_comparable" %in% names(data) ||
+      length(escenario_actual) != 1L || escenario_actual != escenario) {
+    data <- renoe::armonizar_sinco(data, escenario = escenario)
+  }
 
   if (!"cs_p13_1" %in% names(data)) {
     stop("Falta la variable `cs_p13_1`.", call. = FALSE)

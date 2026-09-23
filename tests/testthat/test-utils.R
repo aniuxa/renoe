@@ -16,6 +16,10 @@ test_that(".construir_url_enoe genera URLs correctas", {
   url_2020t3 <- .construir_url_enoe(2020, 3)
   expect_equal(url_2020t3$prefijo, "enoen")
 
+  url_2020t1 <- .construir_url_enoe(2020, 1)
+  expect_equal(url_2020t1$prefijo, "enoe")
+  expect_match(url_2020t1$url, "/microdatos/2020trim1_csv[.]zip$")
+
   # Caso normal (2023)
   url_2023 <- .construir_url_enoe(2023, 1)
   expect_equal(url_2023$prefijo, "enoe")
@@ -49,6 +53,22 @@ test_that(".estandarizar_ids convierte variables correctamente", {
   expect_true(is.numeric(df_std$ent))
   expect_true(is.numeric(df_std$fac))
   expect_true(is.character(df_std$texto)) # No debería cambiar
+})
+
+test_that("2020-T1 exige y lee las cinco tablas de microdatos vigentes", {
+  tmp <- tempfile()
+  dir.create(tmp)
+  tablas <- c("viv", "hog", "sdem", "coe1", "coe2")
+  nombres <- c(
+    viv = "ENOE_VIVT120.csv", hog = "ENOE_HOGT120.csv",
+    sdem = "ENOE_SDEMT120.csv", coe1 = "ENOE_COE1T120.csv",
+    coe2 = "ENOE_COE2T120.csv"
+  )
+  expect_false(.verificar_cache(tmp, tablas, "enoe", 2020, 1))
+  for (archivo in nombres) writeLines("ENT,CON,V_SEL,N_HOG,H_MUD,N_REN,P3\n1,1,1,1,0,1,4211", file.path(tmp, archivo))
+  expect_true(.verificar_cache(tmp, tablas, "enoe", 2020, 1))
+  coe1 <- .leer_datos_enoe("coe1", tmp, "enoe", 2020, 1)
+  expect_equal(coe1$p3, 4211)
 })
 
 test_that(".estandarizar_ids normaliza identificadores cve de 2025-T3 en adelante", {

@@ -1,7 +1,7 @@
 Package: renoe
 Type: Package
 Title: Herramientas Para Trabajar Con La ENOE Desde 2005
-Version: 0.3.0
+Version: 0.3.1
 Authors@R: 
     c(
         person(
@@ -24,7 +24,7 @@ Authors@R:
     )
 Description: Descarga, carga, fusiona y procesa los microdatos de la
     Encuesta Nacional de Ocupacion y Empleo (ENOE) de Mexico desde 2005.
-    La version 0.3.0 cubre los trimestres habilitados entre 2005-T1 y
+    La version 0.3.1 cubre los trimestres habilitados entre 2005-T1 y
     2026-T2, incluidos 2026-T1 y 2026-T2.
     Incluye funciones para armonizar cuestionarios basico y ampliado,
     construir identificadores y paneles, procesar variables
@@ -33,31 +33,15 @@ Description: Descarga, carga, fusiona y procesa los microdatos de la
     contribucion economica y trabajo no remunerado en el hogar.
 License: AGPL (>= 3)
 Encoding: UTF-8
-Depends:
-    R (>= 4.1.0)
-Imports:
-    arrow,
-    dineq,
-    dplyr,
-    haven,
-    httr,
-    magrittr,
-    mice,
-    readr,
-    sjlabelled,
-    stats,
-    stringr,
-    tibble,
-    tools,
-    utils
-Suggests:
-    ggplot2,
-    knitr,
-    rmarkdown,
-    testthat (>= 3.0.0)
+Depends: R (>= 4.1.0)
+Imports: arrow, dineq, dplyr, haven, httr, magrittr, mice, readr,
+        sjlabelled, stats, stringr, tibble, tools, utils
+Suggests: ggplot2, knitr, rmarkdown, testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 BugReports: https://github.com/aniuxa/renoe/issues
 URL: https://aniuxa.github.io/renoe/, https://github.com/aniuxa/renoe
 Config/roxygen2/version: 8.1.0
 Config/testthat/edition: 3
+Config/renoe/Release: corrective-candidate
+NeedsCompilation: no

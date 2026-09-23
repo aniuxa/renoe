@@ -48,7 +48,9 @@
 .armonizar_sinco_enoe_core <- function(
     data, codigos = NULL, correspondencia_2019 = NULL,
     usar_reglas_enoe = NULL,
-    capas = c("oficial", "panel", "enoe", "consenso"), detalle = TRUE) {
+    capas = c("oficial", "panel", "enoe", "consenso"), detalle = TRUE,
+    permitir_manual_1d = FALSE,
+    escenario = "integrated_accepted") {
 
   capas <- .normalizar_capas_cmo_sinco(capas, usar_reglas_enoe)
 
@@ -220,7 +222,8 @@
     "Convergencia oficial SINCO 2019-SINCO 2011 a un digito"
 
   data$needs_manual_1d <- is.na(data$sinco1d) & periodo_cmo
-  if ("enoe" %in% capas && any(data$needs_manual_1d, na.rm = TRUE)) {
+  if (isTRUE(permitir_manual_1d) && "enoe" %in% capas &&
+      any(data$needs_manual_1d, na.rm = TRUE)) {
     pendiente_manual <- data$needs_manual_1d
     data <- renoe::cmo_to_sinco1d(data)
     resuelto_manual <- pendiente_manual & !is.na(data$sinco1d)
@@ -307,6 +310,7 @@
     )
   .contrato_sinco(
     salida,
-    list(codigos = codigos, correspondencia_2019 = correspondencia_2019)
+    list(codigos = codigos, correspondencia_2019 = correspondencia_2019,
+         escenario = escenario)
   )
 }

@@ -12,7 +12,13 @@ clasificaciones derivadas.
 ## Usage
 
 ``` r
-armonizar_sinco(datos, ...)
+armonizar_sinco(
+  datos,
+  escenario = c("integrated_accepted", "official_strict", "analysis_legacy"),
+  legacy = NULL,
+  capas = NULL,
+  ...
+)
 ```
 
 ## Arguments
@@ -20,6 +26,23 @@ armonizar_sinco(datos, ...)
 - datos:
 
   Microdatos ENOE con `anio`, `trim` y `p3coe`.
+
+- escenario:
+
+  Contrato de decision: `official_strict` conserva solo equivalencias
+  oficiales; `integrated_accepted` agrega reglas aceptadas de panel y
+  condiciones ENOE; `analysis_legacy` habilita ademas rescates
+  historicos no transportables.
+
+- legacy:
+
+  Compatibilidad explicita. `TRUE` selecciona `analysis_legacy`; `FALSE`
+  impide combinar ese escenario.
+
+- capas:
+
+  Interfaz de bajo nivel. Si se proporciona se respeta, pero no habilita
+  por si sola rescates historicos.
 
 - ...:
 

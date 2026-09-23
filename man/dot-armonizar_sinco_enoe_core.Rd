@@ -11,7 +11,9 @@
   correspondencia_2019 = NULL,
   usar_reglas_enoe = NULL,
   capas = c("oficial", "panel", "enoe", "consenso"),
-  detalle = TRUE
+  detalle = TRUE,
+  permitir_manual_1d = FALSE,
+  escenario = "integrated_accepted"
 )
 }
 \arguments{

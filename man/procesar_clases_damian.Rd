@@ -9,7 +9,9 @@ procesar_clases_damian(
   data,
   correspondencia = NULL,
   recuperar_sin_isco = TRUE,
-  usar_puente_cmo = TRUE
+  usar_puente_cmo = NULL,
+  escenario = c("integrated_accepted", "official_strict", "analysis_legacy"),
+  legacy = NULL
 )
 }
 \arguments{
@@ -26,7 +28,14 @@ ISCO-88 mediante el gran grupo SINCO, siguiendo el do-file original.}
 \item{usar_puente_cmo}{Si es \code{TRUE}, aplica antes de 2012-III el puente
 determinista de Damian usado por \code{cmo_to_sinco11_care()}. Este puente
 conserva la primera regla del do-file y no constituye una equivalencia
-oficial o biunivoca.}
+oficial o biunivoca. Por ello el valor por defecto es \code{FALSE}; su uso debe
+ser explicito y corresponde al escenario historico.}
+
+\item{escenario}{Contrato publico de decision. \code{official_strict} excluye
+rescates condicionados; \code{integrated_accepted} agrega reglas EGP
+aceptadas; \code{analysis_legacy} agrega el puente CMO historico.}
+
+\item{legacy}{Compatibilidad explicita para seleccionar \code{analysis_legacy}.}
 }
 \value{
 El mismo data frame con \code{isco88_damian}, \code{grupo_ocu9_damian},

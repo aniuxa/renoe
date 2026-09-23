@@ -12,7 +12,8 @@ procesar_clasificaciones_reproducibles(
   data,
   correspondencia_damian = NULL,
   puente_2019 = NULL,
-  reglas_consenso = NULL
+  reglas_consenso = NULL,
+  escenario = c("integrated_accepted", "official_strict", "analysis_legacy")
 )
 ```
 
@@ -35,6 +36,12 @@ procesar_clasificaciones_reproducibles(
 
   Tabla aceptada de consenso por clasificacion para el corte CMO-SINCO
   2011.
+
+- escenario:
+
+  Contrato publico de decision. `official_strict` conserva solo
+  resultados oficiales; `integrated_accepted` aplica la cascada
+  aceptada; `analysis_legacy` habilita ademas rescates historicos.
 
 ## Value
 

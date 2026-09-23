@@ -13,7 +13,9 @@ procesar_variables_enoe(
   trimestre,
   semilla = 1234,
   perfil_carreras = c("panel_validado", "oficial", "experimental"),
-  usar_puente_2005 = FALSE
+  usar_puente_2005 = FALSE,
+  escenario_clasificadores = c("integrated_accepted", "official_strict",
+    "analysis_legacy")
 )
 ```
 
@@ -45,6 +47,10 @@ procesar_variables_enoe(
 
   Si se permite el puente experimental de carreras de 2005. Por defecto
   es `FALSE`.
+
+- escenario_clasificadores:
+
+  Escenario explicito para SINCO y sus consumidores.
 
 ## Value
 

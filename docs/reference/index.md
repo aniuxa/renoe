@@ -69,6 +69,8 @@
   : Armonizar carreras de la ENOE entre 2005 y la actualidad
 - [`armonizar_scian()`](https://aniuxa.github.io/renoe/reference/armonizar_scian.md)
   : Armonizar SCIAN-Hogares antes de la ocupacion
+- [`armoniza_sinco()`](https://aniuxa.github.io/renoe/reference/armoniza_sinco.md)
+  : Alias historico de armonizacion SINCO
 - [`calcular_desajuste_estadistico()`](https://aniuxa.github.io/renoe/reference/calcular_desajuste_estadistico.md)
   : Calcular una referencia estadistica de escolaridad y su desajuste
 - [`calcular_desajuste_horizontal()`](https://aniuxa.github.io/renoe/reference/calcular_desajuste_horizontal.md)
@@ -111,6 +113,8 @@
   : Clasificar la combinacion de estudio y trabajo
 - [`procesar_libro1()`](https://aniuxa.github.io/renoe/reference/procesar_libro1.md)
   : Procesar indicadores individuales para el proyecto del libro
+- [`procesar_productos_academicos()`](https://aniuxa.github.io/renoe/reference/procesar_productos_academicos.md)
+  : Procesar el perfil reproducible de productos academicos
 - [`procesar_tiempo()`](https://aniuxa.github.io/renoe/reference/procesar_tiempo.md)
   : Procesar variables de tiempo en actividades del hogar y cuidado
 - [`procesar_variables_enoe()`](https://aniuxa.github.io/renoe/reference/procesar_variables_enoe.md)

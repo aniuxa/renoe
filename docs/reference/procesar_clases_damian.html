@@ -13,7 +13,7 @@ no manual no calificado, manual calificado y manual no calificado."><meta proper
 
     <a class="navbar-brand me-2" href="../index.html">Uso del paquete renoe</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,7 +50,9 @@ no manual no calificado, manual calificado y manual no calificado.</p>
 <span>  <span class="va">data</span>,</span>
 <span>  correspondencia <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  recuperar_sin_isco <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  usar_puente_cmo <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  usar_puente_cmo <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  escenario <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"integrated_accepted"</span>, <span class="st">"official_strict"</span>, <span class="st">"analysis_legacy"</span><span class="op">)</span>,</span>
+<span>  legacy <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -78,7 +80,18 @@ ISCO-88 mediante el gran grupo SINCO, siguiendo el do-file original.</p></dd>
 <dd><p>Si es <code>TRUE</code>, aplica antes de 2012-III el puente
 determinista de Damian usado por <code><a href="cmo_to_sinco11_care.html">cmo_to_sinco11_care()</a></code>. Este puente
 conserva la primera regla del do-file y no constituye una equivalencia
-oficial o biunivoca.</p></dd>
+oficial o biunivoca. Por ello el valor por defecto es <code>FALSE</code>; su uso debe
+ser explicito y corresponde al escenario historico.</p></dd>
+
+
+<dt id="arg-escenario">escenario<a class="anchor" aria-label="anchor" href="#arg-escenario"></a></dt>
+<dd><p>Contrato publico de decision. <code>official_strict</code> excluye
+rescates condicionados; <code>integrated_accepted</code> agrega reglas EGP
+aceptadas; <code>analysis_legacy</code> agrega el puente CMO historico.</p></dd>
+
+
+<dt id="arg-legacy">legacy<a class="anchor" aria-label="anchor" href="#arg-legacy"></a></dt>
+<dd><p>Compatibilidad explicita para seleccionar <code>analysis_legacy</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -159,24 +172,36 @@ esquema EGP para America Latina, citada en el programa original.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3                      1                 1             1                0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4                      1                 0             1                0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5                     NA                NA            NA               NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   posocup_damian tam_est_damian clase_egp13_damian cobertura_egp_damian</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1              4              4                  1                    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2              4              4                  4                    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3              4              4                  8                    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4              4              4                 13                    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5             NA             NA                 NA                   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   clase_egp7_damian clase_alt6_damian macro_egp4_damian macro_solis4_damian</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                 1                 1                 1                   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 2                 3                 2                   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                 4                 3                 2                   2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                 7                 6                 4                   4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                NA                NA                NA                  NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   egp3_damian baja_damian alta_damian autoempleo_damian</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1           1           0           1                 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2           2           0           0                 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3           2           0           0                 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4           3           1           0                 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5          NA          NA          NA                NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   posocup_damian tam_est_damian clase_egp13_damian       egp_escenario</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1              4              4                  1 integrated_accepted</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2              4              4                  4 integrated_accepted</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3              4              4                  8 integrated_accepted</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4              4              4                 13 integrated_accepted</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5             NA             NA                 NA integrated_accepted</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              egp_regla_id egp_evidence_level egp_transportable</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 EGP_DAMIAN_SINCO_ISCO88            derived              TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 EGP_DAMIAN_SINCO_ISCO88            derived              TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 EGP_DAMIAN_SINCO_ISCO88            derived              TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 EGP_DAMIAN_SINCO_ISCO88            derived              TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                    &lt;NA&gt;               &lt;NA&gt;              TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   egp_motivo_no_clasificacion cobertura_egp_damian clase_egp7_damian</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                        &lt;NA&gt;                    1                 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                        &lt;NA&gt;                    1                 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                        &lt;NA&gt;                    1                 4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                        &lt;NA&gt;                    1                 7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      fuera_universo_ocupado                   NA                NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   clase_alt6_damian macro_egp4_damian macro_solis4_damian egp3_damian</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                 1                 1                   1           1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 3                 2                   1           2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                 3                 2                   2           2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                 6                 4                   4           3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                NA                NA                  NA          NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   baja_damian alta_damian autoempleo_damian</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           0           1                 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2           0           0                 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3           0           0                 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4           1           0                 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5          NA          NA                NA</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -11,11 +11,27 @@
     coe2 = "conjunto_de_datos_coe2.*\\.csv$"
   )
 
+  # 2020-T1 debe leerse desde la edicion vigente de microdatos. Los archivos
+  # de datos abiertos del mismo trimestre dejan P3 vacio en registros que si
+  # estan codificados en la publicacion de microdatos.
+  if (anio == 2020 && trimestre == 1) {
+    nombres_microdatos <- c(
+      viv = "ENOE_VIVT120.csv", hog = "ENOE_HOGT120.csv",
+      sdem = "ENOE_SDEMT120.csv", coe1 = "ENOE_COE1T120.csv",
+      coe2 = "ENOE_COE2T120.csv"
+    )
+    archivo <- file.path(unzip_dir, nombres_microdatos[[tabla]])
+    if (!file.exists(archivo)) {
+      warning("No se encontro el archivo oficial vigente para ", tabla, " en ", archivo)
+      return(NULL)
+    }
+  }
+
   # El ZIP oficial de 2022-T1 contiene dos componentes complementarios de
   # HOG. El archivo raiz conserva el ambito urbano con meses 1-3; el archivo
   # incluido en `conjunto_de_datos/` aporta el ambito rural con meses
   # desplazados 10-12 y 99. Se integran explicitamente antes de fusionar.
-  if (anio == 2022 && trimestre == 1) {
+  else if (anio == 2022 && trimestre == 1) {
     nombre_archivo <- paste0("conjunto_de_datos_", tabla, "_enoen_2022_1t.csv")
     carpeta <- file.path(
       unzip_dir, paste0("conjunto_de_datos_", tabla, "_enoen_2022_1t")
@@ -108,6 +124,15 @@
   }
   if (anio == 2026 && trimestre > 2) {
     stop("S\u00F3lo est\u00E1n publicados y habilitados 2026-T1 y 2026-T2")
+  }
+
+  # Para 2020-T1 se usa una sola edicion de las cinco tablas de microdatos.
+  if (anio == 2020 && trimestre == 1) {
+    return(list(
+      url = "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/microdatos/2020trim1_csv.zip",
+      zip_file = "zip/2020trim1_csv.zip",
+      prefijo = "enoe"
+    ))
   }
 
   # Caso especial para 2017 y 2018 T1
@@ -301,6 +326,15 @@
 # Funciones auxiliares corregidas
 .verificar_cache <- function(unzip_dir, tablas, prefijo, anio, trimestre) {
   if (!dir.exists(unzip_dir)) return(FALSE)
+
+  if (anio == 2020 && trimestre == 1) {
+    nombres_microdatos <- c(
+      viv = "ENOE_VIVT120.csv", hog = "ENOE_HOGT120.csv",
+      sdem = "ENOE_SDEMT120.csv", coe1 = "ENOE_COE1T120.csv",
+      coe2 = "ENOE_COE2T120.csv"
+    )
+    return(all(file.exists(file.path(unzip_dir, nombres_microdatos[tablas]))))
+  }
 
   patrones <- list(
     viv = "conjunto_de_datos_viv.*\\.csv$",

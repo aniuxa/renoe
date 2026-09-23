@@ -8,7 +8,8 @@ procesar_clasificaciones_reproducibles(
   data,
   correspondencia_damian = NULL,
   puente_2019 = NULL,
-  reglas_consenso = NULL
+  reglas_consenso = NULL,
+  escenario = c("integrated_accepted", "official_strict", "analysis_legacy")
 )
 }
 \arguments{
@@ -21,6 +22,10 @@ procesar_clasificaciones_reproducibles(
 
 \item{reglas_consenso}{Tabla aceptada de consenso por clasificacion para el
 corte CMO-SINCO 2011.}
+
+\item{escenario}{Contrato publico de decision. \code{official_strict} conserva
+solo resultados oficiales; \code{integrated_accepted} aplica la cascada
+aceptada; \code{analysis_legacy} habilita ademas rescates historicos.}
 }
 \value{
 El data frame con las clasificaciones y, para cada salida, columnas

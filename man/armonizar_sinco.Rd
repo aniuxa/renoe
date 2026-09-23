@@ -4,10 +4,27 @@
 \alias{armonizar_sinco}
 \title{Armonizar ocupacion hacia SINCO 2011 con un contrato auditable}
 \usage{
-armonizar_sinco(datos, ...)
+armonizar_sinco(
+  datos,
+  escenario = c("integrated_accepted", "official_strict", "analysis_legacy"),
+  legacy = NULL,
+  capas = NULL,
+  ...
+)
 }
 \arguments{
 \item{datos}{Microdatos ENOE con \code{anio}, \code{trim} y \code{p3coe}.}
+
+\item{escenario}{Contrato de decision: \code{official_strict} conserva solo
+equivalencias oficiales; \code{integrated_accepted} agrega reglas aceptadas de
+panel y condiciones ENOE; \code{analysis_legacy} habilita ademas rescates
+historicos no transportables.}
+
+\item{legacy}{Compatibilidad explicita. \code{TRUE} selecciona
+\code{analysis_legacy}; \code{FALSE} impide combinar ese escenario.}
+
+\item{capas}{Interfaz de bajo nivel. Si se proporciona se respeta, pero no
+habilita por si sola rescates historicos.}
 
 \item{...}{Argumentos adicionales para el motor SINCO interno.}
 }

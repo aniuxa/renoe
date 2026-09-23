@@ -41,12 +41,14 @@ test_that("los literales Unicode conservan sus valores visibles", {
   ]
   if (!length(raices)) skip("El código fuente R no está disponible en esta instalación")
 
-  ruta_baseline <- system.file(
-    "extdata", "unicode_string_baseline.csv", package = "renoe"
+  # En desarrollo se compara siempre contra la línea base de esta fuente. Así
+  # se evita mezclarla con otra versión instalada de renoe.
+  ruta_baseline <- file.path(
+    raices[[1L]], "inst", "extdata", "unicode_string_baseline.csv"
   )
-  if (!nzchar(ruta_baseline)) {
-    ruta_baseline <- file.path(
-      raices[[1L]], "inst", "extdata", "unicode_string_baseline.csv"
+  if (!file.exists(ruta_baseline)) {
+    ruta_baseline <- system.file(
+      "extdata", "unicode_string_baseline.csv", package = "renoe"
     )
   }
   esperado <- utils::read.csv(

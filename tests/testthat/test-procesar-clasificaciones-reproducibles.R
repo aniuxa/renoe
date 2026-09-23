@@ -6,13 +6,26 @@ test_that("la cascada reproducible SINCO 2019 resuelve cada salida por separado"
     pos_ocu = rep(1L, 4), emple7c = rep(2L, 4), tue2 = rep(2L, 4)
   )
   x <- armonizar_sinco(x)
-  y <- procesar_clasificaciones_reproducibles(x)
+  y <- procesar_clasificaciones_reproducibles(
+    x, escenario = "integrated_accepted"
+  )
+  y_legacy <- procesar_clasificaciones_reproducibles(
+    x, escenario = "analysis_legacy"
+  )
 
   expect_equal(y$susceptible_teletrabajo, c(1L, 0L, 0L, 0L))
   expect_false(anyNA(y$trabajo_cuidado_mercado))
-  expect_equal(as.integer(y$grupo_ocu9_damian), c(2L, 2L, 7L, 5L))
+  expect_equal(as.integer(y$grupo_ocu9_damian), c(2L, 2L, 7L, NA_integer_))
   expect_equal(y$grupo_ocu9_damian_capa[3], "consenso")
-  expect_equal(y$grupo_ocu9_damian_capa[4], "autor")
+  expect_true(is.na(y$grupo_ocu9_damian_capa[4]))
+  expect_equal(as.integer(y_legacy$grupo_ocu9_damian[[4L]]), 5L)
+  expect_equal(y_legacy$grupo_ocu9_damian_capa[[4L]], "autor")
+  capas_integradas <- grep(
+    "^(trabajo_cuidado_mercado|.*_damian)_capa$", names(y), value = TRUE
+  )
+  expect_false(any(vapply(capas_integradas, function(v) {
+    any(as.character(y[[v]]) == "autor", na.rm = TRUE)
+  }, logical(1L))))
   expect_true(all(y$estado_revision_clasificaciones ==
                     "GO_CON_ADVERTENCIAS_DOCUMENTADAS_2026_09_19"))
   expect_equal(

@@ -14,7 +14,6 @@ ser \code{p3coe}.}
 
 \item{sobrescribir}{Si es FALSE, detiene la ejecucion cuando ya existen las
 variables de salida.}
-
 }
 \value{
 El data frame con \code{cmo_original}, \code{sinco11}, \code{sinco3d},

@@ -13,7 +13,9 @@ procesar_clases_damian(
   data,
   correspondencia = NULL,
   recuperar_sin_isco = TRUE,
-  usar_puente_cmo = TRUE
+  usar_puente_cmo = NULL,
+  escenario = c("integrated_accepted", "official_strict", "analysis_legacy"),
+  legacy = NULL
 )
 ```
 
@@ -41,7 +43,19 @@ procesar_clases_damian(
   Damian usado por
   [`cmo_to_sinco11_care()`](https://aniuxa.github.io/renoe/reference/cmo_to_sinco11_care.md).
   Este puente conserva la primera regla del do-file y no constituye una
-  equivalencia oficial o biunivoca.
+  equivalencia oficial o biunivoca. Por ello el valor por defecto es
+  `FALSE`; su uso debe ser explicito y corresponde al escenario
+  historico.
+
+- escenario:
+
+  Contrato publico de decision. `official_strict` excluye rescates
+  condicionados; `integrated_accepted` agrega reglas EGP aceptadas;
+  `analysis_legacy` agrega el puente CMO historico.
+
+- legacy:
+
+  Compatibilidad explicita para seleccionar `analysis_legacy`.
 
 ## Value
 
@@ -122,22 +136,34 @@ procesar_clases_damian(datos)
 #> 3                      1                 1             1                0
 #> 4                      1                 0             1                0
 #> 5                     NA                NA            NA               NA
-#>   posocup_damian tam_est_damian clase_egp13_damian cobertura_egp_damian
-#> 1              4              4                  1                    1
-#> 2              4              4                  4                    1
-#> 3              4              4                  8                    1
-#> 4              4              4                 13                    1
-#> 5             NA             NA                 NA                   NA
-#>   clase_egp7_damian clase_alt6_damian macro_egp4_damian macro_solis4_damian
-#> 1                 1                 1                 1                   1
-#> 2                 2                 3                 2                   1
-#> 3                 4                 3                 2                   2
-#> 4                 7                 6                 4                   4
-#> 5                NA                NA                NA                  NA
-#>   egp3_damian baja_damian alta_damian autoempleo_damian
-#> 1           1           0           1                 0
-#> 2           2           0           0                 0
-#> 3           2           0           0                 0
-#> 4           3           1           0                 0
-#> 5          NA          NA          NA                NA
+#>   posocup_damian tam_est_damian clase_egp13_damian       egp_escenario
+#> 1              4              4                  1 integrated_accepted
+#> 2              4              4                  4 integrated_accepted
+#> 3              4              4                  8 integrated_accepted
+#> 4              4              4                 13 integrated_accepted
+#> 5             NA             NA                 NA integrated_accepted
+#>              egp_regla_id egp_evidence_level egp_transportable
+#> 1 EGP_DAMIAN_SINCO_ISCO88            derived              TRUE
+#> 2 EGP_DAMIAN_SINCO_ISCO88            derived              TRUE
+#> 3 EGP_DAMIAN_SINCO_ISCO88            derived              TRUE
+#> 4 EGP_DAMIAN_SINCO_ISCO88            derived              TRUE
+#> 5                    <NA>               <NA>              TRUE
+#>   egp_motivo_no_clasificacion cobertura_egp_damian clase_egp7_damian
+#> 1                        <NA>                    1                 1
+#> 2                        <NA>                    1                 2
+#> 3                        <NA>                    1                 4
+#> 4                        <NA>                    1                 7
+#> 5      fuera_universo_ocupado                   NA                NA
+#>   clase_alt6_damian macro_egp4_damian macro_solis4_damian egp3_damian
+#> 1                 1                 1                   1           1
+#> 2                 3                 2                   1           2
+#> 3                 3                 2                   2           2
+#> 4                 6                 4                   4           3
+#> 5                NA                NA                  NA          NA
+#>   baja_damian alta_damian autoempleo_damian
+#> 1           0           1                 0
+#> 2           0           0                 0
+#> 3           0           0                 0
+#> 4           1           0                 0
+#> 5          NA          NA                NA
 ```

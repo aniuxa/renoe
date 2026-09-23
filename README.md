@@ -5,9 +5,19 @@
 fusión, procesamiento y análisis de los microdatos de la Encuesta
 Nacional de Ocupación y Empleo (ENOE) del INEGI desde 2005.
 
-La versión 0.3.0 cubre los trimestres habilitados desde 2005-T1 hasta
+La versión correctiva 0.3.1 cubre los trimestres habilitados desde 2005-T1 hasta
 2026-T2. En 2026 están publicados y auditados T1 y T2; T3 y T4
 permanecen deshabilitados hasta su publicación y validación.
+
+> **Corrección 2020-T1.** La versión 0.3.1 excluye `ur` únicamente de la
+> unión SDEM–COE de ese trimestre porque el ámbito difiere entre tablas para
+> 2,851 personas cuya identidad personal sí coincide. `ur` se conserva en las
+> uniones de vivienda y hogar. Véase
+> `inst/extdata/NOTA_CORRECCION_2020T1.md`.
+
+La ruta reproducible fija el orden `SCIAN → SINCO → carreras → consumidores`
+y exige declarar uno de tres escenarios: `official_strict`,
+`integrated_accepted` o `analysis_legacy`.
 
 Permite trabajar de forma reproducible y eficiente con los datos de los
 distintos trimestres y formatos de cuestionario (básico o ampliado),
@@ -57,7 +67,8 @@ paso los datos de la ENOE:
 
 | Función | Descripción |
 |----|----|
-| `procesar_variables_enoe()` | Función *wrapper* que aplica en cadena las funciones recomendadas de procesamiento. Dependiendo de la versión del paquete, puede incluir variables sociodemográficas, estructura del hogar, tiempo, IPC, imputación de ingresos y variables laborales. |
+| `procesar_variables_enoe()` | Wrapper canónico que ejecuta SCIAN, SINCO, carreras y consumidores en orden fijo y con escenario explícito. |
+| `procesar_productos_academicos()` | Perfil reproducible que reutiliza el pipeline canónico sin duplicar reglas. |
 | `crear_folios()` | Crea identificadores únicos para vivienda, hogar y persona. |
 | `drop_tri()` | Renombra variables terminadas en `_tri` en la ENOEN para compatibilidad. |
 | `procesar_vars_sociodemo()` | Genera variables de sexo, edad, grupos etarios, asistencia escolar, estado conyugal, parentesco resumido, ruralidad y zona económica regional. |

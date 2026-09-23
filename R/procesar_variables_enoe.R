@@ -29,6 +29,8 @@
 #' @param perfil_carreras Perfil de evidencia para armonizar carreras.
 #' @param usar_puente_2005 Si se permite el puente experimental de carreras de
 #'   2005. Por defecto es `FALSE`.
+#' @param escenario_clasificadores Escenario explicito para SINCO y sus
+#'   consumidores.
 #'
 #' @return Un data frame con variables sociodemograficas, estructura del hogar, uso del tiempo, IPC y variables imputadas.
 #' @export
@@ -47,8 +49,12 @@
 procesar_variables_enoe <- function(
     data, anio, trimestre, semilla = 1234,
     perfil_carreras = c("panel_validado", "oficial", "experimental"),
-    usar_puente_2005 = FALSE) {
+    usar_puente_2005 = FALSE,
+    escenario_clasificadores = c(
+      "integrated_accepted", "official_strict", "analysis_legacy"
+    )) {
   perfil_carreras <- match.arg(perfil_carreras)
+  escenario_clasificadores <- match.arg(escenario_clasificadores)
   filas_iniciales <- nrow(data)
 
   data <- data %>%
@@ -56,12 +62,14 @@ procesar_variables_enoe <- function(
     crear_folios() %>%
     procesar_vars_sociodemo(anio = anio, trimestre = trimestre) %>%
     procesar_vars_hogar(anio = anio, trimestre = trimestre) %>%
+    armonizar_scian() %>%
+    armonizar_sinco(escenario = escenario_clasificadores) %>%
     armonizar_carreras(
       perfil = perfil_carreras,
       usar_puente_2005 = usar_puente_2005,
       salida = "auditable"
     ) %>%
-    procesar_vars_laborales() %>%
+    procesar_vars_laborales(escenario = escenario_clasificadores) %>%
     calcular_desajuste_estadistico(periodo_referencia = "trimestre") %>%
     calcular_desajuste_horizontal() %>%
     procesar_tiempo(anio = anio, trimestre = trimestre) %>%
@@ -71,7 +79,9 @@ procesar_variables_enoe <- function(
     procesar_cuidado_extra() %>%
     procesar_estudio_trabajo() %>%
     procesar_libro1() %>%
-    procesar_clasificaciones_reproducibles()
+    procesar_clasificaciones_reproducibles(
+      escenario = escenario_clasificadores
+    )
 
   if (nrow(data) != filas_iniciales) {
     stop("La ruta canonica cambio el numero de filas.", call. = FALSE)

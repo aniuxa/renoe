@@ -35,11 +35,45 @@ armonizar_scian <- function(datos, ...) {
 #' `sinco2011_comparable = FALSE` impiden tratarla como ocupacion
 #' sustantivamente identificada en clasificaciones derivadas.
 #' @param datos Microdatos ENOE con `anio`, `trim` y `p3coe`.
+#' @param escenario Contrato de decision: `official_strict` conserva solo
+#'   equivalencias oficiales; `integrated_accepted` agrega reglas aceptadas de
+#'   panel y condiciones ENOE; `analysis_legacy` habilita ademas rescates
+#'   historicos no transportables.
+#' @param legacy Compatibilidad explicita. `TRUE` selecciona
+#'   `analysis_legacy`; `FALSE` impide combinar ese escenario.
+#' @param capas Interfaz de bajo nivel. Si se proporciona se respeta, pero no
+#'   habilita por si sola rescates historicos.
 #' @param ... Argumentos adicionales para el motor SINCO interno.
 #' @export
-armonizar_sinco <- function(datos, ...) {
-  do.call(.armonizar_sinco_enoe_core,
-          c(list(data = datos), list(...)))
+armonizar_sinco <- function(
+    datos,
+    escenario = c("integrated_accepted", "official_strict", "analysis_legacy"),
+    legacy = NULL,
+    capas = NULL,
+    ...) {
+  contrato <- .normalizar_escenario_clasificador(escenario, legacy)
+  if (!is.null(capas)) contrato$capas <- capas
+  do.call(
+    .armonizar_sinco_enoe_core,
+    c(list(
+      data = datos,
+      capas = contrato$capas,
+      permitir_manual_1d = contrato$legacy,
+      escenario = contrato$escenario
+    ), list(...))
+  )
+}
+
+#' Alias historico de armonizacion SINCO
+#'
+#' Conserva la API publicada antes de 0.3.0, emite una advertencia de
+#' deprecacion y usa exactamente la misma ruta canonica.
+#' @param data Microdatos ENOE.
+#' @param ... Argumentos de [armonizar_sinco()].
+#' @export
+armoniza_sinco <- function(data, ...) {
+  .Deprecated("armonizar_sinco", package = "renoe")
+  armonizar_sinco(data, ...)
 }
 
 .contrato_sinco <- function(resultado, argumentos) {
@@ -135,7 +169,8 @@ armonizar_sinco <- function(datos, ...) {
   resultado$version_sinco_destino <- rep("SINCO 2011", n)
   resultado$sinco2011_granularidad <- granularidad
   resultado$sinco2011_nivel_sustentado <- nivel
-  codigo_especial <- (!is.na(resultado$sinco4d) &
+  codigo_especial <- codigo == "9999" |
+    (!is.na(resultado$sinco4d) &
                        resultado$sinco4d == 9999L) |
     (!is.na(resultado$sinco3d) & resultado$sinco3d == 999L)
   resultado$sinco2011_codigo_especial <- codigo_especial
@@ -184,6 +219,18 @@ armonizar_sinco <- function(datos, ...) {
   adaptador[auxiliar & tipo %in% c("p4f", "p4a_p4f")] <-
     "ENOE_observado_version_pendiente"
   resultado$sinco2011_adaptador_auxiliar <- adaptador
+  resultado$sinco_escenario <- rep(
+    if (is.null(argumentos$escenario)) "integrated_accepted" else
+      argumentos$escenario,
+    n
+  )
+  resultado$sinco_transportable <- !auxiliar |
+    tipo != "manual_cmo_to_sinco1d"
+  resultado$sinco_razon_no_clasificacion <- dplyr::case_when(
+    codigo_especial ~ "codigo_especial_no_comparable",
+    is.na(resultado$sinco1d) ~ as.character(resultado$sinco_motivo_pendiente),
+    TRUE ~ NA_character_
+  )
   resultado$codigo_ocupacion_original_txt <- codigo
   resultado$sinco2011_destinos_oficiales_4d <- alternativas
   resultado$sinco2011_destino_en_puente_oficial <- en_puente

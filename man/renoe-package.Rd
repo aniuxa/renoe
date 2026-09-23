@@ -34,7 +34,7 @@ Authors:
 
 Other contributors:
 \itemize{
-  \item Gerardo DamiC!n HernC!ndez (\href{https://orcid.org/0009-0002-7604-3886}{ORCID}) [contributor]
+  \item Gerardo Damián Hernández (\href{https://orcid.org/0009-0002-7604-3886}{ORCID}) [contributor]
   \item Gabriela Cervantes [contributor]
 }
 

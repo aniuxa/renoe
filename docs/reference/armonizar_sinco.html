@@ -21,7 +21,7 @@ sustantivamente identificada en clasificaciones derivadas."><meta property="og:i
 
     <a class="navbar-brand me-2" href="../index.html">Uso del paquete renoe</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,7 +58,13 @@ sustantivamente identificada en clasificaciones derivadas.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">armonizar_sinco</span><span class="op">(</span><span class="va">datos</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">armonizar_sinco</span><span class="op">(</span></span>
+<span>  <span class="va">datos</span>,</span>
+<span>  escenario <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"integrated_accepted"</span>, <span class="st">"official_strict"</span>, <span class="st">"analysis_legacy"</span><span class="op">)</span>,</span>
+<span>  legacy <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  capas <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -67,6 +73,23 @@ sustantivamente identificada en clasificaciones derivadas.</p>
 
 <dl><dt id="arg-datos">datos<a class="anchor" aria-label="anchor" href="#arg-datos"></a></dt>
 <dd><p>Microdatos ENOE con <code>anio</code>, <code>trim</code> y <code>p3coe</code>.</p></dd>
+
+
+<dt id="arg-escenario">escenario<a class="anchor" aria-label="anchor" href="#arg-escenario"></a></dt>
+<dd><p>Contrato de decision: <code>official_strict</code> conserva solo
+equivalencias oficiales; <code>integrated_accepted</code> agrega reglas aceptadas de
+panel y condiciones ENOE; <code>analysis_legacy</code> habilita ademas rescates
+historicos no transportables.</p></dd>
+
+
+<dt id="arg-legacy">legacy<a class="anchor" aria-label="anchor" href="#arg-legacy"></a></dt>
+<dd><p>Compatibilidad explicita. <code>TRUE</code> selecciona
+<code>analysis_legacy</code>; <code>FALSE</code> impide combinar ese escenario.</p></dd>
+
+
+<dt id="arg-capas">capas<a class="anchor" aria-label="anchor" href="#arg-capas"></a></dt>
+<dd><p>Interfaz de bajo nivel. Si se proporciona se respeta, pero no
+habilita por si sola rescates historicos.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -93,3 +116,4 @@ sustantivamente identificada en clasificaciones derivadas.</p>
 
 
   </body></html>
+

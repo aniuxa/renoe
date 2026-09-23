@@ -23,7 +23,7 @@ division."><meta property="og:image" content="https://aniuxa.github.io/renoe/log
 
     <a class="navbar-brand me-2" href="../index.html">Uso del paquete renoe</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,7 +61,10 @@ division.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">procesar_vars_laborales</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">procesar_vars_laborales</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  escenario <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"integrated_accepted"</span>, <span class="st">"official_strict"</span>, <span class="st">"analysis_legacy"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -78,6 +81,11 @@ division.</p>
 <li><p><code>p2h4</code>: experiencia laboral previa</p></li>
 <li><p><code>p3i</code>, <code>p3j</code>, <code>p3j1</code>, <code>p3k1</code>: variables sobre tipo de contrato</p></li>
 </ul></dd>
+
+
+<dt id="arg-escenario">escenario<a class="anchor" aria-label="anchor" href="#arg-escenario"></a></dt>
+<dd><p>Contrato de armonizacion ocupacional. Se conserva cuando
+la entrada ya fue armonizada por la ruta canonica.</p></dd>
 
 </dl></div>
     <div class="section level2">

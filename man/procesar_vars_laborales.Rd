@@ -4,7 +4,10 @@
 \alias{procesar_vars_laborales}
 \title{Procesar variables de analisis laboral y desajuste educativo}
 \usage{
-procesar_vars_laborales(data)
+procesar_vars_laborales(
+  data,
+  escenario = c("integrated_accepted", "official_strict", "analysis_legacy")
+)
 }
 \arguments{
 \item{data}{Un data.frame con variables como:
@@ -18,6 +21,9 @@ procesar_vars_laborales(data)
 \item \code{p2h4}: experiencia laboral previa
 \item \code{p3i}, \code{p3j}, \code{p3j1}, \code{p3k1}: variables sobre tipo de contrato
 }}
+
+\item{escenario}{Contrato de armonizacion ocupacional. Se conserva cuando
+la entrada ya fue armonizada por la ruta canonica.}
 }
 \value{
 Un data.frame con las variables originales y nuevas columnas:

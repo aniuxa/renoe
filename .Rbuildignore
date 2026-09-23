@@ -20,3 +20,7 @@
 ^library$
 ^.*[.]Rcheck$
 ^[^/]+[.]tar[.]gz$
+^validation_lib_0_3_1$
+^validation_lib_productor_0_3_1$
+^validation_runs$
+^scripts$

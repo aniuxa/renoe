@@ -18,6 +18,9 @@
 #' @param puente_2019 Tabla oficial larga SINCO 2019-SINCO 2011.
 #' @param reglas_consenso Tabla aceptada de consenso por clasificacion para el
 #'   corte CMO-SINCO 2011.
+#' @param escenario Contrato publico de decision. `official_strict` conserva
+#'   solo resultados oficiales; `integrated_accepted` aplica la cascada
+#'   aceptada; `analysis_legacy` habilita ademas rescates historicos.
 #' @return El data frame con las clasificaciones y, para cada salida, columnas
 #'   terminadas en `_capa`, `_regla_id` y `_nivel_digitos`.
 #' @export
@@ -25,7 +28,9 @@ procesar_clasificaciones_reproducibles <- function(
     data,
     correspondencia_damian = NULL,
     puente_2019 = NULL,
-    reglas_consenso = NULL) {
+    reglas_consenso = NULL,
+    escenario = c("integrated_accepted", "official_strict", "analysis_legacy")) {
+  escenario <- match.arg(escenario)
   if (!is.data.frame(data)) stop("`data` debe ser un data frame.", call. = FALSE)
   requeridas <- c(
     "anio", "trim", "p3coe", "p4a", "clase2", "pos_ocu", "emple7c", "tue2",
@@ -196,7 +201,8 @@ procesar_clasificaciones_reproducibles <- function(
   capa_cuidado[rescate_cuidado] <- "consenso"
   regla_cuidado[rescate_cuidado] <- aplicado_cuidado$regla[rescate_cuidado]
 
-  legado_cuidado <- es_cmo & is.na(valor_cuidado) & !is.na(candidato_cuidado)
+  legado_cuidado <- escenario == "analysis_legacy" & es_cmo &
+    is.na(valor_cuidado) & !is.na(candidato_cuidado)
   valor_cuidado[legado_cuidado] <- candidato_cuidado[legado_cuidado]
   capa_cuidado[legado_cuidado] <- "autor"
   regla_cuidado[legado_cuidado] <- paste0(
@@ -227,12 +233,18 @@ procesar_clasificaciones_reproducibles <- function(
   base_damian <- procesar_clases_damian(
     entrada_damian,
     correspondencia = correspondencia_damian,
-    usar_puente_cmo = FALSE
+    usar_puente_cmo = FALSE,
+    escenario = "official_strict"
   )
   candidato_damian <- procesar_clases_damian(
     entrada_damian,
     correspondencia = correspondencia_damian,
-    usar_puente_cmo = TRUE
+    usar_puente_cmo = escenario != "official_strict",
+    escenario = if (escenario == "official_strict") {
+      "official_strict"
+    } else {
+      "analysis_legacy"
+    }
   )
 
   salidas_damian <- .salidas_reproducibles_damian()
@@ -328,8 +340,9 @@ procesar_clasificaciones_reproducibles <- function(
       .nivel_salida_damian(v)
   }
 
-  # Capa 5: reglas de Damian. En CMO reproduce su puente historico; desde
-  # SINCO 2019 ejecuta sus reglas y bucles sobre el codigo observado.
+  # Capa 5: reglas de Damian, exclusiva de `analysis_legacy`. En CMO reproduce
+  # su puente historico; desde SINCO 2019 ejecuta sus reglas y bucles sobre el
+  # codigo observado. `integrated_accepted` se detiene tras consenso.
   directo_2019_input <- entrada_damian
   codigo_observado <- suppressWarnings(as.integer(as.character(data$p3coe)))
   directo_2019_input$sinco4d_base2011 <- codigo_observado
@@ -340,26 +353,28 @@ procesar_clasificaciones_reproducibles <- function(
     usar_puente_cmo = FALSE
   )
 
-  for (v in intersect(salidas_damian, names(base_damian))) {
-    idx_cmo <- es_cmo & is.na(base_damian[[v]]) &
-      !is.na(candidato_damian[[v]])
-    base_damian[[v]][idx_cmo] <- candidato_damian[[v]][idx_cmo]
-    base_damian[[paste0(v, "_capa")]][idx_cmo] <- "autor"
-    base_damian[[paste0(v, "_regla_id")]][idx_cmo] <- paste0(
-      "DAMIAN_CMO_", data$p3coe[idx_cmo], "_", v
-    )
-    base_damian[[paste0(v, "_nivel_digitos")]][idx_cmo] <-
-      .nivel_salida_damian(v)
+  if (escenario == "analysis_legacy") {
+    for (v in intersect(salidas_damian, names(base_damian))) {
+      idx_cmo <- es_cmo & is.na(base_damian[[v]]) &
+        !is.na(candidato_damian[[v]])
+      base_damian[[v]][idx_cmo] <- candidato_damian[[v]][idx_cmo]
+      base_damian[[paste0(v, "_capa")]][idx_cmo] <- "autor"
+      base_damian[[paste0(v, "_regla_id")]][idx_cmo] <- paste0(
+        "DAMIAN_CMO_", data$p3coe[idx_cmo], "_", v
+      )
+      base_damian[[paste0(v, "_nivel_digitos")]][idx_cmo] <-
+        .nivel_salida_damian(v)
 
-    idx_2019 <- es_2019 & is.na(base_damian[[v]]) &
-      !is.na(directo_2019[[v]])
-    base_damian[[v]][idx_2019] <- directo_2019[[v]][idx_2019]
-    base_damian[[paste0(v, "_capa")]][idx_2019] <- "autor"
-    base_damian[[paste0(v, "_regla_id")]][idx_2019] <- paste0(
-      "DAMIAN_SINCO2019_", data$p3coe[idx_2019], "_", v
-    )
-    base_damian[[paste0(v, "_nivel_digitos")]][idx_2019] <-
-      .nivel_salida_damian(v)
+      idx_2019 <- es_2019 & is.na(base_damian[[v]]) &
+        !is.na(directo_2019[[v]])
+      base_damian[[v]][idx_2019] <- directo_2019[[v]][idx_2019]
+      base_damian[[paste0(v, "_capa")]][idx_2019] <- "autor"
+      base_damian[[paste0(v, "_regla_id")]][idx_2019] <- paste0(
+        "DAMIAN_SINCO2019_", data$p3coe[idx_2019], "_", v
+      )
+      base_damian[[paste0(v, "_nivel_digitos")]][idx_2019] <-
+        .nivel_salida_damian(v)
+    }
   }
 
   # Copiar al resultado solamente las salidas y trazas recalculadas de Damian.
@@ -373,6 +388,46 @@ procesar_clasificaciones_reproducibles <- function(
   for (v in intersect(columnas_damian, names(base_damian))) {
     salida[[v]] <- base_damian[[v]]
   }
+  if (escenario == "official_strict") {
+    columnas_capa <- grep("_capa$", names(salida), value = TRUE)
+    capas_oficiales <- c("official", "oficial", "oficial_catalogo_observado")
+    for (columna_capa in columnas_capa) {
+      variable <- sub("_capa$", "", columna_capa)
+      if (!variable %in% names(salida)) next
+      no_oficial <- !is.na(salida[[columna_capa]]) &
+        !as.character(salida[[columna_capa]]) %in% capas_oficiales
+      salida[[variable]][no_oficial] <- NA
+      salida[[columna_capa]][no_oficial] <- NA_character_
+      regla <- paste0(variable, "_regla_id")
+      nivel <- paste0(variable, "_nivel_digitos")
+      if (regla %in% names(salida)) salida[[regla]][no_oficial] <- NA_character_
+      if (nivel %in% names(salida)) salida[[nivel]][no_oficial] <- NA_character_
+    }
+    pendiente_egp <- is.na(salida$clase_egp13_damian)
+    for (v in intersect(
+      c("egp_regla_id", "egp_evidence_level", "egp_transportable"),
+      names(salida)
+    )) salida[[v]][pendiente_egp] <- NA
+  }
+  if (escenario == "integrated_accepted") {
+    capas_autor <- intersect(
+      paste0(c(variable_cuidado, salidas_damian), "_capa"), names(salida)
+    )
+    conteo_autor <- vapply(capas_autor, function(v) {
+      sum(as.character(salida[[v]]) == "autor", na.rm = TRUE)
+    }, integer(1L))
+    if (any(conteo_autor > 0L)) {
+      detalle_autor <- paste0(
+        names(conteo_autor)[conteo_autor > 0L], "=",
+        conteo_autor[conteo_autor > 0L], collapse = ", "
+      )
+      stop(
+        "`integrated_accepted` no puede contener asignaciones de la capa autor: ",
+        detalle_autor, ".", call. = FALSE
+      )
+    }
+  }
+  salida$clasificaciones_escenario <- rep(escenario, nrow(salida))
   salida$perfil_clasificaciones_reproducibles <- "cascada_reproducible_v1"
   salida$estado_revision_clasificaciones <-
     "GO_CON_ADVERTENCIAS_DOCUMENTADAS_2026_09_19"

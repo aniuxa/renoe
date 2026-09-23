@@ -13,7 +13,10 @@ ocultar excepciones dentro de cada division.
 ## Usage
 
 ``` r
-procesar_vars_laborales(data)
+procesar_vars_laborales(
+  data,
+  escenario = c("integrated_accepted", "official_strict", "analysis_legacy")
+)
 ```
 
 ## Arguments
@@ -38,6 +41,11 @@ procesar_vars_laborales(data)
   - `p2h4`: experiencia laboral previa
 
   - `p3i`, `p3j`, `p3j1`, `p3k1`: variables sobre tipo de contrato
+
+- escenario:
+
+  Contrato de armonizacion ocupacional. Se conserva cuando la entrada ya
+  fue armonizada por la ruta canonica.
 
 ## Value
 

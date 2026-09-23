@@ -15,7 +15,9 @@ multiples.
   correspondencia_2019 = NULL,
   usar_reglas_enoe = NULL,
   capas = c("oficial", "panel", "enoe", "consenso"),
-  detalle = TRUE
+  detalle = TRUE,
+  permitir_manual_1d = FALSE,
+  escenario = "integrated_accepted"
 )
 ```
 
@@ -149,7 +151,11 @@ armonizar_sinco(datos)
 #> 1           SINCO2011_OBSERVED                         <NA>
 #> 2           SINCO2011_OBSERVED                         <NA>
 #> 3 SINCO2019_OFFICIAL_UNIQUE_4D                         <NA>
-#>   sinco2011_adaptador_auxiliar codigo_ocupacion_original_txt
+#>   sinco2011_adaptador_auxiliar     sinco_escenario sinco_transportable
+#> 1                         <NA> integrated_accepted                TRUE
+#> 2                         <NA> integrated_accepted                TRUE
+#> 3                         <NA> integrated_accepted                TRUE
+#>   sinco_razon_no_clasificacion codigo_ocupacion_original_txt
 #> 1                         <NA>                          2436
 #> 2                         <NA>                          2423
 #> 3                         <NA>                          2433

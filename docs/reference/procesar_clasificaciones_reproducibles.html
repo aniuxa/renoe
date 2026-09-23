@@ -13,7 +13,7 @@ nunca reescribe una asignacion de una capa anterior."><meta property="og:image" 
 
     <a class="navbar-brand me-2" href="../index.html">Uso del paquete renoe</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,7 +50,8 @@ nunca reescribe una asignacion de una capa anterior.</p>
 <span>  <span class="va">data</span>,</span>
 <span>  correspondencia_damian <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  puente_2019 <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  reglas_consenso <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  reglas_consenso <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  escenario <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"integrated_accepted"</span>, <span class="st">"official_strict"</span>, <span class="st">"analysis_legacy"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -74,6 +75,12 @@ nunca reescribe una asignacion de una capa anterior.</p>
 <dt id="arg-reglas-consenso">reglas_consenso<a class="anchor" aria-label="anchor" href="#arg-reglas-consenso"></a></dt>
 <dd><p>Tabla aceptada de consenso por clasificacion para el
 corte CMO-SINCO 2011.</p></dd>
+
+
+<dt id="arg-escenario">escenario<a class="anchor" aria-label="anchor" href="#arg-escenario"></a></dt>
+<dd><p>Contrato publico de decision. <code>official_strict</code> conserva
+solo resultados oficiales; <code>integrated_accepted</code> aplica la cascada
+aceptada; <code>analysis_legacy</code> habilita ademas rescates historicos.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -110,3 +117,4 @@ el codigo observado. Este proceso no inventa ni rellena SINCO 2011 canonico.</p>
 
 
   </body></html>
+

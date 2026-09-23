@@ -13,7 +13,7 @@ SINCO 2011-2019 y conserva sin resolver las correspondencias multiples."><meta p
 
     <a class="navbar-brand me-2" href="../index.html">Uso del paquete renoe</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,7 +52,9 @@ SINCO 2011-2019 y conserva sin resolver las correspondencias multiples.</p>
 <span>  correspondencia_2019 <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  usar_reglas_enoe <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  capas <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"oficial"</span>, <span class="st">"panel"</span>, <span class="st">"enoe"</span>, <span class="st">"consenso"</span><span class="op">)</span>,</span>
-<span>  detalle <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  detalle <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  permitir_manual_1d <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  escenario <span class="op">=</span> <span class="st">"integrated_accepted"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -188,7 +190,11 @@ ocupaciones</em>. CEPAL. <a href="https://hdl.handle.net/11362/69015" class="ext
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1           SINCO2011_OBSERVED                         &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2           SINCO2011_OBSERVED                         &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 SINCO2019_OFFICIAL_UNIQUE_4D                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   sinco2011_adaptador_auxiliar codigo_ocupacion_original_txt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sinco2011_adaptador_auxiliar     sinco_escenario sinco_transportable</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                         &lt;NA&gt; integrated_accepted                TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                         &lt;NA&gt; integrated_accepted                TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                         &lt;NA&gt; integrated_accepted                TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sinco_razon_no_clasificacion codigo_ocupacion_original_txt</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                         &lt;NA&gt;                          2436</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2                         &lt;NA&gt;                          2423</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3                         &lt;NA&gt;                          2433</span>
@@ -217,3 +223,4 @@ ocupaciones</em>. CEPAL. <a href="https://hdl.handle.net/11362/69015" class="ext
 
 
   </body></html>
+

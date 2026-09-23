@@ -19,6 +19,23 @@
   invisible(TRUE)
 }
 
+.llaves_union_enoe <- function(datos, anio, trimestre) {
+  posibles_idviv <- c("tipo", "mes_cal", "cd_a", "ca", "ent", "ur", "con", "v_sel")
+  posibles_idhog <- c(posibles_idviv, "n_hog", "h_mud")
+  posibles_idsdem <- c(posibles_idhog, "n_ren")
+
+  idviv <- Reduce(intersect, list(posibles_idviv, names(datos$viv), names(datos$hog)))
+  idhog <- Reduce(intersect, list(posibles_idhog, names(datos$hog), names(datos$sdem)))
+  idsdem <- Reduce(intersect, list(posibles_idsdem, names(datos$sdem), names(datos$coe1), names(datos$coe2)))
+
+  # En 2020-T1 `ur` difiere entre SDEM y COE para 2,851 personas (1 frente a
+  # 2), aunque las llaves personales y P3 coinciden. `ur` describe el ambito;
+  # no identifica a la persona en el enlace SDEM-COE de este trimestre.
+  if (anio == 2020 && trimestre == 1) idsdem <- setdiff(idsdem, "ur")
+
+  list(idviv = idviv, idhog = idhog, idsdem = idsdem)
+}
+
 #' Fusionar tablas de la ENOE
 #'
 #' Une las tablas de vivienda, hogar, sociodemografico y componentes COE
@@ -94,8 +111,10 @@ fusion_enoe <- function(anio, trimestre, rapida = FALSE, formato = NULL,
     )
   }
 
-  if (!dir.exists(unzip_dir)) {
-    message("Archivos no encontrados localmente. Usando carga_enoe() para descargar y procesar.")
+  cache_valida <- .verificar_cache(unzip_dir, tablas, prefijo, anio, trimestre)
+
+  if (!cache_valida) {
+    message("Archivos vigentes no encontrados localmente. Usando carga_enoe() para descargar y procesar.")
     datos <- carga_enoe(
       anio = anio,
       trimestre = trimestre,
@@ -129,13 +148,10 @@ fusion_enoe <- function(anio, trimestre, rapida = FALSE, formato = NULL,
 
   message("\nFusionando tablas para ", anio, " trimestre ", trimestre, "...")
 
-  posibles_idviv  <- c("tipo", "mes_cal", "cd_a", "ca", "ent", "ur", "con", "v_sel")
-    posibles_idhog  <- c(posibles_idviv, "n_hog", "h_mud")
-    posibles_idsdem <- c(posibles_idhog, "n_ren")
-
-    idviv <- Reduce(intersect, list(posibles_idviv, names(datos$viv), names(datos$hog)))
-    idhog <- Reduce(intersect, list(posibles_idhog, names(datos$hog), names(datos$sdem)))
-    idsdem <- Reduce(intersect, list(posibles_idsdem, names(datos$sdem), names(datos$coe1), names(datos$coe2)))
+    llaves <- .llaves_union_enoe(datos, anio, trimestre)
+    idviv <- llaves$idviv
+    idhog <- llaves$idhog
+    idsdem <- llaves$idsdem
 
     if (length(idviv) == 0) {
       stop("No se encontraron variables de uni\u00F3n entre viv y hog.")

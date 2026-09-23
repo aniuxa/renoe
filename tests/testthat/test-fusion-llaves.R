@@ -16,6 +16,26 @@ test_that("validador de fusion exige llave completa y unica", {
   )
 })
 
+test_that("2020-T1 no usa ur como llave entre SDEM y COE", {
+  base <- data.frame(
+    cd_a = 52, ent = 1, ur = 1, con = 40002, v_sel = 2,
+    n_hog = 1, h_mud = 0, n_ren = 1
+  )
+  datos <- list(
+    viv = base[c("cd_a", "ent", "ur", "con", "v_sel")],
+    hog = base[c("cd_a", "ent", "ur", "con", "v_sel", "n_hog", "h_mud")],
+    sdem = base,
+    coe1 = transform(base, ur = 2),
+    coe2 = transform(base, ur = 2)
+  )
+
+  llaves <- .llaves_union_enoe(datos, 2020, 1)
+  expect_true("ur" %in% llaves$idviv)
+  expect_true("ur" %in% llaves$idhog)
+  expect_false("ur" %in% llaves$idsdem)
+  expect_equal(llaves$idsdem, c("cd_a", "ent", "con", "v_sel", "n_hog", "h_mud", "n_ren"))
+})
+
 test_that("2022-T1 selecciona el HOG corregido con cobertura rural", {
   raiz <- tempfile("enoe_2022_1t_")
   carpeta <- file.path(raiz, "conjunto_de_datos_hog_enoen_2022_1t")

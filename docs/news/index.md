@@ -1,6 +1,45 @@
 # Changelog
 
-## renoe 0.3.0
+## renoe 0.3.1 (correctiva, 23 de septiembre de 2026)
+
+- Para 2020-T1 usa conjuntamente las cinco tablas de la publicacion
+  vigente de microdatos de INEGI. Esto recupera los codigos `P3`
+  presentes en COE1 y evita mezclar ediciones de VIV, HOG, SDEM, COE1 y
+  COE2.
+- Invalida caches de 2020-T1 que no contienen las cinco tablas de
+  microdatos y obliga a regenerar la fusion antes de sus derivados
+  transversales y paneles.
+- Excluye `ur` de la llave SDEM-COE de 2020-T1: en 2,851 registros el
+  ambito difiere entre ambas tablas aunque la identidad personal
+  coincide. `ur` se conserva como variable descriptiva y sigue formando
+  parte de las uniones de vivienda y hogar donde corresponde.
+- La anomalía fue detectada mediante una tabulación transversal simple
+  de `clase_alt6_damian`: 3,011 personas ocupadas aparecían sin
+  clasificación. Tras corregir la unión quedan 162 faltantes legítimos
+  (factor 41,820): 133 con código oficial `9999` y 29 sin una regla EGP
+  aplicable.
+- El cambio invalida el transversal/PINI de 2020-T1, los paneles que
+  contienen ese trimestre (57–61) y sus derivados. Otros trimestres
+  conservan la llave con `ur` y no se regeneran sin una dependencia
+  comprobada.
+- La candidata interna 0.3.0 no fue publicada y queda sustituida por
+  0.3.1, que es la primera versión reproducible de este conjunto de
+  cambios.
+
+## renoe 0.3.0 (candidata final local, 20 de septiembre de 2026)
+
+- Reconcilia la rama de publicación con los escenarios explícitos
+  `official_strict`, `integrated_accepted` y `analysis_legacy`.
+- Fija el orden canónico `SCIAN → SINCO → carreras → consumidores`.
+- Conserva el descenso oficial por dígitos, separa los rescates
+  históricos y mantiene `9999` como código no comparable.
+- Añade
+  [`procesar_productos_academicos()`](https://aniuxa.github.io/renoe/reference/procesar_productos_academicos.md)
+  como wrapper sin reglas duplicadas y conserva
+  [`armoniza_sinco()`](https://aniuxa.github.io/renoe/reference/armoniza_sinco.md)
+  únicamente como alias deprecado de la API ya publicada antes de 0.3.0.
+
+### Cambios acumulados desde 0.2.0
 
 - Establece una ruta canonica reproducible desde la fusion ENOE hasta
   las clasificaciones finales, sin alias ni opciones legacy no
@@ -79,9 +118,10 @@
   [`sinco2019_to_sinco2011()`](https://aniuxa.github.io/renoe/reference/sinco2019_to_sinco2011.md)
   y la tabla de equivalencia oficial de INEGI para armonizar el cambio
   de clasificador aplicado por la ENOE desde 2021-III.
-  `armoniza_sinco()` ahora distingue CMO, SINCO 2011 y SINCO 2019,
-  conserva el código original y no selecciona arbitrariamente las
-  correspondencias uno-a-varios.
+  [`armoniza_sinco()`](https://aniuxa.github.io/renoe/reference/armoniza_sinco.md)
+  ahora distingue CMO, SINCO 2011 y SINCO 2019, conserva el código
+  original y no selecciona arbitrariamente las correspondencias
+  uno-a-varios.
 - Se incorporó
   [`armonizar_carreras_enoe()`](https://aniuxa.github.io/renoe/reference/armonizar_carreras_enoe.md)
   para identificar el clasificador de carreras vigente, conservar los

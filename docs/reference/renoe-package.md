@@ -34,7 +34,7 @@ Authors:
 
 Other contributors:
 
-- Gerardo DamiC!n HernC!ndez
+- Gerardo Damián Hernández
   ([ORCID](https://orcid.org/0009-0002-7604-3886)) \[contributor\]
 
 - Gabriela Cervantes \[contributor\]
