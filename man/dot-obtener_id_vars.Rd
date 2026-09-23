@@ -2,11 +2,11 @@
 % Please edit documentation in R/utils.R
 \name{.obtener_id_vars}
 \alias{.obtener_id_vars}
-\title{Lista completa de variables de identificación ENOE/ENOEN}
+\title{Lista completa de variables de identificacion ENOE/ENOEN}
 \usage{
 .obtener_id_vars(anio, trimestre)
 }
 \description{
-Lista completa de variables de identificación ENOE/ENOEN
+Lista completa de variables de identificacion ENOE/ENOEN
 }
 \keyword{internal}

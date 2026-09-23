@@ -55,7 +55,7 @@ procesar_estudio_trabajo <- function(data) {
         no_estudia_no_trabaja == 1 ~ 0,
         TRUE ~ NA_real_
       ),
-      neet_cuidador = dplyr::case_when(
+      neet_quehaceres = dplyr::case_when(
         no_estudia_no_trabaja == 1 & p2e == 4 ~ 1,
         no_estudia_no_trabaja == 1 ~ 0,
         TRUE ~ NA_real_
@@ -77,7 +77,7 @@ procesar_estudio_trabajo <- function(data) {
       situacion_estudio_trabajo = "Situaci\u00F3n combinada de asistencia escolar y ocupaci\u00F3n",
       no_estudia_no_trabaja = "Persona que no estudia ni trabaja",
       neet_buscador = "Persona que no estudia ni trabaja y busca trabajo",
-      neet_cuidador = "Persona que no estudia ni trabaja y se dedica a los quehaceres del hogar",
+      neet_quehaceres = "Persona que no estudia ni trabaja y se dedica a los quehaceres del hogar",
       neet_disponible = "Persona que no estudia ni trabaja y est\u00E1 disponible para trabajar",
       tipo_neet = "Tipo principal de situaci\u00F3n entre quienes no estudian ni trabajan"
     ) |>
@@ -90,13 +90,13 @@ procesar_estudio_trabajo <- function(data) {
       ),
       no_estudia_no_trabaja = c("No" = 0, "S\u00ED" = 1),
       neet_buscador = c("No" = 0, "S\u00ED" = 1),
-      neet_cuidador = c("No" = 0, "S\u00ED" = 1),
+      neet_quehaceres = c("No" = 0, "S\u00ED" = 1),
       neet_disponible = c("No" = 0, "S\u00ED" = 1),
       tipo_neet = c(
         "Buscador" = 1,
-        "Cuidador" = 2,
-        "Disponible no cuidador" = 3,
-        "No disponible y no cuidador" = 4
+        "Quehaceres del hogar" = 2,
+        "Disponible, no quehaceres" = 3,
+        "No disponible, no quehaceres" = 4
       )
     )
 }

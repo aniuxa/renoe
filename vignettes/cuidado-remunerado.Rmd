@@ -35,7 +35,7 @@ no escribe archivos ENOE ni llama a descarga, fusion o imputacion.
 
 | Funcion | Responsabilidad |
 |---|---|
-| `cmo_to_sinco11_care()` | Puente analitico CMO: conserva primera regla y numero de destinos; mantiene el alias anterior `cmo_to_sinco11()` con advertencia. |
+| `cmo_to_sinco11_care()` | Puente analitico CMO: conserva primera regla y numero de destinos. |
 | `class_cuidado_rem()` | Tipologia heredada por ocupacion y actividad, con tratamiento explicito de CMO 8200. |
 | `procesar_cuidado_remunerado()` | Valida periodos, selecciona insumos observados, llama al clasificador y agrega trazabilidad sin sustituir la armonizacion general. |
 
@@ -46,7 +46,7 @@ catalogos originales. Para periodos SINCO sin `p3coe`, acepta `sinco3d` solo
 como codigo del clasificador observado. Si detecta metadatos de armonizacion
 general a 2011 en observaciones de 2019, exige el codigo observado.
 
-`armoniza_sinco()` genera `sinco3d` en base 2011. Por eso el wrapper utiliza el
+`armonizar_sinco()` genera `sinco3d` en base 2011. Por eso el wrapper utiliza el
 insumo original aunque exista esa columna, y conserva su contenido. La llamada
 directa a `class_cuidado_rem()` sigue disponible; quien la use debe proporcionar
 el clasificador apropiado y asume sus sobrescrituras historicas en CMO.
@@ -66,7 +66,6 @@ el clasificador apropiado y asume sus sobrescrituras historicas en CMO.
 | `care_industry_detalle` | Desglose de la rama. |
 | `care_w`, `cuida_1d`, `isco_care` | Tipologias heredadas; se conservan etiquetas y codigos. |
 | `trabajo_cuidado_mercado` | Indicador principal de insercion ocupacional en el cuidado de mercado; equivale a `cuida_total`. |
-| `trabajo_cuidado_rem` | Alias deprecado de `trabajo_cuidado_mercado`, conservado para la transicion. |
 | `cuidado_posicion_remunerada` | Posicion en el trabajo que presupone remuneracion; no acredita ingreso positivo observado. |
 | `cuidado_sin_pago` | Posicion en el trabajo declarada sin pago. |
 | `estado_ingreso_cuidado` | Distingue ingreso positivo observado, positivo imputado, ausencia de ingreso identificada y estado no determinado. |

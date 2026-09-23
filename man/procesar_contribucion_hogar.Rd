@@ -2,22 +2,23 @@
 % Please edit documentation in R/procesar_contribucion_hogar.R
 \name{procesar_contribucion_hogar}
 \alias{procesar_contribucion_hogar}
-\title{Procesar contribución económica y de trabajo no remunerado al hogar}
+\title{Procesar contribucion economica y de trabajo no remunerado al hogar}
 \usage{
 procesar_contribucion_hogar(data)
 }
 \arguments{
 \item{data}{Un data frame que contenga, al menos, las variables \code{ingocup_imp},
-\code{ipc}, \code{hrsocup}, \code{t_total_hrs0}, \code{t_total_hrs}, \code{folio2}, \code{tam_hog} y
+\code{ipc}, \code{hrsocup}, \code{t_trabajo_hogar_armonizado}, \code{t_total_instrumento}, \code{folio2},
+\code{tam_hog} y
 \code{fac}.}
 }
 \value{
-Un data frame con variables derivadas sobre contribución económica y
+Un data frame con variables derivadas sobre contribucion economica y
 trabajo no remunerado en el hogar, junto con quintiles ponderados etiquetados.
 }
 \description{
 A partir de variables laborales previamente construidas, genera el ingreso
-ocupacional individual deflactado, agregados del hogar, indicadores per cápita
+ocupacional individual deflactado, agregados del hogar, indicadores per capita
 y quintiles ponderados de ingreso y trabajo no remunerado.
 }
 \examples{
@@ -29,9 +30,10 @@ datos <- datos |>
 }
 \seealso{
 Other procesamiento_enoe:
-\code{\link[=armoniza_sinco]{armoniza_sinco()}},
+\code{\link[=.armonizar_sinco_enoe_core]{.armonizar_sinco_enoe_core()}},
 \code{\link[=armonizar_carreras_enoe]{armonizar_carreras_enoe()}},
 \code{\link[=calcular_desajuste_estadistico]{calcular_desajuste_estadistico()}},
+\code{\link[=calcular_desajuste_horizontal]{calcular_desajuste_horizontal()}},
 \code{\link[=crear_folios]{crear_folios()}},
 \code{\link[=imputa_ingocup]{imputa_ingocup()}},
 \code{\link[=ipc_enoe]{ipc_enoe()}},
@@ -44,6 +46,7 @@ Other procesamiento_enoe:
 \code{\link[=procesar_vars_hogar]{procesar_vars_hogar()}},
 \code{\link[=procesar_vars_laborales]{procesar_vars_laborales()}},
 \code{\link[=procesar_vars_sociodemo]{procesar_vars_sociodemo()}},
+\code{\link[=reglas_enoe]{reglas_enoe()}},
 \code{\link[=sinco2019_to_sinco2011]{sinco2019_to_sinco2011()}}
 }
 \concept{procesamiento_enoe}

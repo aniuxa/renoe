@@ -12,8 +12,7 @@
 #'
 #' El ponderador se elige con `variable_ponderador`. Dividir por una constante
 #' comun, como cuatro en un ano completo, no cambia la media, aunque si importa
-#' para estimar totales anuales. Si la entrada contiene un `mismatch2` historico,
-#' se conserva en `mismatch2_legacy` durante la transicion.
+#' para estimar totales anuales.
 #'
 #' @param data Data frame con `anio`, `trim`, `clase2`, `sinco1d` y `anios_es`.
 #' @param periodo_referencia `"trimestre"` o `"anio"`.
@@ -45,7 +44,6 @@ calcular_desajuste_estadistico <- function(
   if (!is.data.frame(data)) {
     stop("`data` debe ser un data frame.", call. = FALSE)
   }
-
   periodo_referencia <- match.arg(periodo_referencia)
   anio_incompleto <- match.arg(anio_incompleto)
   requeridas <- c("anio", "trim", "clase2", "sinco1d", "anios_es")
@@ -111,12 +109,6 @@ calcular_desajuste_estadistico <- function(
     }
   }
 
-  if ("mismatch2" %in% names(data) &&
-      !"mismatch2_legacy" %in% names(data) &&
-      !"esco_ref" %in% names(data)) {
-    data$mismatch2_legacy <- data$mismatch2
-  }
-
   data$esco_ref <- rep(NA_real_, n)
   data$mismatch2 <- rep(NA_real_, n)
   data$periodo_referencia_mismatch2 <- rep(periodo_referencia, n)
@@ -180,13 +172,6 @@ calcular_desajuste_estadistico <- function(
         "Subeducaci\u00F3n" = 1
       )
     )
-
-  if ("mismatch2_legacy" %in% names(data)) {
-    data$mismatch2_legacy <- sjlabelled::set_label(
-      data$mismatch2_legacy,
-      "Desajuste educativo con la definici\u00F3n hist\u00F3rica; conservar s\u00F3lo para trazabilidad"
-    )
-  }
 
   data
 }

@@ -1,0 +1,10 @@
+priority,layer,result_level,scope,requires_enoe_auxiliary,criterion
+10,official_unique_4d,4d,general_classifiers,FALSE,Destino oficial unico
+20,panel_global,4d,validacion_panel_ENOE,FALSE,Moda ponderada reciproca >50%; estable; n>=5 por split
+30,scian_sector,4d,aplicacion_auxiliar_ENOE,TRUE,CMO+sector SCIAN; misma pantalla panel
+40,p4a_scian2,4d,aplicacion_auxiliar_ENOE,TRUE,CMO+2 primeros digitos de p4a; misma pantalla panel
+50,p4f,4d,aplicacion_auxiliar_ENOE,TRUE,CMO+p4f; misma pantalla panel y revision semantica
+60,p4a_p4f,4d,aplicacion_auxiliar_ENOE,TRUE,CMO+p4a+p4f; misma pantalla panel
+70,official_convergence_3d,3d,general_classifiers,FALSE,Todos los destinos oficiales convergen a los mismos 3 digitos
+80,manual_cmo_to_sinco1d,1d,puente_historico_ENOE,TRUE,Puente historico manual por CMO 2d/3d y excepciones; no es convergencia oficial
+90,consenso_clasificaciones_panel,clasificacion,consenso_clasificaciones_panel_ENOE,TRUE,Misma categoria vieja/nueva en panel continuo; mayoria reciproca >50%; n>=5 train y validation

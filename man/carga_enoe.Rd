@@ -18,45 +18,46 @@ carga_enoe(
 )
 }
 \arguments{
-\item{anio}{Año del trimestre (2005–2026)}
+\item{anio}{Ano del trimestre (2005-2026)}
 
-\item{trimestre}{Número del trimestre (1–4), donde:
+\item{trimestre}{Numero del trimestre (1-4), donde:
 \itemize{
-\item 1 = Enero–Marzo
-\item 2 = Abril–Junio
-\item 3 = Julio–Septiembre
-\item 4 = Octubre–Diciembre
+\item 1 = Enero-Marzo
+\item 2 = Abril-Junio
+\item 3 = Julio-Septiembre
+\item 4 = Octubre-Diciembre
 }}
 
-\item{list}{Lógico. Si TRUE, devuelve una lista con los data frames. Si FALSE (por defecto), los objetos se cargan al entorno global.}
+\item{list}{Logico. Si TRUE, devuelve una lista con los data frames. Si FALSE (por defecto), los objetos se cargan al entorno global.}
 
-\item{rapida}{Lógico. Si TRUE, omite el etiquetado de variables (más rápido).}
+\item{rapida}{Logico. Si TRUE, omite el etiquetado de variables (mas rapido).}
 
-\item{intentos}{Número máximo de intentos de descarga (por defecto = 3).}
+\item{intentos}{Numero maximo de intentos de descarga (por defecto = 3).}
 
-\item{timeout_sec}{Tiempo máximo de espera por intento en segundos (por defecto = 300).}
+\item{timeout_sec}{Tiempo maximo de espera por intento en segundos (por defecto = 300).}
 
-\item{verificar_url}{Lógico. Si TRUE (por defecto), intenta formatos alternativos de URL si falla la descarga.}
+\item{verificar_url}{Logico. Si TRUE (por defecto), intenta formatos alternativos de URL si falla la descarga.}
 
-\item{cache}{Lógico. Si TRUE (por defecto), reutiliza datos descargados previamente si existen.}
+\item{cache}{Logico. Si TRUE (por defecto), reutiliza datos descargados previamente si existen.}
 
-\item{prefijo}{Cadena opcional para el prefijo de los archivos ("enoe" o "enoen"). Si no se indica, se detecta automáticamente.}
+\item{prefijo}{Cadena opcional para el prefijo de los archivos ("enoe" o "enoen"). Si no se indica, se detecta automaticamente.}
 }
 \value{
 Si \code{list = TRUE}, devuelve una lista con las cinco tablas. Si \code{list = FALSE}, las tablas se cargan
 al entorno global con nombres como \code{viv2023_t1}, \code{hog2023_t1}, etc.
 }
 \description{
-Descarga, extrae y carga las tablas de microdatos de la Encuesta Nacional de Ocupación y Empleo (ENOE)
-para un trimestre específico. Incluye la corrección automática del archivo defectuoso de hogares
-del primer trimestre de 2022. Las tablas disponibles son: vivienda (viv), hogar (hog), sociodemográfica (sdem)
-y los dos componentes del cuestionario ampliado (coe1 y coe2).
+Descarga, extrae y carga las tablas de microdatos de la Encuesta Nacional de Ocupacion y Empleo (ENOE)
+para un trimestre especifico. Incluye la correccion automatica del archivo defectuoso de hogares
+del primer trimestre de 2022. Las tablas disponibles son: vivienda (viv), hogar (hog), sociodemografica (sdem)
+y los dos componentes del cuestionario de ocupacion (coe1 y coe2).
 }
 \details{
-Esta función combina varias operaciones comunes al trabajar con microdatos de la ENOE:
-descarga, extracción del ZIP, lectura, estandarización de identificadores y aplicación de etiquetas.
-La función maneja de forma especial el primer trimestre de 2022, sustituyendo automáticamente el archivo
-por la versión que se descarga en microdatos de INEGI y no en datos abiertos..
+Esta funcion combina varias operaciones comunes al trabajar con microdatos de la ENOE:
+descarga, extraccion del ZIP, lectura, estandarizacion de identificadores y aplicacion de etiquetas.
+Para 2022-T1 combina el HOG urbano ubicado en la raiz del ZIP con el HOG
+rural distribuido en \verb{conjunto_de_datos/} y armoniza los codigos de mes del
+segundo componente.
 }
 \examples{
 \dontrun{
@@ -66,7 +67,7 @@ carga_enoe(2023, 2)
 # Cargar datos como lista sin etiquetas
 datos <- carga_enoe(2022, 4, list = TRUE, rapida = TRUE)
 
-# Cargar el trimestre corregido 2022T1 desde caché o desde extdata si es necesario
+# Cargar el trimestre 2022T1 combinando ambos componentes oficiales de HOG
 carga_enoe(2022, 1)
 }
 

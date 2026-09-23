@@ -4,23 +4,24 @@
 #' mediante regresiones cuantilicas. Clasifica en memoria; no descarga, escribe
 #' ni reconstruye microdatos. Los modelos pertenecen al proyecto del articulo.
 #'
-#' Usa CMO hasta 2012-II, SINCO 2011 desde 2012-III y SINCO 2019 desde
-#' 2021-III, conforme a las reglas existentes del paquete. Prefiere el codigo
-#' observado de cuatro digitos (`p3coe`) para evitar confundir un `sinco3d`
-#' previamente armonizado a 2011 con SINCO 2019. Si falta `p3coe`, acepta una
-#' columna de tres digitos en el clasificador observado del periodo. Rechaza
-#' el respaldo cuando detecta metadatos de armonizacion general en 2019.
+#' Cuando detecta la salida completa de [armonizar_sinco()], usa
+#' `sinco4d_base2011` y `sinco3d` como insumos canonicos para todos los
+#' periodos. Conserva `p3coe` como codigo original y no vuelve a decidir el
+#' catalogo por su cuenta. Si la ruta canonica no esta presente, conserva el
+#' comportamiento historico basado en el clasificador observado.
 #'
 #' Conserva las columnas originales, incluido `sinco3d`. Agrega las salidas de
 #' `class_cuidado_rem()` y trazabilidad especifica. `codigo_ocupacion_armonizado`
-#' tiene tres digitos: es un puente analitico en CMO y un codigo observado
-#' en SINCO; no representa una homologacion universal a SINCO 2011.
+#' tiene tres digitos y representa SINCO 2011 cuando la ruta canonica esta
+#' disponible; en el modo heredado conserva la interpretacion anterior.
+#' Para los remanentes CMO sin SINCO 3d canonico, el puente analitico de
+#' cuidado recupera solo la clasificacion dependiente y registra su
+#' multiplicidad; no rellena el SINCO general ni convierte 9999 en ocupacion.
 #' `codigo_ocupacion_original_cuidado` conserva el insumo sin recodificar.
 #' Las correspondencias multiples siguen la primera regla del material de
 #' Damian y quedan identificadas en `calidad_armonizacion_cuidado`.
 #'
-#' `trabajo_cuidado_mercado` es el nombre principal de la tipologia. La columna
-#' `trabajo_cuidado_rem` se conserva como alias deprecado. La funcion separa la
+#' `trabajo_cuidado_mercado` es el nombre de la tipologia. La funcion separa la
 #' posicion remunerada, la posicion explicita sin pago y la evidencia de ingreso
 #' observado o imputado. Un ingreso imputado positivo nunca se presenta como
 #' remuneracion observada.
@@ -79,39 +80,119 @@ procesar_cuidado_remunerado <- function(
   if (length(valor_ocupado) != 1L || is.na(valor_ocupado)) {
     stop("`valor_ocupado` debe tener un valor no faltante.")
   }
+  canonico <- all(c(
+    "sinco4d_base2011", "sinco3d", "calidad_puente_sinco"
+  ) %in% names(data))
+  tiene_marca_canonica <- any(c(
+    "sinco4d_base2011", "calidad_puente_sinco",
+    "sinco2011_granularidad"
+  ) %in% names(data))
+  if (tiene_marca_canonica && !canonico) {
+    stop(
+      "SINCO previamente armonizado, pero la ruta canonica esta incompleta: ",
+      "se requieren sinco4d_base2011, sinco3d y calidad_puente_sinco."
+    )
+  }
   raw <- variable_codigo %in% names(data)
-  if (!raw && any(cmo)) stop("Falta la variable CMO: ", variable_codigo)
-  if (!raw && !variable_ocupacion %in% names(data)) {
+  if (!raw && !canonico && any(cmo)) {
+    stop("Falta la variable CMO: ", variable_codigo)
+  }
+  if (!raw && !canonico && !variable_ocupacion %in% names(data)) {
     stop("Falta ocupacion: ", variable_codigo, " o ", variable_ocupacion)
   }
-  if (!raw && any(p >= 20213) &&
-      any(c("sinco4d_base2011", "calidad_puente_sinco") %in% names(data))) {
-    stop("SINCO previamente armonizado: proporcione el codigo observado en `variable_codigo`.")
+  original <- if (raw) {
+    data[[variable_codigo]]
+  } else if ("codigo_ocupacion_original" %in% names(data)) {
+    data$codigo_ocupacion_original
+  } else {
+    data[[variable_ocupacion]]
   }
-  original <- if (raw) data[[variable_codigo]] else data[[variable_ocupacion]]
-  codigo <- .cuidado_codigo(original, if (raw) 4L else 3L)
-  ocu <- if (raw) codigo %/% 10L else codigo
+  if (canonico) {
+    codigo <- .cuidado_codigo(data$sinco4d_base2011, 4L)
+    ocu <- .cuidado_codigo(data$sinco3d, 3L)
+  } else {
+    codigo <- .cuidado_codigo(original, if (raw) 4L else 3L)
+    ocu <- if (raw) codigo %/% 10L else codigo
+  }
   # Aislar insumos evita sobrescribir la armonizacion general y metadatos previos.
   trabajo <- data.frame(anio=a, trim=t, p3coe=codigo, sinco3d=ocu,
-                        p4a=data[[variable_actividad]], clase2=data[[variable_ocupado]])
-  salida <- class_cuidado_rem(trabajo, valor_ocupado=valor_ocupado)
+                        p4a=data[[variable_actividad]], clase2=data[[variable_ocupado]],
+                        cmo_original=ifelse(cmo, original, NA))
+  calidad_rescate <- rep(NA_character_, n)
+  n_destinos_rescate <- rep(NA_integer_, n)
+  rescate_cmo <- integer()
+  if (canonico) {
+    rescate_cmo <- which(cmo & is.na(ocu))
+    if (length(rescate_cmo)) {
+      puente <- cmo_to_sinco11_care(
+        data.frame(p3coe = original[rescate_cmo]),
+        variable_cmo = "p3coe"
+      )
+      destino <- suppressWarnings(as.integer(puente$sinco3d))
+      destino[is.na(destino) | destino < 100L |
+                destino >= 999L] <- NA_integer_
+      trabajo$sinco3d[rescate_cmo] <- destino
+      calidad_rescate[rescate_cmo] <- puente$sinco11_calidad
+      n_destinos_rescate[rescate_cmo] <- puente$sinco11_n_destinos
+    }
+  }
+  salida <- class_cuidado_rem(
+    trabajo,
+    valor_ocupado=valor_ocupado,
+    aplicar_puente_cmo=!canonico,
+    puente_cmo_precalculado=canonico
+  )
   nuevas <- setdiff(names(salida), c(names(trabajo), "cmo_original", "sinco11",
                                     "sinco11_n_destinos", "sinco11_calidad"))
   for (v in nuevas) data[[v]] <- salida[[v]]
+  if (length(rescate_cmo)) {
+    data$puente_cmo_aplicado[rescate_cmo] <-
+      !is.na(trabajo$sinco3d[rescate_cmo])
+  }
   data$clasificador_ocupacion <- ifelse(cmo, "CMO",
                                        ifelse(p >= 20213, "SINCO 2019", "SINCO 2011"))
   data$version_scian <- salida$scian_version_cuidado
   data$codigo_ocupacion_original_cuidado <- original
-  data$codigo_ocupacion_armonizado <- .cuidado_codigo(salida$sinco3d, 3L)
-  data$metodo_armonizacion_cuidado <- ifelse(cmo, "Puente analitico CMO: primera regla de Damian",
-                                          if (raw) "SINCO observado: primeros tres digitos" else "SINCO observado a tres digitos")
-  calidad <- ifelse(is.na(data$codigo_ocupacion_armonizado), "Codigo faltante o no clasificable",
-                    "SINCO observado")
-  if (any(cmo)) calidad[cmo] <- salida$sinco11_calidad[cmo]
+  data$codigo_ocupacion_armonizado <- if (canonico) {
+    trabajo$sinco3d
+  } else {
+    .cuidado_codigo(salida$sinco3d, 3L)
+  }
+  data$metodo_armonizacion_cuidado <- if (canonico) {
+    rep("SINCO 2011 canonico de armonizar_sinco", n)
+  } else {
+    ifelse(
+      cmo,
+      "Puente analitico CMO: primera regla de Damian",
+      if (raw) "SINCO observado: primeros tres digitos" else
+        "SINCO observado a tres digitos"
+    )
+  }
+  if (length(rescate_cmo)) {
+    data$metodo_armonizacion_cuidado[rescate_cmo] <-
+      "Puente analitico CMO de Damian en remanente; no equivalencia oficial"
+  }
+  calidad <- if (canonico) {
+    as.character(data$calidad_puente_sinco)
+  } else {
+    ifelse(
+      is.na(data$codigo_ocupacion_armonizado),
+      "Codigo faltante o no clasificable",
+      "SINCO observado"
+    )
+  }
+  if (!canonico && any(cmo)) calidad[cmo] <- salida$sinco11_calidad[cmo]
+  if (length(rescate_cmo)) calidad[rescate_cmo] <- calidad_rescate[rescate_cmo]
   data$calidad_armonizacion_cuidado <- calidad
-  mercado <- suppressWarnings(as.numeric(as.character(salida$cuida_total)))
+  data$cuidado_n_destinos_puente_cmo <- n_destinos_rescate
+  if (canonico) {
+    data$clasificador_ocupacion_cuidado <- "SINCO 2011 armonizado"
+    data$sinco_version_cuidado <- "SINCO 2011 armonizado"
+  }
+  mercado <- suppressWarnings(as.numeric(as.character(
+    salida$trabajo_cuidado_mercado
+  )))
   data$trabajo_cuidado_mercado <- mercado
-  data$trabajo_cuidado_rem <- mercado
 
   opcional_num <- function(nombre) {
     if (!nombre %in% names(data)) return(rep(NA_real_, n))
@@ -158,14 +239,12 @@ procesar_cuidado_remunerado <- function(
   data |>
     sjlabelled::var_labels(
       trabajo_cuidado_mercado = "Trabajadora/or de cuidado de mercado",
-      trabajo_cuidado_rem = "Alias deprecado de trabajo_cuidado_mercado",
       cuidado_posicion_remunerada = "Cuidado de mercado en posici\u00F3n ocupacional remunerada",
       cuidado_sin_pago = "Cuidado de mercado en posici\u00F3n ocupacional sin pago",
       estado_ingreso_cuidado = "Estado de observaci\u00F3n o imputaci\u00F3n del ingreso en el cuidado de mercado"
     ) |>
     sjlabelled::val_labels(
       trabajo_cuidado_mercado = c("No" = 0, "S\u00ED" = 1),
-      trabajo_cuidado_rem = c("No" = 0, "S\u00ED" = 1),
       cuidado_posicion_remunerada = c("No" = 0, "S\u00ED" = 1),
       cuidado_sin_pago = c("No" = 0, "S\u00ED" = 1)
     )

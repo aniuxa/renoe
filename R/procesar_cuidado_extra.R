@@ -63,9 +63,8 @@ procesar_cuidado_extra <- function(
 ) {
   requeridas <- c(
     "anio", "trim", "folio2", "fac", "ent", "edad", "sexo", "clase2",
-    "hrsocup", "t_total_hrs0", "tipo_hog_lab", "tipo_hog2_lab",
-    "jefa_mujer", "jefe_hombre", "quintil_ing_hog_pc", "ing_hog_pc",
-    "ing_hog_pc_sego", "h_00_05", "h_06_12", "h_13_17",
+    "hrsocup", "t_cuidado_directo", "t_cuidado_amplio",
+    "jefa_mujer", "jefe_hombre", "h_00_05", "h_06_12", "h_13_17",
     "d_00_05", "d_06_12", "d_13_17"
   )
   faltantes <- setdiff(requeridas, names(data))
@@ -93,8 +92,14 @@ procesar_cuidado_extra <- function(
       .adolescente = !is.na(edad) & dplyr::between(
         edad, edad_adolescente_min, edad_adolescente_max
       ),
-      .adolescente_cuida = .adolescente & !is.na(t_total_hrs0) &
-        t_total_hrs0 > 0
+      .adolescente_cuidado_amplio_medible = .adolescente &
+        !is.na(t_cuidado_amplio),
+      .adolescente_cuidado_directo_medible = .adolescente &
+        !is.na(t_cuidado_directo),
+      .adolescente_cuidado_amplio = .adolescente_cuidado_amplio_medible &
+        t_cuidado_amplio > 0,
+      .adolescente_cuidado_directo = .adolescente_cuidado_directo_medible &
+        t_cuidado_directo > 0
     )
 
   hogares <- trabajo |>
@@ -135,10 +140,27 @@ procesar_cuidado_extra <- function(
         hrsocup > umbral_jornada_muy_alta, .adulto_ocupado & .hombre
       ),
       n_adolescentes = sum(.adolescente),
-      n_adolescentes_cuidan = sum(.adolescente_cuida),
-      hay_adolescente_que_cuida = any(.adolescente_cuida),
-      horas_cuidado_adolescentes = .sum_condicional(
-        t_total_hrs0, .adolescente_cuida
+      n_adolescentes_cuidado_amplio = dplyr::if_else(
+        any(.adolescente) & !any(.adolescente_cuidado_amplio_medible),
+        NA_integer_, sum(.adolescente_cuidado_amplio)
+      ),
+      hay_adolescente_cuidado_amplio = dplyr::if_else(
+        any(.adolescente) & !any(.adolescente_cuidado_amplio_medible),
+        NA, any(.adolescente_cuidado_amplio)
+      ),
+      horas_cuidado_amplio_adolescentes = .sum_condicional(
+        t_cuidado_amplio, .adolescente_cuidado_amplio
+      ),
+      n_adolescentes_cuidado_directo = dplyr::if_else(
+        any(.adolescente) & !any(.adolescente_cuidado_directo_medible),
+        NA_integer_, sum(.adolescente_cuidado_directo)
+      ),
+      hay_adolescente_cuidado_directo = dplyr::if_else(
+        any(.adolescente) & !any(.adolescente_cuidado_directo_medible),
+        NA, any(.adolescente_cuidado_directo)
+      ),
+      horas_cuidado_directo_adolescentes = .sum_condicional(
+        t_cuidado_directo, .adolescente_cuidado_directo
       ),
       .groups = "drop"
     )
@@ -220,9 +242,12 @@ procesar_cuidado_extra <- function(
       algun_hombre_mas_40 = "Hogar con al menos un hombre adulto ocupado que trabaja m\u00E1s de 40 horas semanales",
       algun_hombre_mas_48 = "Hogar con al menos un hombre adulto ocupado que trabaja m\u00E1s de 48 horas semanales",
       n_adolescentes = "N\u00FAmero de adolescentes de 13 a 17 a\u00F1os en el hogar",
-      n_adolescentes_cuidan = "N\u00FAmero de adolescentes de 13 a 17 a\u00F1os que realizan trabajo no remunerado",
-      hay_adolescente_que_cuida = "Hogar con al menos una persona adolescente que realiza trabajo no remunerado",
-      horas_cuidado_adolescentes = "Horas de trabajo no remunerado realizadas por adolescentes",
+      n_adolescentes_cuidado_amplio = "N\u00FAmero de adolescentes de 13 a 17 a\u00F1os con cuidado amplio sin pago",
+      hay_adolescente_cuidado_amplio = "Hogar con al menos una persona adolescente con cuidado amplio sin pago",
+      horas_cuidado_amplio_adolescentes = "Horas de cuidado amplio sin pago realizadas por adolescentes",
+      n_adolescentes_cuidado_directo = "N\u00FAmero de adolescentes de 13 a 17 a\u00F1os con cuidado directo sin pago (desde 2013)",
+      hay_adolescente_cuidado_directo = "Hogar con al menos una persona adolescente con cuidado directo sin pago (desde 2013)",
+      horas_cuidado_directo_adolescentes = "Horas de cuidado directo sin pago realizadas por adolescentes (desde 2013)",
       h_00_05 = "N\u00FAmero de integrantes de 0 a 5 a\u00F1os en el hogar",
       h_06_12 = "N\u00FAmero de integrantes de 6 a 12 a\u00F1os en el hogar",
       h_13_17 = "N\u00FAmero de integrantes de 13 a 17 a\u00F1os en el hogar",

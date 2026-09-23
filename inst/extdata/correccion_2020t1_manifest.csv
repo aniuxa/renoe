@@ -1,0 +1,2 @@
+version,periodo,fuentes,etapa,llave_anterior,llave_corregida,registros_recuperados,ocupados_total,no_clasificados_finales,fac_no_clasificados,productos_invalidados,estado
+0.3.1,2020-T1,"VIV|HOG|SDEM|COE1|COE2",SDEM-COE,"tipo|mes_cal|cd_a|ca|ent|ur|con|v_sel|n_hog|h_mud|n_ren","tipo|mes_cal|cd_a|ca|ent|con|v_sel|n_hog|h_mud|n_ren",2851,184064,162,41820,"transversal/PINI 2020-T1; paneles 57-61; descendientes",integrated

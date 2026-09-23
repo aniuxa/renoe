@@ -2,12 +2,9 @@
 % Please edit documentation in R/cmo_to_sinco11_care.R
 \name{cmo_to_sinco11_care}
 \alias{cmo_to_sinco11_care}
-\alias{cmo_to_sinco11}
 \title{Crear un puente CMO-SINCO 2011 para estudiar trabajo de cuidado}
 \usage{
 cmo_to_sinco11_care(data, variable_cmo = "p3coe", sobrescribir = TRUE)
-
-cmo_to_sinco11(...)
 }
 \arguments{
 \item{data}{Data frame que contiene la ocupacion codificada en CMO.}
@@ -17,8 +14,6 @@ ser \code{p3coe}.}
 
 \item{sobrescribir}{Si es FALSE, detiene la ejecucion cuando ya existen las
 variables de salida.}
-
-\item{...}{Argumentos enviados a \code{cmo_to_sinco11_care()}.}
 }
 \value{
 El data frame con \code{cmo_original}, \code{sinco11}, \code{sinco3d},

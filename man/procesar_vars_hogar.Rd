@@ -11,38 +11,38 @@ procesar_vars_hogar(data, anio, trimestre)
 \item{data}{Un data frame con variables como \code{par_c}, \code{edad}, \code{sexo},
 \code{folio2}, previamente procesadas por \code{procesar_vars_sociodemo()}.}
 
-\item{anio}{Año de referencia de los datos.}
+\item{anio}{Ano de referencia de los datos.}
 
-\item{trimestre}{Trimestre de referencia de los datos (número del 1 al 4).}
+\item{trimestre}{Trimestre de referencia de los datos (numero del 1 al 4).}
 }
 \value{
 Un data frame con variables derivadas de estructura del hogar y
-composición demográfica, etiquetadas.
+composicion demografica, etiquetadas.
 }
 \description{
-Calcula variables derivadas sobre la composición y estructura de los hogares
-a partir de los microdatos de la ENOE. Esta función requiere que previamente
-se hayan generado variables sociodemográficas mediante
+Calcula variables derivadas sobre la composicion y estructura de los hogares
+a partir de los microdatos de la ENOE. Esta funcion requiere que previamente
+se hayan generado variables sociodemograficas mediante
 \code{procesar_vars_sociodemo()}.
 }
 \details{
 Incluye:
 \itemize{
-\item Clasificación de parentesco (\code{relative}), ajustada al catálogo correspondiente
-según el periodo
-\item Tipologías de hogares (familiares, extensos, compuestos, etc.)
-\item Tamaño del hogar y tasas de dependencia (menores, mayores y total)
+\item Clasificacion de parentesco (\code{relative}), ajustada al catalogo correspondiente
+segun el periodo
+\item Tipologias de hogares (familiares, extensos, compuestos, etc.)
+\item Tamano del hogar y tasas de dependencia (menores, mayores y total)
 \item Conteo de integrantes por grupo etario
-\item Indicadores dicotómicos de presencia de grupos clave (niñez, juventud,
+\item Indicadores dicotomicos de presencia de grupos clave (ninez, juventud,
 adultez mayor)
 }
 
-Las variables generadas permiten construir tipologías familiares,
-caracterizar hogares según su composición y analizar necesidades de cuidado
-o dependencia demográfica.
+Las variables generadas permiten construir tipologias familiares,
+caracterizar hogares segun su composicion y analizar necesidades de cuidado
+o dependencia demografica.
 
-La variable \code{tam_hog} se calcula excluyendo al servicio doméstico y a sus
-familiares, identificados en el catálogo de \code{par_c} mediante \code{relative == 7}.
+La variable \code{tam_hog} se calcula excluyendo al servicio domestico y a sus
+familiares, identificados en el catalogo de \code{par_c} mediante \code{relative == 7}.
 }
 \examples{
 \dontrun{
@@ -54,9 +54,10 @@ table(datos$tipo_hog_lab, useNA = "always")
 }
 \seealso{
 Other procesamiento_enoe:
-\code{\link[=armoniza_sinco]{armoniza_sinco()}},
+\code{\link[=.armonizar_sinco_enoe_core]{.armonizar_sinco_enoe_core()}},
 \code{\link[=armonizar_carreras_enoe]{armonizar_carreras_enoe()}},
 \code{\link[=calcular_desajuste_estadistico]{calcular_desajuste_estadistico()}},
+\code{\link[=calcular_desajuste_horizontal]{calcular_desajuste_horizontal()}},
 \code{\link[=crear_folios]{crear_folios()}},
 \code{\link[=imputa_ingocup]{imputa_ingocup()}},
 \code{\link[=ipc_enoe]{ipc_enoe()}},
@@ -69,6 +70,7 @@ Other procesamiento_enoe:
 \code{\link[=procesar_variables_enoe]{procesar_variables_enoe()}},
 \code{\link[=procesar_vars_laborales]{procesar_vars_laborales()}},
 \code{\link[=procesar_vars_sociodemo]{procesar_vars_sociodemo()}},
+\code{\link[=reglas_enoe]{reglas_enoe()}},
 \code{\link[=sinco2019_to_sinco2011]{sinco2019_to_sinco2011()}}
 }
 \concept{procesamiento_enoe}

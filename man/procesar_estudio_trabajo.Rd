@@ -2,7 +2,7 @@
 % Please edit documentation in R/procesar_estudio_trabajo.R
 \name{procesar_estudio_trabajo}
 \alias{procesar_estudio_trabajo}
-\title{Clasificar la combinación de estudio y trabajo}
+\title{Clasificar la combinacion de estudio y trabajo}
 \usage{
 procesar_estudio_trabajo(data)
 }
@@ -10,21 +10,21 @@ procesar_estudio_trabajo(data)
 \item{data}{Data frame con \code{clase2}, \code{cs_p17} y \code{p2e}.}
 }
 \value{
-El mismo data frame con la clasificación de estudio y trabajo, el
+El mismo data frame con la clasificacion de estudio y trabajo, el
 indicador general de no estudio y no trabajo, tres indicadores de grupo y
-una tipología exclusiva.
+una tipologia exclusiva.
 }
 \description{
-Construye una clasificación general de asistencia escolar y condición de
-ocupación, además de indicadores para tres situaciones dentro de la población
-que no estudia ni trabaja: búsqueda de trabajo, dedicación a los quehaceres
+Construye una clasificacion general de asistencia escolar y condicion de
+ocupacion, ademas de indicadores para tres situaciones dentro de la poblacion
+que no estudia ni trabaja: busqueda de trabajo, dedicacion a los quehaceres
 del hogar y disponibilidad laboral. Los indicadores pueden superponerse; la
-variable \code{tipo_neet} ofrece una versión mutuamente excluyente.
+variable \code{tipo_neet} ofrece una version mutuamente excluyente.
 }
 \details{
 La disponibilidad (\code{neet_disponible}) se conserva con ese nombre descriptivo.
-Su interpretación como proxy de desaliento requiere justificación en cada
-análisis y no es impuesta por esta función.
+Su interpretacion como proxy de desaliento requiere justificacion en cada
+analisis y no es impuesta por esta funcion.
 }
 \examples{
 datos <- data.frame(
@@ -36,9 +36,10 @@ procesar_estudio_trabajo(datos)
 }
 \seealso{
 Other procesamiento_enoe:
-\code{\link[=armoniza_sinco]{armoniza_sinco()}},
+\code{\link[=.armonizar_sinco_enoe_core]{.armonizar_sinco_enoe_core()}},
 \code{\link[=armonizar_carreras_enoe]{armonizar_carreras_enoe()}},
 \code{\link[=calcular_desajuste_estadistico]{calcular_desajuste_estadistico()}},
+\code{\link[=calcular_desajuste_horizontal]{calcular_desajuste_horizontal()}},
 \code{\link[=crear_folios]{crear_folios()}},
 \code{\link[=imputa_ingocup]{imputa_ingocup()}},
 \code{\link[=ipc_enoe]{ipc_enoe()}},
@@ -51,6 +52,7 @@ Other procesamiento_enoe:
 \code{\link[=procesar_vars_hogar]{procesar_vars_hogar()}},
 \code{\link[=procesar_vars_laborales]{procesar_vars_laborales()}},
 \code{\link[=procesar_vars_sociodemo]{procesar_vars_sociodemo()}},
+\code{\link[=reglas_enoe]{reglas_enoe()}},
 \code{\link[=sinco2019_to_sinco2011]{sinco2019_to_sinco2011()}}
 }
 \concept{procesamiento_enoe}

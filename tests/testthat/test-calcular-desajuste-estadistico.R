@@ -67,7 +67,7 @@ test_that("la referencia trimestral separa periodos", {
   expect_equal(as.numeric(resultado$esco_ref), c(9, 9, 13, 13))
 })
 
-test_that("mismatch2 previo queda trazable y la función es idempotente", {
+test_that("mismatch2 se recalcula sin crear alias y la función es idempotente", {
   datos <- data.frame(
     anio = c(2025, 2025), trim = c(1, 1), clase2 = c(1, 1),
     sinco1d = c(3, 3), anios_es = c(8, 12), fac = c(1, 1),
@@ -77,8 +77,8 @@ test_that("mismatch2 previo queda trazable y la función es idempotente", {
   una <- calcular_desajuste_estadistico(datos, "trimestre")
   dos <- calcular_desajuste_estadistico(una, "trimestre")
 
-  expect_identical(as.numeric(una$mismatch2_legacy), datos$mismatch2)
-  expect_identical(as.numeric(dos$mismatch2_legacy), datos$mismatch2)
+  expect_false("mismatch2_legacy" %in% names(una))
+  expect_false("mismatch2_legacy" %in% names(dos))
   expect_identical(una$esco_norm, datos$esco_norm)
   expect_equal(una$esco_ref, dos$esco_ref)
   expect_equal(una$mismatch2, dos$mismatch2)

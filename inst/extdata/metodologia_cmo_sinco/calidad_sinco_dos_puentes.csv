@@ -1,0 +1,55 @@
+calidad_puente_sinco,nivel_maximo_sinco,registros,poblacion,puente,anio,trim
+Puente analítico CMO-SINCO 2011,4d,103444,30586420,CMO_SINCO2011,2012,2
+Convergencia oficial CMO-SINCO: CMO 5246 -> SINCO 263 a tres digitos; cuatro digitos permanecen ambiguos,3d,435,126487,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 7111 -> SINCO 4211,4d,12287,3460965,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 8124 -> SINCO 9621,4d,4589,1209335,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 8200 -> SINCO 9611,4d,6593,1922531,CMO_SINCO2011,2012,2
+Convergencia oficial CMO-SINCO: CMO 8100 -> SINCO 511 a tres digitos; cuatro digitos permanecen ambiguos,3d,3507,985557,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 1220 -> SINCO 2811,4d,1280,357870,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 1130 -> SINCO 2411,4d,1094,263027,CMO_SINCO2011,2012,2
+CMO sin equivalencia de cuatro dígitos,1d,13169,3332679,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 1205 + primeros 2 digitos de p4a=81 -> SINCO 2643,4d,394,115888,CMO_SINCO2011,2012,2
+CMO sin equivalencia de cuatro dígitos,3d,3545,930925,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 6210 -> SINCO 3121,4d,2108,528437,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 7201 + p4f=8 -> SINCO 4224,4d,1185,379137,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 8301 -> SINCO 5312,4d,1001,293593,CMO_SINCO2011,2012,2
+Convergencia oficial CMO-SINCO: CMO 2124 -> SINCO 131 a tres digitos; cuatro digitos permanecen ambiguos,3d,501,136364,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 1172 -> SINCO 2121,4d,1445,354646,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 8303 -> SINCO 5313,4d,2449,652645,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 8101 -> SINCO 5116,4d,2022,514143,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 8123 -> SINCO 9622,4d,292,69911,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 8122 -> SINCO 9712,4d,354,92272,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 5230 -> SINCO 7311,4d,1060,308936,CMO_SINCO2011,2012,2
+Convergencia oficial CMO-SINCO: CMO 1423 -> SINCO 254 a tres digitos; cuatro digitos permanecen ambiguos,3d,482,152065,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 7201 + p4f=3 -> SINCO 9512,4d,826,307187,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 6270 + SCIAN sector=15 -> SINCO 3115,4d,336,74484,CMO_SINCO2011,2012,2
+Convergencia oficial CMO-SINCO: CMO 6260 -> SINCO 314 a tres digitos; cuatro digitos permanecen ambiguos,3d,174,54708,CMO_SINCO2011,2012,2
+Convergencia oficial CMO-SINCO: CMO 6150 -> SINCO 172 a tres digitos; cuatro digitos permanecen ambiguos,3d,129,43662,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 8125 -> SINCO 5241,4d,639,157057,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 1206 -> SINCO 2655,4d,351,87130,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 5246 + SCIAN sector=19 -> SINCO 2634,4d,202,66266,CMO_SINCO2011,2012,2
+Convergencia oficial CMO-SINCO: CMO 6160 -> SINCO 171 a tres digitos; cuatro digitos permanecen ambiguos,3d,615,172672,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 1401 -> SINCO 2152,4d,154,40690,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 1205 + SCIAN sector=14 -> SINCO 2651,4d,349,102418,CMO_SINCO2011,2012,2
+Convergencia oficial CMO-SINCO: CMO 2100 -> SINCO 111 a tres digitos; cuatro digitos permanecen ambiguos,3d,22,4550,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 7201 + SCIAN sector=14 -> SINCO 9661,4d,266,72219,CMO_SINCO2011,2012,2
+Convergencia oficial CMO-SINCO: CMO 2123 -> SINCO 132 a tres digitos; cuatro digitos permanecen ambiguos,3d,105,34457,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 7212 -> SINCO 9632,4d,143,40226,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 7131 -> SINCO 4223,4d,357,89269,CMO_SINCO2011,2012,2
+Convergencia oficial CMO-SINCO: CMO 6232 -> SINCO 323 a tres digitos; cuatro digitos permanecen ambiguos,3d,150,39167,CMO_SINCO2011,2012,2
+Convergencia oficial CMO-SINCO: CMO 1104 -> SINCO 225 a tres digitos; cuatro digitos permanecen ambiguos,3d,318,89773,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 7121 + SCIAN sector=18 -> SINCO 8344,4d,131,41022,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 1420 -> SINCO 2161,4d,57,14551,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 6230 + SCIAN sector=16 -> SINCO 3211,4d,276,70431,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 1250 + SCIAN sector=16 -> SINCO 2531,4d,74,17663,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 1161 -> SINCO 2143,4d,76,17151,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 8312 -> SINCO 5413,4d,198,50520,CMO_SINCO2011,2012,2
+Convergencia oficial CMO-SINCO: CMO 5380 -> SINCO 813 a tres digitos; cuatro digitos permanecen ambiguos,3d,126,48291,CMO_SINCO2011,2012,2
+Convergencia oficial CMO-SINCO: CMO 2133 -> SINCO 113 a tres digitos; cuatro digitos permanecen ambiguos,3d,18,3798,CMO_SINCO2011,2012,2
+Convergencia oficial CMO-SINCO: CMO 5410 -> SINCO 921 a tres digitos; cuatro digitos permanecen ambiguos,3d,48,7842,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 4150 -> SINCO 6211,4d,599,144346,CMO_SINCO2011,2012,2
+Regla validada con panel ENOE: CMO 7201 + p4a=4632 + p4f=2 -> SINCO 9512,4d,325,96922,CMO_SINCO2011,2012,2
+Convergencia oficial CMO-SINCO: CMO 2126 -> SINCO 122 a tres digitos; cuatro digitos permanecen ambiguos,3d,25,4548,CMO_SINCO2011,2012,2
+Equivalencia oficial directa,4d,186253,55804453,SINCO2019_SINCO2011,2021,3
+Equivalencia oficial múltiple: sin resolver,NA,2042,601263,SINCO2019_SINCO2011,2021,3
+Sin equivalencia SINCO 2011,NA,84,16613,SINCO2019_SINCO2011,2021,3

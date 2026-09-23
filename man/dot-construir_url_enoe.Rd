@@ -2,11 +2,11 @@
 % Please edit documentation in R/utils.R
 \name{.construir_url_enoe}
 \alias{.construir_url_enoe}
-\title{Función interna que determina la estructura de URL apropiada según el año y trimestre}
+\title{Funcion interna que determina la estructura de URL apropiada segun el ano y trimestre}
 \usage{
 .construir_url_enoe(anio, trimestre)
 }
 \description{
-Función interna que determina la estructura de URL apropiada según el año y trimestre
+Funcion interna que determina la estructura de URL apropiada segun el ano y trimestre
 }
 \keyword{internal}

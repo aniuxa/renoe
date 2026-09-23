@@ -13,9 +13,18 @@ procesar_libro1(data)
 El data frame con los nuevos indicadores individuales.
 }
 \description{
-Crea indicadores de origen extranjero, no ocupacion por cuidados, mujeres
-con educacion universitaria y afiliacion sindical. La afiliacion solo es medible
-en cuestionarios ampliados; esta funcion no calcula estimaciones survey.
+Crea indicadores de origen geografico, no ocupacion por cuidados, mujeres
+con educacion universitaria y afiliacion sindical. La afiliacion solo es
+medible en cuestionarios ampliados; esta funcion no calcula estimaciones
+survey.
+}
+\details{
+El origen geografico se reconstruye siempre a partir de \code{l_nac_c}, \code{anio} y
+\code{trim}. No se conservan ni reutilizan versiones anteriores de \code{extr},
+\code{extr_especificado}, \code{region_origen_long} u \code{origen_nivel_detalle} que puedan
+venir en \code{data}. La regla distingue el cambio de catalogo de 2012-T3 y trata
+las claves especiales 800 y 997 como Mexico sin entidad comparable, 998 como
+pais extranjero no especificado y 999 como origen no clasificable.
 }
 \examples{
 \dontrun{
@@ -25,9 +34,10 @@ datos <- datos |>
 }
 \seealso{
 Other procesamiento_enoe:
-\code{\link[=armoniza_sinco]{armoniza_sinco()}},
+\code{\link[=.armonizar_sinco_enoe_core]{.armonizar_sinco_enoe_core()}},
 \code{\link[=armonizar_carreras_enoe]{armonizar_carreras_enoe()}},
 \code{\link[=calcular_desajuste_estadistico]{calcular_desajuste_estadistico()}},
+\code{\link[=calcular_desajuste_horizontal]{calcular_desajuste_horizontal()}},
 \code{\link[=crear_folios]{crear_folios()}},
 \code{\link[=imputa_ingocup]{imputa_ingocup()}},
 \code{\link[=ipc_enoe]{ipc_enoe()}},
@@ -40,6 +50,7 @@ Other procesamiento_enoe:
 \code{\link[=procesar_vars_hogar]{procesar_vars_hogar()}},
 \code{\link[=procesar_vars_laborales]{procesar_vars_laborales()}},
 \code{\link[=procesar_vars_sociodemo]{procesar_vars_sociodemo()}},
+\code{\link[=reglas_enoe]{reglas_enoe()}},
 \code{\link[=sinco2019_to_sinco2011]{sinco2019_to_sinco2011()}}
 }
 \concept{procesamiento_enoe}

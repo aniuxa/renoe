@@ -1,0 +1,3 @@
+"escenario","salida","registros_total","registros_clasificados","registros_pendientes","poblacion_total","poblacion_clasificada","poblacion_pendiente","cobertura_registros","cobertura_ponderada","ganancia_registros","ganancia_poblacion","ganancia_pp_registros","ganancia_pp_ponderada","fuente_calculo"
+"maximo_aceptado","clase_egp13_damian",170325,164404,5921,48766853,47179931,1586922,0.965237046822252,0.967459003352133,0,0,0,0,"revision_rescate_egp13_original_2012t2 + reglas ENOE aceptadas"
+"mas_legado_damian_no_validado","clase_egp13_damian",170325,170093,232,48766853,48704153,62700,0.998637898135917,0.998714290626873,5689,1524222,3.34008513136651,3.12552872747397,"revision_rescate_egp13_original_2012t2 + reglas ENOE aceptadas"

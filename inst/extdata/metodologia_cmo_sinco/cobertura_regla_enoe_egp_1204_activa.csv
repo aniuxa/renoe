@@ -1,0 +1,2 @@
+regla,capa,categoria_evidencia,train_concordantes,validation_concordantes,train_proporcion,validation_proporcion,recuperados,poblacion_recuperada,clasificados,ocupados,cobertura
+ENOE_EGP_1204_P4A8112,enoe,panel_semantico,9,6,0.6704229700524853,0.6089500860585197,188,51834,164404,170325,0.9652370468222515

@@ -44,18 +44,20 @@ cmo_to_sinco1d <- function(data) {
   data <- data %>%
     dplyr::mutate(
       sinco1d = dplyr::case_when(
-        aplicar_reglas & !is.na(cmo2d) & as.character(cmo2d) %in% names(reglas_cmo2d) ~
+        is.na(sinco1d) & aplicar_reglas & !is.na(cmo2d) &
+          as.character(cmo2d) %in% names(reglas_cmo2d) ~
           as.numeric(reglas_cmo2d[as.character(cmo2d)]),
         TRUE ~ sinco1d
       ),
       sinco1d = dplyr::case_when(
-        aplicar_reglas & cmo == 7121 ~ 8,
-        aplicar_reglas & cmo3d == 720 ~ 9,
-        aplicar_reglas & cmo %in% c(4109, 4119, 4129, 4139, 4149, 4159, 4169) ~ 9,
-        aplicar_reglas & cmo3d == 419 ~ 9,
-        aplicar_reglas & cmo2d == 41 & pos_ocu == 4 ~ 9,
-        aplicar_reglas & cmo2d == 41 & tue2 == 7 ~ 9,
-        aplicar_reglas & cmo2d == 52 & pos_ocu == 4 ~ 9,
+        is.na(sinco1d) & aplicar_reglas & cmo == 7121 ~ 8,
+        is.na(sinco1d) & aplicar_reglas & cmo3d == 720 ~ 9,
+        is.na(sinco1d) & aplicar_reglas &
+          cmo %in% c(4109, 4119, 4129, 4139, 4149, 4159, 4169) ~ 9,
+        is.na(sinco1d) & aplicar_reglas & cmo3d == 419 ~ 9,
+        is.na(sinco1d) & aplicar_reglas & cmo2d == 41 & pos_ocu == 4 ~ 9,
+        is.na(sinco1d) & aplicar_reglas & cmo2d == 41 & tue2 == 7 ~ 9,
+        is.na(sinco1d) & aplicar_reglas & cmo2d == 52 & pos_ocu == 4 ~ 9,
         TRUE ~ sinco1d
       ),
       # Los codigos SINCO son categoricos enteros. Esta conversion explicita

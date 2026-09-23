@@ -13,24 +13,32 @@ crear_folios <- function(data) {
   vars_hogar <- c("n_hog", "h_mud")
   var_persona <- "n_ren"
 
+  faltantes <- setdiff(vars_base, names(data))
+  if (length(faltantes)) {
+    stop(
+      "Faltan variables base para construir los folios: ",
+      paste(faltantes, collapse = ", "),
+      call. = FALSE
+    )
+  }
+
   vars_opt_incluidas <- vars_opt[vars_opt %in% names(data)]
   vars_hogar_incluidas <- vars_hogar[vars_hogar %in% names(data)]
+
+  pegar_claves <- function(variables) {
+    if (!nrow(data)) return(character())
+    valores <- lapply(data[variables], as.character)
+    do.call(paste, c(valores, sep = "_"))
+  }
 
   data <- data %>%
     mutate(
       folio = sjlabelled::set_label(
-        apply(select(., all_of(vars_base)), 1, paste, collapse = "_"),
+        pegar_claves(vars_base),
         "Identificador de vivienda"
       ),
       folio2 = sjlabelled::set_label(
-        apply(
-          select(., all_of(c(
-            vars_base, vars_opt_incluidas, vars_hogar_incluidas
-          ))),
-          1,
-          paste,
-          collapse = "_"
-        ),
+        pegar_claves(c(vars_base, vars_opt_incluidas, vars_hogar_incluidas)),
         "Identificador de hogar"
       )
     )

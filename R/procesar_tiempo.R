@@ -1,43 +1,35 @@
 #' Procesar variables de tiempo en actividades del hogar y cuidado
 #'
-#' Calcula duraciones semanales a partir de las baterias `p11_*` y `p9_*` de
-#' ENOE. Conserva sin cambios los campos fuente y distingue duracion observada,
-#' actividad realizada con duracion desconocida (98), realizacion desconocida
-#' (99), reactivo no seleccionado y bateria no medible.
+#' Calcula duraciones semanales a partir de las baterias `p11_*` (cuestionario
+#' ampliado) y `p9_*` (cuestionario basico) de la ENOE. Conserva los campos
+#' fuente y distingue duracion observada, actividad realizada con duracion
+#' desconocida (98), realizacion desconocida (99), reactivo no seleccionado y
+#' reactivo que no existe en la version del instrumento.
 #'
-#' El orden de las actividades cambio en 2011. Hasta 2010, los reactivos 3 a 6
-#' corresponden a construccion, reparacion, quehaceres y servicios a la
-#' comunidad. Desde 2011, los reactivos 3 y 4 corresponden a compras y traslados,
-#' y las cuatro actividades anteriores pasan a los reactivos 5 a 8.
+#' La bateria cambio en 2013. Hasta 2012 contiene seis actividades y el reactivo
+#' de cuidado incluye los traslados. Desde 2013 contiene ocho: separa traslados
+#' del cuidado y agrega compras, cuentas, tramites y seguridad del hogar.
 #'
-#' Las variables especificas `t_*` se expresan en horas. `t_total`, `t_total0`
-#' y sus versiones parciales se expresan en minutos; los sufijos `_hrs` son sus
-#' equivalentes en horas. Un total completo es `NA` cuando contiene una
-#' actividad con duracion desconocida, realizacion desconocida, informacion
-#' incompleta o invalida. El total parcial suma solo las duraciones observadas y
-#' los ceros de reactivos no seleccionados.
-#'
-#' Las columnas `*_legacy` reproducen el contrato historico, que convertia a
-#' cero los codigos 98, 99 y todos los faltantes. El argumento
-#' `tratamiento_faltantes = "historico_cero"` permite mantener temporalmente
-#' ese resultado en los nombres principales.
+#' Todas las duraciones derivadas se expresan en horas. `t_cuidado_directo` solo
+#' es identificable desde 2013. `t_cuidado_amplio` armoniza el contenido anterior
+#' sumando cuidado y traslado desde 2013.
+#' `t_trabajo_hogar_indirecto_armonizado` usa construccion, reparacion y
+#' quehaceres. `t_trabajo_hogar_armonizado` suma cuidado amplio y trabajo
+#' indirecto realizado para el propio hogar. Los servicios comunitarios se
+#' conservan en `t_comun`, pero no integran estas sumas. La armonizacion no
+#' elimina la ruptura de medicion observada en 2013;
+#' `t_total_instrumento` suma todos los reactivos no educativos disponibles en
+#' cada version y, por ello, no debe usarse como serie homogenea.
 #'
 #' @param data Data frame fusionado por `fusion_enoe()` o cargado directamente.
 #' @param anio Ano del trimestre, usado si falta `anio` en `data`.
 #' @param trimestre Trimestre 1-4, usado si faltan metadatos en `data`.
-#' @param tratamiento_faltantes Contrato de las variables principales:
-#'   `"distinguir"` conserva los estados y `NA`; `"historico_cero"` reproduce
-#'   la conversion historica a cero. En ambos casos se crean columnas legacy.
 #'
 #' @return El mismo data frame, en el mismo orden, con duraciones, estados de
-#'   medicion, totales completos y parciales, y resultados historicos.
+#'   medicion, version del instrumento y agregados conceptuales.
 #' @export
 #' @family procesamiento_enoe
-procesar_tiempo <- function(
-    data, anio, trimestre,
-    tratamiento_faltantes = c("distinguir", "historico_cero")) {
-
-  tratamiento_faltantes <- match.arg(tratamiento_faltantes)
+procesar_tiempo <- function(data, anio, trimestre) {
   if (!all(c("anio", "coe_tipo") %in% names(data))) {
     message("Variables 'anio' y/o 'coe_tipo' no encontradas. Se procesan con `procesar_vars_sociodemo()`...")
     data <- procesar_vars_sociodemo(data, anio = anio, trimestre = trimestre)
@@ -71,12 +63,11 @@ procesar_tiempo <- function(
         raw_observado(paste0(prefijo, "_h", i)) |
         raw_observado(paste0(prefijo, "_m", i))
     }
-    bateria_medible[corresponde & !is.na(corresponde)] <-
-      observados[corresponde & !is.na(corresponde)]
+    usar <- corresponde & !is.na(corresponde)
+    bateria_medible[usar] <- observados[usar]
   }
 
   minutos <- setNames(lapply(actividades, function(x) rep(NA_real_, n)), actividades)
-  minutos_legacy <- setNames(lapply(actividades, function(x) rep(0, n)), actividades)
   estados <- setNames(lapply(actividades, function(x) rep("no_aplica_instrumento", n)), actividades)
   preguntada <- setNames(lapply(actividades, function(x) rep(FALSE, n)), actividades)
 
@@ -113,131 +104,125 @@ procesar_tiempo <- function(
     valor <- rep(NA_real_, n)
     valor[estado == "no_seleccionada"] <- 0
     valor[duracion_valida] <- h[duracion_valida] * 60 + m[duracion_valida]
-    legado <- ifelse(duracion_valida, h * 60 + m, 0)
-
     estados[[actividad]][indice] <<- estado[indice]
     minutos[[actividad]][indice] <<- valor[indice]
-    minutos_legacy[[actividad]][indice] <<- legado[indice]
     invisible(NULL)
   }
 
   for (prefijo in c("p11", "p9")) {
     es_tipo <- tipo_obs == if (prefijo == "p11") "ampliado" else "basico"
     es_tipo[is.na(es_tipo)] <- FALSE
-    pre <- es_tipo & !is.na(anio_obs) & anio_obs < 2011
-    post <- es_tipo & !is.na(anio_obs) & anio_obs >= 2011
-    asignar("estudiar", prefijo, 1, pre | post)
-    asignar("cuidado", prefijo, 2, pre | post)
-    asignar("construir", prefijo, 3, pre)
-    asignar("reparar", prefijo, 4, pre)
-    asignar("quehacer", prefijo, 5, pre)
-    asignar("comun", prefijo, 6, pre)
-    asignar("compras", prefijo, 3, post)
-    asignar("traslado", prefijo, 4, post)
-    asignar("construir", prefijo, 5, post)
-    asignar("reparar", prefijo, 6, post)
-    asignar("quehacer", prefijo, 7, post)
-    asignar("comun", prefijo, 8, post)
+    version_6 <- es_tipo & !is.na(anio_obs) & anio_obs <= 2012
+    version_8 <- es_tipo & !is.na(anio_obs) & anio_obs >= 2013
+    asignar("estudiar", prefijo, 1, version_6 | version_8)
+    asignar("cuidado", prefijo, 2, version_6 | version_8)
+    asignar("construir", prefijo, 3, version_6)
+    asignar("reparar", prefijo, 4, version_6)
+    asignar("quehacer", prefijo, 5, version_6)
+    asignar("comun", prefijo, 6, version_6)
+    asignar("compras", prefijo, 3, version_8)
+    asignar("traslado", prefijo, 4, version_8)
+    asignar("construir", prefijo, 5, version_8)
+    asignar("reparar", prefijo, 6, version_8)
+    asignar("quehacer", prefijo, 7, version_8)
+    asignar("comun", prefijo, 8, version_8)
   }
 
-  # Actividades ausentes en una version del instrumento conservan cero para
-  # compatibilidad y quedan identificadas por su estado.
   for (actividad in actividades) {
     no_aplica <- !preguntada[[actividad]]
-    minutos[[actividad]][no_aplica] <- 0
+    minutos[[actividad]][no_aplica] <- NA_real_
     estados[[actividad]][no_aplica] <- "no_aplica_instrumento"
   }
 
   matriz <- do.call(cbind, minutos)
-  matriz_legacy <- do.call(cbind, minutos_legacy)
   matriz_estado <- do.call(cbind, estados)
-  actividades_total <- setdiff(actividades, "estudiar")
-  actividades_total0 <- setdiff(actividades_total, c("compras", "traslado"))
-  incompleto <- apply(
-    matriz_estado[, actividades_total, drop = FALSE],
-    1,
-    function(x) any(x %in% c(
-      "realizada_duracion_desconocida", "realizacion_desconocida",
-      "duracion_incompleta", "valor_invalido"
-    ))
+  estados_invalidos <- c(
+    "realizada_duracion_desconocida", "realizacion_desconocida",
+    "duracion_incompleta", "valor_invalido"
   )
-  if (!n) incompleto <- logical()
-  incompleto[!bateria_medible] <- NA
-  incompleto0 <- apply(
-    matriz_estado[, actividades_total0, drop = FALSE],
-    1,
-    function(x) any(x %in% c(
-      "realizada_duracion_desconocida", "realizacion_desconocida",
-      "duracion_incompleta", "valor_invalido"
-    ))
-  )
-  if (!n) incompleto0 <- logical()
-  incompleto0[!bateria_medible] <- NA
+  version_6 <- !is.na(anio_obs) & anio_obs <= 2012
+  version_8 <- !is.na(anio_obs) & anio_obs >= 2013
 
-  sumar_parcial <- function(columnas) {
-    z <- matriz[, columnas, drop = FALSE]
-    z[is.na(z)] <- 0
-    resultado <- rowSums(z)
-    resultado[!bateria_medible] <- NA_real_
-    resultado
+  sumar_completo <- function(columnas_6, columnas_8) {
+    valor <- rep(NA_real_, n)
+    incompleto <- rep(NA, n)
+    asignar_grupo <- function(indice, columnas) {
+      indice <- indice & bateria_medible
+      if (!any(indice)) return(invisible(NULL))
+      estado_grupo <- matriz_estado[indice, columnas, drop = FALSE]
+      invalida <- matrix(
+        estado_grupo %in% estados_invalidos,
+        nrow = nrow(estado_grupo), ncol = ncol(estado_grupo)
+      )
+      inc <- rowSums(invalida) > 0
+      suma <- rowSums(matriz[indice, columnas, drop = FALSE], na.rm = TRUE) / 60
+      posiciones <- which(indice)
+      incompleto[posiciones] <<- inc
+      valor[posiciones[!inc]] <<- suma[!inc]
+      invisible(NULL)
+    }
+    asignar_grupo(version_6, columnas_6)
+    asignar_grupo(version_8, columnas_8)
+    list(valor = valor, incompleto = incompleto)
   }
-  total_parcial <- sumar_parcial(actividades_total)
-  total0_parcial <- sumar_parcial(actividades_total0)
-  total <- total_parcial
-  total0 <- total0_parcial
-  total[!is.na(incompleto) & incompleto] <- NA_real_
-  total0[!is.na(incompleto0) & incompleto0] <- NA_real_
-  total_legacy <- rowSums(matriz_legacy[, actividades_total, drop = FALSE])
-  total0_legacy <- rowSums(
-    matriz_legacy[, actividades_total0, drop = FALSE]
+
+  indirectas_hogar <- c("construir", "reparar", "quehacer")
+  actividades_instrumento <- c(indirectas_hogar, "comun")
+  indirecto <- sumar_completo(indirectas_hogar, indirectas_hogar)
+  cuidado_amplio <- sumar_completo("cuidado", c("cuidado", "traslado"))
+  trabajo_hogar_armonizado <- sumar_completo(
+    c("cuidado", indirectas_hogar),
+    c("cuidado", "traslado", indirectas_hogar)
+  )
+  total_instrumento <- sumar_completo(
+    c("cuidado", actividades_instrumento),
+    c("cuidado", "compras", "traslado", actividades_instrumento)
   )
 
   for (actividad in actividades) {
-    principal <- minutos[[actividad]] / 60
-    legado <- minutos_legacy[[actividad]] / 60
-    if (tratamiento_faltantes == "historico_cero") principal <- legado
-    data[[paste0("t_", actividad)]] <- principal
+    data[[paste0("t_", actividad)]] <- minutos[[actividad]] / 60
     data[[paste0("t_", actividad, "_estado")]] <- estados[[actividad]]
-    data[[paste0("t_", actividad, "_legacy")]] <- legado
-  }
-  if (tratamiento_faltantes == "historico_cero") {
-    total <- total_legacy
-    total0 <- total0_legacy
   }
   data$tiempo_medible <- bateria_medible
-  data$t_total_incompleto <- incompleto
-  data$t_total0_incompleto <- incompleto0
-  data$t_total_parcial <- total_parcial
-  data$t_total0_parcial <- total0_parcial
-  data$t_total <- total
-  data$t_total0 <- total0
-  data$t_total_hrs <- total / 60
-  data$t_total_hrs0 <- total0 / 60
-  data$t_total_legacy <- total_legacy
-  data$t_total0_legacy <- total0_legacy
-  data$t_total_hrs_legacy <- total_legacy / 60
-  data$t_total_hrs0_legacy <- total0_legacy / 60
+  data$tiempo_version_instrumento <- ifelse(
+    version_6, "6_actividades_cuidado_incluye_traslado",
+    ifelse(version_8, "8_actividades_traslado_separado", NA_character_)
+  )
+  data$t_cuidado_definicion <- ifelse(
+    version_6, "cuidado_incluye_traslado",
+    ifelse(version_8, "cuidado_directo_sin_traslado", NA_character_)
+  )
+  data$t_cuidado_directo <- ifelse(version_8, data$t_cuidado, NA_real_)
+  data$t_cuidado_directo_estado <- ifelse(
+    version_8, data$t_cuidado_estado, "no_aplica_instrumento"
+  )
+  data$t_cuidado_amplio <- cuidado_amplio$valor
+  data$t_cuidado_amplio_incompleto <- cuidado_amplio$incompleto
+  data$t_trabajo_hogar_indirecto_armonizado <- indirecto$valor
+  data$t_trabajo_hogar_indirecto_armonizado_incompleto <- indirecto$incompleto
+  data$t_trabajo_hogar_armonizado <- trabajo_hogar_armonizado$valor
+  data$t_trabajo_hogar_armonizado_incompleto <-
+    trabajo_hogar_armonizado$incompleto
+  data$t_total_instrumento <- total_instrumento$valor
+  data$t_total_instrumento_incompleto <- total_instrumento$incompleto
 
   data |>
     sjlabelled::var_labels(
       t_estudiar = "Tiempo dedicado a estudiar o tomar cursos (horas)",
-      t_cuidado = "Tiempo dedicado al cuidado exclusivo sin pago (horas)",
+      t_cuidado = "Tiempo del reactivo de cuidado; incluye traslados hasta 2012 (horas)",
+      t_cuidado_directo = "Cuidado directo sin pago, identificable desde 2013 (horas)",
+      t_cuidado_amplio = "Cuidado sin pago y traslados de integrantes del hogar (horas)",
       t_construir = "Tiempo dedicado a construir o ampliar la vivienda (horas)",
       t_reparar = "Tiempo dedicado a reparar bienes del hogar (horas)",
       t_quehacer = "Tiempo dedicado a quehaceres del hogar (horas)",
       t_comun = "Tiempo dedicado a servicios gratuitos a la comunidad (horas)",
-      t_compras = "Tiempo dedicado a compras, tr\u00E1mites y seguridad del hogar (horas)",
+      t_compras = "Tiempo dedicado a compras, tramites y seguridad del hogar (horas)",
       t_traslado = "Tiempo dedicado a traslados de integrantes del hogar (horas)",
-      tiempo_medible = "Bater\u00EDa de uso del tiempo con alguna respuesta observada",
-      t_total_incompleto = "Total de tiempo afectado por duraci\u00F3n o realizaci\u00F3n desconocida",
-      t_total0_incompleto = "Total sin traslados ni compras afectado por duraci\u00F3n o realizaci\u00F3n desconocida",
-      t_total_parcial = "Suma parcial de actividades con duraci\u00F3n observada (minutos)",
-      t_total0_parcial = "Suma parcial sin traslados ni compras (minutos)",
-      t_total = "Suma completa de actividades del hogar y cuidado (minutos)",
-      t_total0 = "Suma completa sin traslados ni compras (minutos)",
-      t_total_hrs = "Suma completa de actividades del hogar y cuidado (horas)",
-      t_total_hrs0 = "Suma completa sin traslados ni compras (horas)",
-      t_total_legacy = "Suma hist\u00F3rica que convierte faltantes y c\u00F3digos especiales a cero (minutos)",
-      t_total0_legacy = "Suma hist\u00F3rica sin compras ni traslados (minutos)"
+      tiempo_medible = "Bateria de uso del tiempo con alguna respuesta observada",
+      tiempo_version_instrumento = "Version sustantiva de la bateria de uso del tiempo",
+      t_cuidado_definicion = "Contenido del reactivo fuente de cuidado",
+      t_trabajo_hogar_indirecto_armonizado = "Construccion, reparacion y quehaceres para el propio hogar; contenido armonizado (horas)",
+      t_trabajo_hogar_armonizado = "Cuidado amplio y trabajo indirecto para el propio hogar; contenido armonizado (horas)",
+      t_total_instrumento = "Todos los reactivos no educativos, incluidos servicios comunitarios (horas)"
     )
 }

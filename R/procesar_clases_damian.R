@@ -10,9 +10,9 @@
 #' auxiliares permiten auditar la cobertura y distinguir asignaciones directas
 #' de recuperaciones realizadas con el gran grupo SINCO.
 #'
-#' @param data Un data frame con `sinco4d`, `pos_ocu` y `emple7c`; para
-#'   observaciones anteriores a 2012-III tambien requiere `p3coe`, `anio` y
-#'   `trim`.
+#' @param data Un data frame con `sinco4d_base2011` o `sinco4d`,
+#'   `pos_ocu` y `emple7c`. Cuando existe `sinco4d_base2011`, esta
+#'   variable canonica tiene prioridad y no se aplica un puente alternativo.
 #' @param correspondencia Tabla opcional con columnas `sinco4d` e `isco88`.
 #'   Si se omite, se usa la correspondencia distribuida con el paquete.
 #' @param recuperar_sin_isco Si es `TRUE`, clasifica casos sin equivalencia
@@ -20,7 +20,12 @@
 #' @param usar_puente_cmo Si es `TRUE`, aplica antes de 2012-III el puente
 #'   determinista de Damian usado por `cmo_to_sinco11_care()`. Este puente
 #'   conserva la primera regla del do-file y no constituye una equivalencia
-#'   oficial o biunivoca.
+#'   oficial o biunivoca. Por ello el valor por defecto es `FALSE`; su uso debe
+#'   ser explicito y corresponde al escenario historico.
+#' @param escenario Contrato publico de decision. `official_strict` excluye
+#'   rescates condicionados; `integrated_accepted` agrega reglas EGP
+#'   aceptadas; `analysis_legacy` agrega el puente CMO historico.
+#' @param legacy Compatibilidad explicita para seleccionar `analysis_legacy`.
 #'
 #' @return El mismo data frame con `isco88_damian`, `grupo_ocu9_damian`,
 #'   `clase_ocu_damian`, `calificada_damian`, `manual_damian`,
@@ -50,9 +55,27 @@ procesar_clases_damian <- function(
     data,
     correspondencia = NULL,
     recuperar_sin_isco = TRUE,
-    usar_puente_cmo = TRUE) {
+    usar_puente_cmo = NULL,
+    escenario = c("integrated_accepted", "official_strict", "analysis_legacy"),
+    legacy = NULL) {
 
-  faltantes_data <- setdiff(c("sinco4d", "pos_ocu", "emple7c"), names(data))
+  contrato <- .normalizar_escenario_clasificador(escenario, legacy)
+  if (is.null(usar_puente_cmo)) {
+    usar_puente_cmo <- contrato$escenario == "analysis_legacy"
+  } else if (isTRUE(usar_puente_cmo) && !contrato$legacy) {
+    contrato$escenario <- "analysis_legacy"
+    contrato$legacy <- TRUE
+  }
+
+  variable_sinco_damian <- if ("sinco4d_base2011" %in% names(data)) {
+    "sinco4d_base2011"
+  } else {
+    "sinco4d"
+  }
+  faltantes_data <- setdiff(
+    c(variable_sinco_damian, "pos_ocu", "emple7c"),
+    names(data)
+  )
   if (length(faltantes_data) > 0L) {
     stop(
       "Faltan variables requeridas: ",
@@ -101,7 +124,10 @@ procesar_clases_damian <- function(
     7501L, 7601L, 8101L, 8201L, 8301L, 9601L
   )
 
-  sinco_damian <- suppressWarnings(as.integer(as.character(data$sinco4d)))
+  sinco_damian <- suppressWarnings(as.integer(
+    as.character(data[[variable_sinco_damian]])
+  ))
+  sinco_damian[!is.na(sinco_damian) & sinco_damian == 9999L] <- NA_integer_
   calidad_cmo <- rep(NA_character_, nrow(data))
   n_destinos_cmo <- rep(NA_integer_, nrow(data))
 
@@ -115,26 +141,35 @@ procesar_clases_damian <- function(
     periodo_cmo <- data$anio < 2012L |
       (data$anio == 2012L & trimestre_n <= 2L)
 
-    if (any(periodo_cmo, na.rm = TRUE)) {
+    remanente_cmo <- which(periodo_cmo & is.na(sinco_damian))
+    if (length(remanente_cmo)) {
       puente <- renoe::cmo_to_sinco11_care(
-        data.frame(p3coe = data$p3coe),
+        data.frame(p3coe = data$p3coe[remanente_cmo]),
         variable_cmo = "p3coe",
         sobrescribir = TRUE
       )
-      sinco_damian[periodo_cmo] <- puente$sinco11[periodo_cmo]
-      calidad_cmo[periodo_cmo] <- puente$sinco11_calidad[periodo_cmo]
-      n_destinos_cmo[periodo_cmo] <- puente$sinco11_n_destinos[periodo_cmo]
+      destino <- suppressWarnings(as.integer(puente$sinco11))
+      destino[is.na(destino) | destino < 1000L |
+                destino >= 9999L] <- NA_integer_
+      sinco_damian[remanente_cmo] <- destino
+      calidad_cmo[remanente_cmo] <- puente$sinco11_calidad
+      n_destinos_cmo[remanente_cmo] <- puente$sinco11_n_destinos
     }
   }
 
   data$sinco4d_damian <- sinco_damian
+  data$fuente_sinco_damian <- if (variable_sinco_damian == "sinco4d_base2011") {
+    rep("SINCO 2011 canonico de armonizar_sinco", nrow(data))
+  } else {
+    rep("sinco4d proporcionado al modulo", nrow(data))
+  }
+  rescate_cmo <- !is.na(calidad_cmo) & !is.na(sinco_damian)
+  data$fuente_sinco_damian[rescate_cmo] <-
+    "Puente analitico CMO de Damian en remanente; no equivalencia oficial"
   data$calidad_cmo_damian <- calidad_cmo
   data$n_destinos_cmo_damian <- n_destinos_cmo
 
   data <- data |>
-    dplyr::mutate(
-      sinco4d = suppressWarnings(as.integer(as.character(sinco4d)))
-    ) |>
     dplyr::left_join(
       dplyr::rename(cruce, sinco4d_damian = sinco4d),
       by = "sinco4d_damian"
@@ -300,22 +335,32 @@ procesar_clases_damian <- function(
   asignar(pos == 4L & dplyr::between(isco, 7111L, 8340L) &
             (tam < 4L | tam == 9L), 9L)
 
-  asignar(pos == 4L & dplyr::between(isco, 9111L, 9333L) & tam == 4L, 10L)
+  # ISCO 9211 corresponde a trabajo agricola y queda reservado para las
+  # reglas EGP12/EGP13 de abajo. La exclusion explicita evita que la
+  # excepcion dependa silenciosamente del orden secuencial de `asignar()`.
+  elementales_no_agricolas <- dplyr::between(isco, 9111L, 9333L) &
+    isco != 9211L
+
+  asignar(pos == 4L & elementales_no_agricolas & tam == 4L, 10L)
   asignar(pos == 4L & isco %in% c(5123L, 5169L, 9151L) & tam >= 4L, 10L)
 
-  asignar(pos == 4L & dplyr::between(isco, 9111L, 9333L) &
+  asignar(pos == 4L & elementales_no_agricolas &
             (tam < 4L | tam == 9L), 11L)
   asignar(pos == 4L & isco %in% c(5123L, 5169L, 9151L) & tam < 4L, 11L)
-  asignar(pos == 3L & dplyr::between(isco, 9111L, 9333L) & tam < 4L, 11L)
+  asignar(pos == 3L & elementales_no_agricolas & tam < 4L, 11L)
   asignar(isco == 9113L & tam < 4L, 11L)
   asignar(sinco == 1006L & pos == 3L, 11L)
 
+  # Predicados agricolas explicitos; 9211 ya fue excluido de EGP10/11.
+  agricola_9211_cuenta_propia <- isco == 9211L & pos == 3L & tam < 4L
+  agricola_9211_subordinada <- isco == 9211L & pos == 4L
+
   asignar(pos == 3L & dplyr::between(isco, 6111L, 6299L), 12L)
   asignar(pos == 2L & dplyr::between(isco, 6111L, 6299L) & tam < 4L, 12L)
-  asignar(pos == 3L & isco == 9211L & tam < 4L, 12L)
+  asignar(agricola_9211_cuenta_propia, 12L)
 
   asignar(pos == 4L & dplyr::between(isco, 6111L, 6299L), 13L)
-  asignar(pos == 4L & isco == 9211L, 13L)
+  asignar(agricola_9211_subordinada, 13L)
 
   # Resoluciones finales documentadas por Damian para casos residuales.
   asignar(sinco == 9999L, 4L)
@@ -332,7 +377,75 @@ procesar_clases_damian <- function(
   asignar(sinco == 7344L, 9L)
   asignar(sinco == 9733L, 10L)
 
+  regla_egp <- ifelse(!is.na(egp), "EGP_DAMIAN_SINCO_ISCO88", NA_character_)
+  evidencia_egp <- ifelse(!is.na(egp), "derived", NA_character_)
+
+  # Reglas aceptadas del consumidor EGP. No rellenan SINCO canonico.
+  if (contrato$escenario != "official_strict" &&
+      all(c("anio", "trim", "p3coe", "p4a", "sinco4d_base2011") %in%
+          names(data))) {
+    trim_n <- suppressWarnings(as.integer(sub(
+      "^t", "", tolower(as.character(data$trim))
+    )))
+    periodo_2012t2 <- suppressWarnings(as.integer(data$anio)) == 2012L &
+      trim_n == 2L
+    ruta_revision <- system.file(
+      "extdata", "metodologia_cmo_sinco",
+      "revision_rescate_egp13_original_2012t2.csv", package = "renoe"
+    )
+    if (nzchar(ruta_revision)) {
+      revision <- utils::read.csv(
+        ruta_revision, stringsAsFactors = FALSE, check.names = FALSE
+      )
+      llave <- function(a, b, c, d) paste(a, b, c, d, sep = "|")
+      indice <- match(
+        llave(data$p3coe, data$pos_ocu, data$emple7c, data$p4a),
+        llave(revision$p3coe, revision$pos_ocu, revision$emple7c, revision$p4a)
+      )
+      pendiente_revision <- periodo_2012t2 & !is.na(indice) &
+        is.na(suppressWarnings(as.integer(as.character(
+          data$sinco4d_base2011
+        ))))
+      if (contrato$escenario == "integrated_accepted") {
+        egp[pendiente_revision] <- NA_integer_
+        regla_egp[pendiente_revision] <- NA_character_
+        evidencia_egp[pendiente_revision] <- NA_character_
+      }
+      rescate_d12 <- periodo_2012t2 & is.na(egp) & !is.na(indice) &
+        revision$revision[indice] == "original_coincide_con_consenso_oficial"
+      egp[rescate_d12] <- suppressWarnings(as.integer(
+        revision$egp_oficial[indice[rescate_d12]]
+      ))
+      regla_egp[rescate_d12] <- "D12_RESCATE_UNANIMIDAD"
+      evidencia_egp[rescate_d12] <- "conditional_accepted"
+    }
+    p4f_d13 <- if ("p4f" %in% names(data)) data$p4f == 2L else
+      rep(FALSE, nrow(data))
+    rescate_d13 <- periodo_2012t2 & is.na(egp) & data$p3coe == 7201L &
+      data$p4a == 4690L & p4f_d13
+    rescate_d13[is.na(rescate_d13)] <- FALSE
+    egp[rescate_d13] <- 3L
+    regla_egp[rescate_d13] <- "D13_7201_P4A4690_P4F2"
+    evidencia_egp[rescate_d13] <- "conditional_accepted"
+    rescate_d14 <- periodo_2012t2 & is.na(egp) & data$p3coe == 1204L &
+      data$p4a == 8112L
+    rescate_d14[is.na(rescate_d14)] <- FALSE
+    egp[rescate_d14] <- 2L
+    regla_egp[rescate_d14] <- "D14_1204_P4A8112"
+    evidencia_egp[rescate_d14] <- "conditional_accepted"
+  }
+
   data$clase_egp13_damian <- egp
+  data$egp_escenario <- rep(contrato$escenario, nrow(data))
+  data$egp_regla_id <- regla_egp
+  data$egp_evidence_level <- evidencia_egp
+  data$egp_transportable <- is.na(calidad_cmo)
+  data$egp_motivo_no_clasificacion <- dplyr::case_when(
+    !elegible ~ "fuera_universo_ocupado",
+    is.na(egp) & is.na(sinco) ~ "sin_sinco_comparable",
+    is.na(egp) ~ "sin_regla_egp_aplicable",
+    TRUE ~ NA_character_
+  )
   data <- data |>
     dplyr::mutate(
       cobertura_egp_damian = dplyr::case_when(
@@ -398,6 +511,7 @@ procesar_clases_damian <- function(
     sjlabelled::var_labels(
       isco88_damian = "Codigo ISCO-88 derivado de SINCO 2011 (correspondencia de Gerardo Dami\u00E1n Hern\u00E1ndez)",
       sinco4d_damian = "Codigo SINCO 2011 especifico para el modulo de Gerardo Dami\u00E1n Hern\u00E1ndez",
+      fuente_sinco_damian = "Variable SINCO 2011 utilizada por el modulo de clase",
       calidad_cmo_damian = "Calidad del puente CMO-SINCO usado por el modulo de Gerardo Dami\u00E1n Hern\u00E1ndez",
       n_destinos_cmo_damian = "Numero de destinos SINCO posibles desde CMO en el modulo de Gerardo Dami\u00E1n Hern\u00E1ndez",
       grupo_ocu9_damian = "Gran grupo ocupacional SINCO en nueve categorias",

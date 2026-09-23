@@ -2,29 +2,48 @@
 % Please edit documentation in R/cmo_to_sinco.R
 \name{cmo_to_sinco}
 \alias{cmo_to_sinco}
-\title{Convertir códigos CMO a SINCO (3 y 4 dígitos)}
+\title{Convertir codigos CMO a SINCO (3 y 4 digitos)}
 \usage{
-cmo_to_sinco(data, codigos = NULL, var_origen = "cmo_4d", keep_labels = FALSE)
+cmo_to_sinco(
+  data,
+  codigos = NULL,
+  var_origen = "cmo_4d",
+  keep_labels = FALSE,
+  usar_reglas_enoe = NULL,
+  capas = c("oficial", "panel", "enoe", "consenso")
+)
 }
 \arguments{
 \item{data}{Un data.frame que contenga la variable \code{cmo_4d} o \code{p3coe}.}
 
 \item{codigos}{Opcional: data.frame de equivalencias. Si se omite, se usa una tabla interna del paquete.}
 
-\item{var_origen}{Nombre de la variable que contiene el código CMO (por defecto \code{cmo_4d}).}
+\item{var_origen}{Nombre de la variable que contiene el codigo CMO (por defecto \code{cmo_4d}).}
 
-\item{keep_labels}{Lógico. Si TRUE, mantiene las etiquetas si existen.
+\item{keep_labels}{Logico. Si TRUE, mantiene las etiquetas si existen.}
+
+\item{usar_reglas_enoe}{Compatibilidad: TRUE activa todas las capas;
+FALSE selecciona solo oficial. NULL utiliza \code{capas}.}
+
+\item{capas}{Capas habilitadas: \code{oficial}, \code{panel}, \code{enoe} y \code{consenso}, todas por
+defecto. Oficial siempre se incluye; panel aplica reglas validadas
+longitudinalmente usando CMO; enoe requiere variables auxiliares ENOE.
 Las columnas \code{sinco3d} y \code{sinco4d} preexistentes se reemplazan de manera
-explícita para que la función pueda ejecutarse nuevamente sin crear
-sufijos \code{.x} y \code{.y}.}
+explicita para que la funcion pueda ejecutarse nuevamente sin crear
+sufijos \code{.x} y \code{.y}.
+
+La capa consenso actua posteriormente en
+\code{\link[=procesar_clasificaciones_reproducibles]{procesar_clasificaciones_reproducibles()}};
+no aumenta la desagregacion SINCO identificada por esta funcion.}
 }
 \value{
 El \code{data.frame} original con columnas adicionales: \code{cmo_4d}, \code{sinco4d} y \code{sinco3d}.
 }
 \description{
-Esta función toma códigos CMO de 4 dígitos —ya sea proporcionados directamente en \code{cmo_4d}
-o a través de \code{p3coe}— y devuelve su correspondencia con códigos SINCO 2011 (3 y 4 dígitos),
-usando una tabla de equivalencias incluida en el paquete. Funciona para el 82\% de las ocupaciones.
+Esta funcion toma codigos CMO de 4 digitos -ya sea proporcionados directamente en \code{cmo_4d}
+o a traves de \code{p3coe}- y devuelve su correspondencia con codigos SINCO 2011 (3 y 4 digitos),
+usando una tabla de equivalencias incluida en el paquete. La cobertura
+depende del nivel de desagregacion y de las capas seleccionadas.
 }
 \examples{
 datos <- data.frame(p3coe = c(1101, 1102, 1167))

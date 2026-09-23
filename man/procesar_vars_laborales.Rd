@@ -2,22 +2,28 @@
 % Please edit documentation in R/procesar_vars_laborales.R
 \name{procesar_vars_laborales}
 \alias{procesar_vars_laborales}
-\title{Procesar variables de análisis laboral y desajuste educativo}
+\title{Procesar variables de analisis laboral y desajuste educativo}
 \usage{
-procesar_vars_laborales(data)
+procesar_vars_laborales(
+  data,
+  escenario = c("integrated_accepted", "official_strict", "analysis_legacy")
+)
 }
 \arguments{
 \item{data}{Un data.frame con variables como:
 \itemize{
-\item \code{anio}, \code{trimestre}: año y trimestre de la entrevista
+\item \code{anio}, \code{trimestre}: ano y trimestre de la entrevista
 \item \code{coe_tipo}: tipo de cuestionario (\code{"ampliado"} o \code{"basico"})
-\item \code{p3coe}: código ocupacional
+\item \code{p3coe}: codigo ocupacional
 \item \code{cs_p13_1}, \code{cs_p15}: nivel educativo y antecedente escolar
-\item \code{clase2}: clase de actividad económica
-\item \code{pos_ocu}, \code{tue2}: posición en la ocupación y tipo de unidad económica
+\item \code{clase2}: clase de actividad economica
+\item \code{pos_ocu}, \code{tue2}: posicion en la ocupacion y tipo de unidad economica
 \item \code{p2h4}: experiencia laboral previa
 \item \code{p3i}, \code{p3j}, \code{p3j1}, \code{p3k1}: variables sobre tipo de contrato
 }}
+
+\item{escenario}{Contrato de armonizacion ocupacional. Se conserva cuando
+la entrada ya fue armonizada por la ruta canonica.}
 }
 \value{
 Un data.frame con las variables originales y nuevas columnas:
@@ -30,33 +36,34 @@ Un data.frame con las variables originales y nuevas columnas:
 }
 }
 \description{
-Esta función genera variables clasificatorias relacionadas con la ocupación,
-el nivel educativo y el desajuste entre ambos, a partir de los códigos de
-ocupación (\code{p3coe}) y del nivel educativo alcanzado (\code{cs_p13_1}).
-Internamente armoniza los códigos SINCO (1, 2, 3 y 4 dígitos) usando
-correspondencias con códigos CMO y reglas auxiliares. También clasifica el
-nivel agregado de competencia de la ocupación, un proxy basado en escolaridad
-y el desajuste entre ambos. La agrupación de competencia requerida es una
-aproximación a un dígito de SINCO y puede ocultar excepciones dentro de cada
-división.
+Esta funcion genera variables clasificatorias relacionadas con la ocupacion,
+el nivel educativo y el desajuste entre ambos, a partir de los codigos de
+ocupacion (\code{p3coe}) y del nivel educativo alcanzado (\code{cs_p13_1}).
+Internamente armoniza los codigos SINCO (1, 2, 3 y 4 digitos) usando
+correspondencias con codigos CMO y reglas auxiliares. Tambien clasifica el
+nivel agregado de competencia de la ocupacion, un proxy basado en escolaridad
+y el desajuste entre ambos. La agrupacion de competencia requerida es una
+aproximacion a un digito de SINCO y puede ocultar excepciones dentro de cada
+division.
 }
 \details{
-La referencia estadística en años de escolaridad se calcula por separado con
-\code{\link[=calcular_desajuste_estadistico]{calcular_desajuste_estadistico()}}. Esta separación evita construir una
+La referencia estadistica en anos de escolaridad se calcula por separado con
+\code{\link[=calcular_desajuste_estadistico]{calcular_desajuste_estadistico()}}. Esta separacion evita construir una
 referencia aparentemente anual cuando la entrada contiene un solo trimestre.
 Por compatibilidad, si la entrada ya contiene \code{esco_norm} o \code{mismatch2}, esas
-columnas históricas se conservan sin recalcularlas.
+columnas historicas se conservan sin recalcularlas.
 
-Además, genera variables relacionadas con la experiencia previa
+Ademas, genera variables relacionadas con la experiencia previa
 (\code{nunca_trabajo}), el estatus laboral combinado (\code{status_seq}) y las
-características contractuales (\code{contrato0}, \code{contrato1}, \code{temporal},
-\code{temporal_seq}) según el tipo de cuestionario.
+caracteristicas contractuales (\code{contrato0}, \code{contrato1}, \code{temporal},
+\code{temporal_seq}) segun el tipo de cuestionario.
 }
 \seealso{
 Other procesamiento_enoe:
-\code{\link[=armoniza_sinco]{armoniza_sinco()}},
+\code{\link[=.armonizar_sinco_enoe_core]{.armonizar_sinco_enoe_core()}},
 \code{\link[=armonizar_carreras_enoe]{armonizar_carreras_enoe()}},
 \code{\link[=calcular_desajuste_estadistico]{calcular_desajuste_estadistico()}},
+\code{\link[=calcular_desajuste_horizontal]{calcular_desajuste_horizontal()}},
 \code{\link[=crear_folios]{crear_folios()}},
 \code{\link[=imputa_ingocup]{imputa_ingocup()}},
 \code{\link[=ipc_enoe]{ipc_enoe()}},
@@ -69,6 +76,7 @@ Other procesamiento_enoe:
 \code{\link[=procesar_variables_enoe]{procesar_variables_enoe()}},
 \code{\link[=procesar_vars_hogar]{procesar_vars_hogar()}},
 \code{\link[=procesar_vars_sociodemo]{procesar_vars_sociodemo()}},
+\code{\link[=reglas_enoe]{reglas_enoe()}},
 \code{\link[=sinco2019_to_sinco2011]{sinco2019_to_sinco2011()}}
 }
 \concept{procesamiento_enoe}

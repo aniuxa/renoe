@@ -3,35 +3,62 @@
 \encoding{UTF-8}
 \name{procesar_variables_enoe}
 \alias{procesar_variables_enoe}
-\title{Procesar variables clave de la ENOE en una sola función}
+\title{Procesar variables clave de la ENOE en una sola funcion}
 \usage{
-procesar_variables_enoe(data, anio, trimestre)
+procesar_variables_enoe(
+  data,
+  anio,
+  trimestre,
+  semilla = 1234,
+  perfil_carreras = c("panel_validado", "oficial", "experimental"),
+  usar_puente_2005 = FALSE,
+  escenario_clasificadores = c("integrated_accepted", "official_strict",
+    "analysis_legacy")
+)
 }
 \arguments{
 \item{data}{Un data frame con las tablas fusionadas de la ENOE (por ejemplo, salida de \code{fusion_enoe()}).}
 
-\item{anio}{Año del trimestre (numérico).}
+\item{anio}{Ano del trimestre (numerico).}
 
-\item{trimestre}{Trimestre numérico (1–4).}
+\item{trimestre}{Trimestre numerico (1-4).}
+
+\item{semilla}{Semilla de la imputacion de ingreso.}
+
+\item{perfil_carreras}{Perfil de evidencia para armonizar carreras.}
+
+\item{usar_puente_2005}{Si se permite el puente experimental de carreras de
+2005. Por defecto es \code{FALSE}.}
+
+\item{escenario_clasificadores}{Escenario explicito para SINCO y sus
+consumidores.}
 }
 \value{
-Un data frame con variables sociodemográficas, estructura del hogar, uso del tiempo, IPC y variables imputadas.
+Un data frame con variables sociodemograficas, estructura del hogar, uso del tiempo, IPC y variables imputadas.
 }
 \description{
-Función envolvente (\code{wrapper}) que aplica en cadena varias funciones de procesamiento sobre los microdatos de la ENOE.
-Crea variables sociodemográficas, estructura del hogar, uso del tiempo, imputación de ingresos e información del IPC.
+Ruta canonica que aplica en un orden fijo las transformaciones utilizadas
+por los productos del libro. Conserva filas y orden y valida la llave de
+persona al terminar.
 }
 \details{
-Aplica automáticamente las funciones:
+Aplica automaticamente las funciones:
 \itemize{
-\item \code{crear_folios()}: Genera identificadores únicos de vivienda, hogar y persona.
-\item \code{drop_tri()}: Cuando se trata de la ENOEN, renombra automáticamente variables terminadas en \verb{_tri} a su forma base (por ejemplo, \code{fac_tri} → \code{fac}).
+\item \code{drop_tri()}: Cuando se trata de la ENOEN, renombra automaticamente variables terminadas en \verb{_tri} a su forma base (por ejemplo, \code{fac_tri} ? \code{fac}).
+\item \code{crear_folios()}: Genera identificadores unicos de vivienda, hogar y persona.
 \item \code{procesar_vars_sociodemo()}: Crea variables de edad, sexo y grupos etarios.
-\item \code{procesar_vars_hogar()}: Clasifica hogares por tipo, tamaño y dependencia.
-\item \code{procesar_tiempo()}: Calcula minutos y horas en actividades del hogar y cuidado.
-\item \code{ipc_enoe()}: Añade una variable con el IPC nacional del trimestre correspondiente.
+\item \code{procesar_vars_hogar()}: Clasifica hogares por tipo, tamano y dependencia.
+\item \code{armonizar_carreras()}, \code{procesar_vars_laborales()},
+\code{calcular_desajuste_estadistico()} y \code{calcular_desajuste_horizontal()}:
+armonizan educacion y trabajo.
+\item \code{procesar_tiempo()}: Calcula horas en actividades del hogar y cuidado,
+con corte instrumental explicito en 2013.
+\item \code{ipc_enoe()}: Anade una variable con el IPC nacional del trimestre correspondiente.
 \item \code{imputa_ingocup()}: Imputa el ingreso ocupacional con \code{mice} para personas ocupadas.
-\item \code{ procesar_contribucion_hogar}: IProcesar contribución económica y de trabajo no remunerado al hogar.
+\item \code{procesar_contribucion_hogar()} y \code{procesar_cuidado_extra()}: agregan
+recursos, tiempos y capacidad del hogar.
+\item \code{procesar_estudio_trabajo()}, \code{procesar_libro1()} y
+\code{procesar_clasificaciones_reproducibles()}: construyen las salidas finales.
 }
 }
 \examples{
@@ -47,9 +74,10 @@ table(datos_proc$tipo_hog_lab, useNA = "always")
 \code{\link[=procesar_vars_sociodemo]{procesar_vars_sociodemo()}}, \code{\link[=procesar_vars_hogar]{procesar_vars_hogar()}}, \code{\link[=ipc_enoe]{ipc_enoe()}}, \code{\link[=imputa_ingocup]{imputa_ingocup()}}
 
 Other procesamiento_enoe:
-\code{\link[=armoniza_sinco]{armoniza_sinco()}},
+\code{\link[=.armonizar_sinco_enoe_core]{.armonizar_sinco_enoe_core()}},
 \code{\link[=armonizar_carreras_enoe]{armonizar_carreras_enoe()}},
 \code{\link[=calcular_desajuste_estadistico]{calcular_desajuste_estadistico()}},
+\code{\link[=calcular_desajuste_horizontal]{calcular_desajuste_horizontal()}},
 \code{\link[=crear_folios]{crear_folios()}},
 \code{\link[=imputa_ingocup]{imputa_ingocup()}},
 \code{\link[=ipc_enoe]{ipc_enoe()}},
@@ -62,6 +90,7 @@ Other procesamiento_enoe:
 \code{\link[=procesar_vars_hogar]{procesar_vars_hogar()}},
 \code{\link[=procesar_vars_laborales]{procesar_vars_laborales()}},
 \code{\link[=procesar_vars_sociodemo]{procesar_vars_sociodemo()}},
+\code{\link[=reglas_enoe]{reglas_enoe()}},
 \code{\link[=sinco2019_to_sinco2011]{sinco2019_to_sinco2011()}}
 }
 \concept{procesamiento_enoe}

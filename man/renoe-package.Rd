@@ -7,18 +7,18 @@
 \title{renoe: Herramientas para trabajar con la ENOE desde 2005}
 \description{
 Este paquete proporciona funciones para descargar, cargar, fusionar y procesar
-datos de la Encuesta Nacional de Ocupación y Empleo (ENOE) de México desde 2005.
+datos de la Encuesta Nacional de Ocupacion y Empleo (ENOE) de Mexico desde 2005.
 }
 \details{
-Incluye utilidades para imputación de ingresos ocupacionales, procesamiento de
-estructura del hogar, uso del tiempo, codificación ocupacional y desajuste
-educativo, así como funciones para manejar archivos ZIP, metadatos del INEGI y
+Incluye utilidades para imputacion de ingresos ocupacionales, procesamiento de
+estructura del hogar, uso del tiempo, codificacion ocupacional y desajuste
+educativo, asi como funciones para manejar archivos ZIP, metadatos del INEGI y
 formatos como \code{.parquet}, \code{.dta} y \code{.rds}.
 }
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://aniuxa.github.io/renoe}
+  \item \url{https://aniuxa.github.io/renoe/}
   \item \url{https://github.com/aniuxa/renoe}
   \item Report bugs at \url{https://github.com/aniuxa/renoe/issues}
 }
@@ -34,7 +34,7 @@ Authors:
 
 Other contributors:
 \itemize{
-  \item Gerardo DamiC!n HernC!ndez (\href{https://orcid.org/0009-0002-7604-3886}{ORCID}) [contributor]
+  \item Gerardo Damián Hernández (\href{https://orcid.org/0009-0002-7604-3886}{ORCID}) [contributor]
   \item Gabriela Cervantes [contributor]
 }
 

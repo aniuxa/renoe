@@ -4,6 +4,9 @@
 #' cuestionario COE, asi como variables extendidas de asistencia escolar,
 #' estado conyugal, escolaridad, zona rural, tamano de localidad y zona
 #' economica regional.
+#' `zona_econ` sigue una regionalizacion analitica de ocho zonas documentada en
+#' `clasificacion_region_socioeconomica.csv`; no representa una clasificacion
+#' territorial oficial unica.
 #'
 #' @param data Un data frame tipo sdem, con variables como `sex`, `eda`,
 #'   `cs_p17`, `e_con`, `anios_esc`, `par_c`, `t_loc` y `ent`.
@@ -22,6 +25,27 @@
 
 procesar_vars_sociodemo <- function(data, anio, trimestre) {
   info <- info_trimestre(anio, trimestre)
+  catalogo_parentesco_antiguo <- anio < 2012L ||
+    (anio == 2012L && trimestre <= 2L)
+
+  archivo_zonas <- system.file(
+    "extdata/clasificacion_region_socioeconomica.csv", package = "renoe"
+  )
+  if (!nzchar(archivo_zonas)) {
+    archivo_zonas <- file.path(
+      "package", "renoe", "inst", "extdata",
+      "clasificacion_region_socioeconomica.csv"
+    )
+  }
+  tabla_zonas <- readr::read_csv(
+    archivo_zonas, show_col_types = FALSE
+  ) |>
+    dplyr::select(ent, zona_econ)
+  if (nrow(tabla_zonas) != 32L || anyDuplicated(tabla_zonas$ent) ||
+      !setequal(tabla_zonas$ent, 1:32) ||
+      !all(tabla_zonas$zona_econ %in% 1:8)) {
+    stop("La tabla de regiones socioeconomicas no contiene 32 entidades validas.")
+  }
 
   data <- data %>%
     dplyr::mutate(
@@ -50,8 +74,10 @@ procesar_vars_sociodemo <- function(data, anio, trimestre) {
       anios_es = dplyr::if_else(anios_esc == 99, NA_real_, anios_esc),
       parentesco = dplyr::case_when(
         par_c == 101 ~ 1,
-        par_c %in% 201:205 ~ 2,
-        par_c %in% 301:304 ~ 3,
+        catalogo_parentesco_antiguo & par_c %in% 201:205 ~ 2,
+        !catalogo_parentesco_antiguo & par_c %in% 201:204 ~ 2,
+        catalogo_parentesco_antiguo & par_c %in% 301:305 ~ 3,
+        !catalogo_parentesco_antiguo & par_c %in% 301:304 ~ 3,
         TRUE ~ 4
       ),
       par_dic = dplyr::if_else(par_c == 101, 1, 0),
@@ -60,18 +86,10 @@ procesar_vars_sociodemo <- function(data, anio, trimestre) {
         t_loc %in% 1:3 ~ 1,
         t_loc == 4 ~ 2
       ),
-      rural = dplyr::if_else(urb_rur == 2, TRUE, FALSE, missing = NA),
-      zona_econ = dplyr::case_when(
-        ent %in% c(5, 19, 28) ~ 1,
-        ent %in% c(2, 3, 8, 10, 25, 26) ~ 2,
-        ent %in% c(6, 18, 16, 14) ~ 3,
-        ent %in% c(13, 21, 29, 30) ~ 4,
-        ent %in% c(1, 11, 22, 24, 32) ~ 5,
-        ent %in% c(9, 15, 17) ~ 6,
-        ent %in% c(4, 23, 27, 31) ~ 7,
-        ent %in% c(7, 12, 20) ~ 8
-      )
+      rural = dplyr::if_else(urb_rur == 2, TRUE, FALSE, missing = NA)
     ) %>%
+    dplyr::select(-dplyr::any_of("zona_econ")) %>%
+    dplyr::left_join(tabla_zonas, by = "ent") %>%
     sjlabelled::var_labels(
       sexo       = "Sexo",
       edad       = "Edad en a\u00F1os",
@@ -94,7 +112,7 @@ procesar_vars_sociodemo <- function(data, anio, trimestre) {
       t_loc      = "Tama\u00F1o de localidad",
       urb_rur    = "\u00C1rea urbana o rural",
       rural      = "Indicador dicot\u00F3mico de ruralidad",
-      zona_econ  = "Zona econ\u00F3mica regional"
+      zona_econ  = "Regi\u00F3n socioecon\u00F3mica anal\u00EDtica de ocho zonas"
     ) %>%
     sjlabelled::val_labels(
       asiste = c(

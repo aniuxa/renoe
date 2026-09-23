@@ -12,28 +12,23 @@ fusion_enoe(
   formato = NULL,
   guardar = !is.null(formato),
   intentos = 3,
-  fusion_robusta = TRUE,
   ...
 )
 }
 \arguments{
-\item{anio}{Año del trimestre (2005-2026).}
+\item{anio}{Ano del trimestre (2005-2026).}
 
-\item{trimestre}{Número del trimestre (1-4).}
+\item{trimestre}{Numero del trimestre (1-4).}
 
-\item{rapida}{Lógico. Si \code{TRUE}, omite el etiquetado de variables.}
+\item{rapida}{Logico. Si \code{TRUE}, omite el etiquetado de variables.}
 
 \item{formato}{Formato de salida ("parquet", "rds" o "dta"). Opcional.}
 
-\item{guardar}{Lógico. Si \code{TRUE} y se especifica formato, guarda el archivo fusionado.}
+\item{guardar}{Logico. Si \code{TRUE} y se especifica formato, guarda el archivo fusionado.}
 
-\item{intentos}{Número de intentos para cargar datos (por defecto 3).}
+\item{intentos}{Numero de intentos para cargar datos (por defecto 3).}
 
-\item{fusion_robusta}{Lógico. Si \code{TRUE}, utiliza claves de identificación
-explícitas. En 2022-T1 la vía robusta es obligatoria porque \code{ur} difiere
-entre HOG y SDEM y no debe formar parte de la llave.}
-
-\item{...}{Otros parámetros para pasar a \code{carga_enoe()}.}
+\item{...}{Otros parametros para pasar a \code{carga_enoe()}.}
 }
 \value{
 Un data frame con las tablas fusionadas. Si se especifica formato y
@@ -41,8 +36,8 @@ Un data frame con las tablas fusionadas. Si se especifica formato y
 \code{"enoe_fusion_ANIO_TRIMESTREt.FORMATO"}.
 }
 \description{
-Une las tablas de vivienda, hogar, sociodemográfico y componentes COE
-en un único data frame.
+Une las tablas de vivienda, hogar, sociodemografico y componentes COE
+en un unico data frame.
 }
 \examples{
 \dontrun{

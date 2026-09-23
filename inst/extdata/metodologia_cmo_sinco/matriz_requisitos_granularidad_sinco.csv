@@ -1,0 +1,13 @@
+classification,function_name,minimum_sinco_level,additional_enoe_questions,decision_rule
+skill_level,procesar_vars_laborales,1d,,Aplicar cuando exista SINCO 1d
+mismatch,procesar_vars_laborales,1d,cs_p13_1|cs_p15,Requiere skill_level y escolaridad
+mismatch2,calcular_desajuste_estadistico,1d,anios_es|periodo,Requiere SINCO 1d y referencia educativa estimable
+grupo_ocu9_damian,procesar_clases_damian,1d,,Debe derivarse de SINCO 1d; no necesita destino 4d exacto
+isco88_damian,procesar_clases_damian,4d,,"Sin 4d: consenso panel validado; alternativa, unanimidad de destinos oficiales"
+clase_ocu_damian,procesar_clases_damian,1d_con_recuperacion,,Preferir ISCO88; recuperar por gran grupo si recuperar_sin_isco=TRUE
+calificada_damian,procesar_clases_damian,variable,,Derivar cuando clase_ocu_damian sea identificable
+manual_damian,procesar_clases_damian,variable,,Derivar cuando clase_ocu_damian sea identificable
+supervisa_damian,procesar_clases_damian,4d_o_consenso,,"Sin 4d: consenso panel validado; alternativa, unanimidad binaria de destinos"
+clase_egp13_damian,procesar_clases_damian,4d_o_consenso,pos_ocu|emple7c,"Consenso panel por clase EGP; alternativa, unanimidad bajo cada destino oficial"
+trabajo_cuidado_mercado,procesar_cuidado_remunerado,3d,p4a|clase2,Usa puente propio; SINCO 3d y actividad son suficientes
+susceptible_teletrabajo,clasificar_susceptibilidad_teletrabajo,4d,anio|trim,Exige 4d y solo es comparable desde 2012-T3

@@ -6,7 +6,23 @@
 #' @return Un data.frame con los nombres de variables modificados.
 #' @export
 drop_tri <- function(data) {
-  data %<>% rename_with(~ stringr::str_remove_all(.x, "_tri"), .cols = everything())
-  data %<>% rename_with(~ stringr::str_remove_all(.x, "cve_"), .cols = everything())
-return(data)
+  nombres_originales <- names(data)
+  nombres_nuevos <- nombres_originales |>
+    stringr::str_remove("_tri$") |>
+    stringr::str_remove("^cve_")
+
+  duplicados <- unique(nombres_nuevos[duplicated(nombres_nuevos)])
+  if (length(duplicados)) {
+    origenes <- vapply(duplicados, function(nombre) {
+      paste(nombres_originales[nombres_nuevos == nombre], collapse = " y ")
+    }, character(1L))
+    stop(
+      "La normalizacion de nombres produciria columnas duplicadas: ",
+      paste0(duplicados, " <- ", origenes, collapse = "; "),
+      call. = FALSE
+    )
   }
+
+  names(data) <- nombres_nuevos
+  data
+}

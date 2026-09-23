@@ -1,8 +1,16 @@
 #' Procesar indicadores individuales para el proyecto del libro
 #'
-#' Crea indicadores de origen extranjero, no ocupacion por cuidados, mujeres
-#' con educacion universitaria y afiliacion sindical. La afiliacion solo es medible
-#' en cuestionarios ampliados; esta funcion no calcula estimaciones survey.
+#' Crea indicadores de origen geografico, no ocupacion por cuidados, mujeres
+#' con educacion universitaria y afiliacion sindical. La afiliacion solo es
+#' medible en cuestionarios ampliados; esta funcion no calcula estimaciones
+#' survey.
+#'
+#' El origen geografico se reconstruye siempre a partir de `l_nac_c`, `anio` y
+#' `trim`. No se conservan ni reutilizan versiones anteriores de `extr`,
+#' `extr_especificado`, `region_origen_long` u `origen_nivel_detalle` que puedan
+#' venir en `data`. La regla distingue el cambio de catalogo de 2012-T3 y trata
+#' las claves especiales 800 y 997 como Mexico sin entidad comparable, 998 como
+#' pais extranjero no especificado y 999 como origen no clasificable.
 #'
 #' @param data Data frame individual previamente procesado por el paquete renoe.
 #'
@@ -72,20 +80,23 @@ procesar_libro1 <- function(data) {
     FALSE
   )
 
-  # La clave de Estados Unidos se identifica por trimestre. En el clasificador
-  # moderno 201 es Anguila y 221 es Estados Unidos; 201 solo se interpreta como
-  # Estados Unidos en los periodos historicos donde 221 no esta presente.
+  # El catalogo cambia en 2012-T3. En el catalogo anterior 201 identifica a
+  # Estados Unidos; desde 2012-T3, 201 es Anguila y 221 es Estados Unidos. La
+  # regla depende del periodo y no de los valores presentes en una submuestra.
   data$origen_codigo <- suppressWarnings(as.numeric(data$l_nac_c))
-  data <- data |>
-    dplyr::mutate(
-      codigo_eeuu_usado = dplyr::case_when(
-        any(origen_codigo == 221, na.rm = TRUE) ~ 221,
-        any(origen_codigo == 201, na.rm = TRUE) ~ 201,
-        TRUE ~ NA_real_
-      ),
-      .by = c(anio, trim)
-    )
+  trimestre_num <- suppressWarnings(as.integer(sub(
+    "^t", "", tolower(as.character(data$trim))
+  )))
+  periodo_origen <- suppressWarnings(as.integer(as.character(data$anio))) *
+    10L + trimestre_num
+  data$codigo_eeuu_usado <- dplyr::if_else(
+    !is.na(periodo_origen) & periodo_origen <= 20122L, 201, 221,
+    missing = NA_real_
+  )
   no_sabe_prestaciones <- elegible_prestaciones & data$p3m9 == 9
+  motivo_no_ocupacion_codigo <- suppressWarnings(as.integer(
+    trimws(as.character(data$p2g2))
+  ))
 
   for (i in seq_along(nombres_prestaciones)) {
     origen <- names(nombres_prestaciones)[[i]]
@@ -101,11 +112,13 @@ procesar_libro1 <- function(data) {
 
   data |>
     dplyr::mutate(
-      # Clasificacion comparable entre el catalogo agregado de 2005 y el
-      # clasificador detallado posterior. Importante: 260 es Mexico en el
-      # catalogo moderno y no debe clasificarse como extranjero.
+      # Clasificacion canonica: cualquier columna homonima que haya llegado en
+      # `data` se reemplaza aqui. No existe una salida legacy paralela.
+      #
+      # 260 es Mexico en el catalogo moderno; 800 y 997 tambien identifican
+      # Mexico, aunque no permiten recuperar una entidad federativa comparable.
       region_origen_long = dplyr::case_when(
-        origen_codigo %in% c(1:33, 260) ~ 0,
+        origen_codigo %in% c(1:33, 260, 800, 997) ~ 0,
         !is.na(codigo_eeuu_usado) &
           origen_codigo == codigo_eeuu_usado ~ 1,
         origen_codigo == 225 ~ 2,
@@ -117,7 +130,7 @@ procesar_libro1 <- function(data) {
           dplyr::between(origen_codigo, 101, 172) |
           dplyr::between(origen_codigo, 301, 358) |
           dplyr::between(origen_codigo, 501, 535) ~ 5,
-        origen_codigo == 600 ~ 6,
+        origen_codigo %in% c(600, 998) ~ 6,
         TRUE ~ NA_real_
       ),
       extr = dplyr::case_when(
@@ -133,7 +146,8 @@ procesar_libro1 <- function(data) {
       ),
       origen_nivel_detalle = dplyr::case_when(
         origen_codigo %in% 1:32 ~ "Entidad mexicana identificada",
-        origen_codigo %in% c(33, 260) ~ "Mexico sin entidad comparable",
+        origen_codigo %in% c(33, 260, 800, 997) ~
+          "Mexico sin entidad comparable",
         (!is.na(codigo_eeuu_usado) &
           origen_codigo == codigo_eeuu_usado) |
           origen_codigo %in% c(225, 415) ~
@@ -145,8 +159,8 @@ procesar_libro1 <- function(data) {
         TRUE ~ NA_character_
       ),
       no_ocupacion_cuidados = dplyr::case_when(
-        clase2 %in% 2:4 & p2g2 == 9 ~ 1,
-        clase2 %in% 2:4 & !is.na(p2g2) ~ 0,
+        clase2 %in% 2:4 & motivo_no_ocupacion_codigo == 9 ~ 1,
+        clase2 %in% 2:4 & !is.na(motivo_no_ocupacion_codigo) ~ 0,
         TRUE ~ NA_real_
       ),
       nivel_educativo_codigo = suppressWarnings(
