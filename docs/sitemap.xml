@@ -1,10 +1,15 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
-<url><loc>https://aniuxa.github.io/renoe/authors.html</loc></url>
+<url><loc>https://aniuxa.github.io/renoe/404.html</loc></url>
 <url><loc>https://aniuxa.github.io/renoe/AI_USAGE.html</loc></url>
 <url><loc>https://aniuxa.github.io/renoe/LICENSE.html</loc></url>
+<url><loc>https://aniuxa.github.io/renoe/articles/cuidado-remunerado.html</loc></url>
+<url><loc>https://aniuxa.github.io/renoe/articles/index.html</loc></url>
+<url><loc>https://aniuxa.github.io/renoe/articles/migracion-0.2.0.html</loc></url>
+<url><loc>https://aniuxa.github.io/renoe/articles/novedades-migracion-0.3.1.html</loc></url>
+<url><loc>https://aniuxa.github.io/renoe/articles/renoe.html</loc></url>
+<url><loc>https://aniuxa.github.io/renoe/authors.html</loc></url>
 <url><loc>https://aniuxa.github.io/renoe/index.html</loc></url>
-<url><loc>https://aniuxa.github.io/renoe/404.html</loc></url>
-<url><loc>https://aniuxa.github.io/renoe/reference/index.html</loc></url>
+<url><loc>https://aniuxa.github.io/renoe/news/index.html</loc></url>
 <url><loc>https://aniuxa.github.io/renoe/reference/aplicar_etiquetas_enoe.html</loc></url>
 <url><loc>https://aniuxa.github.io/renoe/reference/armoniza_sinco.html</loc></url>
 <url><loc>https://aniuxa.github.io/renoe/reference/armonizar_carreras_enoe.html</loc></url>
@@ -33,6 +38,7 @@
 <url><loc>https://aniuxa.github.io/renoe/reference/drop_tri.html</loc></url>
 <url><loc>https://aniuxa.github.io/renoe/reference/fusion_enoe.html</loc></url>
 <url><loc>https://aniuxa.github.io/renoe/reference/imputa_ingocup.html</loc></url>
+<url><loc>https://aniuxa.github.io/renoe/reference/index.html</loc></url>
 <url><loc>https://aniuxa.github.io/renoe/reference/info_trimestre.html</loc></url>
 <url><loc>https://aniuxa.github.io/renoe/reference/ipc_enoe.html</loc></url>
 <url><loc>https://aniuxa.github.io/renoe/reference/procesar_clases_damian.html</loc></url>
@@ -51,11 +57,5 @@
 <url><loc>https://aniuxa.github.io/renoe/reference/reglas_enoe.html</loc></url>
 <url><loc>https://aniuxa.github.io/renoe/reference/renoe-package.html</loc></url>
 <url><loc>https://aniuxa.github.io/renoe/reference/sinco2019_to_sinco2011.html</loc></url>
-<url><loc>https://aniuxa.github.io/renoe/articles/index.html</loc></url>
-<url><loc>https://aniuxa.github.io/renoe/articles/cuidado-remunerado.html</loc></url>
-<url><loc>https://aniuxa.github.io/renoe/articles/migracion-0.2.0.html</loc></url>
-<url><loc>https://aniuxa.github.io/renoe/articles/novedades-migracion-0.3.1.html</loc></url>
-<url><loc>https://aniuxa.github.io/renoe/articles/renoe.html</loc></url>
-<url><loc>https://aniuxa.github.io/renoe/news/index.html</loc></url>
 </urlset>
 

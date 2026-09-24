@@ -73,7 +73,7 @@ test_that("los metadatos conservan nombres y roles confirmados", {
     unname(read.dcf(descripciones[[1L]], fields = "Authors@R")[[1L]])
   } else {
     metadatos <- utils::packageDescription("renoe")
-    if (is.null(metadatos) || is.na(metadatos)) {
+    if (is.null(metadatos) || (length(metadatos) == 1L && is.na(metadatos))) {
       skip("No se encontraron metadatos fuente ni una instalación de renoe")
     }
     metadatos[["Authors@R"]]

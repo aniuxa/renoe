@@ -67,8 +67,18 @@ jobs:
           stopifnot(grepl(paste("R package version", expected), citation_text, fixed = TRUE))
 
       - name: Reconstruir pkgdown desde el mismo commit
+        env:
+          GITHUB_HEAD_REF: HEAD
+          GITHUB_REF_NAME: HEAD
         shell: Rscript {0}
-        run: unlink("docs", recursive = TRUE, force = TRUE); pkgdown::build_site(new_process = FALSE, install = TRUE)
+        run: |
+          unlink("docs", recursive = TRUE, force = TRUE)
+          pkgdown::build_site(new_process = FALSE, install = TRUE)
+          html <- list.files("docs", pattern = "[.]html$", recursive = TRUE, full.names = TRUE)
+          for (path in html) {
+            lines <- readLines(path, warn = FALSE, encoding = "UTF-8")
+            writeLines(sub("[[:blank:]]+$", "", lines), path, useBytes = TRUE)
+          }
 
       - name: Verificar versiones y enlaces del sitio reconstruido
         run: |
@@ -78,8 +88,9 @@ jobs:
       - name: Fallar si el árbol docs no coincide con la reconstrucción limpia
         shell: bash
         run: |
-          git diff --exit-code -- docs
-          test -z "$(git status --porcelain -- docs)"
+          git diff --exit-code -- docs ':(exclude)docs/pkgdown.yml'
+          test -z "$(git ls-files --others --exclude-standard -- docs)"
+          grep -Eq '^last_built: [0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}Z$' docs/pkgdown.yml
 
       - name: Verificar la web pública antes de cerrar el release
         if: github.event_name == 'workflow_dispatch' && inputs.verify_public

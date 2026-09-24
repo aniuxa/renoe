@@ -88,9 +88,9 @@ sinco2019_to_sinco2011(datos, variable_sinco = "ocupacion")
 #> 2      2423               2423      2412                    1
 #> 3      2429               2429        NA                    2
 #> 4        NA                 NA        NA                   NA
-#>                                    sinco2011_calidad
-#> 1                       Equivalencia oficial directa
-#> 2                       Equivalencia oficial directa
-#> 3 Equivalencia oficial m<U+00FA>ltiple: sin resolver
-#> 4                                SINCO 2019 faltante
+#>                             sinco2011_calidad
+#> 1                Equivalencia oficial directa
+#> 2                Equivalencia oficial directa
+#> 3 Equivalencia oficial múltiple: sin resolver
+#> 4                         SINCO 2019 faltante
 ```
