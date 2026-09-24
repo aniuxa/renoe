@@ -92,3 +92,6 @@ authors:
     text: "Proyecto PAPIIT IN305925. Desarrollado por"
 
 url: https://aniuxa.github.io/renoe
+
+repo:
+  branch: HEAD

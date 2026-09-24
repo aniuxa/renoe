@@ -67,9 +67,6 @@ jobs:
           stopifnot(grepl(paste("R package version", expected), citation_text, fixed = TRUE))
 
       - name: Reconstruir pkgdown desde el mismo commit
-        env:
-          GITHUB_HEAD_REF: HEAD
-          GITHUB_REF_NAME: HEAD
         shell: Rscript {0}
         run: |
           unlink("docs", recursive = TRUE, force = TRUE)
