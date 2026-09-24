@@ -5,19 +5,41 @@
 fusión, procesamiento y análisis de los microdatos de la Encuesta
 Nacional de Ocupación y Empleo (ENOE) del INEGI desde 2005.
 
-La versión correctiva 0.3.1 cubre los trimestres habilitados desde 2005-T1 hasta
+La versión 0.3.2 cubre los trimestres habilitados desde 2005-T1 hasta
 2026-T2. En 2026 están publicados y auditados T1 y T2; T3 y T4
 permanecen deshabilitados hasta su publicación y validación.
 
-> **Corrección 2020-T1.** La versión 0.3.1 excluye `ur` únicamente de la
-> unión SDEM–COE de ese trimestre porque el ámbito difiere entre tablas para
-> 2,851 personas cuya identidad personal sí coincide. `ur` se conserva en las
-> uniones de vivienda y hogar. Véase
-> `inst/extdata/NOTA_CORRECCION_2020T1.md`.
+> **Corrección 2020-T1.** Desde 0.3.1, renoe excluye `ur` únicamente de
+> la unión SDEM–COE de ese trimestre porque el ámbito difiere entre
+> tablas para 2,851 personas cuya identidad personal sí coincide. `ur`
+> se conserva en las uniones de vivienda y hogar. Véase
+> `inst/extdata/NOTA_CORRECCION_2020T1.md`
 
-La ruta reproducible fija el orden `SCIAN → SINCO → carreras → consumidores`
-y exige declarar uno de tres escenarios: `official_strict`,
-`integrated_accepted` o `analysis_legacy`.
+La ruta reproducible fija el orden
+`SCIAN → SINCO → carreras → consumidores` y exige declarar uno de tres
+escenarios: `official_strict`, `integrated_accepted` o
+`analysis_legacy`.
+
+**Hotfix 0.3.2.** Esta versión corrige y sincroniza la documentación
+pública, la cita, los títulos de migración, la organización de la
+referencia y etiquetas visibles como “año”. No cambia la API ni los
+resultados analíticos de 0.3.1.
+
+## Novedades de 0.3.1 y migración desde 0.2.0
+
+`renoe 0.3.1` es la primera versión pública de la nueva ruta
+reproducible; `0.3.0` fue una candidata interna y no se publicó. Para el
+uso general se recomienda `integrated_accepted`, que incorpora
+equivalencias oficiales y reglas aceptadas con trazabilidad. Use
+`official_strict` cuando necesite limitarse a evidencia oficial y
+`analysis_legacy` sólo para reproducir productos académicos históricos
+de forma explícita.
+
+La [guía de novedades y
+migración](articles/novedades-migracion-0.3.1.html) explica el flujo
+completo, las correcciones de 2020-T1 y 2022-T1, el tratamiento del
+código `9999`, las funciones deprecadas y los cambios mínimos necesarios
+para migrar código escrito para 0.2.0.
 
 Permite trabajar de forma reproducible y eficiente con los datos de los
 distintos trimestres y formatos de cuestionario (básico o ampliado),
@@ -67,8 +89,7 @@ paso los datos de la ENOE:
 
 | Función | Descripción |
 |----|----|
-| `procesar_variables_enoe()` | Wrapper canónico que ejecuta SCIAN, SINCO, carreras y consumidores en orden fijo y con escenario explícito. |
-| `procesar_productos_academicos()` | Perfil reproducible que reutiliza el pipeline canónico sin duplicar reglas. |
+| `procesar_variables_enoe()` | Función *wrapper* que aplica en cadena las funciones recomendadas de procesamiento. Dependiendo de la versión del paquete, puede incluir variables sociodemográficas, estructura del hogar, tiempo, IPC, imputación de ingresos y variables laborales. |
 | `crear_folios()` | Crea identificadores únicos para vivienda, hogar y persona. |
 | `drop_tri()` | Renombra variables terminadas en `_tri` en la ENOEN para compatibilidad. |
 | `procesar_vars_sociodemo()` | Genera variables de sexo, edad, grupos etarios, asistencia escolar, estado conyugal, parentesco resumido, ruralidad y zona económica regional. |
@@ -125,35 +146,39 @@ datos_proyecto <- datos_proc |>
 internamente `cmo_to_sinco11_care()` cuando corresponde al periodo CMO.
 No es necesario ejecutar el puente por separado en el flujo habitual.
 
-`fusion_enoe()` aplica una única ruta canónica: valida la unicidad de las
-llaves, usa SDEM como tabla ancla y conserva una auditoría de cada unión.
-No existe una ruta alternativa o *legacy*.
+En caso de que haya algun problema de codificación, se pide que se
+utilice la opción `fusion_robusta`
+
+``` r
+datos <- fusion_enoe(2025, 4, fusion_robusta = T)
+```
 
 ------------------------------------------------------------------------
 
-
 ## Modulo de cuidado de mercado
 
-El modulo del articulo de brechas de ingreso mediante regresiones cuantílicas
-agrupa `procesar_cuidado_remunerado()`, `class_cuidado_rem()` y
-`cmo_to_sinco11_care()`. El wrapper opera sobre un data frame en memoria:
+El modulo del articulo de brechas de ingreso mediante regresiones
+cuantílicas agrupa `procesar_cuidado_remunerado()`,
+`class_cuidado_rem()` y `cmo_to_sinco11_care()`. El wrapper opera sobre
+un data frame en memoria:
 
-```r
+``` r
 datos_cuidado <- renoe::procesar_cuidado_remunerado(
   datos_proc, anio = 2022, trimestre = 1
 )
 ```
 
 Prefiere `p3coe` observado para distinguir CMO, SINCO 2011 y SINCO 2019.
-Conserva `sinco3d` del procesamiento general y agrega el codigo de cuidado,
-la procedencia, el metodo y la calidad de la armonizacion.
-La concordancia analitica se distribuye en
-`inst/extdata/concordancia_cmo_sinco_cuidado.csv`; no es un puente oficial general.
-El indicador principal es `trabajo_cuidado_mercado`. Describe la insercion
-ocupacional en el cuidado y no presupone remuneracion positiva. El wrapper distingue
-ademas posicion remunerada, trabajo sin pago e ingreso observado, imputado,
-cero o faltante.
-Vease [la guia del modulo](articles/cuidado-remunerado.html).
+Conserva `sinco3d` del procesamiento general y agrega el codigo de
+cuidado, la procedencia, el metodo y la calidad de la armonizacion. La
+concordancia analitica se distribuye en
+`inst/extdata/concordancia_cmo_sinco_cuidado.csv`; no es un puente
+oficial general. El indicador principal es `trabajo_cuidado_mercado`.
+Describe la insercion ocupacional en el cuidado y no presupone
+remuneracion positiva. El alias `trabajo_cuidado_rem` se conserva
+durante la transicion. El wrapper distingue ademas posicion remunerada,
+trabajo sin pago e ingreso observado, imputado, cero o faltante. Vease
+[la guia del modulo](articles/cuidado-remunerado.html).
 
 ## Funciones internas y auxiliares
 
@@ -181,11 +206,13 @@ estandarización de archivos:
 - `.dta`: compatible con Stata.
 - `.rds`: eficiente para análisis en R.
 
-Los atributos de etiquetas se conservan en una ida y vuelta Parquet con las
-versiones actuales de `arrow` en R, pero otros lectores no necesariamente los
-interpretan. Por eso los CSV incluidos en `inst/extdata` son la fuente canónica
-portable. `aplicar_etiquetas_enoe()` restaura esos metadatos cuando se requieren
-en R o antes de exportar a Stata; las columnas analíticas permanecen numéricas.
+Los atributos de etiquetas se conservan en una ida y vuelta Parquet con
+las versiones actuales de `arrow` en R, pero otros lectores no
+necesariamente los interpretan. Por eso los CSV incluidos en
+`inst/extdata` son la fuente canónica portable.
+`aplicar_etiquetas_enoe()` restaura esos metadatos cuando se requieren
+en R o antes de exportar a Stata; las columnas analíticas permanecen
+numéricas.
 
 ## Diccionario de variables
 
@@ -207,16 +234,16 @@ Las columnas son `variable_nombre`, `descripcion` y `funcion`.
 
 - Se incluye validación del número de filas esperadas posterior al
   filtrado (`r_def == 0 & c_res != 2`).
-- Para **2022-T1** se combinan los componentes oficiales urbano y rural
-  de HOG, se armonizan sus códigos de mes y se incluye `ur` en la llave.
-- La fusión canónica valida las llaves y detiene el proceso si no conserva
-  el universo elegible de SDEM.
+- Para el trimestre **2022T1** se utilizan archivos alternativos
+  descargados del sitio de microdatos del INEGI.
+- La fusión robusta utiliza identificadores disponibles y armonización
+  de nombres para reducir problemas por cambios recientes en las bases.
 - Si se detectan anomalías como menos filas de lo esperado o posibles
   duplicaciones, se emiten advertencias para revisión manual.
 - En uso del tiempo se distinguen duración observada, actividad
   realizada con duración desconocida, realización desconocida y batería
-  no medible. Las actividades ausentes del instrumento permanecen como
-  `NA`, no como cero.
+  no medible. Las columnas `*_legacy` reproducen temporalmente la
+  recodificación histórica a cero.
 
 ------------------------------------------------------------------------
 
@@ -275,7 +302,7 @@ por favor cita de la siguiente manera:
 
 > Escoto, A. (2026). *renoe: Herramientas para trabajar con la Encuesta
 > Nacional de Ocupación y Empleo (ENOE) desde 2005*. R package version
-> 0.3.0. <https://aniuxa.github.io/renoe>
+> 0.3.2. <https://aniuxa.github.io/renoe/>
 
 También puedes usar la función `citation("renoe")` en R para obtener la
 referencia en formato BibTeX.

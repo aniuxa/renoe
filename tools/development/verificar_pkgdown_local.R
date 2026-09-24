@@ -1,8 +1,17 @@
 #!/usr/bin/env Rscript
 
+args <- commandArgs(trailingOnly = TRUE)
+valor_arg <- function(nombre, default = NULL) {
+  prefijo <- paste0("--", nombre, "=")
+  hallado <- args[startsWith(args, prefijo)]
+  if (!length(hallado)) return(default)
+  sub(prefijo, "", hallado[[length(hallado)]], fixed = TRUE)
+}
+
 raiz <- normalizePath(getwd(), winslash = "/", mustWork = TRUE)
-docs <- file.path(raiz, "docs")
-if (!dir.exists(docs)) stop("No existe docs/.")
+docs_solicitado <- valor_arg("docs", file.path(raiz, "docs"))
+docs <- normalizePath(docs_solicitado, winslash = "/", mustWork = TRUE)
+if (!dir.exists(docs)) stop("No existe el directorio del sitio: ", docs)
 if (!requireNamespace("xml2", quietly = TRUE)) stop("Falta el paquete xml2.")
 
 html <- list.files(docs, pattern = "[.]html$", recursive = TRUE, full.names = TRUE)
@@ -16,6 +25,9 @@ ids_de <- function(archivo) {
     anclas[[clave]] <<- unique(stats::na.omit(xml2::xml_attr(
       xml2::xml_find_all(doc, "//*[@id]"), "id"
     )))
+    ids_url <- vapply(anclas[[clave]], utils::URLencode, character(1L),
+                       reserved = TRUE)
+    anclas[[clave]] <<- unique(c(anclas[[clave]], ids_url))
   }
   anclas[[clave]]
 }
@@ -31,7 +43,7 @@ for (archivo in html) {
     if (grepl("^(https?:|mailto:|tel:|javascript:|data:|//)", referencia)) next
     partes <- strsplit(referencia, "#", fixed = TRUE)[[1L]]
     ruta_ref <- sub("[?].*$", "", partes[[1L]])
-    ancla <- if (length(partes) > 1L) utils::URLdecode(partes[[2L]]) else ""
+    ancla <- if (length(partes) > 1L) partes[[2L]] else ""
 
     destino <- if (!nzchar(ruta_ref)) {
       archivo
@@ -57,10 +69,13 @@ texto <- unlist(lapply(html, readLines, warn = FALSE, encoding = "UTF-8"))
 if (any(grepl("https://orcid.org/https://orcid.org/", texto, fixed = TRUE))) {
   fallos <- c(fallos, "ORCID con prefijo duplicado")
 }
-versionados <- system2("git", c("ls-files", "docs"), stdout = TRUE)
-residuos <- versionados[grepl("(^|/)(desktop[.]ini|[.]DS_Store)$", versionados,
-                              ignore.case = TRUE)]
-if (length(residuos)) fallos <- c(fallos, paste("Residuo versionado:", residuos))
+if (identical(docs, normalizePath(file.path(raiz, "docs"), winslash = "/",
+                                  mustWork = FALSE))) {
+  versionados <- system2("git", c("ls-files", "docs"), stdout = TRUE)
+  residuos <- versionados[grepl("(^|/)(desktop[.]ini|[.]DS_Store)$", versionados,
+                                ignore.case = TRUE)]
+  if (length(residuos)) fallos <- c(fallos, paste("Residuo versionado:", residuos))
+}
 
 cat("HTML revisados:", length(html), "\n")
 cat("Fallos locales:", length(fallos), "\n")

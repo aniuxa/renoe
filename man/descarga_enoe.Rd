@@ -16,7 +16,7 @@ descarga_enoe(
 )
 }
 \arguments{
-\item{anio}{Ano del trimestre (2005-2026). Debe ser un valor numerico.}
+\item{anio}{Año del trimestre (2005-2026). Debe ser un valor numerico.}
 
 \item{trimestre}{Numero del trimestre (1-4). Donde:
 \itemize{

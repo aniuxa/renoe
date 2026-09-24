@@ -1,8 +1,8 @@
 ---
-title: "Migración a renoe 0.2.0"
+title: "Migración de renoe 0.1.4 a renoe 0.2.0"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Migración a renoe 0.2.0}
+  %\VignetteIndexEntry{Migración de renoe 0.1.4 a renoe 0.2.0}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

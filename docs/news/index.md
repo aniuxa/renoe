@@ -1,30 +1,79 @@
 # Changelog
 
-## renoe 0.3.1 (correctiva, 23 de septiembre de 2026)
+## renoe 0.3.2 (hotfix documental, 23 de septiembre de 2026)
 
-- Para 2020-T1 usa conjuntamente las cinco tablas de la publicacion
-  vigente de microdatos de INEGI. Esto recupera los codigos `P3`
-  presentes en COE1 y evita mezclar ediciones de VIV, HOG, SDEM, COE1 y
-  COE2.
-- Invalida caches de 2020-T1 que no contienen las cinco tablas de
-  microdatos y obliga a regenerar la fusion antes de sus derivados
-  transversales y paneles.
-- Excluye `ur` de la llave SDEM-COE de 2020-T1: en 2,851 registros el
-  ambito difiere entre ambas tablas aunque la identidad personal
-  coincide. `ur` se conserva como variable descriptiva y sigue formando
-  parte de las uniones de vivienda y hogar donde corresponde.
-- La anomalía fue detectada mediante una tabulación transversal simple
-  de `clase_alt6_damian`: 3,011 personas ocupadas aparecían sin
+- Sincroniza `DESCRIPTION`, `CITATION.cff`, `inst/CITATION`, README y
+  pkgdown con la versión pública 0.3.2.
+- Publica la guía “Migración de renoe 0.2.0 a renoe 0.3.1” y precisa la
+  guía histórica “Migración de renoe 0.1.4 a renoe 0.2.0”.
+- Reorganiza la referencia en siete grupos funcionales, corrige
+  etiquetas visibles `año`/`años` y evita duplicar nombres en el pie de
+  página.
+- Añade controles fail-closed de versión, UTF-8, enlaces, reconstrucción
+  limpia de pkgdown y verificación de la URL pública antes de cerrar un
+  Release.
+- No cambia la API ni los resultados analíticos de renoe 0.3.1. \# renoe
+  0.3.1 (23 de septiembre de 2026)
+
+0.3.1 es la versión pública que sustituye a 0.2.0. La versión 0.3.0 fue
+una candidata interna y no se publicó. La guía [Migración de renoe 0.2.0
+a renoe
+0.3.1](https://aniuxa.github.io/renoe/articles/novedades-migracion-0.3.1.md)
+explica los cambios para personas usuarias; esta sección conserva el
+detalle técnico.
+
+### Corrección ENOE 2020-T1
+
+- Usa conjuntamente las cinco tablas de la publicación vigente de
+  microdatos de INEGI. Esto recupera los códigos `P3` presentes en COE1
+  y evita mezclar ediciones de VIV, HOG, SDEM, COE1 y COE2.
+- Invalida cachés de 2020-T1 que no contienen las cinco tablas y obliga
+  a regenerar la fusión antes de sus derivados transversales y paneles.
+- Excluye `ur` de la llave SDEM–COE sólo en 2020-T1: en 2,851 registros
+  el ámbito difiere entre ambas tablas aunque la identidad personal
+  coincide. `ur` se conserva como variable descriptiva y en las uniones
+  de vivienda y hogar donde corresponde.
+- La anomalía se detectó con una tabulación transversal de
+  `clase_alt6_damian`: 3,011 personas ocupadas aparecían sin
   clasificación. Tras corregir la unión quedan 162 faltantes legítimos
   (factor 41,820): 133 con código oficial `9999` y 29 sin una regla EGP
   aplicable.
-- El cambio invalida el transversal/PINI de 2020-T1, los paneles que
-  contienen ese trimestre (57–61) y sus derivados. Otros trimestres
-  conservan la llave con `ur` y no se regeneran sin una dependencia
-  comprobada.
-- La candidata interna 0.3.0 no fue publicada y queda sustituida por
-  0.3.1, que es la primera versión reproducible de este conjunto de
-  cambios.
+- El cambio invalida el transversal o PINI de 2020-T1, los paneles 57–61
+  y sus derivados. Otros trimestres conservan la llave con `ur` y no se
+  regeneran sin una dependencia comprobada.
+
+### Ruta reproducible de clasificadores
+
+- Publica los escenarios `official_strict`, `integrated_accepted` y
+  `analysis_legacy`. `integrated_accepted` es el predeterminado para
+  análisis generales; `analysis_legacy` debe solicitarse expresamente.
+- Fija el orden SCIAN → SINCO → carreras → consumidores.
+- Conserva código observado, versión, destinos posibles, regla,
+  evidencia, nivel sustentado y estado de decisión.
+- Mantiene `9999` como código especial no comparable.
+- Añade
+  [`procesar_productos_academicos()`](https://aniuxa.github.io/renoe/reference/procesar_productos_academicos.md)
+  para reproducir productos académicos sin duplicar reglas.
+- Conserva
+  [`armoniza_sinco()`](https://aniuxa.github.io/renoe/reference/armoniza_sinco.md)
+  únicamente como alias deprecado de
+  [`armonizar_sinco()`](https://aniuxa.github.io/renoe/reference/armonizar_sinco.md).
+- Hace que la ruta general se detenga si cambia el número de filas o si
+  `folio3` no termina completa y única.
+
+### Cambios acumulados desde 0.2.0
+
+- Corrige HOG de 2022-T1 combinando los componentes oficiales urbano y
+  rural, armoniza sus meses y usa SDEM como ancla.
+- Corrige los quintiles del hogar para usar una fila y un factor por
+  hogar y conserva como `NA` los ingresos completamente desconocidos.
+- Separa cuidado adolescente amplio y directo, corrige el indicador de
+  cuidado adolescente y armoniza el trabajo no remunerado dentro del
+  hogar.
+- Documenta las rupturas de 2013, 2020 y 2023 y audita 85 trimestres
+  entre 2005-T1 y 2026-T2.
+- Añade clasificaciones reproducibles de origen, parentesco, hogares,
+  educación, situación laboral, cuidados y región socioeconómica.
 
 ## renoe 0.3.0 (candidata final local, 20 de septiembre de 2026)
 

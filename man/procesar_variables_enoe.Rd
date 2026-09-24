@@ -19,7 +19,7 @@ procesar_variables_enoe(
 \arguments{
 \item{data}{Un data frame con las tablas fusionadas de la ENOE (por ejemplo, salida de \code{fusion_enoe()}).}
 
-\item{anio}{Ano del trimestre (numerico).}
+\item{anio}{Año del trimestre (numerico).}
 
 \item{trimestre}{Trimestre numerico (1-4).}
 

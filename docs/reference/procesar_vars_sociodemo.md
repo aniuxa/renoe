@@ -1,6 +1,6 @@
 # Procesar variables sociodemograficas basicas y extendidas
 
-Anade sexo, edad, grupos etarios, metadatos como ano, trimestre y tipo
+Anade sexo, edad, grupos etarios, metadatos como año, trimestre y tipo
 de cuestionario COE, asi como variables extendidas de asistencia
 escolar, estado conyugal, escolaridad, zona rural, tamano de localidad y
 zona economica regional. `zona_econ` sigue una regionalizacion analitica
@@ -22,7 +22,7 @@ procesar_vars_sociodemo(data, anio, trimestre)
 
 - anio:
 
-  Ano del trimestre.
+  Año del trimestre.
 
 - trimestre:
 

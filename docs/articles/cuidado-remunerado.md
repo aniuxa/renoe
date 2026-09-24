@@ -17,7 +17,7 @@ x <- data.frame(
 y <- procesar_cuidado_remunerado(x)
 ```
 
-    ## Puente CMO-SINCO cuidado aplicado: 1 de 1 códigos CMO no faltantes convertidos (1 observaciones del periodo CMO; 0 sin correspondencia).
+    ## Puente CMO-SINCO cuidado aplicado: 1 de 1 c<U+00F3>digos CMO no faltantes convertidos (1 observaciones del periodo CMO; 0 sin correspondencia).
 
 ``` r
 

@@ -373,7 +373,7 @@ mapa_2005_detalle <- tibble::tribble(
 #'   los destinos detallados plausibles pertenecen al mismo campo. El perfil
 #'   experimental no inventa una carrera CMPE 2011 detallada.
 #' @param advertir_cobertura Si es `TRUE`, valor predeterminado, emite en cada
-#'   aplicacion una advertencia con la cobertura ARM8 por ano dentro de la
+#'   aplicacion una advertencia con la cobertura ARM8 por año dentro de la
 #'   serie historica recomendada desde 2014-III. Usa `fac` cuando esta
 #'   disponible y registros en caso contrario.
 #' @param salida `"auditable"` conserva todas las columnas de evidencia;

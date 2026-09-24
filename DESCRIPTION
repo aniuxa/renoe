@@ -1,7 +1,7 @@
 Package: renoe
 Type: Package
 Title: Herramientas Para Trabajar Con La ENOE Desde 2005
-Version: 0.3.1
+Version: 0.3.2
 Authors@R: 
     c(
         person(
@@ -24,7 +24,7 @@ Authors@R:
     )
 Description: Descarga, carga, fusiona y procesa los microdatos de la
     Encuesta Nacional de Ocupacion y Empleo (ENOE) de Mexico desde 2005.
-    La version 0.3.1 cubre los trimestres habilitados entre 2005-T1 y
+    La version 0.3.2 cubre los trimestres habilitados entre 2005-T1 y
     2026-T2, incluidos 2026-T1 y 2026-T2.
     Incluye funciones para armonizar cuestionarios basico y ampliado,
     construir identificadores y paneles, procesar variables
@@ -43,5 +43,5 @@ BugReports: https://github.com/aniuxa/renoe/issues
 URL: https://aniuxa.github.io/renoe/, https://github.com/aniuxa/renoe
 Config/roxygen2/version: 8.1.0
 Config/testthat/edition: 3
-Config/renoe/Release: corrective-candidate
+Config/renoe/Release: public-release
 NeedsCompilation: no

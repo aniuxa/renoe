@@ -12,7 +12,7 @@ procesar_vars_laborales(
 \arguments{
 \item{data}{Un data.frame con variables como:
 \itemize{
-\item \code{anio}, \code{trimestre}: ano y trimestre de la entrevista
+\item \code{anio}, \code{trimestre}: año y trimestre de la entrevista
 \item \code{coe_tipo}: tipo de cuestionario (\code{"ampliado"} o \code{"basico"})
 \item \code{p3coe}: codigo ocupacional
 \item \code{cs_p13_1}, \code{cs_p15}: nivel educativo y antecedente escolar
@@ -47,7 +47,7 @@ aproximacion a un digito de SINCO y puede ocultar excepciones dentro de cada
 division.
 }
 \details{
-La referencia estadistica en anos de escolaridad se calcula por separado con
+La referencia estadistica en años de escolaridad se calcula por separado con
 \code{\link[=calcular_desajuste_estadistico]{calcular_desajuste_estadistico()}}. Esta separacion evita construir una
 referencia aparentemente anual cuando la entrada contiene un solo trimestre.
 Por compatibilidad, si la entrada ya contiene \code{esco_norm} o \code{mismatch2}, esas

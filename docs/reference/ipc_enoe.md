@@ -19,7 +19,7 @@ ipc_enoe(datos_fusionados, anio, trimestre)
 
 - anio:
 
-  Ano del trimestre (numerico).
+  Año del trimestre (numerico).
 
 - trimestre:
 

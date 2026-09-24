@@ -20,28 +20,53 @@ navbar:
       href: https://github.com/aniuxa/renoe
 
 reference:
-  - title: "Descarga y documentación"
+  - title: "Descarga, carga y metadatos"
     contents:
       - descarga_enoe
-      - fusion_enoe
       - carga_enoe
+      - fusion_enoe
       - info_trimestre
       - descargar_cuestionarios
 
-  - title: "Procesamiento de microdatos"
+  - title: "Preparación y procesamiento integral"
     contents:
       - procesar_variables_enoe
+      - procesar_clasificaciones_reproducibles
+      - procesar_productos_academicos
+      - drop_tri
       - crear_folios
+      - aplicar_etiquetas_enoe
+      - reglas_enoe
+
+  - title: "Procesamiento sociodemográfico, laboral y del hogar"
+    contents:
       - procesar_vars_sociodemo
       - procesar_vars_hogar
+      - procesar_vars_laborales
       - procesar_tiempo
       - ipc_enoe
       - imputa_ingocup
-      - procesar_vars_laborales
-      - calcular_desajuste_estadistico
       - procesar_contribucion_hogar
 
-  - title: "Extensiones del proyecto y cuidados"
+  - title: "Clasificadores y armonización"
+    contents:
+      - armonizar_scian
+      - armonizar_sinco
+      - armoniza_sinco
+      - sinco2019_to_sinco2011
+      - cmo_to_sinco
+      - cmo_to_sinco1d
+      - armonizar_carreras
+      - armonizar_carreras_enoe
+
+  - title: "Desajuste e indicadores especializados"
+    contents:
+      - calcular_desajuste_estadistico
+      - calcular_desajuste_horizontal
+      - clasificar_susceptibilidad_teletrabajo
+      - procesar_clases_damian
+
+  - title: "Extensiones del proyecto"
     contents:
       - procesar_cuidado_extra
       - procesar_estudio_trabajo
@@ -53,23 +78,17 @@ reference:
       - class_cuidado_rem
       - cmo_to_sinco11_care
 
-  - title: "Funciones auxiliares"
-    contents:
-      - cmo_to_sinco
-      - cmo_to_sinco1d
-      - armonizar_sinco
-      - starts_with(".")
-
 articles:
   - title: "Uso básico del paquete"
     contents:
       - renoe
+      - novedades-migracion-0.3.1
       - cuidado-remunerado
       - migracion-0.2.0
 
 authors:
   footer:
     roles: [aut, cre, ctb]
-    text: "Desarrollado por Ana Escoto, con contribuciones de código de Gerardo Damián Hernández y Gabriela Cervantes, en el proyecto PAPIIT IN305925"
+    text: "Proyecto PAPIIT IN305925. Desarrollado por"
 
 url: https://aniuxa.github.io/renoe

@@ -105,7 +105,7 @@
 }
 
 
-#' Funcion interna que determina la estructura de URL apropiada segun el ano y trimestre
+#' Funcion interna que determina la estructura de URL apropiada segun el año y trimestre
 #' @keywords internal
 .construir_url_enoe <- function(anio, trimestre) {
   base_url <- "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/datosabiertos/"

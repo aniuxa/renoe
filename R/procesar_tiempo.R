@@ -22,7 +22,7 @@
 #' cada version y, por ello, no debe usarse como serie homogenea.
 #'
 #' @param data Data frame fusionado por `fusion_enoe()` o cargado directamente.
-#' @param anio Ano del trimestre, usado si falta `anio` en `data`.
+#' @param anio Año del trimestre, usado si falta `anio` en `data`.
 #' @param trimestre Trimestre 1-4, usado si faltan metadatos en `data`.
 #'
 #' @return El mismo data frame, en el mismo orden, con duraciones, estados de

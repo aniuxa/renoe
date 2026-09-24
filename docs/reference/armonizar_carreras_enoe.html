@@ -13,7 +13,7 @@ la CMPE 2011 entre 2012-III y 2021-II y la CMPE 2016 desde 2021-III."><meta prop
 
     <a class="navbar-brand me-2" href="../index.html">Uso del paquete renoe</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -89,7 +89,7 @@ experimental no inventa una carrera CMPE 2011 detallada.</p></dd>
 
 <dt id="arg-advertir-cobertura">advertir_cobertura<a class="anchor" aria-label="anchor" href="#arg-advertir-cobertura"></a></dt>
 <dd><p>Si es <code>TRUE</code>, valor predeterminado, emite en cada
-aplicacion una advertencia con la cobertura ARM8 por ano dentro de la
+aplicacion una advertencia con la cobertura ARM8 por año dentro de la
 serie historica recomendada desde 2014-III. Usa <code>fac</code> cuando esta
 disponible y registros en caso contrario.</p></dd>
 
@@ -198,7 +198,7 @@ from a systematic literature review. Journal of Economic Surveys, 33(2),
 <span class="r-in"><span><span class="fu">armonizar_carreras_enoe</span><span class="op">(</span><span class="va">datos</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cobertura del perfil 'panel_validado' para la serie 2014-III+:</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> 2021: ARM8 100.00% clasificado (0.00% sin clasificar)</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Advertencia de circularidad: no use SINCO observado o imputado para completar carreras que después se compararán con SINCO. El lookup integrado de carreras no usa ocupación ni SINCO.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Advertencia de circularidad: no use SINCO observado o imputado para completar carreras que despu&lt;U+00E9&gt;s se comparar&lt;U+00E1&gt;n con SINCO. El lookup integrado de carreras no usa ocupaci&lt;U+00F3&gt;n ni SINCO.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   anio trim cs_p13_1 cs_p14_c clasificador_carrera cs_p14_c_original</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 2012   t2        7     3111        Carreras 2005              3111</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 2012   t3        7     5335            CMPE 2011              5335</span>
@@ -252,8 +252,8 @@ from a systematic literature review. Journal of Economic Surveys, 33(2),
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2      cmpe2011_detallado                                  FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3      cmpe2011_detallado                                   TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                             uso_desajuste_horizontal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                           Sólo sensibilidad: fuera de la serie principal 2014-III+</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                           Sólo sensibilidad: fuera de la serie principal 2014-III+</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                    S&lt;U+00F3&gt;lo sensibilidad: fuera de la serie principal 2014-III+</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                    S&lt;U+00F3&gt;lo sensibilidad: fuera de la serie principal 2014-III+</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 Continuidad ARM8 con marca de cambio CMPE 2016; validar la comparabilidad temporal</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   carrera_catalogo_origen carrera_catalogo_destino carrera_codigo_original</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1           Carreras 2005                CMPE 2011                    3111</span>
@@ -279,22 +279,22 @@ from a systematic literature review. Journal of Economic Surveys, 33(2),
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 destinos_multiples_sin_regla_aceptada Exacta por clave detallada</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2                                  &lt;NA&gt;      Exacta a nivel amplio</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3                                  &lt;NA&gt;      Exacta a nivel amplio</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                               campo_arm8_desc</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      Ingeniería, manufactura y construcción</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Ciencias sociales, administración y derecho</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Ciencias sociales, administración y derecho</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                         campo_arm10_desc elegible_carrera tiene_codigo_carrera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Ingeniería, manufactura y construcción             TRUE                 TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2              Administración y negocios             TRUE                 TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3              Administración y negocios             TRUE                 TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   cobertura_arm8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1           TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2           TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3           TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                        campo_arm8_desc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Ingenier&lt;U+00ED&gt;a, manufactura y construcci&lt;U+00F3&gt;n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   Ciencias sociales, administraci&lt;U+00F3&gt;n y derecho</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   Ciencias sociales, administraci&lt;U+00F3&gt;n y derecho</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                       campo_arm10_desc elegible_carrera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Ingenier&lt;U+00ED&gt;a, manufactura y construcci&lt;U+00F3&gt;n             TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                     Administraci&lt;U+00F3&gt;n y negocios             TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                     Administraci&lt;U+00F3&gt;n y negocios             TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   tiene_codigo_carrera cobertura_arm8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                 TRUE           TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 TRUE           TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                 TRUE           TRUE</span>
 <span class="r-in"><span><span class="fu">armonizar_carreras_enoe</span><span class="op">(</span><span class="va">datos</span>, usar_puente_2005 <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cobertura del perfil 'panel_validado' para la serie 2014-III+:</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> 2021: ARM8 100.00% clasificado (0.00% sin clasificar)</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Advertencia de circularidad: no use SINCO observado o imputado para completar carreras que después se compararán con SINCO. El lookup integrado de carreras no usa ocupación ni SINCO.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Advertencia de circularidad: no use SINCO observado o imputado para completar carreras que despu&lt;U+00E9&gt;s se comparar&lt;U+00E1&gt;n con SINCO. El lookup integrado de carreras no usa ocupaci&lt;U+00F3&gt;n ni SINCO.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   anio trim cs_p13_1 cs_p14_c clasificador_carrera cs_p14_c_original</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 2012   t2        7     3111        Carreras 2005              3111</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 2012   t3        7     5335            CMPE 2011              5335</span>
@@ -348,8 +348,8 @@ from a systematic literature review. Journal of Economic Surveys, 33(2),
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2      cmpe2011_detallado                                  FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3      cmpe2011_detallado                                   TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                             uso_desajuste_horizontal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                           Sólo sensibilidad: fuera de la serie principal 2014-III+</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                           Sólo sensibilidad: fuera de la serie principal 2014-III+</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                    S&lt;U+00F3&gt;lo sensibilidad: fuera de la serie principal 2014-III+</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                    S&lt;U+00F3&gt;lo sensibilidad: fuera de la serie principal 2014-III+</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 Continuidad ARM8 con marca de cambio CMPE 2016; validar la comparabilidad temporal</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   carrera_catalogo_origen carrera_catalogo_destino carrera_codigo_original</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1           Carreras 2005                CMPE 2011                    3111</span>
@@ -375,22 +375,22 @@ from a systematic literature review. Journal of Economic Surveys, 33(2),
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                     &lt;NA&gt; Exacta por clave detallada</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2                     &lt;NA&gt;      Exacta a nivel amplio</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3                     &lt;NA&gt;      Exacta a nivel amplio</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                               campo_arm8_desc</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      Ingeniería, manufactura y construcción</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Ciencias sociales, administración y derecho</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Ciencias sociales, administración y derecho</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                         campo_arm10_desc elegible_carrera tiene_codigo_carrera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Ingeniería, manufactura y construcción             TRUE                 TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2              Administración y negocios             TRUE                 TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3              Administración y negocios             TRUE                 TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   cobertura_arm8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1           TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2           TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3           TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                        campo_arm8_desc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Ingenier&lt;U+00ED&gt;a, manufactura y construcci&lt;U+00F3&gt;n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   Ciencias sociales, administraci&lt;U+00F3&gt;n y derecho</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   Ciencias sociales, administraci&lt;U+00F3&gt;n y derecho</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                       campo_arm10_desc elegible_carrera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Ingenier&lt;U+00ED&gt;a, manufactura y construcci&lt;U+00F3&gt;n             TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                     Administraci&lt;U+00F3&gt;n y negocios             TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                     Administraci&lt;U+00F3&gt;n y negocios             TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   tiene_codigo_carrera cobertura_arm8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                 TRUE           TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 TRUE           TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                 TRUE           TRUE</span>
 <span class="r-in"><span><span class="fu">armonizar_carreras_enoe</span><span class="op">(</span><span class="va">datos</span>, perfil <span class="op">=</span> <span class="st">"experimental"</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Cobertura del perfil 'experimental' para la serie 2014-III+:</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> 2021: ARM8 100.00% clasificado (0.00% sin clasificar)</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Advertencia de circularidad: no use SINCO observado o imputado para completar carreras que después se compararán con SINCO. El lookup integrado de carreras no usa ocupación ni SINCO.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Advertencia de circularidad: no use SINCO observado o imputado para completar carreras que despu&lt;U+00E9&gt;s se comparar&lt;U+00E1&gt;n con SINCO. El lookup integrado de carreras no usa ocupaci&lt;U+00F3&gt;n ni SINCO.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   anio trim cs_p13_1 cs_p14_c clasificador_carrera cs_p14_c_original</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 2012   t2        7     3111        Carreras 2005              3111</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 2012   t3        7     5335            CMPE 2011              5335</span>
@@ -444,8 +444,8 @@ from a systematic literature review. Journal of Economic Surveys, 33(2),
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2      cmpe2011_detallado                                  FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3      cmpe2011_detallado                                   TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                             uso_desajuste_horizontal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                           Sólo sensibilidad: fuera de la serie principal 2014-III+</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                           Sólo sensibilidad: fuera de la serie principal 2014-III+</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                    S&lt;U+00F3&gt;lo sensibilidad: fuera de la serie principal 2014-III+</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                    S&lt;U+00F3&gt;lo sensibilidad: fuera de la serie principal 2014-III+</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 Continuidad ARM8 con marca de cambio CMPE 2016; validar la comparabilidad temporal</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   carrera_catalogo_origen carrera_catalogo_destino carrera_codigo_original</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1           Carreras 2005                CMPE 2011                    3111</span>
@@ -471,18 +471,18 @@ from a systematic literature review. Journal of Economic Surveys, 33(2),
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 destinos_multiples_sin_regla_aceptada Exacta por clave detallada</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2                                  &lt;NA&gt;      Exacta a nivel amplio</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3                                  &lt;NA&gt;      Exacta a nivel amplio</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                               campo_arm8_desc</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      Ingeniería, manufactura y construcción</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Ciencias sociales, administración y derecho</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Ciencias sociales, administración y derecho</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                         campo_arm10_desc elegible_carrera tiene_codigo_carrera</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Ingeniería, manufactura y construcción             TRUE                 TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2              Administración y negocios             TRUE                 TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3              Administración y negocios             TRUE                 TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   cobertura_arm8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1           TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2           TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3           TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                        campo_arm8_desc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Ingenier&lt;U+00ED&gt;a, manufactura y construcci&lt;U+00F3&gt;n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   Ciencias sociales, administraci&lt;U+00F3&gt;n y derecho</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   Ciencias sociales, administraci&lt;U+00F3&gt;n y derecho</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                       campo_arm10_desc elegible_carrera</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Ingenier&lt;U+00ED&gt;a, manufactura y construcci&lt;U+00F3&gt;n             TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                     Administraci&lt;U+00F3&gt;n y negocios             TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                     Administraci&lt;U+00F3&gt;n y negocios             TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   tiene_codigo_carrera cobertura_arm8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                 TRUE           TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 TRUE           TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                 TRUE           TRUE</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -490,7 +490,7 @@ from a systematic literature review. Journal of Economic Surveys, 33(2),
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Desarrollado por Ana Escoto, con contribuciones de código de Gerardo Damián Hernández y Gabriela Cervantes, en el proyecto PAPIIT IN305925 Ana Escoto, Gerardo Damián Hernández, Gabriela Cervantes.</p>
+  <p>Proyecto PAPIIT IN305925. Desarrollado por Ana Escoto, Gerardo Damián Hernández, Gabriela Cervantes.</p>
 </div>
 
 <div class="pkgdown-footer-right">

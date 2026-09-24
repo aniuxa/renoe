@@ -1,4 +1,4 @@
-# Migración a renoe 0.2.0
+# Migración de renoe 0.1.4 a renoe 0.2.0
 
 `renoe 0.2.0` incorpora soporte para los trimestres publicados de 2026,
 cambia varias definiciones metodológicas y conserva salidas de

@@ -23,7 +23,7 @@ clasificar_susceptibilidad_teletrabajo(
 
 - data:
 
-  Data frame con el codigo SINCO, ano y trimestre.
+  Data frame con el codigo SINCO, año y trimestre.
 
 - variable_sinco:
 
@@ -31,7 +31,7 @@ clasificar_susceptibilidad_teletrabajo(
 
 - variable_anio:
 
-  Nombre de la variable de ano.
+  Nombre de la variable de año.
 
 - variable_trim:
 

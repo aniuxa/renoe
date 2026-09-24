@@ -52,7 +52,7 @@ armonizar_carreras(
 - advertir_cobertura:
 
   Si es `TRUE`, valor predeterminado, emite en cada aplicacion una
-  advertencia con la cobertura ARM8 por ano dentro de la serie historica
+  advertencia con la cobertura ARM8 por año dentro de la serie historica
   recomendada desde 2014-III. Usa `fac` cuando esta disponible y
   registros en caso contrario.
 
@@ -172,7 +172,7 @@ datos <- data.frame(
 armonizar_carreras_enoe(datos)
 #> Warning: Cobertura del perfil 'panel_validado' para la serie 2014-III+:
 #> 2021: ARM8 100.00% clasificado (0.00% sin clasificar)
-#> Advertencia de circularidad: no use SINCO observado o imputado para completar carreras que después se compararán con SINCO. El lookup integrado de carreras no usa ocupación ni SINCO.
+#> Advertencia de circularidad: no use SINCO observado o imputado para completar carreras que despu<U+00E9>s se comparar<U+00E1>n con SINCO. El lookup integrado de carreras no usa ocupaci<U+00F3>n ni SINCO.
 #>   anio trim cs_p13_1 cs_p14_c clasificador_carrera cs_p14_c_original
 #> 1 2012   t2        7     3111        Carreras 2005              3111
 #> 2 2012   t3        7     5335            CMPE 2011              5335
@@ -226,8 +226,8 @@ armonizar_carreras_enoe(datos)
 #> 2      cmpe2011_detallado                                  FALSE
 #> 3      cmpe2011_detallado                                   TRUE
 #>                                                             uso_desajuste_horizontal
-#> 1                           Sólo sensibilidad: fuera de la serie principal 2014-III+
-#> 2                           Sólo sensibilidad: fuera de la serie principal 2014-III+
+#> 1                    S<U+00F3>lo sensibilidad: fuera de la serie principal 2014-III+
+#> 2                    S<U+00F3>lo sensibilidad: fuera de la serie principal 2014-III+
 #> 3 Continuidad ARM8 con marca de cambio CMPE 2016; validar la comparabilidad temporal
 #>   carrera_catalogo_origen carrera_catalogo_destino carrera_codigo_original
 #> 1           Carreras 2005                CMPE 2011                    3111
@@ -253,22 +253,22 @@ armonizar_carreras_enoe(datos)
 #> 1 destinos_multiples_sin_regla_aceptada Exacta por clave detallada
 #> 2                                  <NA>      Exacta a nivel amplio
 #> 3                                  <NA>      Exacta a nivel amplio
-#>                               campo_arm8_desc
-#> 1      Ingeniería, manufactura y construcción
-#> 2 Ciencias sociales, administración y derecho
-#> 3 Ciencias sociales, administración y derecho
-#>                         campo_arm10_desc elegible_carrera tiene_codigo_carrera
-#> 1 Ingeniería, manufactura y construcción             TRUE                 TRUE
-#> 2              Administración y negocios             TRUE                 TRUE
-#> 3              Administración y negocios             TRUE                 TRUE
-#>   cobertura_arm8
-#> 1           TRUE
-#> 2           TRUE
-#> 3           TRUE
+#>                                        campo_arm8_desc
+#> 1 Ingenier<U+00ED>a, manufactura y construcci<U+00F3>n
+#> 2   Ciencias sociales, administraci<U+00F3>n y derecho
+#> 3   Ciencias sociales, administraci<U+00F3>n y derecho
+#>                                       campo_arm10_desc elegible_carrera
+#> 1 Ingenier<U+00ED>a, manufactura y construcci<U+00F3>n             TRUE
+#> 2                     Administraci<U+00F3>n y negocios             TRUE
+#> 3                     Administraci<U+00F3>n y negocios             TRUE
+#>   tiene_codigo_carrera cobertura_arm8
+#> 1                 TRUE           TRUE
+#> 2                 TRUE           TRUE
+#> 3                 TRUE           TRUE
 armonizar_carreras_enoe(datos, usar_puente_2005 = TRUE)
 #> Warning: Cobertura del perfil 'panel_validado' para la serie 2014-III+:
 #> 2021: ARM8 100.00% clasificado (0.00% sin clasificar)
-#> Advertencia de circularidad: no use SINCO observado o imputado para completar carreras que después se compararán con SINCO. El lookup integrado de carreras no usa ocupación ni SINCO.
+#> Advertencia de circularidad: no use SINCO observado o imputado para completar carreras que despu<U+00E9>s se comparar<U+00E1>n con SINCO. El lookup integrado de carreras no usa ocupaci<U+00F3>n ni SINCO.
 #>   anio trim cs_p13_1 cs_p14_c clasificador_carrera cs_p14_c_original
 #> 1 2012   t2        7     3111        Carreras 2005              3111
 #> 2 2012   t3        7     5335            CMPE 2011              5335
@@ -322,8 +322,8 @@ armonizar_carreras_enoe(datos, usar_puente_2005 = TRUE)
 #> 2      cmpe2011_detallado                                  FALSE
 #> 3      cmpe2011_detallado                                   TRUE
 #>                                                             uso_desajuste_horizontal
-#> 1                           Sólo sensibilidad: fuera de la serie principal 2014-III+
-#> 2                           Sólo sensibilidad: fuera de la serie principal 2014-III+
+#> 1                    S<U+00F3>lo sensibilidad: fuera de la serie principal 2014-III+
+#> 2                    S<U+00F3>lo sensibilidad: fuera de la serie principal 2014-III+
 #> 3 Continuidad ARM8 con marca de cambio CMPE 2016; validar la comparabilidad temporal
 #>   carrera_catalogo_origen carrera_catalogo_destino carrera_codigo_original
 #> 1           Carreras 2005                CMPE 2011                    3111
@@ -349,22 +349,22 @@ armonizar_carreras_enoe(datos, usar_puente_2005 = TRUE)
 #> 1                     <NA> Exacta por clave detallada
 #> 2                     <NA>      Exacta a nivel amplio
 #> 3                     <NA>      Exacta a nivel amplio
-#>                               campo_arm8_desc
-#> 1      Ingeniería, manufactura y construcción
-#> 2 Ciencias sociales, administración y derecho
-#> 3 Ciencias sociales, administración y derecho
-#>                         campo_arm10_desc elegible_carrera tiene_codigo_carrera
-#> 1 Ingeniería, manufactura y construcción             TRUE                 TRUE
-#> 2              Administración y negocios             TRUE                 TRUE
-#> 3              Administración y negocios             TRUE                 TRUE
-#>   cobertura_arm8
-#> 1           TRUE
-#> 2           TRUE
-#> 3           TRUE
+#>                                        campo_arm8_desc
+#> 1 Ingenier<U+00ED>a, manufactura y construcci<U+00F3>n
+#> 2   Ciencias sociales, administraci<U+00F3>n y derecho
+#> 3   Ciencias sociales, administraci<U+00F3>n y derecho
+#>                                       campo_arm10_desc elegible_carrera
+#> 1 Ingenier<U+00ED>a, manufactura y construcci<U+00F3>n             TRUE
+#> 2                     Administraci<U+00F3>n y negocios             TRUE
+#> 3                     Administraci<U+00F3>n y negocios             TRUE
+#>   tiene_codigo_carrera cobertura_arm8
+#> 1                 TRUE           TRUE
+#> 2                 TRUE           TRUE
+#> 3                 TRUE           TRUE
 armonizar_carreras_enoe(datos, perfil = "experimental")
 #> Warning: Cobertura del perfil 'experimental' para la serie 2014-III+:
 #> 2021: ARM8 100.00% clasificado (0.00% sin clasificar)
-#> Advertencia de circularidad: no use SINCO observado o imputado para completar carreras que después se compararán con SINCO. El lookup integrado de carreras no usa ocupación ni SINCO.
+#> Advertencia de circularidad: no use SINCO observado o imputado para completar carreras que despu<U+00E9>s se comparar<U+00E1>n con SINCO. El lookup integrado de carreras no usa ocupaci<U+00F3>n ni SINCO.
 #>   anio trim cs_p13_1 cs_p14_c clasificador_carrera cs_p14_c_original
 #> 1 2012   t2        7     3111        Carreras 2005              3111
 #> 2 2012   t3        7     5335            CMPE 2011              5335
@@ -418,8 +418,8 @@ armonizar_carreras_enoe(datos, perfil = "experimental")
 #> 2      cmpe2011_detallado                                  FALSE
 #> 3      cmpe2011_detallado                                   TRUE
 #>                                                             uso_desajuste_horizontal
-#> 1                           Sólo sensibilidad: fuera de la serie principal 2014-III+
-#> 2                           Sólo sensibilidad: fuera de la serie principal 2014-III+
+#> 1                    S<U+00F3>lo sensibilidad: fuera de la serie principal 2014-III+
+#> 2                    S<U+00F3>lo sensibilidad: fuera de la serie principal 2014-III+
 #> 3 Continuidad ARM8 con marca de cambio CMPE 2016; validar la comparabilidad temporal
 #>   carrera_catalogo_origen carrera_catalogo_destino carrera_codigo_original
 #> 1           Carreras 2005                CMPE 2011                    3111
@@ -445,16 +445,16 @@ armonizar_carreras_enoe(datos, perfil = "experimental")
 #> 1 destinos_multiples_sin_regla_aceptada Exacta por clave detallada
 #> 2                                  <NA>      Exacta a nivel amplio
 #> 3                                  <NA>      Exacta a nivel amplio
-#>                               campo_arm8_desc
-#> 1      Ingeniería, manufactura y construcción
-#> 2 Ciencias sociales, administración y derecho
-#> 3 Ciencias sociales, administración y derecho
-#>                         campo_arm10_desc elegible_carrera tiene_codigo_carrera
-#> 1 Ingeniería, manufactura y construcción             TRUE                 TRUE
-#> 2              Administración y negocios             TRUE                 TRUE
-#> 3              Administración y negocios             TRUE                 TRUE
-#>   cobertura_arm8
-#> 1           TRUE
-#> 2           TRUE
-#> 3           TRUE
+#>                                        campo_arm8_desc
+#> 1 Ingenier<U+00ED>a, manufactura y construcci<U+00F3>n
+#> 2   Ciencias sociales, administraci<U+00F3>n y derecho
+#> 3   Ciencias sociales, administraci<U+00F3>n y derecho
+#>                                       campo_arm10_desc elegible_carrera
+#> 1 Ingenier<U+00ED>a, manufactura y construcci<U+00F3>n             TRUE
+#> 2                     Administraci<U+00F3>n y negocios             TRUE
+#> 3                     Administraci<U+00F3>n y negocios             TRUE
+#>   tiene_codigo_carrera cobertura_arm8
+#> 1                 TRUE           TRUE
+#> 2                 TRUE           TRUE
+#> 3                 TRUE           TRUE
 ```

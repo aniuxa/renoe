@@ -18,13 +18,13 @@ calcular_desajuste_estadistico(
 
 \item{periodo_referencia}{\code{"trimestre"} o \code{"anio"}.}
 
-\item{umbral_anios}{Umbral simetrico en anos; por defecto 1.}
+\item{umbral_anios}{Umbral simetrico en años; por defecto 1.}
 
 \item{ponderado}{Si es \code{TRUE}, usa el ponderador indicado.}
 
 \item{variable_ponderador}{Nombre del ponderador; por defecto \code{fac}.}
 
-\item{anio_incompleto}{Tratamiento de anos con menos de cuatro trimestres:
+\item{anio_incompleto}{Tratamiento de años con menos de cuatro trimestres:
 \code{"error"}, \code{"advertir"} o \code{"permitir"}.}
 }
 \value{
@@ -41,11 +41,11 @@ norma ocupacional externa. La referencia predeterminada es trimestral.
 La referencia anual se calcula unicamente sobre datos ya acumulados y su
 unidad es persona-trimestre. La funcion no deduplica personas: la rotacion de
 ENOE forma parte de los cortes transversales acumulados. Para publicar una
-referencia anual se requieren cuatro trimestres por ano; el tratamiento de
-anos incompletos puede cambiarse explicitamente con \code{anio_incompleto}.
+referencia anual se requieren cuatro trimestres por año; el tratamiento de
+años incompletos puede cambiarse explicitamente con \code{anio_incompleto}.
 
 El ponderador se elige con \code{variable_ponderador}. Dividir por una constante
-comun, como cuatro en un ano completo, no cambia la media, aunque si importa
+comun, como cuatro en un año completo, no cambia la media, aunque si importa
 para estimar totales anuales.
 }
 \examples{

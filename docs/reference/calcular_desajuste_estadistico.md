@@ -30,7 +30,7 @@ calcular_desajuste_estadistico(
 
 - umbral_anios:
 
-  Umbral simetrico en anos; por defecto 1.
+  Umbral simetrico en años; por defecto 1.
 
 - ponderado:
 
@@ -42,7 +42,7 @@ calcular_desajuste_estadistico(
 
 - anio_incompleto:
 
-  Tratamiento de anos con menos de cuatro trimestres: `"error"`,
+  Tratamiento de años con menos de cuatro trimestres: `"error"`,
   `"advertir"` o `"permitir"`.
 
 ## Value
@@ -57,11 +57,11 @@ La referencia anual se calcula unicamente sobre datos ya acumulados y su
 unidad es persona-trimestre. La funcion no deduplica personas: la
 rotacion de ENOE forma parte de los cortes transversales acumulados.
 Para publicar una referencia anual se requieren cuatro trimestres por
-ano; el tratamiento de anos incompletos puede cambiarse explicitamente
+año; el tratamiento de años incompletos puede cambiarse explicitamente
 con `anio_incompleto`.
 
 El ponderador se elige con `variable_ponderador`. Dividir por una
-constante comun, como cuatro en un ano completo, no cambia la media,
+constante comun, como cuatro en un año completo, no cambia la media,
 aunque si importa para estimar totales anuales.
 
 ## See also

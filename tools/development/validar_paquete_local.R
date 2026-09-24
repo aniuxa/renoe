@@ -18,7 +18,7 @@ desc_path <- file.path(raiz, "DESCRIPTION")
 if (!file.exists(desc_path)) stop("La raíz no contiene DESCRIPTION: ", raiz)
 dcf <- read.dcf(desc_path)
 if (!identical(unname(dcf[1, "Package"]), "renoe")) stop("La raíz no es el paquete renoe.")
-if (!identical(unname(dcf[1, "Version"]), "0.2.0")) stop("Se exige la fuente renoe 0.2.0.")
+if (!identical(unname(dcf[1, "Version"]), "0.3.2")) stop("Se exige la fuente renoe 0.3.2.")
 if (grepl("(^|/)2025(/|$)", raiz)) stop("Se rechazó una ruta de 2025: use el árbol activo de 2026.")
 
 salida_solicitada <- valor_arg("output", NULL)

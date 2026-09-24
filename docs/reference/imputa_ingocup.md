@@ -55,11 +55,11 @@ imputa_ingocup(
 
 - anio:
 
-  Ano del trimestre, si `data` no contiene esta variable.
+  Año del trimestre, si `data` no contiene esta variable.
 
 - trimestre:
 
-  Trimestre del ano (1-4), si `data` no contiene esta variable.
+  Trimestre del año (1-4), si `data` no contiene esta variable.
 
 ## Value
 
@@ -90,7 +90,7 @@ y
 
 La imputacion de ingresos se realiza unicamente para personas ocupadas
 (`clase2 == 1`) con datos validos de edad, y en caso de estar
-disponible, tambien de anos de escolaridad (`anios_es`).
+disponible, tambien de años de escolaridad (`anios_es`).
 
 La variable a imputar es el logaritmo natural del ingreso mensual
 (`log_ingocup_imp`), y la imputacion se realiza utilizando el metodo
@@ -108,9 +108,9 @@ usan como predictores.
 Las variables utilizadas como predictoras ("donantes") incluyen, si
 estan presentes:
 
-- `edad`: Edad en anos.
+- `edad`: Edad en años.
 
-- `anios_es`: Anos aprobados de escolaridad.
+- `anios_es`: Años aprobados de escolaridad.
 
 - `c_ocu11c`: 11 grandes grupos ocupacionales.
 
