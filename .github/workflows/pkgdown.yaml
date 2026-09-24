@@ -68,7 +68,7 @@ jobs:
 
       - name: Reconstruir pkgdown desde el mismo commit
         shell: Rscript {0}
-        run: pkgdown::build_site(new_process = FALSE, install = TRUE, clean = TRUE)
+        run: unlink("docs", recursive = TRUE, force = TRUE); pkgdown::build_site(new_process = FALSE, install = TRUE)
 
       - name: Verificar versiones y enlaces del sitio reconstruido
         run: |
