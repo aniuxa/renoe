@@ -1,6 +1,6 @@
 #' Procesar variables sociodemograficas basicas y extendidas
 #'
-#' Anade sexo, edad, grupos etarios, metadatos como ano, trimestre y tipo de
+#' Anade sexo, edad, grupos etarios, metadatos como año, trimestre y tipo de
 #' cuestionario COE, asi como variables extendidas de asistencia escolar,
 #' estado conyugal, escolaridad, zona rural, tamano de localidad y zona
 #' economica regional.
@@ -10,7 +10,7 @@
 #'
 #' @param data Un data frame tipo sdem, con variables como `sex`, `eda`,
 #'   `cs_p17`, `e_con`, `anios_esc`, `par_c`, `t_loc` y `ent`.
-#' @param anio Ano del trimestre.
+#' @param anio Año del trimestre.
 #' @param trimestre Trimestre numerico (1-4).
 #'
 #' @return Un data frame con variables sociodemograficas procesadas y

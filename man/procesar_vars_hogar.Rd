@@ -11,7 +11,7 @@ procesar_vars_hogar(data, anio, trimestre)
 \item{data}{Un data frame con variables como \code{par_c}, \code{edad}, \code{sexo},
 \code{folio2}, previamente procesadas por \code{procesar_vars_sociodemo()}.}
 
-\item{anio}{Ano de referencia de los datos.}
+\item{anio}{Año de referencia de los datos.}
 
 \item{trimestre}{Trimestre de referencia de los datos (numero del 1 al 4).}
 }

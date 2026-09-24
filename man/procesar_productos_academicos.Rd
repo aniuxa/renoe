@@ -15,7 +15,7 @@ procesar_productos_academicos(
 \arguments{
 \item{data}{Microdatos ENOE o salida canonica ya armonizada.}
 
-\item{anio}{Ano requerido cuando \code{data} aun no fue procesado.}
+\item{anio}{Año requerido cuando \code{data} aun no fue procesado.}
 
 \item{trimestre}{Trimestre requerido cuando \code{data} aun no fue procesado.}
 

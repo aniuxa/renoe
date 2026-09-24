@@ -23,7 +23,7 @@ procesar_tiempo(data, anio, trimestre)
 
 - anio:
 
-  Ano del trimestre, usado si falta `anio` en `data`.
+  Año del trimestre, usado si falta `anio` en `data`.
 
 - trimestre:
 

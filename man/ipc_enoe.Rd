@@ -9,7 +9,7 @@ ipc_enoe(datos_fusionados, anio, trimestre)
 \arguments{
 \item{datos_fusionados}{Un data.frame ya fusionado con \code{fusion_enoe()}.}
 
-\item{anio}{Ano del trimestre (numerico).}
+\item{anio}{Año del trimestre (numerico).}
 
 \item{trimestre}{Trimestre (1 a 4).}
 }

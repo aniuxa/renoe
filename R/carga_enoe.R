@@ -6,7 +6,7 @@
 #' y los dos componentes del cuestionario de ocupacion (coe1 y coe2).
 #'
 #' @encoding UTF-8
-#' @param anio Ano del trimestre (2005-2026)
+#' @param anio Año del trimestre (2005-2026)
 #' @param trimestre Numero del trimestre (1-4), donde:
 #'   \itemize{
 #'     \item 1 = Enero-Marzo

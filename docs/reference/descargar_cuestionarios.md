@@ -21,7 +21,7 @@ descargar_cuestionarios(
 
 - anio:
 
-  Ano del trimestre (2005-2024). Debe ser un valor numerico entre 2005 y
+  Año del trimestre (2005-2024). Debe ser un valor numerico entre 2005 y
   2024.
 
 - trimestre:

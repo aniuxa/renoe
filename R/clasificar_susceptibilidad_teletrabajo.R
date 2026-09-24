@@ -12,9 +12,9 @@
 #' SINCO 2011 `2423` pasa a SINCO 2019 `2433`. El codigo `2423` de SINCO 2019
 #' corresponde a Ginecologos y obstetras y no se clasifica como susceptible.
 #'
-#' @param data Data frame con el codigo SINCO, ano y trimestre.
+#' @param data Data frame con el codigo SINCO, año y trimestre.
 #' @param variable_sinco Nombre de la variable SINCO a cuatro digitos.
-#' @param variable_anio Nombre de la variable de ano.
+#' @param variable_anio Nombre de la variable de año.
 #' @param variable_trim Nombre de la variable de trimestre.
 #' @param nombre_salida Nombre del indicador binario creado.
 #' @param sobrescribir Si es `TRUE`, permite reemplazar variables existentes.

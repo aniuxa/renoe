@@ -22,7 +22,7 @@ descarga_enoe(
 
 - anio:
 
-  Ano del trimestre (2005-2026). Debe ser un valor numerico.
+  Año del trimestre (2005-2026). Debe ser un valor numerico.
 
 - trimestre:
 

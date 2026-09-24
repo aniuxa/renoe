@@ -4,7 +4,7 @@ bibentry(
   bibtype = "Manual",
   title = paste(
     "renoe: Herramientas para trabajar con la Encuesta Nacional de",
-    "Ocupacion y Empleo (ENOE) desde 2005"
+    "Ocupaci\u00F3n y Empleo (ENOE) desde 2005"
   ),
   author = c(
     person(
@@ -15,11 +15,11 @@ bibentry(
     )
   ),
   year = "2026",
-  note = "R package version 0.3.0",
+  note = "R package version 0.3.2",
   url = "https://aniuxa.github.io/renoe/",
   textVersion = paste(
     "Escoto, A. (2026). renoe: Herramientas para trabajar con la Encuesta",
-    "Nacional de Ocupacion y Empleo (ENOE) desde 2005. R package version",
-    "0.3.0. https://aniuxa.github.io/renoe/"
+    "Nacional de Ocupaci\u00F3n y Empleo (ENOE) desde 2005. R package version",
+    "0.3.2. https://aniuxa.github.io/renoe/"
   )
 )

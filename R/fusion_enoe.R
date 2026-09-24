@@ -42,7 +42,7 @@
 #' en un unico data frame.
 #'
 #' @encoding UTF-8
-#' @param anio Ano del trimestre (2005-2026).
+#' @param anio Año del trimestre (2005-2026).
 #' @param trimestre Numero del trimestre (1-4).
 #' @param rapida Logico. Si `TRUE`, omite el etiquetado de variables.
 #' @param formato Formato de salida ("parquet", "rds" o "dta"). Opcional.

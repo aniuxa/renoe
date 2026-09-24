@@ -4,8 +4,9 @@ pkgdown_sha: ~
 articles:
   cuidado-remunerado: cuidado-remunerado.html
   migracion-0.2.0: migracion-0.2.0.html
+  novedades-migracion-0.3.1: novedades-migracion-0.3.1.html
   renoe: renoe.html
-last_built: 2026-09-23T22:38Z
+last_built: 2026-09-24T02:40Z
 urls:
   reference: https://aniuxa.github.io/renoe/reference
   article: https://aniuxa.github.io/renoe/articles

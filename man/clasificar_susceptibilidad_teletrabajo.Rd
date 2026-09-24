@@ -15,11 +15,11 @@ clasificar_susceptibilidad_teletrabajo(
 )
 }
 \arguments{
-\item{data}{Data frame con el codigo SINCO, ano y trimestre.}
+\item{data}{Data frame con el codigo SINCO, año y trimestre.}
 
 \item{variable_sinco}{Nombre de la variable SINCO a cuatro digitos.}
 
-\item{variable_anio}{Nombre de la variable de ano.}
+\item{variable_anio}{Nombre de la variable de año.}
 
 \item{variable_trim}{Nombre de la variable de trimestre.}
 

@@ -46,7 +46,7 @@ cobertura y metodo.
 \description{
 Traduce el codigo ocupacional armonizado a SINCO 2011 hacia ISCO-88 y
 construye la tipologia de cuatro clases utilizada en la propuesta
-\emph{Veinte anos de trabajo femenino en Mexico}: trabajo no manual calificado,
+\emph{Veinte años de trabajo femenino en Mexico}: trabajo no manual calificado,
 no manual no calificado, manual calificado y manual no calificado.
 }
 \details{
@@ -65,7 +65,7 @@ datos <- data.frame(
 procesar_clases_damian(datos)
 }
 \references{
-Damian Hernandez, G. (2026). \emph{Quince anos de trabajo femenino en Mexico:
+Damian Hernandez, G. (2026). \emph{Quince años de trabajo femenino en Mexico:
 tipo de hogar y clase ocupacional, 2005-2020}. Propuesta de capitulo para
 el proyecto PAPIIT IN305925.
 

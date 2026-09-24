@@ -3,7 +3,7 @@
 #' Descarga los archivos comprimidos de microdatos de la ENOE desde el sitio del INEGI,
 #' los descomprime y guarda las tablas en el formato especificado.
 #' @encoding UTF-8
-#' @param anio Ano del trimestre (2005-2026). Debe ser un valor numerico.
+#' @param anio Año del trimestre (2005-2026). Debe ser un valor numerico.
 #' @param trimestre Numero del trimestre (1-4). Donde:
 #'   \itemize{
 #'     \item 1 = Enero-Marzo

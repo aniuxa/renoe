@@ -63,8 +63,22 @@ test_that("los literales Unicode conservan sus valores visibles", {
 })
 
 test_that("los metadatos conservan nombres y roles confirmados", {
-  metadatos <- utils::packageDescription("renoe")
-  autores <- eval(parse(text = metadatos$`Authors@R`))
+  candidatos <- c(
+    normalizePath(file.path(testthat::test_path(), "..", ".."), mustWork = FALSE),
+    normalizePath(".", mustWork = FALSE)
+  )
+  descripciones <- file.path(candidatos, "DESCRIPTION")
+  descripciones <- descripciones[file.exists(descripciones)]
+  authors_r <- if (length(descripciones)) {
+    unname(read.dcf(descripciones[[1L]], fields = "Authors@R")[[1L]])
+  } else {
+    metadatos <- utils::packageDescription("renoe")
+    if (is.null(metadatos) || (length(metadatos) == 1L && is.na(metadatos))) {
+      skip("No se encontraron metadatos fuente ni una instalación de renoe")
+    }
+    metadatos[["Authors@R"]]
+  }
+  autores <- eval(parse(text = authors_r))
   nombres <- format(autores, include = c("given", "family"))
 
   expect_identical(nombres, c(

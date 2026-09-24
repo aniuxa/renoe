@@ -24,7 +24,7 @@ procesar_productos_academicos(
 
 - anio:
 
-  Ano requerido cuando `data` aun no fue procesado.
+  Año requerido cuando `data` aun no fue procesado.
 
 - trimestre:
 

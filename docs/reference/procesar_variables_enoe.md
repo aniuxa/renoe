@@ -29,7 +29,7 @@ procesar_variables_enoe(
 
 - anio:
 
-  Ano del trimestre (numerico).
+  Año del trimestre (numerico).
 
 - trimestre:
 

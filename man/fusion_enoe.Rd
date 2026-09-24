@@ -16,7 +16,7 @@ fusion_enoe(
 )
 }
 \arguments{
-\item{anio}{Ano del trimestre (2005-2026).}
+\item{anio}{Año del trimestre (2005-2026).}
 
 \item{trimestre}{Numero del trimestre (1-4).}
 

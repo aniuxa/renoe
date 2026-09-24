@@ -15,6 +15,7 @@
 ^doc$
 ^Meta$
 ^\.github$
+^maintainers$
 ^tools$
 ^staging$
 ^library$

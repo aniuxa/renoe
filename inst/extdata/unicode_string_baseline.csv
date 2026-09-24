@@ -203,6 +203,8 @@
 "R/procesar_estudio_trabajo.R",92,1,"Sí"
 "R/procesar_estudio_trabajo.R",93,1,"Sí"
 "R/procesar_estudio_trabajo.R",94,1,"Sí"
+"R/procesar_libro1.R",287,1,"Año de inicio en el trabajo actual"
+"R/procesar_libro1.R",293,1,"Antiguedad en el trabajo expresada en años"
 "R/procesar_productos_academicos.R",29,1,"Declare `anio` y `trimestre` para ejecutar la ruta canónica."
 "R/procesar_productos_academicos.R",39,1,"El escenario solicitado no coincide con la armonización recibida."
 "R/procesar_vars_hogar.R",51,1,"La variable 'par_c' no está presente en el objeto de entrada."

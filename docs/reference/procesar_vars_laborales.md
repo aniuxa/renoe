@@ -25,7 +25,7 @@ procesar_vars_laborales(
 
   Un data.frame con variables como:
 
-  - `anio`, `trimestre`: ano y trimestre de la entrevista
+  - `anio`, `trimestre`: año y trimestre de la entrevista
 
   - `coe_tipo`: tipo de cuestionario (`"ampliado"` o `"basico"`)
 
@@ -63,7 +63,7 @@ Un data.frame con las variables originales y nuevas columnas:
 
 ## Details
 
-La referencia estadistica en anos de escolaridad se calcula por separado
+La referencia estadistica en años de escolaridad se calcula por separado
 con
 [`calcular_desajuste_estadistico()`](https://aniuxa.github.io/renoe/reference/calcular_desajuste_estadistico.md).
 Esta separacion evita construir una referencia aparentemente anual

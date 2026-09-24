@@ -5,7 +5,7 @@
 #' armonizada, aplica unicamente los consumidores reproducibles.
 #'
 #' @param data Microdatos ENOE o salida canonica ya armonizada.
-#' @param anio Ano requerido cuando `data` aun no fue procesado.
+#' @param anio Año requerido cuando `data` aun no fue procesado.
 #' @param trimestre Trimestre requerido cuando `data` aun no fue procesado.
 #' @param escenario Escenario explicito de armonizacion y consumidores.
 #' @param ... Argumentos adicionales de [procesar_variables_enoe()].

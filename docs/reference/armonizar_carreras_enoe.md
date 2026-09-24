@@ -52,7 +52,7 @@ armonizar_carreras(
 - advertir_cobertura:
 
   Si es `TRUE`, valor predeterminado, emite en cada aplicacion una
-  advertencia con la cobertura ARM8 por ano dentro de la serie historica
+  advertencia con la cobertura ARM8 por año dentro de la serie historica
   recomendada desde 2014-III. Usa `fac` cuando esta disponible y
   registros en caso contrario.
 

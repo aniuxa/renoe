@@ -24,7 +24,7 @@
 #' @encoding UTF-8
 #' @param data Un data frame con variables como `par_c`, `edad`, `sexo`,
 #'   `folio2`, previamente procesadas por `procesar_vars_sociodemo()`.
-#' @param anio Ano de referencia de los datos.
+#' @param anio Año de referencia de los datos.
 #' @param trimestre Trimestre de referencia de los datos (numero del 1 al 4).
 #'
 #' @return Un data frame con variables derivadas de estructura del hogar y

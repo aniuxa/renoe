@@ -18,7 +18,7 @@
 #' deflactados ausentes sin advertencia suficiente.
 #'
 #' @param datos_fusionados Un data.frame ya fusionado con `fusion_enoe()`.
-#' @param anio Ano del trimestre (numerico).
+#' @param anio Año del trimestre (numerico).
 #' @param trimestre Trimestre (1 a 4).
 #'
 #' @return El mismo `data.frame` con una nueva columna `ipc`.

@@ -1,0 +1,103 @@
+name: pkgdown-release-gate
+
+on:
+  push:
+    branches: [master, main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      verify_public:
+        description: "Comprobar que la URL pública ya exhibe la versión candidata"
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  pkgdown-release-gate:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::pkgdown, any::testthat, any::xml2, any::yaml
+          needs: website
+
+      - name: Verificar coherencia de metadatos fuente
+        run: Rscript tools/development/verificar_release.R
+
+      - name: Validar documentación operativa y diagramas Mermaid
+        run: Rscript tools/development/verificar_procesos.R
+
+      - name: Verificar literales Unicode
+        run: Rscript -e 'testthat::test_file("tests/testthat/test-unicode-visible-strings.R", stop_on_failure = TRUE)'
+
+      - name: Construir tarball, instalarlo limpiamente y calcular SHA-256
+        shell: bash
+        run: |
+          R CMD build .
+          tarball="$(ls -t renoe_*.tar.gz | head -n 1)"
+          test -n "$tarball"
+          mkdir -p "$RUNNER_TEMP/renoe-library"
+          R CMD INSTALL --library="$RUNNER_TEMP/renoe-library" "$tarball"
+          echo "RENOE_TARBALL=$tarball" >> "$GITHUB_ENV"
+          echo "RENOE_CHECK_LIB=$RUNNER_TEMP/renoe-library" >> "$GITHUB_ENV"
+          sha256sum "$tarball" > "$tarball.sha256"
+
+      - name: Verificar versión y cita desde la instalación limpia
+        shell: Rscript {0}
+        run: |
+          .libPaths(c(Sys.getenv("RENOE_CHECK_LIB"), .libPaths()))
+          expected <- unname(read.dcf("DESCRIPTION", fields = "Version")[[1L]])
+          stopifnot(as.character(utils::packageVersion("renoe")) == expected)
+          citation_text <- paste(format(utils::citation("renoe")), collapse = " ")
+          stopifnot(grepl(paste("R package version", expected), citation_text, fixed = TRUE))
+
+      - name: Reconstruir pkgdown desde el mismo commit
+        shell: Rscript {0}
+        run: |
+          unlink("docs", recursive = TRUE, force = TRUE)
+          pkgdown::build_site(new_process = FALSE, install = TRUE)
+          html <- list.files("docs", pattern = "[.]html$", recursive = TRUE, full.names = TRUE)
+          for (path in html) {
+            lines <- readLines(path, warn = FALSE, encoding = "UTF-8")
+            writeLines(sub("[[:blank:]]+$", "", lines), path, useBytes = TRUE)
+          }
+
+      - name: Verificar versiones y enlaces del sitio reconstruido
+        run: |
+          Rscript tools/development/verificar_release.R --docs=docs
+          Rscript tools/development/verificar_pkgdown_local.R --docs=docs
+
+      - name: Fallar si el árbol docs no coincide con la reconstrucción limpia
+        shell: bash
+        run: |
+          git diff --exit-code -- docs ':(exclude)docs/pkgdown.yml'
+          test -z "$(git ls-files --others --exclude-standard -- docs)"
+          grep -Eq '^last_built: [0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}Z$' docs/pkgdown.yml
+
+      - name: Verificar la web pública antes de cerrar el release
+        if: github.event_name == 'workflow_dispatch' && inputs.verify_public
+        run: Rscript tools/development/verificar_release.R --docs=docs --public-url=https://aniuxa.github.io/renoe/
+
+      - name: Conservar tarball y hash para el release candidato
+        uses: actions/upload-artifact@v4
+        with:
+          name: renoe-${{ github.sha }}
+          path: |
+            renoe_*.tar.gz
+            renoe_*.tar.gz.sha256
+          if-no-files-found: error

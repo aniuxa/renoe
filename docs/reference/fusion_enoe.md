@@ -21,7 +21,7 @@ fusion_enoe(
 
 - anio:
 
-  Ano del trimestre (2005-2026).
+  Año del trimestre (2005-2026).
 
 - trimestre:
 

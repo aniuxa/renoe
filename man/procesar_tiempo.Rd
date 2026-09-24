@@ -9,7 +9,7 @@ procesar_tiempo(data, anio, trimestre)
 \arguments{
 \item{data}{Data frame fusionado por \code{fusion_enoe()} o cargado directamente.}
 
-\item{anio}{Ano del trimestre, usado si falta \code{anio} en \code{data}.}
+\item{anio}{Año del trimestre, usado si falta \code{anio} en \code{data}.}
 
 \item{trimestre}{Trimestre 1-4, usado si faltan metadatos en \code{data}.}
 }

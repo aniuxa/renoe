@@ -21,7 +21,7 @@ procesar_vars_hogar(data, anio, trimestre)
 
 - anio:
 
-  Ano de referencia de los datos.
+  Año de referencia de los datos.
 
 - trimestre:
 

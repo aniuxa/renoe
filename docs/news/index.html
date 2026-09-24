@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Uso del paquete renoe</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,14 +31,40 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.3.1" id="renoe-031-correctiva-23-de-septiembre-de-2026">renoe 0.3.1 (correctiva, 23 de septiembre de 2026)<a class="anchor" aria-label="anchor" href="#renoe-031-correctiva-23-de-septiembre-de-2026"></a></h2>
-<ul><li>Para 2020-T1 usa conjuntamente las cinco tablas de la publicacion vigente de microdatos de INEGI. Esto recupera los codigos <code>P3</code> presentes en COE1 y evita mezclar ediciones de VIV, HOG, SDEM, COE1 y COE2.</li>
-<li>Invalida caches de 2020-T1 que no contienen las cinco tablas de microdatos y obliga a regenerar la fusion antes de sus derivados transversales y paneles.</li>
-<li>Excluye <code>ur</code> de la llave SDEM-COE de 2020-T1: en 2,851 registros el ambito difiere entre ambas tablas aunque la identidad personal coincide. <code>ur</code> se conserva como variable descriptiva y sigue formando parte de las uniones de vivienda y hogar donde corresponde.</li>
-<li>La anomalía fue detectada mediante una tabulación transversal simple de <code>clase_alt6_damian</code>: 3,011 personas ocupadas aparecían sin clasificación. Tras corregir la unión quedan 162 faltantes legítimos (factor 41,820): 133 con código oficial <code>9999</code> y 29 sin una regla EGP aplicable.</li>
-<li>El cambio invalida el transversal/PINI de 2020-T1, los paneles que contienen ese trimestre (57–61) y sus derivados. Otros trimestres conservan la llave con <code>ur</code> y no se regeneran sin una dependencia comprobada.</li>
-<li>La candidata interna 0.3.0 no fue publicada y queda sustituida por 0.3.1, que es la primera versión reproducible de este conjunto de cambios.</li>
+<h2 class="pkg-version" data-toc-text="0.3.2" id="renoe-032-hotfix-documental-23-de-septiembre-de-2026">renoe 0.3.2 (hotfix documental, 23 de septiembre de 2026)<a class="anchor" aria-label="anchor" href="#renoe-032-hotfix-documental-23-de-septiembre-de-2026"></a></h2>
+<ul><li>Sincroniza <code>DESCRIPTION</code>, <code>CITATION.cff</code>, <code>inst/CITATION</code>, README y pkgdown con la versión pública 0.3.2.</li>
+<li>Publica la guía “Migración de renoe 0.2.0 a renoe 0.3.1” y precisa la guía histórica “Migración de renoe 0.1.4 a renoe 0.2.0”.</li>
+<li>Reorganiza la referencia en siete grupos funcionales, corrige etiquetas visibles <code>año</code>/<code>años</code> y evita duplicar nombres en el pie de página.</li>
+<li>Añade controles fail-closed de versión, UTF-8, enlaces, reconstrucción limpia de pkgdown y verificación de la URL pública antes de cerrar un Release.</li>
+<li>No cambia la API ni los resultados analíticos de renoe 0.3.1. # renoe 0.3.1 (23 de septiembre de 2026)</li>
+</ul><p>0.3.1 es la versión pública que sustituye a 0.2.0. La versión 0.3.0 fue una candidata interna y no se publicó. La guía <a href="../articles/novedades-migracion-0.3.1.html">Migración de renoe 0.2.0 a renoe 0.3.1</a> explica los cambios para personas usuarias; esta sección conserva el detalle técnico.</p>
+<div class="section level3">
+<h3 id="corrección-enoe-t1-0-3-2">Corrección ENOE 2020-T1<a class="anchor" aria-label="anchor" href="#correcci%C3%B3n-enoe-t1-0-3-2"></a></h3>
+<ul><li>Usa conjuntamente las cinco tablas de la publicación vigente de microdatos de INEGI. Esto recupera los códigos <code>P3</code> presentes en COE1 y evita mezclar ediciones de VIV, HOG, SDEM, COE1 y COE2.</li>
+<li>Invalida cachés de 2020-T1 que no contienen las cinco tablas y obliga a regenerar la fusión antes de sus derivados transversales y paneles.</li>
+<li>Excluye <code>ur</code> de la llave SDEM–COE sólo en 2020-T1: en 2,851 registros el ámbito difiere entre ambas tablas aunque la identidad personal coincide. <code>ur</code> se conserva como variable descriptiva y en las uniones de vivienda y hogar donde corresponde.</li>
+<li>La anomalía se detectó con una tabulación transversal de <code>clase_alt6_damian</code>: 3,011 personas ocupadas aparecían sin clasificación. Tras corregir la unión quedan 162 faltantes legítimos (factor 41,820): 133 con código oficial <code>9999</code> y 29 sin una regla EGP aplicable.</li>
+<li>El cambio invalida el transversal o PINI de 2020-T1, los paneles 57–61 y sus derivados. Otros trimestres conservan la llave con <code>ur</code> y no se regeneran sin una dependencia comprobada.</li>
 </ul></div>
+<div class="section level3">
+<h3 id="ruta-reproducible-de-clasificadores-0-3-2">Ruta reproducible de clasificadores<a class="anchor" aria-label="anchor" href="#ruta-reproducible-de-clasificadores-0-3-2"></a></h3>
+<ul><li>Publica los escenarios <code>official_strict</code>, <code>integrated_accepted</code> y <code>analysis_legacy</code>. <code>integrated_accepted</code> es el predeterminado para análisis generales; <code>analysis_legacy</code> debe solicitarse expresamente.</li>
+<li>Fija el orden SCIAN → SINCO → carreras → consumidores.</li>
+<li>Conserva código observado, versión, destinos posibles, regla, evidencia, nivel sustentado y estado de decisión.</li>
+<li>Mantiene <code>9999</code> como código especial no comparable.</li>
+<li>Añade <code><a href="../reference/procesar_productos_academicos.html">procesar_productos_academicos()</a></code> para reproducir productos académicos sin duplicar reglas.</li>
+<li>Conserva <code><a href="../reference/armoniza_sinco.html">armoniza_sinco()</a></code> únicamente como alias deprecado de <code><a href="../reference/armonizar_sinco.html">armonizar_sinco()</a></code>.</li>
+<li>Hace que la ruta general se detenga si cambia el número de filas o si <code>folio3</code> no termina completa y única.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="cambios-acumulados-desde-0-3-2">Cambios acumulados desde 0.2.0<a class="anchor" aria-label="anchor" href="#cambios-acumulados-desde-0-3-2"></a></h3>
+<ul><li>Corrige HOG de 2022-T1 combinando los componentes oficiales urbano y rural, armoniza sus meses y usa SDEM como ancla.</li>
+<li>Corrige los quintiles del hogar para usar una fila y un factor por hogar y conserva como <code>NA</code> los ingresos completamente desconocidos.</li>
+<li>Separa cuidado adolescente amplio y directo, corrige el indicador de cuidado adolescente y armoniza el trabajo no remunerado dentro del hogar.</li>
+<li>Documenta las rupturas de 2013, 2020 y 2023 y audita 85 trimestres entre 2005-T1 y 2026-T2.</li>
+<li>Añade clasificaciones reproducibles de origen, parentesco, hogares, educación, situación laboral, cuidados y región socioeconómica.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.0" id="renoe-030-candidata-final-local-20-de-septiembre-de-2026">renoe 0.3.0 (candidata final local, 20 de septiembre de 2026)<a class="anchor" aria-label="anchor" href="#renoe-030-candidata-final-local-20-de-septiembre-de-2026"></a></h2>
 <ul><li>Reconcilia la rama de publicación con los escenarios explícitos <code>official_strict</code>, <code>integrated_accepted</code> y <code>analysis_legacy</code>.</li>
@@ -171,7 +197,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Desarrollado por Ana Escoto, con contribuciones de código de Gerardo Damián Hernández y Gabriela Cervantes, en el proyecto PAPIIT IN305925 Ana Escoto, Gerardo Damián Hernández, Gabriela Cervantes.</p>
+  <p>Proyecto PAPIIT IN305925. Desarrollado por Ana Escoto, Gerardo Damián Hernández, Gabriela Cervantes.</p>
 </div>
 
 <div class="pkgdown-footer-right">

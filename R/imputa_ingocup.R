@@ -18,8 +18,8 @@
 #' @param method Metodo de imputacion utilizado por `mice` (por defecto: `"pmm"`).
 #' @param seed Semilla aleatoria para reproducibilidad.
 #' @param plot Logico. Si `TRUE`, se muestra un grafico comparando la distribucion del ingreso original vs imputado.
-#' @param anio Ano del trimestre, si `data` no contiene esta variable.
-#' @param trimestre Trimestre del ano (1-4), si `data` no contiene esta variable.
+#' @param anio Año del trimestre, si `data` no contiene esta variable.
+#' @param trimestre Trimestre del año (1-4), si `data` no contiene esta variable.
 #'
 #' @return Un data frame con las variables:
 #' \describe{
@@ -30,7 +30,7 @@
 #'
 #' @details
 #' La imputacion de ingresos se realiza unicamente para personas ocupadas (`clase2 == 1`)
-#' con datos validos de edad, y en caso de estar disponible, tambien de anos de escolaridad (`anios_es`).
+#' con datos validos de edad, y en caso de estar disponible, tambien de años de escolaridad (`anios_es`).
 #'
 #' La variable a imputar es el logaritmo natural del ingreso mensual (`log_ingocup_imp`), y la imputacion
 #' se realiza utilizando el metodo especificado (por defecto `"pmm"`, predictive mean matching) a traves del paquete `mice`.
@@ -42,8 +42,8 @@
 #' nunca se usan como predictores.
 #'
 #' Las variables utilizadas como predictoras ("donantes") incluyen, si estan presentes:
-#' - `edad`: Edad en anos.
-#' - `anios_es`: Anos aprobados de escolaridad.
+#' - `edad`: Edad en años.
+#' - `anios_es`: Años aprobados de escolaridad.
 #' - `c_ocu11c`: 11 grandes grupos ocupacionales.
 #' - `pos_ocu`: Posicion en la ocupacion.
 #' - `rama_est2`: Rama de actividad.

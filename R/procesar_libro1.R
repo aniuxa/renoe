@@ -233,7 +233,7 @@ procesar_libro1 <- function(data) {
         12 * (as.numeric(anio) - anio_inici) + mes_entrevista - mes_inici,
         NA_real_
       ),
-      # Estimacion puntual: exacta cuando hay meses; diferencia de anos cuando
+      # Estimacion puntual: exacta cuando hay meses; diferencia de años cuando
       # el mes inicial no fue captado.
       duracion_anios = dplyr::case_when(
         duracion_precision == "mensual" ~ duracion_meses / 12,
@@ -284,13 +284,13 @@ procesar_libro1 <- function(data) {
       prestaciones_no_sabe = "No sabe que prestaciones recibe",
       prestaciones_ninguna = "No recibe ninguna prestacion de la bateria P3M",
       n_prestaciones_ampliado = "Numero de prestaciones recibidas de P3M1 a P3M7",
-      anio_inici = "Ano de inicio en el trabajo actual",
+      anio_inici = "A\u00F1o de inicio en el trabajo actual",
       mes_inici = "Mes de inicio en el trabajo actual",
       mes_entrevista = "Mes del resultado definitivo de la entrevista",
       antiguedad_medible = "Antiguedad en el trabajo medible en el trimestre",
       duracion_precision = "Precision de la antiguedad en el trabajo",
       duracion_meses = "Antiguedad exacta en meses cuando se conoce el mes inicial",
-      duracion_anios = "Antiguedad en el trabajo expresada en anos",
+      duracion_anios = "Antiguedad en el trabajo expresada en a\u00F1os",
       duracion_min_meses = "Limite inferior de antiguedad compatible con la fecha",
       duracion_max_meses = "Limite superior de antiguedad compatible con la fecha"
     ) |>

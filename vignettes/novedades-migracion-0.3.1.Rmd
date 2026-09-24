@@ -1,0 +1,202 @@
+---
+title: "Migración de renoe 0.2.0 a renoe 0.3.1"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Migración de renoe 0.2.0 a renoe 0.3.1}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+`renoe 0.3.1` es la versión pública que sustituye a 0.2.0. La versión 0.3.0
+fue una candidata interna: no se publicó y no debe usarse como referencia de
+instalación o citación. El hotfix 0.3.2 sólo sincroniza documentación y
+etiquetas visibles; no cambia esta migración ni la API. El cambio a 0.3.1
+incorpora una ruta reproducible para
+los clasificadores, corrige fusiones históricas y hace explícito qué reglas
+pueden entrar en cada análisis.
+
+Para un análisis nuevo use `integrated_accepted`, el escenario predeterminado.
+Conserva las correspondencias oficiales y añade únicamente reglas aceptadas de
+panel o condiciones ENOE, con la procedencia y el nivel sustentado en la salida.
+
+## El flujo canónico
+
+El orden de 0.3.1 es:
+
+1. adquisición y fusión con `info_trimestre()`, `carga_enoe()` o
+   `descarga_enoe()`, y `fusion_enoe()`;
+2. preparación con `drop_tri()`, `crear_folios()` y las variables generales;
+3. actividad económica con `armonizar_scian()`;
+4. ocupación con `armonizar_sinco()`;
+5. carreras con `armonizar_carreras()`;
+6. consumidores, como clases, cuidado, teletrabajo y desajuste educativo.
+
+`procesar_variables_enoe()` ejecuta esta secuencia y comprueba al final que no
+cambió el número de filas y que `folio3` existe, no tiene faltantes y es única.
+Si alguna condición falla, la función se detiene y no presenta una salida
+parcial como válida.
+
+```{r, eval = FALSE}
+datos <- fusion_enoe(2022, 1)
+
+datos_031 <- procesar_variables_enoe(
+  datos,
+  anio = 2022,
+  trimestre = 1,
+  escenario_clasificadores = "integrated_accepted"
+)
+```
+
+La ruta paso a paso es útil para auditar una etapa concreta:
+
+```{r, eval = FALSE}
+datos_clasificados <- datos |>
+  drop_tri() |>
+  crear_folios() |>
+  armonizar_scian() |>
+  armonizar_sinco(escenario = "integrated_accepted") |>
+  armonizar_carreras(perfil = "panel_validado", salida = "auditable") |>
+  procesar_clasificaciones_reproducibles(
+    escenario = "integrated_accepted"
+  )
+```
+
+No cambie el orden SCIAN → SINCO → carreras → consumidores: algunas reglas
+ocupacionales usan actividad económica y los consumidores requieren códigos y
+banderas de comparabilidad ya estabilizados.
+
+## Qué escenario elegir
+
+| Qué quiero hacer | Función recomendada | Escenario | Advertencia |
+|---|---|---|---|
+| Iniciar un análisis general reproducible | `procesar_variables_enoe()` | `integrated_accepted` | Es el valor predeterminado; registre la versión del paquete y el escenario. |
+| Limitar la clasificación a equivalencias oficiales | `armonizar_sinco()` o `procesar_variables_enoe()` | `official_strict` | Tendrá menor cobertura cuando el puente oficial sea múltiple o no converja. |
+| Reproducir un producto académico histórico | `procesar_productos_academicos()` | `analysis_legacy` | Incluye rescates históricos no transportables; no lo presente como equivalencia oficial. |
+| Auditar SCIAN, SINCO y carreras por separado | `armonizar_scian()`, `armonizar_sinco()` y `armonizar_carreras()` | Declarar el escenario en SINCO y consumidores | Conserve códigos observados, procedencia, reglas y granularidad. |
+| Calcular desajuste horizontal | `calcular_desajuste_horizontal()` | El mismo de la armonización recibida | Requiere carrera ARM8 y SINCO comparable a tres dígitos; no fuerce casos no clasificables. |
+| Clasificar cuidado o teletrabajo | Función consumidora correspondiente | El mismo de la ruta canónica | El rescate propio del consumidor no rellena una ocupación oficial faltante. |
+
+### `official_strict`
+
+Usa evidencia oficial y las convergencias que ésta sustenta. Es apropiado para
+resultados que deban evitar cualquier decisión empírica o histórica adicional.
+Los códigos múltiples pueden permanecer pendientes o resolverse sólo a un nivel
+más agregado.
+
+### `integrated_accepted`
+
+Es la opción recomendada para uso general. Añade reglas aceptadas de panel y
+condiciones ENOE a la capa oficial. Cada asignación conserva su estado de
+decisión, nivel de evidencia, regla y granularidad. Una selección por panel es
+`preferred` y una regla condicionada es `conditional`; ninguna se presenta como
+equivalencia oficial `unique`.
+
+### `analysis_legacy` y el perfil académico reproducible
+
+Habilita además rescates históricos que dependen del producto o de reglas no
+transportables. Debe solicitarse expresamente. El wrapper
+`procesar_productos_academicos()` reutiliza la ruta canónica, comprueba que el
+escenario recibido coincide con el solicitado y marca el perfil
+`academic_reproducible`:
+
+```{r, eval = FALSE}
+datos_2020t1 <- fusion_enoe(2020, 1)
+
+datos_articulo <- procesar_productos_academicos(
+  datos_2020t1,
+  anio = 2020,
+  trimestre = 1,
+  escenario = "analysis_legacy"
+)
+```
+
+Esta marca identifica la ruta analítica; no reemplaza un manifiesto de datos,
+un `run_id`, los parámetros ni los hashes de los productos publicados.
+
+## Cambios que afectan resultados
+
+### Corrección de 2020-T1
+
+0.3.1 exige que las cinco tablas `viv`, `hog`, `sdem`, `coe1` y `coe2`
+provengan de la misma publicación vigente. En la unión personal SDEM–COE de
+2020-T1 excluye `ur` de la llave porque el ámbito difiere entre tablas para
+2,851 personas cuya identidad coincide. `ur` se conserva como variable y sigue
+usándose en las uniones de vivienda y hogar donde corresponde.
+
+La corrección reduce de 3,011 a 162 los faltantes de `clase_alt6_damian`. Los
+162 restantes son casos legítimos: 133 tienen código oficial `9999` y 29 no
+tienen una regla EGP aplicable. Deben regenerarse el transversal o PINI de
+2020-T1 y los paneles 57–61 que contienen ese trimestre. Una caché de 2020-T1
+sin las cinco tablas se invalida.
+
+### Corrección de 2022-T1
+
+El ZIP oficial contiene componentes HOG urbano y rural complementarios. La
+carga los combina, armoniza los meses del componente rural y usa SDEM como
+ancla para que la ausencia de una tabla auxiliar no elimine personas. Registre
+que la base fue regenerada con 0.3.1 antes de compararla con un producto hecho
+con 0.2.0.
+
+### Código especial `9999`
+
+`9999` es un código oficial especial, pero no una ocupación sustantivamente
+identificada. La salida conserva `sinco2011_codigo_especial = TRUE` y
+`sinco2011_comparable = FALSE`. Los consumidores deben respetar estas banderas:
+no rellene esos casos para aumentar cobertura y no los incluya en medidas que
+requieran una ocupación comparable.
+
+## Trazabilidad y comportamiento cerrado ante fallos
+
+La ruta conserva el código observado, la versión de origen y destino, los
+destinos oficiales posibles, el nivel sustentado, la regla aplicada, el estado
+de decisión y el nivel de evidencia. `procesar_productos_academicos()` se
+detiene si recibe datos armonizados con un escenario distinto del solicitado.
+`procesar_variables_enoe()` se detiene si cambia filas o termina con una llave
+de persona incompleta o duplicada. Revise las columnas de procedencia y las
+razones de no clasificación antes de publicar un resultado.
+
+## Alias, compatibilidad y retiros
+
+El único alias público marcado como deprecado en 0.3.1 es
+`armoniza_sinco()`. Emite una advertencia y delega en `armonizar_sinco()`:
+
+```{r, eval = FALSE}
+# Antes
+datos <- armoniza_sinco(datos)
+
+# Desde 0.3.1
+datos <- armonizar_sinco(datos, escenario = "integrated_accepted")
+```
+
+La columna transitoria `trabajo_cuidado_rem` de 0.2.0 fue retirada. Use
+`trabajo_cuidado_mercado`. El argumento `legacy = TRUE` se conserva como
+compatibilidad explícita en las funciones que lo aceptan y selecciona
+`analysis_legacy`; para código nuevo prefiera declarar `escenario`.
+
+## Migración mínima desde 0.2.0
+
+Si usaba el wrapper general, la migración mínima es declarar el escenario y
+regenerar los productos afectados:
+
+```{r, eval = FALSE}
+# 0.2.0
+datos_020 <- procesar_variables_enoe(datos, 2022, 1)
+
+# 0.3.1: escenario general recomendado
+datos_031 <- procesar_variables_enoe(
+  datos,
+  2022,
+  1,
+  escenario_clasificadores = "integrated_accepted"
+)
+```
+
+Después compare filas, llaves, cobertura SINCO, códigos especiales, razones de
+no clasificación y distribuciones de cada consumidor. No atribuya todos los
+cambios al clasificador: 2020-T1 y 2022-T1 también cambian por correcciones de
+fusión. Conserve las salidas 0.2.0 y registre versión, escenario, parámetros y
+hashes de entrada y salida antes de sustituirlas.

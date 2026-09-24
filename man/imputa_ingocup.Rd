@@ -31,9 +31,9 @@ variables donantes y metadatos de identificacion.}
 
 \item{plot}{Logico. Si \code{TRUE}, se muestra un grafico comparando la distribucion del ingreso original vs imputado.}
 
-\item{anio}{Ano del trimestre, si \code{data} no contiene esta variable.}
+\item{anio}{Año del trimestre, si \code{data} no contiene esta variable.}
 
-\item{trimestre}{Trimestre del ano (1-4), si \code{data} no contiene esta variable.}
+\item{trimestre}{Trimestre del año (1-4), si \code{data} no contiene esta variable.}
 }
 \value{
 Un data frame con las variables:
@@ -56,7 +56,7 @@ entidad se incorporan como covariables. Si no existen las variables \code{folio3
 generan automaticamente con funciones auxiliares (\code{crear_folios()} y \code{procesar_vars_sociodemo()}).
 
 La imputacion de ingresos se realiza unicamente para personas ocupadas (\code{clase2 == 1})
-con datos validos de edad, y en caso de estar disponible, tambien de anos de escolaridad (\code{anios_es}).
+con datos validos de edad, y en caso de estar disponible, tambien de años de escolaridad (\code{anios_es}).
 
 La variable a imputar es el logaritmo natural del ingreso mensual (\code{log_ingocup_imp}), y la imputacion
 se realiza utilizando el metodo especificado (por defecto \code{"pmm"}, predictive mean matching) a traves del paquete \code{mice}.
@@ -69,8 +69,8 @@ nunca se usan como predictores.
 
 Las variables utilizadas como predictoras ("donantes") incluyen, si estan presentes:
 \itemize{
-\item \code{edad}: Edad en anos.
-\item \code{anios_es}: Anos aprobados de escolaridad.
+\item \code{edad}: Edad en años.
+\item \code{anios_es}: Años aprobados de escolaridad.
 \item \code{c_ocu11c}: 11 grandes grupos ocupacionales.
 \item \code{pos_ocu}: Posicion en la ocupacion.
 \item \code{rama_est2}: Rama de actividad.

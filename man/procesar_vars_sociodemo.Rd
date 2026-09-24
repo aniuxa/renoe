@@ -10,7 +10,7 @@ procesar_vars_sociodemo(data, anio, trimestre)
 \item{data}{Un data frame tipo sdem, con variables como \code{sex}, \code{eda},
 \code{cs_p17}, \code{e_con}, \code{anios_esc}, \code{par_c}, \code{t_loc} y \code{ent}.}
 
-\item{anio}{Ano del trimestre.}
+\item{anio}{Año del trimestre.}
 
 \item{trimestre}{Trimestre numerico (1-4).}
 }
@@ -19,7 +19,7 @@ Un data frame con variables sociodemograficas procesadas y
 etiquetadas.
 }
 \description{
-Anade sexo, edad, grupos etarios, metadatos como ano, trimestre y tipo de
+Anade sexo, edad, grupos etarios, metadatos como año, trimestre y tipo de
 cuestionario COE, asi como variables extendidas de asistencia escolar,
 estado conyugal, escolaridad, zona rural, tamano de localidad y zona
 economica regional.

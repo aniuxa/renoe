@@ -10,7 +10,7 @@
 #' aproximacion a un digito de SINCO y puede ocultar excepciones dentro de cada
 #' division.
 #'
-#' La referencia estadistica en anos de escolaridad se calcula por separado con
+#' La referencia estadistica en años de escolaridad se calcula por separado con
 #' [calcular_desajuste_estadistico()]. Esta separacion evita construir una
 #' referencia aparentemente anual cuando la entrada contiene un solo trimestre.
 #' Por compatibilidad, si la entrada ya contiene `esco_norm` o `mismatch2`, esas
@@ -22,7 +22,7 @@
 #' `temporal_seq`) segun el tipo de cuestionario.
 #'
 #' @param data Un data.frame con variables como:
-#' - `anio`, `trimestre`: ano y trimestre de la entrevista
+#' - `anio`, `trimestre`: año y trimestre de la entrevista
 #' - `coe_tipo`: tipo de cuestionario (`"ampliado"` o `"basico"`)
 #' - `p3coe`: codigo ocupacional
 #' - `cs_p13_1`, `cs_p15`: nivel educativo y antecedente escolar

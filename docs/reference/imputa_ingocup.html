@@ -13,7 +13,7 @@ escolaridad, ocupacion, horas trabajadas, entre otras."><meta property="og:image
 
     <a class="navbar-brand me-2" href="../index.html">Uso del paquete renoe</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -89,11 +89,11 @@ variables donantes y metadatos de identificacion.</p></dd>
 
 
 <dt id="arg-anio">anio<a class="anchor" aria-label="anchor" href="#arg-anio"></a></dt>
-<dd><p>Ano del trimestre, si <code>data</code> no contiene esta variable.</p></dd>
+<dd><p>Año del trimestre, si <code>data</code> no contiene esta variable.</p></dd>
 
 
 <dt id="arg-trimestre">trimestre<a class="anchor" aria-label="anchor" href="#arg-trimestre"></a></dt>
-<dd><p>Trimestre del ano (1-4), si <code>data</code> no contiene esta variable.</p></dd>
+<dd><p>Trimestre del año (1-4), si <code>data</code> no contiene esta variable.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -116,7 +116,7 @@ imputarse dentro de esos bloques pasan a un modelo conjunto de respaldo, en el c
 entidad se incorporan como covariables. Si no existen las variables <code>folio3</code>, <code>anio</code> o <code>trim</code>, se
 generan automaticamente con funciones auxiliares (<code><a href="crear_folios.html">crear_folios()</a></code> y <code><a href="procesar_vars_sociodemo.html">procesar_vars_sociodemo()</a></code>).</p>
 <p>La imputacion de ingresos se realiza unicamente para personas ocupadas (<code>clase2 == 1</code>)
-con datos validos de edad, y en caso de estar disponible, tambien de anos de escolaridad (<code>anios_es</code>).</p>
+con datos validos de edad, y en caso de estar disponible, tambien de años de escolaridad (<code>anios_es</code>).</p>
 <p>La variable a imputar es el logaritmo natural del ingreso mensual (<code>log_ingocup_imp</code>), y la imputacion
 se realiza utilizando el metodo especificado (por defecto <code>"pmm"</code>, predictive mean matching) a traves del paquete <code>mice</code>.</p>
 <p>Las imputaciones se hacen primero de forma separada por bloques definidos por el sexo (<code>sex</code>) y la
@@ -124,8 +124,8 @@ entidad federativa (<code>ent</code>), para capturar mejor las heterogeneidades 
 no contiene donantes o variacion suficiente, sus casos pendientes se imputan conjuntamente usando
 <code>sex</code>, <code>ent</code> y las demas variables donantes disponibles como predictores. Las variables identificadoras
 nunca se usan como predictores.</p>
-<p>Las variables utilizadas como predictoras ("donantes") incluyen, si estan presentes:</p><ul><li><p><code>edad</code>: Edad en anos.</p></li>
-<li><p><code>anios_es</code>: Anos aprobados de escolaridad.</p></li>
+<p>Las variables utilizadas como predictoras ("donantes") incluyen, si estan presentes:</p><ul><li><p><code>edad</code>: Edad en años.</p></li>
+<li><p><code>anios_es</code>: Años aprobados de escolaridad.</p></li>
 <li><p><code>c_ocu11c</code>: 11 grandes grupos ocupacionales.</p></li>
 <li><p><code>pos_ocu</code>: Posicion en la ocupacion.</p></li>
 <li><p><code>rama_est2</code>: Rama de actividad.</p></li>
@@ -163,7 +163,7 @@ nunca se usan como predictores.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Desarrollado por Ana Escoto, con contribuciones de código de Gerardo Damián Hernández y Gabriela Cervantes, en el proyecto PAPIIT IN305925 Ana Escoto, Gerardo Damián Hernández, Gabriela Cervantes.</p>
+  <p>Proyecto PAPIIT IN305925. Desarrollado por Ana Escoto, Gerardo Damián Hernández, Gabriela Cervantes.</p>
 </div>
 
 <div class="pkgdown-footer-right">
