@@ -1,4 +1,4 @@
-pandoc: 3.6.3
+pandoc: 3.8.3
 pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
@@ -6,7 +6,7 @@ articles:
   migracion-0.2.0: migracion-0.2.0.html
   novedades-migracion-0.3.1: novedades-migracion-0.3.1.html
   renoe: renoe.html
-last_built: 2026-11-12T23:02Z
+last_built: 2026-11-12T23:12Z
 urls:
   reference: https://aniuxa.github.io/renoe/reference
   article: https://aniuxa.github.io/renoe/articles

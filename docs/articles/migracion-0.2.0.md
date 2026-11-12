@@ -45,6 +45,7 @@ a
 [`calcular_desajuste_estadistico()`](https://aniuxa.github.io/renoe/reference/calcular_desajuste_estadistico.md):
 
 ``` r
+
 datos <- procesar_vars_laborales(datos)
 datos <- calcular_desajuste_estadistico(
   datos,

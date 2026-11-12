@@ -57,6 +57,7 @@ Puedes instalar la versión en desarrollo desde GitHub. Se recomienda
 `pak`, que resuelve e instala automáticamente las dependencias:
 
 ``` r
+
 # install.packages("pak")
 pak::pkg_install("aniuxa/renoe")
 ```
@@ -64,6 +65,7 @@ pak::pkg_install("aniuxa/renoe")
 También se conservan las alternativas con `remotes` o `devtools`:
 
 ``` r
+
 # install.packages("remotes")
 remotes::install_github("aniuxa/renoe")
 
@@ -120,6 +122,7 @@ no se ejecutan automáticamente dentro de
 ### Ejemplo de flujo recomendado
 
 ``` r
+
 datos <- fusion_enoe(2022, 1)
 
 datos_proc <- datos |>
@@ -141,6 +144,7 @@ Para los análisis específicos del proyecto, las extensiones se agregan
 después del procesamiento general:
 
 ``` r
+
 datos_proyecto <- datos_proc |>
   procesar_cuidado_extra() |>
   procesar_libro1() |>
@@ -157,6 +161,7 @@ En caso de que haya algun problema de codificación, se pide que se
 utilice la opción `fusion_robusta`
 
 ``` r
+
 datos <- fusion_enoe(2025, 4, fusion_robusta = T)
 ```
 
@@ -173,6 +178,7 @@ y
 El wrapper opera sobre un data frame en memoria:
 
 ``` r
+
 datos_cuidado <- renoe::procesar_cuidado_remunerado(
   datos_proc, anio = 2022, trimestre = 1
 )
@@ -231,6 +237,7 @@ El paquete incluye un diccionario de las variables derivadas, con su
 descripción y la función que las genera:
 
 ``` r
+
 diccionario <- readr::read_csv(
   system.file("extdata", "diccionario_variables.csv", package = "renoe"),
   show_col_types = FALSE
