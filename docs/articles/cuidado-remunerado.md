@@ -8,6 +8,7 @@ pertenecen al articulo.
 ## Entrada principal
 
 ``` r
+
 library(renoe)
 x <- data.frame(
   anio = c(2012, 2012, 2021), trim = c(2, 3, 3),
@@ -19,6 +20,7 @@ y <- procesar_cuidado_remunerado(x)
     ## Puente CMO-SINCO cuidado aplicado: 1 de 1 códigos CMO no faltantes convertidos (1 observaciones del periodo CMO; 0 sin correspondencia).
 
 ``` r
+
 y[c("clasificador_ocupacion", "codigo_ocupacion_armonizado",
     "class_ocu", "care_industry", "trabajo_cuidado_mercado",
     "cuidado_posicion_remunerada", "cuidado_sin_pago",
