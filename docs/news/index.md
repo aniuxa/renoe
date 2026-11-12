@@ -250,7 +250,8 @@ detalle técnico.
 - Se revisaron los imports del paquete para reflejar el uso actual de
   [`sjlabelled::var_labels()`](https://strengejacke.github.io/sjlabelled/reference/set_label.html),
   [`sjlabelled::val_labels()`](https://strengejacke.github.io/sjlabelled/reference/set_labels.html)
-  y `dineq::ntiles.wtd()`.
+  y
+  [`dineq::ntiles.wtd()`](https://rdrr.io/pkg/dineq/man/ntiles.wtd.html).
 - Se actualizaron ejemplos y documentación del flujo de procesamiento
   para incorporar
   [`procesar_contribucion_hogar()`](https://aniuxa.github.io/renoe/reference/procesar_contribucion_hogar.md)

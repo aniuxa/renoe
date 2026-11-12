@@ -9,43 +9,6 @@ La versión 0.3.3 cubre los trimestres habilitados desde 2005-T1 hasta
 2026-T2. En 2026 están publicados y auditados T1 y T2; T3 y T4
 permanecen deshabilitados hasta su publicación y validación.
 
-> **Corrección 2020-T1.** Desde 0.3.1, renoe excluye `ur` únicamente de
-> la unión SDEM–COE de ese trimestre porque el ámbito difiere entre
-> tablas para 2,851 personas cuya identidad personal sí coincide. `ur`
-> se conserva en las uniones de vivienda y hogar. Véase
-> `inst/extdata/NOTA_CORRECCION_2020T1.md`
-
-La ruta reproducible fija el orden
-`SCIAN → SINCO → carreras → consumidores` y exige declarar uno de tres
-escenarios: `official_strict`, `integrated_accepted` o
-`analysis_legacy`.
-
-**Hotfix 0.3.2.** Esa versión corrige y sincroniza la documentación
-pública, la cita, los títulos de migración, la organización de la
-referencia y etiquetas visibles como “año”. No cambia la API ni los
-resultados analíticos de 0.3.1.
-
-**renoe 0.3.3.** Sustituye la dependencia archivada `dineq` por `Hmisc`
-conservando los quintiles de hogar por ingreso per cápita, y refuerza la
-descarga, los reintentos y la validación de caché. No habilita periodos
-posteriores a 2026-T2.
-
-## Novedades de 0.3.1 y migración desde 0.2.0
-
-`renoe 0.3.1` es la primera versión pública de la nueva ruta
-reproducible; `0.3.0` fue una candidata interna y no se publicó. Para el
-uso general se recomienda `integrated_accepted`, que incorpora
-equivalencias oficiales y reglas aceptadas con trazabilidad. Use
-`official_strict` cuando necesite limitarse a evidencia oficial y
-`analysis_legacy` sólo para reproducir productos académicos históricos
-de forma explícita.
-
-La [guía de novedades y
-migración](articles/novedades-migracion-0.3.1.html) explica el flujo
-completo, las correcciones de 2020-T1 y 2022-T1, el tratamiento del
-código `9999`, las funciones deprecadas y los cambios mínimos necesarios
-para migrar código escrito para 0.2.0.
-
 Permite trabajar de forma reproducible y eficiente con los datos de los
 distintos trimestres y formatos de cuestionario (básico o ampliado),
 siguiendo un flujo de trabajo estructurado que abarca desde la descarga
@@ -311,3 +274,42 @@ por favor cita de la siguiente manera:
 
 También puedes usar la función `citation("renoe")` en R para obtener la
 referencia en formato BibTeX.
+
+## Novedades y migración
+
+> **Corrección 2020-T1.** Desde 0.3.1, renoe excluye `ur` únicamente de
+> la unión SDEM–COE de ese trimestre porque el ámbito difiere entre
+> tablas para 2,851 personas cuya identidad personal sí coincide. `ur`
+> se conserva en las uniones de vivienda y hogar. Véase
+> `inst/extdata/NOTA_CORRECCION_2020T1.md`
+
+La ruta reproducible fija el orden
+`SCIAN → SINCO → carreras → consumidores` y exige declarar uno de tres
+escenarios: `official_strict`, `integrated_accepted` o
+`analysis_legacy`.
+
+**Hotfix 0.3.2.** Esa versión corrige y sincroniza la documentación
+pública, la cita, los títulos de migración, la organización de la
+referencia y etiquetas visibles como “año”. No cambia la API ni los
+resultados analíticos de 0.3.1.
+
+**renoe 0.3.3.** Sustituye la dependencia archivada `dineq` por `Hmisc`
+conservando los quintiles de hogar por ingreso per cápita, y refuerza la
+descarga, los reintentos y la validación de caché. No habilita periodos
+posteriores a 2026-T2.
+
+### Novedades de 0.3.1 y migración desde 0.2.0
+
+`renoe 0.3.1` es la primera versión pública de la nueva ruta
+reproducible; `0.3.0` fue una candidata interna y no se publicó. Para el
+uso general se recomienda `integrated_accepted`, que incorpora
+equivalencias oficiales y reglas aceptadas con trazabilidad. Use
+`official_strict` cuando necesite limitarse a evidencia oficial y
+`analysis_legacy` sólo para reproducir productos académicos históricos
+de forma explícita.
+
+La [guía de novedades y
+migración](articles/novedades-migracion-0.3.1.html) explica el flujo
+completo, las correcciones de 2020-T1 y 2022-T1, el tratamiento del
+código `9999`, las funciones deprecadas y los cambios mínimos necesarios
+para migrar código escrito para 0.2.0.
