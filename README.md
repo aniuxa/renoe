@@ -25,10 +25,10 @@ pública, la cita, los títulos de migración, la organización de la
 referencia y etiquetas visibles como “año”. No cambia la API ni los
 resultados analíticos de 0.3.1.
 
-**Candidata 0.3.3.** Sustituye la dependencia archivada `dineq` por
-`Hmisc` conservando los quintiles de hogar por ingreso per cápita, y
-refuerza la descarga, los reintentos y la validación de caché. No
-habilita periodos posteriores a 2026-T2.
+**renoe 0.3.3.** Sustituye la dependencia archivada `dineq` por `Hmisc`
+conservando los quintiles de hogar por ingreso per cápita, y refuerza la
+descarga, los reintentos y la validación de caché. No habilita periodos
+posteriores a 2026-T2.
 
 ## Novedades de 0.3.1 y migración desde 0.2.0
 

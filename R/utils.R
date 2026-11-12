@@ -329,6 +329,43 @@
   }, logical(1)))
 }
 
+# Extrae en una carpeta nueva y solo sustituye la cache si estan las cinco
+# tablas. Los temporales y respaldos siempre permanecen dentro de zip/.
+.preparar_extraccion_enoe <- function(zipfile, destino, tablas, prefijo, anio, trimestre) {
+  raiz <- normalizePath(dirname(destino), winslash = '/', mustWork = TRUE)
+  destino <- file.path(raiz, basename(destino))
+  temporal <- tempfile('.renoe_extraccion_', tmpdir = raiz)
+  respaldo <- tempfile('.renoe_respaldo_', tmpdir = raiz)
+  limpiar <- function(ruta) {
+    if (!dir.exists(ruta)) return(invisible(NULL))
+    real <- normalizePath(ruta, winslash = '/', mustWork = TRUE)
+    if (tolower(dirname(real)) != tolower(raiz) || !startsWith(basename(real), '.renoe_')) {
+      stop('Ruta temporal fuera del directorio de cache: ', real, call. = FALSE)
+    }
+    unlink(real, recursive = TRUE)
+    invisible(NULL)
+  }
+  dir.create(temporal)
+  on.exit(limpiar(temporal), add = TRUE)
+  if (!.extraer_zip_enoe(zipfile, temporal) ||
+      !.verificar_cache(temporal, tablas, prefijo, anio, trimestre)) {
+    stop('El ZIP no contiene las cinco tablas ENOE legibles y no vacias.', call. = FALSE)
+  }
+  tenia_cache <- dir.exists(destino)
+  if (file.exists(destino) && !tenia_cache) stop('La ruta de cache no es una carpeta.', call. = FALSE)
+  if (tenia_cache && !file.rename(destino, respaldo)) {
+    stop('No se pudo resguardar la cache anterior.', call. = FALSE)
+  }
+  if (!file.rename(temporal, destino)) {
+    if (tenia_cache && !file.rename(respaldo, destino)) {
+      stop('No se pudo restaurar la cache anterior; respaldo en ', respaldo, call. = FALSE)
+    }
+    stop('No se pudo activar la nueva cache.', call. = FALSE)
+  }
+  if (tenia_cache) limpiar(respaldo)
+  invisible(TRUE)
+}
+
 #' Procesamiento de etiquetas y metadatos
 #' @keywords internal
 .procesar_etiquetas_enoe <- function(datos, tabla, anio, trimestre, unzip_dir, prefijo) {

@@ -55,9 +55,7 @@ descarga_enoe <- function(anio, trimestre, formato = "parquet", intentos = 3,
     stop("No se pudo descargar el archivo ZIP despu\u00E9s de ", intentos, " intentos")
   }
 
-  if (!.extraer_zip_enoe(url_info$zip_file, unzip_dir)) {
-    stop("No se pudo extraer los archivos del ZIP descargado")
-  }
+  .preparar_extraccion_enoe(url_info$zip_file, unzip_dir, tablas, url_info$prefijo, anio, trimestre)
 
   # Preparar las cinco tablas en temporales antes de reemplazar la cache.
   temporales <- vapply(archivos_salida, function(x) tempfile(tmpdir = dirname(x), fileext = paste0('.', formato)), character(1))

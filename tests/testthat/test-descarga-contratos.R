@@ -104,7 +104,7 @@ test_that('descarga escribe cinco tablas y vuelve a usar solo cache valida', {
   llamadas <- 0L
   testthat::local_mocked_bindings(
     .descargar_zip_enoe=function(...) { llamadas <<- llamadas + 1L; TRUE },
-    .extraer_zip_enoe=function(...) TRUE,
+    .preparar_extraccion_enoe=function(...) TRUE,
     .leer_datos_enoe=function(...) data.frame(id=1:2),
     .estandarizar_ids=function(df, ...) df,
     .package='renoe'
@@ -129,4 +129,35 @@ test_that('carga no acepta un trimestre con tablas incompletas', {
     .package='renoe'
   )
   expect_error(carga_enoe(2026, 1, list=TRUE, rapida=TRUE), 'coe2')
+})
+
+test_that('una descarga incompleta no reutiliza ni sustituye CSV anteriores', {
+  fixture <- normalizePath(testthat::test_path('fixtures','descarga_zip_valido.zip'), winslash='/', mustWork=TRUE)
+  carpeta <- tempfile(); dir.create(carpeta)
+  anterior <- getwd(); setwd(carpeta); on.exit(setwd(anterior), add=TRUE)
+  dir.create('zip'); dir.create('zip/enoe_2026_1t')
+  tablas <- c('viv','hog','sdem','coe1','coe2')
+  archivos <- file.path('zip/enoe_2026_1t',paste0('conjunto_de_datos_',tablas,'_enoe_2026_1t.csv'))
+  for (archivo in archivos) writeLines(c('id','1'),archivo)
+  testthat::local_mocked_bindings(
+    .descargar_zip_enoe=function(url,destfile,...) file.copy(fixture,destfile,overwrite=TRUE),
+    .package='renoe'
+  )
+  expect_error(descarga_enoe(2026,1,formato='rds',cache=FALSE), 'cinco tablas')
+  expect_true(all(file.exists(archivos)))
+  expect_identical(readLines(archivos[1]), c('id','1'))
+  expect_false(any(file.exists(file.path('datos',paste0(tablas,'2026_1t.rds')))))
+})
+
+test_that('una descarga completa sustituye la cache antigua por la nueva', {
+  fixture <- normalizePath(testthat::test_path('fixtures','descarga_zip_completo.zip'), winslash='/', mustWork=TRUE)
+  carpeta <- tempfile(); dir.create(carpeta)
+  anterior <- getwd(); setwd(carpeta); on.exit(setwd(anterior), add=TRUE)
+  dir.create('zip'); dir.create('zip/enoe_2026_1t')
+  writeLines('antiguo', 'zip/enoe_2026_1t/antiguo.txt')
+  tablas <- c('viv','hog','sdem','coe1','coe2')
+  expect_true(.preparar_extraccion_enoe(fixture, 'zip/enoe_2026_1t', tablas, 'enoe', 2026, 1))
+  expect_true(.verificar_cache('zip/enoe_2026_1t', tablas, 'enoe', 2026, 1))
+  expect_false(file.exists('zip/enoe_2026_1t/antiguo.txt'))
+  expect_length(list.files('zip', all.files=TRUE, pattern='^[.]renoe_'), 0L)
 })

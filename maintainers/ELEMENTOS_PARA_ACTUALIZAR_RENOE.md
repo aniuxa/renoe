@@ -26,6 +26,6 @@ Esta guia registra el procedimiento de mantenimiento de descargas y procesamient
 
 ## Comportamiento de descarga
 
-Se aceptan `parquet`, `rds` y `dta`; un formato distinto produce error. Los reintentos revisan el codigo de descarga y la legibilidad estructural del ZIP; si ninguno resulta valido, la funcion informa el fallo y no reemplaza el ZIP anterior. La cache de tablas convertidas se reutiliza solo si las cinco existen, son legibles y tienen filas y columnas. La cache CSV exige las cinco tablas con encabezado y al menos una fila; despues de leerlas, `carga_enoe()` exige las cinco tablas no vacias.
+Se aceptan `parquet`, `rds` y `dta`; un formato distinto produce error. Los reintentos revisan el codigo de descarga y la legibilidad estructural del ZIP; si ninguno resulta valido, la funcion informa el fallo y no reemplaza el ZIP anterior. La cache de tablas convertidas se reutiliza solo si las cinco existen, son legibles y tienen filas y columnas. La extraccion ocurre en una carpeta temporal y solo reemplaza la cache anterior cuando las cinco tablas tienen encabezado y al menos una fila. Despues de leerlas, `carga_enoe()` exige las cinco tablas no vacias.
 
 Una comprobacion estructural no sustituye la validacion de contenido ni verifica que los archivos pertenezcan al trimestre esperado. El guardado prepara archivos temporales antes de reemplazar salidas; un error de escritura durante la copia final puede requerir repetir la descarga.

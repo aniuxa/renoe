@@ -76,9 +76,7 @@ carga_enoe <- function(anio, trimestre, list = FALSE, rapida = FALSE,
     if (!.descargar_zip_enoe(url_info$url, url_info$zip_file, intentos, timeout_sec, verificar_url)) {
       stop("No se pudo descargar el archivo ZIP despu\u00E9s de ", intentos, " intentos.")
     }
-    if (!.extraer_zip_enoe(url_info$zip_file, unzip_dir)) {
-      stop("No se pudo extraer el ZIP descargado.")
-    }
+    .preparar_extraccion_enoe(url_info$zip_file, unzip_dir, tablas, url_info$prefijo, anio, trimestre)
   }
 
   # 5. Cargar y procesar las tablas
