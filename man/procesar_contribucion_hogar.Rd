@@ -21,6 +21,11 @@ A partir de variables laborales previamente construidas, genera el ingreso
 ocupacional individual deflactado, agregados del hogar, indicadores per capita
 y quintiles ponderados de ingreso y trabajo no remunerado.
 }
+\details{
+Los quintiles de ingreso del hogar usan una observacion y factor por hogar,
+ordenados por ingreso del hogar per capita. Los cortes ponderados conservan
+el comportamiento de dineq 0.1.0; los empates permanecen juntos.
+}
 \examples{
 \dontrun{
 datos <- datos |>

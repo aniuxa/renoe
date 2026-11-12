@@ -4,7 +4,13 @@
 \alias{.descargar_zip_enoe}
 \title{Descarga robusta de archivos ZIP}
 \usage{
-.descargar_zip_enoe(url, destfile, intentos = 3, timeout = 300)
+.descargar_zip_enoe(
+  url,
+  destfile,
+  intentos = 3,
+  timeout = 300,
+  verificar_url = TRUE
+)
 }
 \description{
 Descarga robusta de archivos ZIP

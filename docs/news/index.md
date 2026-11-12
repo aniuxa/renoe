@@ -1,5 +1,16 @@
 # Changelog
 
+## renoe 0.3.3
+
+- Sustituye `dineq` por `Hmisc` conservando las distribuciones
+  ponderadas y los quintiles de hogar por ingreso per cápita de 0.3.2.
+- Centraliza los periodos validados, mantiene bloqueados 2026-T3 y T4,
+  valida formatos y archivos ZIP, corrige reintentos y verifica las
+  cinco tablas de caché y carga; rechaza extracciones incompletas antes
+  de reemplazar la caché.
+- Documenta el procedimiento de incorporación de nuevos periodos y
+  agrega pruebas de regresión sin depender de `dineq`.
+
 ## renoe 0.3.2 (hotfix documental, 23 de septiembre de 2026)
 
 - Sincroniza `DESCRIPTION`, `CITATION.cff`, `inst/CITATION`, README y
@@ -239,8 +250,7 @@ detalle técnico.
 - Se revisaron los imports del paquete para reflejar el uso actual de
   [`sjlabelled::var_labels()`](https://strengejacke.github.io/sjlabelled/reference/set_label.html),
   [`sjlabelled::val_labels()`](https://strengejacke.github.io/sjlabelled/reference/set_labels.html)
-  y
-  [`dineq::ntiles.wtd()`](https://rdrr.io/pkg/dineq/man/ntiles.wtd.html).
+  y `dineq::ntiles.wtd()`.
 - Se actualizaron ejemplos y documentación del flujo de procesamiento
   para incorporar
   [`procesar_contribucion_hogar()`](https://aniuxa.github.io/renoe/reference/procesar_contribucion_hogar.md)

@@ -89,6 +89,14 @@ jobs:
           test -z "$(git ls-files --others --exclude-standard -- docs)"
           grep -Eq '^last_built: [0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}Z$' docs/pkgdown.yml
 
+      - name: Conservar sitio reconstruido si falla la compuerta
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pkgdown-diagnostico-${{ github.sha }}
+          path: docs/
+          retention-days: 7
+
       - name: Verificar la web pública antes de cerrar el release
         if: github.event_name == 'workflow_dispatch' && inputs.verify_public
         run: Rscript tools/development/verificar_release.R --docs=docs --public-url=https://aniuxa.github.io/renoe/

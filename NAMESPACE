@@ -43,7 +43,7 @@ importFrom(arrow,
   read_parquet,
   write_parquet
 )
-importFrom(dineq,ntiles.wtd)
+importFrom(Hmisc,wtd.quantile)
 importFrom(haven,
   read_dta,
   write_dta

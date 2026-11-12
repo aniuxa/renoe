@@ -19,6 +19,8 @@ Publicaciones oficiales INEGI por año/trimestre, registradas con URL y hash. Pr
 
 1. Registrar disponibilidad. 2. Descargar y hashear. 3. Cargar tablas esperadas. 4. Fusionar con llaves del periodo. 5. Aplicar preparación base. 6. Evaluar invariantes y emitir manifiesto.
 
+Para incorporar un trimestre, consultar [Elementos para actualizar renoe](../ELEMENTOS_PARA_ACTUALIZAR_RENOE.md).
+
 ## Salidas y consumidores
 
 Transversal/PINI base y manifiesto. Consumen P04, P05 y P06.

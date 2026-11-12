@@ -58,9 +58,8 @@ descarga_enoe(
 
 - verificar_url:
 
-  Logico. Si TRUE (por defecto), verifica multiples formatos de URL para
-  encontrar la correcta. Util cuando INEGI cambia la estructura de
-  archivos.
+  Logico. Si TRUE, permite la URL alternativa conocida de 2018-T2 a
+  partir del segundo intento.
 
 - cache:
 

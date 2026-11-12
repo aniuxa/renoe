@@ -37,8 +37,7 @@ descarga_enoe(
 
 \item{timeout_sec}{Tiempo maximo de espera para la descarga en segundos (por defecto 300).}
 
-\item{verificar_url}{Logico. Si TRUE (por defecto), verifica multiples formatos de URL
-para encontrar la correcta. Util cuando INEGI cambia la estructura de archivos.}
+\item{verificar_url}{Logico. Si TRUE, permite la URL alternativa conocida de 2018-T2 a partir del segundo intento.}
 
 \item{cache}{Logico. Si TRUE (por defecto), usa archivos en cache si existen.}
 }

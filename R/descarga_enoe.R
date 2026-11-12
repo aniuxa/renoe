@@ -19,8 +19,7 @@
 #'   }
 #' @param intentos Numero maximo de intentos de descarga si falla la conexion (por defecto 3).
 #' @param timeout_sec Tiempo maximo de espera para la descarga en segundos (por defecto 300).
-#' @param verificar_url Logico. Si TRUE (por defecto), verifica multiples formatos de URL
-#'   para encontrar la correcta. Util cuando INEGI cambia la estructura de archivos.
+#' @param verificar_url Logico. Si TRUE, permite la URL alternativa conocida de 2018-T2 a partir del segundo intento.
 #' @param cache Logico. Si TRUE (por defecto), usa archivos en cache si existen.
 #'
 #' @export
@@ -33,12 +32,9 @@
 
 descarga_enoe <- function(anio, trimestre, formato = "parquet", intentos = 3,
                           timeout_sec = 300, verificar_url = TRUE, cache = TRUE) {
-  # 1. Validaciones iniciales
-  if (!is.numeric(anio)) stop("El a\u00F1o debe ser num\u00E9rico")
-  if (!is.numeric(trimestre)) stop("El trimestre debe ser num\u00E9rico")
-  if (!trimestre %in% 1:4) stop("El trimestre debe ser un valor entre 1 y 4")
-  if (anio < 2005 || anio > 2026) stop("La ENOE cubre de 2005 en adelante y hasta ahora hasta 2026")
-  if (anio == 2020 && trimestre == 2) stop("No existe el trimestre 2 de 2020 en la ENOE debido a la pandemia de COVID-19")
+  .validar_periodo_enoe(anio, trimestre)
+  formato <- match.arg(formato, c('parquet', 'rds', 'dta'))
+  .validar_opciones_descarga(intentos, timeout_sec, verificar_url, cache)
 
   # 2. Configuracion inicial
   tablas <- c("viv", "hog", "sdem", "coe1", "coe2")
@@ -49,39 +45,42 @@ descarga_enoe <- function(anio, trimestre, formato = "parquet", intentos = 3,
 
   # 3. Verificar si ya existen los archivos en el formato solicitado
   archivos_salida <- file.path("datos", paste0(tablas, anio, "_", trimestre, "t.", formato))
-  if (cache && all(file.exists(archivos_salida))) {
+  if (cache && .cache_archivos_enoe_valida(archivos_salida, formato)) {
     message("Los archivos ya existen en el directorio 'datos'. Usando cach\u00E9.")
     return(invisible(TRUE))
   }
 
   # 4. Descargar y extraer datos
-  if (!.descargar_zip_enoe(url_info$url, url_info$zip_file, intentos, timeout_sec)) {
+  if (!.descargar_zip_enoe(url_info$url, url_info$zip_file, intentos, timeout_sec, verificar_url)) {
     stop("No se pudo descargar el archivo ZIP despu\u00E9s de ", intentos, " intentos")
   }
 
-  if (!.extraer_zip_enoe(url_info$zip_file, unzip_dir)) {
-    stop("No se pudo extraer los archivos del ZIP descargado")
-  }
+  .preparar_extraccion_enoe(url_info$zip_file, unzip_dir, tablas, url_info$prefijo, anio, trimestre)
 
-  # 5. Procesar y guardar cada tabla
-  resultados <- sapply(tablas, function(tabla) {
+  # Preparar las cinco tablas en temporales antes de reemplazar la cache.
+  temporales <- vapply(archivos_salida, function(x) tempfile(tmpdir = dirname(x), fileext = paste0('.', formato)), character(1))
+  on.exit(unlink(temporales), add = TRUE)
+  resultados <- vapply(seq_along(tablas), function(i) {
     tryCatch({
-      datos <- .leer_datos_enoe(tabla, unzip_dir, url_info$prefijo, anio, trimestre)
-      if (is.null(datos)) return(FALSE)
+      datos <- .leer_datos_enoe(tablas[i], unzip_dir, url_info$prefijo, anio, trimestre)
+      if (is.null(datos) || nrow(datos) == 0L || ncol(datos) == 0L) return(FALSE)
       datos <- .estandarizar_ids(datos, anio, trimestre)
-      archivo_salida <- file.path("datos", paste0(tabla, anio, "_", trimestre, "t.", formato))
-
       switch(formato,
-             "parquet" = arrow::write_parquet(datos, archivo_salida, compression = "snappy"),
-             "rds" = saveRDS(datos, archivo_salida),
-             "dta" = haven::write_dta(datos, archivo_salida))
-
-      TRUE
+        parquet = arrow::write_parquet(datos, temporales[i], compression = 'snappy'),
+        rds = saveRDS(datos, temporales[i]),
+        dta = haven::write_dta(datos, temporales[i])
+      )
+      file.exists(temporales[i]) && file.size(temporales[i]) > 0
     }, error = function(e) {
-      warning("Error procesando tabla ", tabla, ": ", e$message)
+      warning('Error procesando tabla ', tablas[i], ': ', e$message, call. = FALSE)
       FALSE
     })
-  })
+  }, logical(1))
+  if (all(resultados)) {
+    resultados <- vapply(seq_along(tablas), function(i) {
+      isTRUE(file.copy(temporales[i], archivos_salida[i], overwrite = TRUE))
+    }, logical(1))
+  }
 
   # 6. Limpieza final
   if (file.exists(url_info$zip_file)) unlink(url_info$zip_file)

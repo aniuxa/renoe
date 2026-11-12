@@ -4,6 +4,11 @@
 #' ocupacional individual deflactado, agregados del hogar, indicadores per capita
 #' y quintiles ponderados de ingreso y trabajo no remunerado.
 #'
+#' @details
+#' Los quintiles de ingreso del hogar usan una observacion y factor por hogar,
+#' ordenados por ingreso del hogar per capita. Los cortes ponderados conservan
+#' el comportamiento de dineq 0.1.0; los empates permanecen juntos.
+#'
 #' @param data Un data frame que contenga, al menos, las variables `ingocup_imp`,
 #'   `ipc`, `hrsocup`, `t_trabajo_hogar_armonizado`, `t_total_instrumento`, `folio2`,
 #'   `tam_hog` y
@@ -98,10 +103,10 @@ procesar_contribucion_hogar <- function(data) {
   }
   hogares <- hogares %>%
     dplyr::mutate(
-      quintil_ing_hog_pc = dineq::ntiles.wtd(
+      quintil_ing_hog_pc = .quintiles_ponderados(
         ing_hog_pc, n = 5, weights = fac_hog
       ),
-      quintil_norem_pc_armonizado = dineq::ntiles.wtd(
+      quintil_norem_pc_armonizado = .quintiles_ponderados(
         norem_pc_armonizado, n = 5, weights = fac_hog
       )
     ) %>%
@@ -122,10 +127,10 @@ procesar_contribucion_hogar <- function(data) {
   }
   data <- data %>%
     dplyr::mutate(
-      quintil_ing_ind = dineq::ntiles.wtd(
+      quintil_ing_ind = .quintiles_ponderados(
         ing_mensual_ipc, n = 5, weights = fac
       ),
-      quintil_ing_hog_pc_sego = dineq::ntiles.wtd(
+      quintil_ing_hog_pc_sego = .quintiles_ponderados(
         ing_hog_pc_sego, n = 5, weights = fac
       )
     ) %>%
