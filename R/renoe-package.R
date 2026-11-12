@@ -21,5 +21,5 @@
 #' @importFrom stringr str_remove str_detect str_replace str_pad
 #' @importFrom tools file_path_sans_ext
 #' @importFrom utils download.file read.csv unzip
-#' @importFrom dineq ntiles.wtd
+#' @importFrom Hmisc wtd.quantile
 "_PACKAGE"

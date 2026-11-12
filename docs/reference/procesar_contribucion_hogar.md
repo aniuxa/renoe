@@ -25,6 +25,13 @@ Un data frame con variables derivadas sobre contribucion economica y
 trabajo no remunerado en el hogar, junto con quintiles ponderados
 etiquetados.
 
+## Details
+
+Los quintiles de ingreso del hogar usan una observacion y factor por
+hogar, ordenados por ingreso del hogar per capita. Los cortes ponderados
+conservan el comportamiento de dineq 0.1.0; los empates permanecen
+juntos.
+
 ## See also
 
 Other procesamiento_enoe:

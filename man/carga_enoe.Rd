@@ -36,7 +36,7 @@ carga_enoe(
 
 \item{timeout_sec}{Tiempo maximo de espera por intento en segundos (por defecto = 300).}
 
-\item{verificar_url}{Logico. Si TRUE (por defecto), intenta formatos alternativos de URL si falla la descarga.}
+\item{verificar_url}{Logico. Si TRUE, permite la URL alternativa conocida de 2018-T2 a partir del segundo intento.}
 
 \item{cache}{Logico. Si TRUE (por defecto), reutiliza datos descargados previamente si existen.}
 

@@ -29,10 +29,10 @@
 #' @family descarga_documenta_enoe
 
 info_trimestre <- function(anio, trimestre) {
-  # Validaciones
-  if (!trimestre %in% 1:4) stop("Trimestre debe ser 1-4")
-  if (!anio %in% 2005:2026) stop("A\u00F1o debe estar entre 2005-2026")
-  if (anio == 2020 && trimestre == 2) stop("No existe 2020-T2 por COVID")
+  if (!.validar_periodo_enoe(anio, trimestre, exigir_disponible = FALSE)) {
+    warning(sprintf("No se encontro informacion para t%d%02d: periodo no habilitado", trimestre, anio %% 100), call. = FALSE)
+    return(NULL)
+  }
 
   # Generar codigo de trimestre
   trim_code <- sprintf("t%d%02d", trimestre, anio %% 100)

@@ -4,7 +4,7 @@
 fusión, procesamiento y análisis de los microdatos de la Encuesta
 Nacional de Ocupación y Empleo (ENOE) del INEGI desde 2005.
 
-La versión 0.3.2 cubre los trimestres habilitados desde 2005-T1 hasta
+La versión 0.3.3 cubre los trimestres habilitados desde 2005-T1 hasta
 2026-T2. En 2026 están publicados y auditados T1 y T2; T3 y T4
 permanecen deshabilitados hasta su publicación y validación.
 
@@ -19,10 +19,15 @@ La ruta reproducible fija el orden
 escenarios: `official_strict`, `integrated_accepted` o
 `analysis_legacy`.
 
-**Hotfix 0.3.2.** Esta versión corrige y sincroniza la documentación
+**Hotfix 0.3.2.** Esa versión corrige y sincroniza la documentación
 pública, la cita, los títulos de migración, la organización de la
 referencia y etiquetas visibles como “año”. No cambia la API ni los
 resultados analíticos de 0.3.1.
+
+**Candidata 0.3.3.** Sustituye la dependencia archivada `dineq` por
+`Hmisc` conservando los quintiles de hogar por ingreso per cápita, y
+refuerza la descarga, los reintentos y la validación de caché. No
+habilita periodos posteriores a 2026-T2.
 
 ## Novedades de 0.3.1 y migración desde 0.2.0
 
@@ -52,7 +57,6 @@ Puedes instalar la versión en desarrollo desde GitHub. Se recomienda
 `pak`, que resuelve e instala automáticamente las dependencias:
 
 ``` r
-
 # install.packages("pak")
 pak::pkg_install("aniuxa/renoe")
 ```
@@ -60,7 +64,6 @@ pak::pkg_install("aniuxa/renoe")
 También se conservan las alternativas con `remotes` o `devtools`:
 
 ``` r
-
 # install.packages("remotes")
 remotes::install_github("aniuxa/renoe")
 
@@ -117,7 +120,6 @@ no se ejecutan automáticamente dentro de
 ### Ejemplo de flujo recomendado
 
 ``` r
-
 datos <- fusion_enoe(2022, 1)
 
 datos_proc <- datos |>
@@ -139,7 +141,6 @@ Para los análisis específicos del proyecto, las extensiones se agregan
 después del procesamiento general:
 
 ``` r
-
 datos_proyecto <- datos_proc |>
   procesar_cuidado_extra() |>
   procesar_libro1() |>
@@ -156,7 +157,6 @@ En caso de que haya algun problema de codificación, se pide que se
 utilice la opción `fusion_robusta`
 
 ``` r
-
 datos <- fusion_enoe(2025, 4, fusion_robusta = T)
 ```
 
@@ -173,7 +173,6 @@ y
 El wrapper opera sobre un data frame en memoria:
 
 ``` r
-
 datos_cuidado <- renoe::procesar_cuidado_remunerado(
   datos_proc, anio = 2022, trimestre = 1
 )
@@ -232,7 +231,6 @@ El paquete incluye un diccionario de las variables derivadas, con su
 descripción y la función que las genera:
 
 ``` r
-
 diccionario <- readr::read_csv(
   system.file("extdata", "diccionario_variables.csv", package = "renoe"),
   show_col_types = FALSE
@@ -317,7 +315,7 @@ por favor cita de la siguiente manera:
 
 > Escoto, A. (2026). *renoe: Herramientas para trabajar con la Encuesta
 > Nacional de Ocupación y Empleo (ENOE) desde 2005*. R package version
-> 0.3.2. <https://aniuxa.github.io/renoe/>
+> 0.3.3. <https://aniuxa.github.io/renoe/>
 
 También puedes usar la función `citation("renoe")` en R para obtener la
 referencia en formato BibTeX.

@@ -1,3 +1,9 @@
+# renoe 0.3.3 (candidata)
+
+- Sustituye `dineq` por `Hmisc` conservando las distribuciones ponderadas y los quintiles de hogar por ingreso per cápita de 0.3.2.
+- Centraliza los periodos validados, mantiene bloqueados 2026-T3 y T4, valida formatos y archivos ZIP, corrige reintentos y verifica las cinco tablas de caché y carga.
+- Documenta el procedimiento de incorporación de nuevos periodos y agrega pruebas de regresión sin depender de `dineq`.
+
 # renoe 0.3.2 (hotfix documental, 23 de septiembre de 2026)
 
 - Sincroniza `DESCRIPTION`, `CITATION.cff`, `inst/CITATION`, README y pkgdown con

@@ -110,21 +110,7 @@
 .construir_url_enoe <- function(anio, trimestre) {
   base_url <- "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/datosabiertos/"
 
-  # Validaciones
-  if (!is.numeric(anio) || !is.numeric(trimestre)) {
-    stop("A\u00F1o y trimestre deben ser num\u00E9ricos")
-  }
-  if (length(anio) != 1L || length(trimestre) != 1L ||
-      is.na(anio) || is.na(trimestre) ||
-      anio != as.integer(anio) || !trimestre %in% 1:4) {
-    stop("A\u00F1o y trimestre deben ser valores escalares \u00EDntegros y el trimestre debe estar entre 1 y 4")
-  }
-  if (anio == 2020 && trimestre == 2) {
-    stop("No existe 2020-T2 por la suspensi\u00F3n del levantamiento regular de la ENOE")
-  }
-  if (anio == 2026 && trimestre > 2) {
-    stop("S\u00F3lo est\u00E1n publicados y habilitados 2026-T1 y 2026-T2")
-  }
+  .validar_periodo_enoe(anio, trimestre)
 
   # Para 2020-T1 se usa una sola edicion de las cinco tablas de microdatos.
   if (anio == 2020 && trimestre == 1) {
@@ -256,101 +242,92 @@
 }
 
 
+.zip_enoe_valido <- function(archivo) {
+  if (!file.exists(archivo) || is.na(file.size(archivo)) || file.size(archivo) == 0) return(FALSE)
+  tryCatch({
+    contenido <- suppressWarnings(utils::unzip(archivo, list = TRUE))
+    is.data.frame(contenido) && nrow(contenido) > 0L && any(!grepl('/$', contenido$Name))
+  }, error = function(e) FALSE)
+}
+
 #' Descarga robusta de archivos ZIP
 #' @keywords internal
-.descargar_zip_enoe <- function(url, destfile, intentos = 3, timeout = 300) {
-  # Validacion inicial silenciosa
-  if (missing(url) || is.null(url) || url == "") {
-    return(FALSE)
-  }
-
-  for (i in 1:intentos) {
-    tryCatch({
-      options(timeout = timeout)
-      quiet <- ifelse(i == 1, TRUE, FALSE) # Solo mostrar mensajes despues del primer intento
-
-      status <- suppressWarnings(
-        if (i > 1 && grepl("2018.*2t", url)) {
-          url_alt <- gsub("enoe2018", "enoe_2018", url)
-          if (!quiet) message("Intento ", i, ": Probando formato alternativo")
-          utils::download.file(url_alt, destfile, mode = "wb", quiet = TRUE)
-        } else {
-          utils::download.file(url, destfile, mode = "wb", quiet = TRUE, method = "libcurl")
-        }
-      )
-
-      if (!file.exists(destfile) || file.size(destfile) < 1000) {
-        if (file.exists(destfile)) unlink(destfile)
-        return(FALSE)
-      }
+.descargar_zip_enoe <- function(url, destfile, intentos = 3, timeout = 300,
+                               verificar_url = TRUE) {
+  if (missing(url) || is.null(url) || length(url) != 1L || is.na(url) || !nzchar(url)) return(FALSE)
+  .validar_opciones_descarga(intentos, timeout, verificar_url, TRUE)
+  previo <- getOption('timeout')
+  on.exit(options(timeout = previo), add = TRUE)
+  options(timeout = timeout)
+  alterna <- if (verificar_url && grepl('enoe2018_2t', url, fixed = TRUE)) {
+    sub('enoe2018_2t', 'enoe_2018_2t', url, fixed = TRUE)
+  } else NULL
+  for (i in seq_len(intentos)) {
+    temporal <- tempfile(pattern = '.descarga_enoe_', tmpdir = dirname(destfile), fileext = '.zip')
+    direccion <- if (!is.null(alterna) && i > 1L) alterna else url
+    status <- tryCatch(suppressWarnings(utils::download.file(
+      direccion, temporal, mode = 'wb', quiet = TRUE, method = 'libcurl'
+    )), error = function(e) 1L)
+    valido <- identical(as.integer(status), 0L) && .zip_enoe_valido(temporal)
+    if (valido && isTRUE(file.copy(temporal, destfile, overwrite = TRUE))) {
+      unlink(temporal)
       return(TRUE)
-    }, error = function(e) {
-      if (file.exists(destfile)) unlink(destfile)
-      if (i == intentos) {
-        warning("Fallo en la descarga (\u00FAltimo intento)", call. = FALSE)
-      }
-      return(FALSE)
-    })
+    }
+    if (file.exists(temporal)) unlink(temporal)
     if (i < intentos) Sys.sleep(2)
   }
-  return(FALSE)
+  warning('Fallo en la descarga o ZIP invalido (ultimo intento)', call. = FALSE)
+  FALSE
 }
+
+.cache_archivos_enoe_valida <- function(archivos, formato) {
+  if (!all(file.exists(archivos)) || anyNA(file.size(archivos)) || any(file.size(archivos) <= 0)) return(FALSE)
+  all(vapply(archivos, function(archivo) {
+    tryCatch({
+      datos <- switch(formato,
+        parquet = arrow::read_parquet(archivo, as_data_frame = FALSE),
+        rds = readRDS(archivo), dta = haven::read_dta(archivo)
+      )
+      !is.null(datos) && length(dim(datos)) == 2L && nrow(datos) > 0L && ncol(datos) > 0L
+    }, error = function(e) FALSE)
+  }, logical(1)))
+}
+
 #' Descomprension de archivos
 #' @keywords internal
 .extraer_zip_enoe <- function(zipfile, exdir) {
-  if (!file.exists(zipfile)) return(FALSE)
-
+  if (!.zip_enoe_valido(zipfile)) return(FALSE)
   tryCatch({
-    files <- utils::unzip(zipfile, list = TRUE)$Name
-    if (length(files) == 0) return(FALSE)
-
+    contenido <- utils::unzip(zipfile, list = TRUE)$Name
     utils::unzip(zipfile, exdir = exdir)
-    TRUE
+    all(file.exists(file.path(exdir, contenido)))
   }, error = function(e) {
-    tryCatch({
-      dir_alt <- paste0(exdir, "_alt")
-      suppressWarnings(utils::unzip(zipfile, exdir = dir_alt, list = TRUE))
-      if (dir.exists(dir_alt)) {
-        file.rename(dir_alt, exdir)
-        TRUE
-      } else {
-        FALSE
-      }
-    }, error = function(e) {
-      warning("Error cr\u00EDtico al extraer ZIP: ", e$message)
-      FALSE
-    })
+    warning('Error al extraer ZIP: ', e$message, call. = FALSE)
+    FALSE
   })
 }
 
-# Funciones auxiliares corregidas
 .verificar_cache <- function(unzip_dir, tablas, prefijo, anio, trimestre) {
   if (!dir.exists(unzip_dir)) return(FALSE)
-
-  if (anio == 2020 && trimestre == 1) {
-    nombres_microdatos <- c(
-      viv = "ENOE_VIVT120.csv", hog = "ENOE_HOGT120.csv",
-      sdem = "ENOE_SDEMT120.csv", coe1 = "ENOE_COE1T120.csv",
-      coe2 = "ENOE_COE2T120.csv"
-    )
-    return(all(file.exists(file.path(unzip_dir, nombres_microdatos[tablas]))))
+  tiene_contenido <- function(archivo) {
+    tryCatch({
+      file.exists(archivo) && !is.na(file.size(archivo)) && file.size(archivo) > 0 &&
+        length(readLines(archivo, n = 2L, warn = FALSE, encoding = 'UTF-8')) >= 2L
+    }, error = function(e) FALSE)
   }
-
-  patrones <- list(
-    viv = "conjunto_de_datos_viv.*\\.csv$",
-    hog = "conjunto_de_datos_hog.*\\.csv$",
-    sdem = "conjunto_de_datos_sdem.*\\.csv$",
-    coe1 = "conjunto_de_datos_coe1.*\\.csv$",
-    coe2 = "conjunto_de_datos_coe2.*\\.csv$"
-  )
-
-  archivos_presentes <- sapply(tablas, function(tabla) {
-    length(list.files(unzip_dir, pattern = patrones[[tabla]], recursive = TRUE)) > 0
-  })
-
-  all(archivos_presentes)
+  if (anio == 2020 && trimestre == 1) {
+    nombres <- c(viv='ENOE_VIVT120.csv', hog='ENOE_HOGT120.csv',
+                 sdem='ENOE_SDEMT120.csv', coe1='ENOE_COE1T120.csv', coe2='ENOE_COE2T120.csv')
+    return(all(vapply(file.path(unzip_dir, nombres[tablas]), tiene_contenido, logical(1))))
+  }
+  patrones <- c(viv='conjunto_de_datos_viv.*\\.csv$', hog='conjunto_de_datos_hog.*\\.csv$',
+                sdem='conjunto_de_datos_sdem.*\\.csv$', coe1='conjunto_de_datos_coe1.*\\.csv$',
+                coe2='conjunto_de_datos_coe2.*\\.csv$')
+  all(vapply(tablas, function(tabla) {
+    archivos <- list.files(unzip_dir, pattern = patrones[[tabla]], recursive = TRUE, full.names = TRUE)
+    length(archivos) > 0L && any(vapply(archivos, tiene_contenido, logical(1)))
+  }, logical(1)))
 }
-
 
 #' Procesamiento de etiquetas y metadatos
 #' @keywords internal

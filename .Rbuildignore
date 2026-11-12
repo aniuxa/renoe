@@ -25,3 +25,6 @@
 ^validation_lib_productor_0_3_1$
 ^validation_runs$
 ^scripts$
+
+
+^README[.]html$

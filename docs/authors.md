@@ -17,12 +17,12 @@ Source:
 
 Escoto, A. (2026). renoe: Herramientas para trabajar con la Encuesta
 Nacional de Ocupación y Empleo (ENOE) desde 2005. R package version
-0.3.2. https://aniuxa.github.io/renoe/
+0.3.3. https://aniuxa.github.io/renoe/
 
     @Manual{,
       title = {renoe: Herramientas para trabajar con la Encuesta Nacional de Ocupación y Empleo (ENOE) desde 2005},
       author = {Ana Escoto},
       year = {2026},
-      note = {R package version 0.3.2},
+      note = {R package version 0.3.3},
       url = {https://aniuxa.github.io/renoe/},
     }

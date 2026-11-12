@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="index.html">Uso del paquete renoe</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,12 +56,13 @@
 </h1>
 </div>
 <p><strong>renoe</strong> es un paquete en desarrollo para facilitar la descarga, carga, fusión, procesamiento y análisis de los microdatos de la Encuesta Nacional de Ocupación y Empleo (ENOE) del INEGI desde 2005.</p>
-<p>La versión 0.3.2 cubre los trimestres habilitados desde 2005-T1 hasta 2026-T2. En 2026 están publicados y auditados T1 y T2; T3 y T4 permanecen deshabilitados hasta su publicación y validación.</p>
+<p>La versión 0.3.3 cubre los trimestres habilitados desde 2005-T1 hasta 2026-T2. En 2026 están publicados y auditados T1 y T2; T3 y T4 permanecen deshabilitados hasta su publicación y validación.</p>
 <blockquote>
 <p><strong>Corrección 2020-T1.</strong> Desde 0.3.1, renoe excluye <code>ur</code> únicamente de la unión SDEM–COE de ese trimestre porque el ámbito difiere entre tablas para 2,851 personas cuya identidad personal sí coincide. <code>ur</code> se conserva en las uniones de vivienda y hogar. Véase <code>inst/extdata/NOTA_CORRECCION_2020T1.md</code></p>
 </blockquote>
 <p>La ruta reproducible fija el orden <code>SCIAN → SINCO → carreras → consumidores</code> y exige declarar uno de tres escenarios: <code>official_strict</code>, <code>integrated_accepted</code> o <code>analysis_legacy</code>.</p>
-<p><strong>Hotfix 0.3.2.</strong> Esta versión corrige y sincroniza la documentación pública, la cita, los títulos de migración, la organización de la referencia y etiquetas visibles como “año”. No cambia la API ni los resultados analíticos de 0.3.1.</p>
+<p><strong>Hotfix 0.3.2.</strong> Esa versión corrige y sincroniza la documentación pública, la cita, los títulos de migración, la organización de la referencia y etiquetas visibles como “año”. No cambia la API ni los resultados analíticos de 0.3.1.</p>
+<p><strong>Candidata 0.3.3.</strong> Sustituye la dependencia archivada <code>dineq</code> por <code>Hmisc</code> conservando los quintiles de hogar por ingreso per cápita, y refuerza la descarga, los reintentos y la validación de caché. No habilita periodos posteriores a 2026-T2.</p>
 <div class="section level2">
 <h2 id="novedades-de-031-y-migración-desde-020">Novedades de 0.3.1 y migración desde 0.2.0<a class="anchor" aria-label="anchor" href="#novedades-de-031-y-migraci%C3%B3n-desde-020"></a>
 </h2>
@@ -79,10 +80,10 @@
 <p>También se conservan las alternativas con <code>remotes</code> o <code>devtools</code>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"aniuxa/renoe"</span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"aniuxa/renoe"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"aniuxa/renoe"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/install-deprecated.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"aniuxa/renoe"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="descarga-y-documentación-family-descarga_documenta_enoe">Descarga y documentación (<code>@family descarga_documenta_enoe</code>)<a class="anchor" aria-label="anchor" href="#descarga-y-documentaci%C3%B3n-family-descarga_documenta_enoe"></a>
@@ -381,7 +382,7 @@
 </h2>
 <p>Si utilizas el paquete <code>renoe</code> en tus investigaciones o publicaciones, por favor cita de la siguiente manera:</p>
 <blockquote>
-<p>Escoto, A. (2026). <em>renoe: Herramientas para trabajar con la Encuesta Nacional de Ocupación y Empleo (ENOE) desde 2005</em>. R package version 0.3.2. <a href="https://aniuxa.github.io/renoe/" class="uri">https://aniuxa.github.io/renoe/</a></p>
+<p>Escoto, A. (2026). <em>renoe: Herramientas para trabajar con la Encuesta Nacional de Ocupación y Empleo (ENOE) desde 2005</em>. R package version 0.3.3. <a href="https://aniuxa.github.io/renoe/" class="uri">https://aniuxa.github.io/renoe/</a></p>
 </blockquote>
 <p>También puedes usar la función <code>citation("renoe")</code> en R para obtener la referencia en formato BibTeX.</p>
 </div>

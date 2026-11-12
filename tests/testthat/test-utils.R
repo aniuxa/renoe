@@ -98,8 +98,8 @@ test_that("la URL normal de 2026 coincide con los ZIP publicados", {
 })
 
 test_that("las funciones internas no inventan periodos 2026 aún no publicados", {
-  expect_error(.construir_url_enoe(2026, 3), "2026-T1 y 2026-T2")
-  expect_error(.construir_url_enoe(2026, 4), "2026-T1 y 2026-T2")
+  expect_error(.construir_url_enoe(2026, 3), "ultimo validado es 2026-T2")
+  expect_error(.construir_url_enoe(2026, 4), "ultimo validado es 2026-T2")
   expect_error(.construir_url_enoe(2020, 2), "No existe 2020-T2")
 })
 

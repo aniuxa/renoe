@@ -18,7 +18,7 @@
 #' @param rapida Logico. Si TRUE, omite el etiquetado de variables (mas rapido).
 #' @param intentos Numero maximo de intentos de descarga (por defecto = 3).
 #' @param timeout_sec Tiempo maximo de espera por intento en segundos (por defecto = 300).
-#' @param verificar_url Logico. Si TRUE (por defecto), intenta formatos alternativos de URL si falla la descarga.
+#' @param verificar_url Logico. Si TRUE, permite la URL alternativa conocida de 2018-T2 a partir del segundo intento.
 #' @param cache Logico. Si TRUE (por defecto), reutiliza datos descargados previamente si existen.
 #' @param prefijo Cadena opcional para el prefijo de los archivos ("enoe" o "enoen"). Si no se indica, se detecta automaticamente.
 #'
@@ -53,11 +53,8 @@ carga_enoe <- function(anio, trimestre, list = FALSE, rapida = FALSE,
                        intentos = 3, timeout_sec = 300, verificar_url = TRUE,
                        cache = TRUE, prefijo = NULL) {
 
-  # 1. Validaciones
-  if (!is.numeric(anio) || anio < 2005 || anio > 2026)
-    stop("El a\u00F1o debe estar entre 2005 y 2026.")
-  if (!is.numeric(trimestre) || !trimestre %in% 1:4)
-    stop("El trimestre debe ser 1, 2, 3 o 4.")
+  .validar_periodo_enoe(anio, trimestre)
+  .validar_opciones_descarga(intentos, timeout_sec, verificar_url, cache)
 
   # 2. Determinar prefijo si no se indico
   if (is.null(prefijo)) {
@@ -76,7 +73,7 @@ carga_enoe <- function(anio, trimestre, list = FALSE, rapida = FALSE,
   if (usar_cache) {
     message("Usando datos en cach\u00E9 de ", unzip_dir)
   } else {
-    if (!.descargar_zip_enoe(url_info$url, url_info$zip_file, intentos, timeout_sec)) {
+    if (!.descargar_zip_enoe(url_info$url, url_info$zip_file, intentos, timeout_sec, verificar_url)) {
       stop("No se pudo descargar el archivo ZIP despu\u00E9s de ", intentos, " intentos.")
     }
     if (!.extraer_zip_enoe(url_info$zip_file, unzip_dir)) {
@@ -96,10 +93,10 @@ carga_enoe <- function(anio, trimestre, list = FALSE, rapida = FALSE,
     datos
   }) |> stats::setNames(tablas)
 
-  # 6. Eliminar tablas no validas
-  datos_lista <- datos_lista[!sapply(datos_lista, is.null)]
-  if (length(datos_lista) == 0) {
-    stop("No se pudo cargar ninguna tabla para el trimestre ", anio, "-T", trimestre)
+  # El trimestre solo se considera cargado si estan las cinco tablas.
+  validas <- vapply(datos_lista, function(x) !is.null(x) && nrow(x) > 0L && ncol(x) > 0L, logical(1))
+  if (!all(validas)) {
+    stop('No se pudieron cargar las tablas: ', paste(tablas[!validas], collapse = ', '), call. = FALSE)
   }
 
   # 7. Retornar

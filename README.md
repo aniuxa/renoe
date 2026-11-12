@@ -5,7 +5,7 @@
 fusión, procesamiento y análisis de los microdatos de la Encuesta
 Nacional de Ocupación y Empleo (ENOE) del INEGI desde 2005.
 
-La versión 0.3.2 cubre los trimestres habilitados desde 2005-T1 hasta
+La versión 0.3.3 cubre los trimestres habilitados desde 2005-T1 hasta
 2026-T2. En 2026 están publicados y auditados T1 y T2; T3 y T4
 permanecen deshabilitados hasta su publicación y validación.
 
@@ -20,10 +20,15 @@ La ruta reproducible fija el orden
 escenarios: `official_strict`, `integrated_accepted` o
 `analysis_legacy`.
 
-**Hotfix 0.3.2.** Esta versión corrige y sincroniza la documentación
+**Hotfix 0.3.2.** Esa versión corrige y sincroniza la documentación
 pública, la cita, los títulos de migración, la organización de la
 referencia y etiquetas visibles como “año”. No cambia la API ni los
 resultados analíticos de 0.3.1.
+
+**Candidata 0.3.3.** Sustituye la dependencia archivada `dineq` por
+`Hmisc` conservando los quintiles de hogar por ingreso per cápita, y
+refuerza la descarga, los reintentos y la validación de caché. No
+habilita periodos posteriores a 2026-T2.
 
 ## Novedades de 0.3.1 y migración desde 0.2.0
 
@@ -302,7 +307,7 @@ por favor cita de la siguiente manera:
 
 > Escoto, A. (2026). *renoe: Herramientas para trabajar con la Encuesta
 > Nacional de Ocupación y Empleo (ENOE) desde 2005*. R package version
-> 0.3.2. <https://aniuxa.github.io/renoe/>
+> 0.3.3. <https://aniuxa.github.io/renoe/>
 
 También puedes usar la función `citation("renoe")` en R para obtener la
 referencia en formato BibTeX.

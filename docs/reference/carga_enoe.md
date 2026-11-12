@@ -60,8 +60,8 @@ carga_enoe(
 
 - verificar_url:
 
-  Logico. Si TRUE (por defecto), intenta formatos alternativos de URL si
-  falla la descarga.
+  Logico. Si TRUE, permite la URL alternativa conocida de 2018-T2 a
+  partir del segundo intento.
 
 - cache:
 

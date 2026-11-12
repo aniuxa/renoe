@@ -44,7 +44,6 @@ condición falla, la función se detiene y no presenta una salida parcial
 como válida.
 
 ``` r
-
 datos <- fusion_enoe(2022, 1)
 
 datos_031 <- procesar_variables_enoe(
@@ -58,7 +57,6 @@ datos_031 <- procesar_variables_enoe(
 La ruta paso a paso es útil para auditar una etapa concreta:
 
 ``` r
-
 datos_clasificados <- datos |>
   drop_tri() |>
   crear_folios() |>
@@ -109,7 +107,6 @@ reutiliza la ruta canónica, comprueba que el escenario recibido coincide
 con el solicitado y marca el perfil `academic_reproducible`:
 
 ``` r
-
 datos_2020t1 <- fusion_enoe(2020, 1)
 
 datos_articulo <- procesar_productos_academicos(
@@ -180,7 +177,6 @@ Emite una advertencia y delega en
 [`armonizar_sinco()`](https://aniuxa.github.io/renoe/reference/armonizar_sinco.md):
 
 ``` r
-
 # Antes
 datos <- armoniza_sinco(datos)
 
@@ -199,7 +195,6 @@ Si usaba el wrapper general, la migración mínima es declarar el
 escenario y regenerar los productos afectados:
 
 ``` r
-
 # 0.2.0
 datos_020 <- procesar_variables_enoe(datos, 2022, 1)
 
